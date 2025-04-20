@@ -3,6 +3,7 @@ import { User, Mail, Cake, Ruler, Weight, PhoneCall } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from 'framer-motion';
 
 interface PersonalInfoInputsProps {
   formData: {
@@ -113,8 +114,14 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
   };
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
+    <motion.div 
+      className="space-y-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Input fields with hover animation */}
+      <motion.div className="space-y-2" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
         <Label htmlFor="name" className="flex items-center gap-2">
           <User className="w-4 h-4" /> Name
         </Label>
@@ -123,11 +130,11 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           required
           value={formData.name}
           onChange={(e) => handleInputChange('name', e.target.value)}
-          className="w-full"
+          className="w-full transition-all duration-200 hover:border-brand-blue focus:border-brand-blue"
         />
-      </div>
+      </motion.div>
 
-      <div className="space-y-2">
+      <motion.div className="space-y-2" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
         <Label htmlFor="mobile" className="flex items-center gap-2">
           <PhoneCall className="w-4 h-4" /> Mobile Number
         </Label>
@@ -138,14 +145,14 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           value={formData.mobileNumber}
           onChange={(e) => handleMobileNumberChange(e.target.value)}
           placeholder="+91 Enter your mobile number"
-          className="w-full"
+          className="w-full transition-all duration-200 hover:border-brand-blue focus:border-brand-blue"
         />
         <p className="text-sm text-muted-foreground mt-1">
           Mobile number must start with +91 and have 10 digits
         </p>
-      </div>
+      </motion.div>
 
-      <div className="space-y-2">
+      <motion.div className="space-y-2" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
         <Label htmlFor="email" className="flex items-center gap-2">
           <Mail className="w-4 h-4" /> Email
         </Label>
@@ -155,15 +162,15 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           required
           value={formData.email}
           onChange={(e) => handleEmailChange(e.target.value)}
-          className="w-full"
+          className="w-full transition-all duration-200 hover:border-brand-blue focus:border-brand-blue"
           placeholder="example@domain.com"
         />
         <p className="text-sm text-muted-foreground mt-1">
           Please enter a valid email address (e.g., example@domain.com)
         </p>
-      </div>
+      </motion.div>
 
-      <div className="space-y-2">
+      <motion.div className="space-y-2" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
         <Label htmlFor="age" className="flex items-center gap-2">
           <Cake className="w-4 h-4" /> Age
         </Label>
@@ -173,10 +180,11 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           required
           value={formData.age}
           onChange={(e) => handleInputChange('age', e.target.value)}
+          className="w-full transition-all duration-200 hover:border-brand-blue focus:border-brand-blue"
         />
-      </div>
+      </motion.div>
 
-      <div className="space-y-2">
+      <motion.div className="space-y-2" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
         <Label htmlFor="height" className="flex items-center gap-2">
           <Ruler className="w-4 h-4" /> Height (cm)
         </Label>
@@ -186,10 +194,11 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           required
           value={formData.height}
           onChange={(e) => handleInputChange('height', e.target.value)}
+          className="w-full transition-all duration-200 hover:border-brand-blue focus:border-brand-blue"
         />
-      </div>
+      </motion.div>
 
-      <div className="space-y-2">
+      <motion.div className="space-y-2" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
         <Label htmlFor="weight" className="flex items-center gap-2">
           <Weight className="w-4 h-4" /> Weight (kg)
         </Label>
@@ -199,9 +208,10 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           required
           value={formData.weight}
           onChange={(e) => handleInputChange('weight', e.target.value)}
+          className="w-full transition-all duration-200 hover:border-brand-blue focus:border-brand-blue"
         />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
