@@ -3,6 +3,7 @@ type ExerciseType = {
   name: string;
   reps: string;
   description: string;
+  imageUrl: string;
 };
 
 type WorkoutDay = {
