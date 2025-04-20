@@ -1,8 +1,14 @@
 
 import WellnessForm from "@/components/WellnessForm";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const Index = () => {
+  useEffect(() => {
+    console.log('Index component mounted');
+    console.log('WellnessForm import check:', WellnessForm);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
