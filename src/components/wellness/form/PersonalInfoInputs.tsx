@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { User, Mail, Cake, Ruler, Weight, PhoneCall } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -21,15 +20,46 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
   const { toast } = useToast();
 
   const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // Enhanced email regex pattern
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!email) {
       toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address",
+        title: "Email Required",
+        description: "Please enter your email address",
         variant: "destructive"
       });
       return false;
     }
+    
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address (e.g., example@domain.com)",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    // Additional validation for common mistakes
+    if (email.includes('..') || email.includes('@@')) {
+      toast({
+        title: "Invalid Email",
+        description: "Email contains consecutive dots or @ symbols",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    if (email.split('@')[0].length < 2) {
+      toast({
+        title: "Invalid Email",
+        description: "Username part of email must be at least 2 characters",
+        variant: "destructive"
+      });
+      return false;
+    }
+    
     return true;
   };
 
@@ -126,7 +156,11 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           value={formData.email}
           onChange={(e) => handleEmailChange(e.target.value)}
           className="w-full"
+          placeholder="example@domain.com"
         />
+        <p className="text-sm text-muted-foreground mt-1">
+          Please enter a valid email address (e.g., example@domain.com)
+        </p>
       </div>
 
       <div className="space-y-2">
