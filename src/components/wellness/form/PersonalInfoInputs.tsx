@@ -34,28 +34,36 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
   };
 
   const handleMobileNumberChange = (value: string) => {
-    // Remove any non-digit characters except the initial +91
-    const cleanedValue = value.replace(/[^\d]/g, '');
-    const formattedValue = cleanedValue.length > 0 ? `+91${cleanedValue}` : '+91';
-    
-    // Validate mobile number (should be 10 digits after +91 and start with 6,7,8,9)
-    if (cleanedValue.length > 0) {
-      if (cleanedValue.length !== 10) {
-        toast({
-          title: "Invalid Mobile Number",
-          description: "Please enter a valid 10-digit mobile number",
-          variant: "destructive"
-        });
-      } else if (!['6', '7', '8', '9'].includes(cleanedValue[0])) {
-        toast({
-          title: "Invalid Mobile Number",
-          description: "Mobile number must start with 6, 7, 8, or 9",
-          variant: "destructive"
-        });
+    // Allow only digits in input, but preserve the +91 prefix
+    if (value.startsWith('+91')) {
+      // Extract the number part after +91
+      const numberPart = value.substring(3);
+      // Remove any non-digit characters from the number part
+      const cleanedValue = numberPart.replace(/[^\d]/g, '');
+      const formattedValue = `+91${cleanedValue}`;
+      
+      // Validate mobile number (should be 10 digits after +91 and start with 6,7,8,9)
+      if (cleanedValue.length > 0) {
+        if (cleanedValue.length !== 10) {
+          toast({
+            title: "Invalid Mobile Number",
+            description: "Please enter a valid 10-digit mobile number",
+            variant: "destructive"
+          });
+        } else if (!['6', '7', '8', '9'].includes(cleanedValue[0])) {
+          toast({
+            title: "Invalid Mobile Number",
+            description: "Mobile number must start with 6, 7, 8, or 9",
+            variant: "destructive"
+          });
+        }
       }
+      
+      handleInputChange('mobileNumber', formattedValue);
+    } else {
+      // If someone accidentally deletes the +91 prefix, restore it
+      handleInputChange('mobileNumber', '+91');
     }
-    
-    handleInputChange('mobileNumber', formattedValue);
   };
 
   const handleEmailChange = (value: string) => {
