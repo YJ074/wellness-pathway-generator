@@ -14,14 +14,11 @@ const WellnessForm = () => {
     age: '',
     height: '',
     weight: '',
-    mobileNumber: '', // New field
+    mobileNumber: '+91', // Initialize with +91 extension
     dietaryPreference: 'lacto-vegetarian',
     fitnessGoal: '',
     exerciseFrequency: ''
   });
-  const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));

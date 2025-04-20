@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity, HelpCircle, Phone } from 'lucide-react';
+import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity, HelpCircle, PhoneCall } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -45,6 +45,13 @@ const dietaryDescriptions = {
 };
 
 const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) => {
+  const handleMobileNumberChange = (value: string) => {
+    // Remove any non-digit characters and ensure it starts with +91
+    const cleanedValue = value.replace(/\D/g, '');
+    const formattedValue = cleanedValue.length > 0 ? `+91${cleanedValue}` : '+91';
+    handleInputChange('mobileNumber', formattedValue);
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -62,17 +69,20 @@ const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) =>
 
       <div className="space-y-2">
         <Label htmlFor="mobile" className="flex items-center gap-2">
-          <Phone className="w-4 h-4" /> Mobile Number
+          <PhoneCall className="w-4 h-4" /> Mobile Number
         </Label>
         <Input
           id="mobile"
           type="tel"
           required
           value={formData.mobileNumber}
-          onChange={(e) => handleInputChange('mobileNumber', e.target.value)}
-          placeholder="Enter your mobile number"
+          onChange={(e) => handleMobileNumberChange(e.target.value)}
+          placeholder="+91 Enter your mobile number"
           className="w-full"
         />
+        <p className="text-sm text-muted-foreground mt-1">
+          Mobile number must start with +91
+        </p>
       </div>
 
       <div className="space-y-2">
