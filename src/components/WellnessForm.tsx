@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { generateWorkoutPlan } from '@/utils/workoutGenerator';
-import { generateDietPlan } from '@/utils/dietGenerator';
+import { generateDietPlan } from '@/utils/diet/dietGenerator';
 import WellnessFormView from './wellness/WellnessFormView';
 import WellnessResults from './wellness/WellnessResults';
 import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
