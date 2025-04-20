@@ -28,6 +28,7 @@ export interface WorkoutPlan {
       name: string;
       reps: string;
       description: string;
+      imageUrl?: string;  // Optional image URL for exercise illustration
     }>;
     cooldown: string[];
   }>;

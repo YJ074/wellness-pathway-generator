@@ -1,11 +1,13 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface Exercise {
   name: string;
   reps: string;
   description: string;
+  imageUrl?: string;
 }
 
 interface WorkoutDay {
@@ -45,11 +47,23 @@ const WorkoutPlanDisplay = ({ days }: WorkoutPlanDisplayProps) => {
                   </div>
                   <div>
                     <strong>Exercises:</strong>
-                    <ul className="list-disc pl-4">
+                    <ul className="space-y-4 pl-4">
                       {day.exercises.map((exercise, idx) => (
-                        <li key={idx}>
-                          {exercise.name} - {exercise.reps}
-                          <p className="text-sm text-gray-600">{exercise.description}</p>
+                        <li key={idx} className="flex flex-col gap-2">
+                          <div>
+                            <span className="font-medium">{exercise.name}</span> - {exercise.reps}
+                            <p className="text-sm text-gray-600">{exercise.description}</p>
+                          </div>
+                          {exercise.imageUrl && (
+                            <img
+                              src={exercise.imageUrl}
+                              alt={`${exercise.name} demonstration`}
+                              className={cn(
+                                "rounded-lg object-cover",
+                                "w-full max-w-[200px] h-[150px]"
+                              )}
+                            />
+                          )}
                         </li>
                       ))}
                     </ul>
