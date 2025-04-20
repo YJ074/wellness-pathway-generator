@@ -14,6 +14,7 @@ const WellnessForm = () => {
     age: '',
     height: '',
     weight: '',
+    mobileNumber: '', // New field
     dietaryPreference: 'lacto-vegetarian',
     fitnessGoal: '',
     exerciseFrequency: ''

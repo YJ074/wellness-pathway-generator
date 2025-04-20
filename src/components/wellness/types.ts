@@ -1,9 +1,11 @@
+
 export interface FormData {
   name: string;
   email: string;
   age: string;
   height: string;
   weight: string;
+  mobileNumber: string;  // New field
   dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
   fitnessGoal: string;
   exerciseFrequency: string;

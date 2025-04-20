@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity, HelpCircle } from 'lucide-react';
+import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity, HelpCircle, Phone } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -23,6 +22,7 @@ interface FormInputsProps {
     age: string;
     height: string;
     weight: string;
+    mobileNumber: string;
     dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
     fitnessGoal: string;
     exerciseFrequency: string;
@@ -56,6 +56,21 @@ const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) =>
           required
           value={formData.name}
           onChange={(e) => handleInputChange('name', e.target.value)}
+          className="w-full"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="mobile" className="flex items-center gap-2">
+          <Phone className="w-4 h-4" /> Mobile Number
+        </Label>
+        <Input
+          id="mobile"
+          type="tel"
+          required
+          value={formData.mobileNumber}
+          onChange={(e) => handleInputChange('mobileNumber', e.target.value)}
+          placeholder="Enter your mobile number"
           className="w-full"
         />
       </div>
