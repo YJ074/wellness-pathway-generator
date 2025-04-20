@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { User, Mail, Cake, Ruler, Weight, PhoneCall } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -37,13 +38,21 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
     const cleanedValue = value.replace(/[^\d]/g, '');
     const formattedValue = cleanedValue.length > 0 ? `+91${cleanedValue}` : '+91';
     
-    // Validate mobile number (should be 10 digits after +91)
-    if (cleanedValue.length > 0 && cleanedValue.length !== 10) {
-      toast({
-        title: "Invalid Mobile Number",
-        description: "Please enter a valid 10-digit mobile number",
-        variant: "destructive"
-      });
+    // Validate mobile number (should be 10 digits after +91 and start with 6,7,8,9)
+    if (cleanedValue.length > 0) {
+      if (cleanedValue.length !== 10) {
+        toast({
+          title: "Invalid Mobile Number",
+          description: "Please enter a valid 10-digit mobile number",
+          variant: "destructive"
+        });
+      } else if (!['6', '7', '8', '9'].includes(cleanedValue[0])) {
+        toast({
+          title: "Invalid Mobile Number",
+          description: "Mobile number must start with 6, 7, 8, or 9",
+          variant: "destructive"
+        });
+      }
     }
     
     handleInputChange('mobileNumber', formattedValue);
