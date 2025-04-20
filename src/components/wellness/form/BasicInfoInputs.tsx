@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { User, Cake, Ruler, Weight } from 'lucide-react';
-import FormField from './FormField';
+import FormField from '@/components/ui/form-field';
 
 interface BasicInfoInputsProps {
   name: string;

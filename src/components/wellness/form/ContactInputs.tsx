@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Mail, PhoneCall } from 'lucide-react';
-import FormField from './FormField';
+import FormField from '@/components/ui/form-field';
 import { validateEmail, validateMobileNumber } from '@/utils/validation';
 
 interface ContactInputsProps {
