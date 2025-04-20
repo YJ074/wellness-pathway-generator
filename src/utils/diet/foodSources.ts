@@ -1,4 +1,3 @@
-
 import { DietaryPreference } from './types';
 
 export const getProteinSources = (dietaryPreference: DietaryPreference) => {
@@ -29,9 +28,12 @@ export const getProteinSources = (dietaryPreference: DietaryPreference) => {
       'Dried Fruits', 'Sprouted Grains'
     ],
     'non-vegetarian': [
-      'Chicken', 'Fish', 'Eggs', 'Mutton',
+      'Chicken', 'Fish', 'Eggs', 'Mutton', 'Prawns',
       'Paneer', 'Dal Makhani', 'Rajma', 'Chana',
       'Moong Dal', 'Toor Dal', 'Greek Yogurt'
+    ],
+    'eggitarian': [
+      'Eggs'
     ]
   };
   
