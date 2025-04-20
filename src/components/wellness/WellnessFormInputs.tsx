@@ -1,13 +1,20 @@
+
 import React from 'react';
-import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity } from 'lucide-react';
+import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity, HelpCircle } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card"
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 interface FormInputsProps {
   formData: {
@@ -106,34 +113,48 @@ const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) =>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="dietary" className="flex items-center gap-2">
-          <Salad className="w-4 h-4" /> Dietary Preference
-        </Label>
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Select
-              value={formData.dietaryPreference}
-              onValueChange={(value) => handleInputChange('dietaryPreference', value)}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select dietary preference" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="lacto-vegetarian">Lacto Vegetarian</SelectItem>
-                <SelectItem value="lacto-ovo-vegetarian">Lacto-Ovo Vegetarian</SelectItem>
-                <SelectItem value="pure-vegetarian">Pure Vegetarian</SelectItem>
-                <SelectItem value="jain">Jain</SelectItem>
-                <SelectItem value="sattvic">Sattvic</SelectItem>
-                <SelectItem value="non-vegetarian">Non-Vegetarian</SelectItem>
-              </SelectContent>
-            </Select>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80">
-            <p className="text-sm text-muted-foreground">
-              {dietaryDescriptions[formData.dietaryPreference] || 'Select a dietary preference to see description'}
-            </p>
-          </HoverCardContent>
-        </HoverCard>
+        <div className="flex items-center gap-2">
+          <Label htmlFor="dietary" className="flex items-center gap-2">
+            <Salad className="w-4 h-4" /> Dietary Preference
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="inline-flex items-center justify-center rounded-full h-6 w-6 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
+                <HelpCircle className="h-4 w-4" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-96 p-4">
+              <div className="space-y-4">
+                <h4 className="font-medium leading-none mb-2">Dietary Preferences Guide</h4>
+                {Object.entries(dietaryDescriptions).map(([key, description]) => (
+                  <div key={key} className="space-y-1">
+                    <h5 className="text-sm font-medium leading-none">{key.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</h5>
+                    <p className="text-sm text-muted-foreground">{description}</p>
+                  </div>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <Select
+          value={formData.dietaryPreference}
+          onValueChange={(value) => handleInputChange('dietaryPreference', value)}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select dietary preference" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="lacto-vegetarian">Lacto Vegetarian</SelectItem>
+            <SelectItem value="lacto-ovo-vegetarian">Lacto-Ovo Vegetarian</SelectItem>
+            <SelectItem value="pure-vegetarian">Pure Vegetarian</SelectItem>
+            <SelectItem value="jain">Jain</SelectItem>
+            <SelectItem value="sattvic">Sattvic</SelectItem>
+            <SelectItem value="non-vegetarian">Non-Vegetarian</SelectItem>
+          </SelectContent>
+        </Select>
+        <p className="text-sm text-muted-foreground mt-1">
+          {dietaryDescriptions[formData.dietaryPreference] || 'Select a dietary preference to see description'}
+        </p>
       </div>
 
       <div className="space-y-2">
