@@ -4,97 +4,97 @@ import { ExerciseType } from '../types/workout';
 export const BODYWEIGHT_EXERCISES: Record<string, ExerciseType[]> = {
   beginner: [
     { 
-      name: "Push-ups from knees", 
+      name: "Basic Push-ups", 
       reps: "5-8 reps", 
-      description: "Modified push-ups with knees on the ground",
+      description: "Start in plank position, lower your body until your chest nearly touches the ground, then push back up",
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
     },
     { 
-      name: "Wall push-ups", 
-      reps: "8-10 reps", 
-      description: "Push-ups against a wall",
-      imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
-    },
-    { 
-      name: "Assisted squats", 
-      reps: "10 reps", 
-      description: "Squats while holding onto a chair for support",
+      name: "Air Squats", 
+      reps: "10-12 reps", 
+      description: "Stand with feet shoulder-width apart, lower your body as if sitting back into a chair, then return to standing",
       imageUrl: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
     },
     { 
-      name: "Standing crunches", 
-      reps: "10 reps", 
-      description: "Crunches performed while standing",
+      name: "Plank Hold", 
+      reps: "20-30 seconds", 
+      description: "Hold a straight-arm plank position with core engaged",
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
     },
     { 
-      name: "Incline push-ups", 
-      reps: "8 reps", 
-      description: "Push-ups with hands elevated on a stable surface",
-      imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
+      name: "Mountain Climbers", 
+      reps: "20 reps (10 each leg)", 
+      description: "In plank position, alternate bringing knees to chest in a running motion",
+      imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+    },
+    { 
+      name: "Bird Dogs", 
+      reps: "10 each side", 
+      description: "On hands and knees, extend opposite arm and leg while maintaining balance",
+      imageUrl: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
     }
   ],
   intermediate: [
     { 
-      name: "Regular push-ups", 
-      reps: "10-12 reps", 
-      description: "Standard push-ups",
+      name: "Diamond Push-ups", 
+      reps: "8-12 reps", 
+      description: "Push-ups with hands close together forming a diamond shape",
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
     },
     { 
-      name: "Bodyweight squats", 
-      reps: "15 reps", 
-      description: "Regular squats without support",
+      name: "Jump Squats", 
+      reps: "12-15 reps", 
+      description: "Perform a squat, then explosively jump up, land softly back into squat position",
       imageUrl: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
     },
     { 
-      name: "Mountain climbers", 
-      reps: "20 reps", 
-      description: "Alternating knee drives in plank position",
-      imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
-    },
-    { 
-      name: "Plank hold", 
-      reps: "30 seconds", 
-      description: "Hold plank position with proper form",
+      name: "Burpees", 
+      reps: "10 reps", 
+      description: "Drop to ground, perform push-up, jump feet forward, then jump up with hands overhead",
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
     },
     { 
-      name: "Lunges", 
-      reps: "10 each leg", 
-      description: "Forward lunges alternating legs",
+      name: "Mountain Climbers", 
+      reps: "30 reps (15 each leg)", 
+      description: "Quick alternating knee drives in plank position",
+      imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+    },
+    { 
+      name: "Walking Lunges", 
+      reps: "20 steps total", 
+      description: "Step forward into lunge position, alternate legs while moving forward",
       imageUrl: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
     }
   ],
   advanced: [
     { 
-      name: "Diamond push-ups", 
-      reps: "12-15 reps", 
-      description: "Push-ups with hands forming a diamond shape",
+      name: "Plyometric Push-ups", 
+      reps: "8-10 reps", 
+      description: "Explosive push-ups where hands leave the ground at the top",
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
     },
     { 
-      name: "Jump squats", 
-      reps: "20 reps", 
-      description: "Explosive squats with jump at the top",
+      name: "Pistol Squats", 
+      reps: "5 each leg", 
+      description: "Single-leg squats while other leg is extended in front",
       imageUrl: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
     },
     { 
-      name: "Burpees", 
+      name: "Burpee Push-ups", 
       reps: "12 reps", 
-      description: "Full burpee with push-up",
-      imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
-    },
-    { 
-      name: "Plank to downward dog", 
-      reps: "10 reps", 
-      description: "Alternating between plank and downward dog positions",
+      description: "Burpee with push-up at bottom and jump at top",
       imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
     },
     { 
-      name: "Walking lunges", 
-      reps: "20 steps", 
-      description: "Continuous lunges walking forward",
+      name: "Plank to Downward Dog", 
+      reps: "15 reps", 
+      description: "Alternate between plank and downward dog positions",
+      imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+    },
+    { 
+      name: "Jump Lunges", 
+      reps: "20 reps (10 each leg)", 
+      description: "Alternating jumping lunges with explosive movement",
       imageUrl: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
     }
   ]
@@ -102,17 +102,18 @@ export const BODYWEIGHT_EXERCISES: Record<string, ExerciseType[]> = {
 
 export const WARMUP_EXERCISES = [
   "Arm circles (10 forward, 10 backward)",
-  "Shoulder rolls (10 each direction)",
-  "Hip circles (10 each direction)",
+  "High knees in place (30 seconds)",
   "Jumping jacks (30 seconds)",
-  "High knees (30 seconds)",
-  "Leg swings (10 each leg)"
+  "Body-weight squats (10 reps)",
+  "Forward arm swings (10 each arm)",
+  "Hip rotations (10 each direction)"
 ];
 
 export const COOLDOWN_STRETCHES = [
+  "Forward fold (30 seconds)",
+  "Runner's lunge stretch (30 seconds each side)",
   "Child's pose (30 seconds)",
   "Cat-cow stretch (10 repetitions)",
-  "Hamstring stretch (30 seconds each leg)",
-  "Quad stretch (30 seconds each leg)",
-  "Shoulder stretch (30 seconds each side)"
+  "Downward dog hold (30 seconds)"
 ];
+
