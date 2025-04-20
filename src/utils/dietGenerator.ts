@@ -1,4 +1,3 @@
-
 interface DietPlan {
   days: Array<{
     day: number;
@@ -22,9 +21,24 @@ const getProteinSources = (dietaryPreference: string) => {
       'Cottage Cheese', 'Soy Chunks', 'Masoor Dal', 'Urad Dal'
     ],
     'vegan': [
-      'Tofu', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)', 
+      'Tofu', 'Tempeh', 'Seitan', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)', 
       'Moong Dal', 'Toor Dal', 'Sprouts', 'Soy Yogurt',
-      'Soy Chunks', 'Masoor Dal', 'Urad Dal', 'Soy Milk', 'Peanut Butter'
+      'Soy Chunks', 'Masoor Dal', 'Urad Dal', 'Quinoa', 'Edamame'
+    ],
+    'pescatarian': [
+      'Fish', 'Shrimp', 'Tofu', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)',
+      'Greek Yogurt', 'Cottage Cheese', 'Salmon', 'Tuna',
+      'Sardines', 'Mackerel', 'Trout'
+    ],
+    'gluten-free': [
+      'Chicken', 'Fish', 'Eggs', 'Tofu', 'Quinoa',
+      'Rice Protein', 'Buckwheat', 'Amaranth',
+      'Certified GF Oats', 'Legumes'
+    ],
+    'keto': [
+      'Chicken', 'Fish', 'Eggs', 'Beef', 'Pork',
+      'Turkey', 'Duck', 'Lamb', 'Cottage Cheese',
+      'Greek Yogurt', 'Hard Cheese'
     ]
   };
   
@@ -40,12 +54,15 @@ const getGrainSources = () => {
 };
 
 const getVegetableSources = () => {
-  return [
+  const commonVegetables = [
     'Spinach', 'Methi (Fenugreek Leaves)', 'Palak (Spinach)', 'Broccoli',
     'Lauki (Bottle Gourd)', 'Bhindi (Okra)', 'Baingan (Eggplant)',
     'Capsicum (Bell Pepper)', 'Carrots', 'Tomatoes', 'Cabbage',
-    'Cauliflower', 'Green Beans', 'Peas', 'Beetroot', 'Pumpkin'
+    'Cauliflower', 'Green Beans', 'Peas', 'Beetroot', 'Pumpkin',
+    'Zucchini', 'Asparagus', 'Brussels Sprouts', 'Kale'
   ];
+
+  return commonVegetables;
 };
 
 const getFruitSources = () => {

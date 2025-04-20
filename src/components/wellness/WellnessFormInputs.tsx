@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { User, Mail, Cake, Ruler, Weight, Egg, Target, Activity } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,7 @@ interface FormInputsProps {
     age: string;
     height: string;
     weight: string;
-    dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan';
+    dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan' | 'pescatarian' | 'gluten-free' | 'keto';
     fitnessGoal: string;
     exerciseFrequency: string;
   };
@@ -102,6 +101,9 @@ const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) =>
             <SelectItem value="vegetarian">Vegetarian</SelectItem>
             <SelectItem value="eggitarian">Eggitarian</SelectItem>
             <SelectItem value="vegan">Vegan</SelectItem>
+            <SelectItem value="pescatarian">Pescatarian</SelectItem>
+            <SelectItem value="gluten-free">Gluten-Free</SelectItem>
+            <SelectItem value="keto">Keto</SelectItem>
           </SelectContent>
         </Select>
       </div>

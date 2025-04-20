@@ -1,11 +1,10 @@
-
 export interface FormData {
   name: string;
   email: string;
   age: string;
   height: string;
   weight: string;
-  dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan';
+  dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan' | 'pescatarian' | 'gluten-free' | 'keto';
   fitnessGoal: string;
   exerciseFrequency: string;
 }
