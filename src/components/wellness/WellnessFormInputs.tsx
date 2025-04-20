@@ -24,12 +24,17 @@ interface FormInputsProps {
 }
 
 const dietaryDescriptions = {
-  'lacto-vegetarian': 'Excludes meat, eggs, and seafood but includes dairy products. Common in many Indian households.',
-  'lacto-ovo-vegetarian': 'Includes dairy and eggs but excludes meat and seafood. Suitable for flexible vegetarians.',
-  'pure-vegetarian': 'Excludes all animal products except dairy. Similar to vegan but allows dairy products.',
-  'jain': 'Follows Jain dietary principles - no root vegetables, strictly vegetarian, no foods harvested after sunset.',
-  'sattvic': 'Based on Ayurvedic principles - pure, essential, natural, vital, energy-containing foods.',
-  'non-vegetarian': 'Includes all food groups including meat, fish, and eggs along with vegetarian options.'
+  'lacto-vegetarian': 'A diet that excludes meat, fish, and eggs, but includes dairy products. Commonly practiced in India, this diet focuses on plant-based foods and dairy nutrition. Rich in vegetables, fruits, grains, legumes, and dairy products like milk, yogurt, and paneer.',
+  
+  'lacto-ovo-vegetarian': 'A flexible vegetarian diet that includes dairy products and eggs, while excluding meat and fish. Provides a balanced approach to vegetarian eating, offering additional protein sources through eggs and dairy. Popular among those seeking a more varied vegetarian diet.',
+  
+  'pure-vegetarian': 'A diet that excludes all animal products except dairy. Similar to veganism but allows dairy consumption. Emphasizes plant-based whole foods, legumes, grains, fruits, and vegetables. Often chosen for ethical, health, or cultural reasons in Indian contexts.',
+  
+  'jain': 'A strict vegetarian diet following Jain religious principles. Excludes root vegetables, eggs, and any foods that might harm living organisms. Focuses on ahimsa (non-violence) by avoiding foods that require killing plants or animals. Includes fruits, leafy vegetables, grains, and dairy.',
+  
+  'sattvic': 'A diet rooted in Ayurvedic and yogic traditions, emphasizing pure, natural, and minimally processed foods. Includes fresh, organic vegetables, fruits, whole grains, and dairy. Avoids stimulants, onions, garlic, and promotes foods that bring mental clarity and spiritual balance.',
+  
+  'non-vegetarian': 'A diet that includes all food groups: meats, fish, eggs, and vegetarian options. Provides a wide variety of protein sources and nutrients. Common in many Indian households, offering flexibility in meal planning and catering to diverse nutritional needs.'
 };
 
 const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) => {
