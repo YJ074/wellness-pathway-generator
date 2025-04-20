@@ -15,10 +15,11 @@ const Index = () => {
           <motion.img 
             src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" 
             alt="Arogyam75 Logo" 
-            className="h-24 w-auto mb-4 hover:scale-105 transition-transform duration-300"
+            className="h-36 w-auto mb-4 hover:scale-110 transition-transform duration-300 cursor-pointer"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.2 }}
           />
           <div className="text-center mb-8 max-w-2xl">
             <h1 className="text-4xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
