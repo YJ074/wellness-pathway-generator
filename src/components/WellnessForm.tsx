@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { User, Mail, Cake, Ruler, Weight, Egg, Send, Target, Activity } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 import { generateWorkoutPlan } from '@/utils/workoutGenerator';
+import WellnessFormInputs from './wellness/WellnessFormInputs';
+import PlanDetailsCard from './wellness/PlanDetailsCard';
+import DietPlanDisplay from './wellness/DietPlanDisplay';
+import WorkoutPlanDisplay from './wellness/WorkoutPlanDisplay';
 
 interface FormData {
   name: string;
@@ -58,32 +58,6 @@ const WellnessForm = () => {
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsGenerating(true);
-    
-    // Generate both diet and workout plans
-    const generatedDietPlan = generateDietPlan(
-      formData.dietaryPreference,
-      formData.fitnessGoal,
-      parseInt(formData.age),
-      parseInt(formData.weight)
-    );
-    
-    const generatedWorkoutPlan = {
-      days: generateWorkoutPlan(formData.exerciseFrequency, formData.fitnessGoal)
-    };
-    
-    setDietPlan(generatedDietPlan);
-    setWorkoutPlan(generatedWorkoutPlan);
-    setIsGenerating(false);
-    
-    toast({
-      title: "Plans Generated",
-      description: "Your 75-day wellness and workout plans have been created.",
-    });
-  };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -293,135 +267,41 @@ const WellnessForm = () => {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsGenerating(true);
+    
+    const generatedDietPlan = generateDietPlan(
+      formData.dietaryPreference,
+      formData.fitnessGoal,
+      parseInt(formData.age),
+      parseInt(formData.weight)
+    );
+    
+    const generatedWorkoutPlan = {
+      days: generateWorkoutPlan(formData.exerciseFrequency, formData.fitnessGoal)
+    };
+    
+    setDietPlan(generatedDietPlan);
+    setWorkoutPlan(generatedWorkoutPlan);
+    setIsGenerating(false);
+    
+    toast({
+      title: "Plans Generated",
+      description: "Your 75-day wellness and workout plans have been created.",
+    });
+  };
+
   return (
     <div className="space-y-6 w-full max-w-4xl">
       {!dietPlan ? (
         <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
-          <div className="space-y-2">
-            <Label htmlFor="name" className="flex items-center gap-2">
-              <User className="w-4 h-4" /> Name
-            </Label>
-            <Input
-              id="name"
-              required
-              value={formData.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              className="w-full"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="email" className="flex items-center gap-2">
-              <Mail className="w-4 h-4" /> Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="age" className="flex items-center gap-2">
-              <Cake className="w-4 h-4" /> Age
-            </Label>
-            <Input
-              id="age"
-              type="number"
-              required
-              value={formData.age}
-              onChange={(e) => handleInputChange('age', e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="height" className="flex items-center gap-2">
-              <Ruler className="w-4 h-4" /> Height (cm)
-            </Label>
-            <Input
-              id="height"
-              type="number"
-              required
-              value={formData.height}
-              onChange={(e) => handleInputChange('height', e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="weight" className="flex items-center gap-2">
-              <Weight className="w-4 h-4" /> Weight (kg)
-            </Label>
-            <Input
-              id="weight"
-              type="number"
-              required
-              value={formData.weight}
-              onChange={(e) => handleInputChange('weight', e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="dietary" className="flex items-center gap-2">
-              <Egg className="w-4 h-4" /> Dietary Preference
-            </Label>
-            <Select
-              value={formData.dietaryPreference}
-              onValueChange={(value) => handleInputChange('dietaryPreference', value as FormData['dietaryPreference'])}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select dietary preference" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="vegetarian">Vegetarian</SelectItem>
-                <SelectItem value="eggitarian">Eggitarian</SelectItem>
-                <SelectItem value="vegan">Vegan</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="goal" className="flex items-center gap-2">
-              <Target className="w-4 h-4" /> Fitness Goal
-            </Label>
-            <Select
-              value={formData.fitnessGoal}
-              onValueChange={(value) => handleInputChange('fitnessGoal', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select fitness goal" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="weight-loss">Weight Loss</SelectItem>
-                <SelectItem value="muscle-gain">Muscle Gain</SelectItem>
-                <SelectItem value="maintenance">Maintenance</SelectItem>
-                <SelectItem value="endurance">Endurance</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="frequency" className="flex items-center gap-2">
-              <Activity className="w-4 h-4" /> Current Exercise Frequency
-            </Label>
-            <Select
-              value={formData.exerciseFrequency}
-              onValueChange={(value) => handleInputChange('exerciseFrequency', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select exercise frequency" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="sedentary">Sedentary</SelectItem>
-                <SelectItem value="1-2">1-2 times/week</SelectItem>
-                <SelectItem value="3-4">3-4 times/week</SelectItem>
-                <SelectItem value="5+">5+ times/week</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Button type="submit" className="w-full bg-brand-blue hover:bg-brand-blue/90" disabled={isGenerating}>
+          <WellnessFormInputs formData={formData} handleInputChange={handleInputChange} />
+          <Button 
+            type="submit" 
+            className="w-full bg-brand-blue hover:bg-brand-blue/90" 
+            disabled={isGenerating}
+          >
             {isGenerating ? 'Generating...' : <><Send className="w-4 h-4 mr-2" /> Generate Wellness Plan</>}
           </Button>
         </form>
@@ -441,88 +321,11 @@ const WellnessForm = () => {
           </div>
           
           <div className="space-y-4">
-            <Card className="bg-blue-50">
-              <CardHeader>
-                <CardTitle>Plan Details</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p><strong>Name:</strong> {formData.name}</p>
-                <p><strong>Age:</strong> {formData.age} years</p>
-                <p><strong>Weight:</strong> {formData.weight} kg</p>
-                <p><strong>Dietary Preference:</strong> {formData.dietaryPreference}</p>
-                <p><strong>Fitness Goal:</strong> {formData.fitnessGoal.replace('-', ' ')}</p>
-              </CardContent>
-            </Card>
+            <PlanDetailsCard formData={formData} />
             
             <div className="grid gap-4">
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Diet Plan</h3>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {dietPlan.days.map((day) => (
-                    <Card key={day.day}>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-xl">Day {day.day}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-2">
-                        <p><strong>Breakfast:</strong> {day.breakfast}</p>
-                        <p><strong>Lunch:</strong> {day.lunch}</p>
-                        <p><strong>Dinner:</strong> {day.dinner}</p>
-                        <p><strong>Snacks:</strong> {day.snacks}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              {workoutPlan && (
-                <div>
-                  <h3 className="text-xl font-semibold mb-4">Workout Plan</h3>
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {workoutPlan.days.map((day) => (
-                      <Card key={day.day}>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-xl">Day {day.day}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                          {day.isRestDay ? (
-                            <p className="text-green-600 font-medium">Rest Day - Focus on recovery and light stretching</p>
-                          ) : (
-                            <>
-                              <div>
-                                <strong>Warm-up:</strong>
-                                <ul className="list-disc pl-4">
-                                  {day.warmup.map((exercise, idx) => (
-                                    <li key={idx}>{exercise}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                              <div>
-                                <strong>Exercises:</strong>
-                                <ul className="list-disc pl-4">
-                                  {day.exercises.map((exercise, idx) => (
-                                    <li key={idx}>
-                                      {exercise.name} - {exercise.reps}
-                                      <p className="text-sm text-gray-600">{exercise.description}</p>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                              <div>
-                                <strong>Cool-down:</strong>
-                                <ul className="list-disc pl-4">
-                                  {day.cooldown.map((stretch, idx) => (
-                                    <li key={idx}>{stretch}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {dietPlan && <DietPlanDisplay days={dietPlan.days} />}
+              {workoutPlan && <WorkoutPlanDisplay days={workoutPlan.days} />}
             </div>
           </div>
         </div>
