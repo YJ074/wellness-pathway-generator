@@ -1,39 +1,41 @@
+
 import { DietaryPreference } from './types';
 
 export const getProteinSources = (dietaryPreference: DietaryPreference) => {
   const proteins = {
     'lacto-vegetarian': [
-      'Paneer', 'Curd', 'Buttermilk', 'Cottage Cheese',
-      'Dal Makhani', 'Rajma', 'Chana', 'Moong Dal',
-      'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Greek Yogurt'
+      'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
+      'Curd', 'Buttermilk', 'Soya Chunks', 'Besan (Gram Flour)',
+      'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts'
     ],
     'lacto-ovo-vegetarian': [
-      'Paneer', 'Eggs', 'Curd', 'Buttermilk',
-      'Dal Makhani', 'Rajma', 'Chana', 'Moong Dal',
-      'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Greek Yogurt'
+      'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
+      'Curd', 'Buttermilk', 'Soya Chunks', 'Besan (Gram Flour)',
+      'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts'
     ],
     'pure-vegetarian': [
-      'Tofu', 'Tempeh', 'Soya Chunks', 'Chana',
-      'Rajma', 'Moong Dal', 'Toor Dal', 'Masoor Dal',
-      'Urad Dal', 'Peanuts', 'Almonds', 'Cashews'
+      'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
+      'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
+      'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong'
     ],
     'jain': [
-      'Tofu', 'Moong Dal', 'Toor Dal', 'Masoor Dal',
-      'Urad Dal', 'Peanuts', 'Almonds', 'Cashews',
-      'Soya Products', 'Dried Beans', 'Chickpeas'
+      'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
+      'Soya Products', 'Dried Beans', 'Peanuts', 'Mixed Sprouts',
+      'Chickpeas', 'Whole Moong', 'Besan (Gram Flour)'
     ],
     'sattvic': [
       'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
-      'Fresh Paneer', 'Buttermilk', 'Ghee', 'Nuts',
-      'Dried Fruits', 'Sprouted Grains'
+      'Mixed Sprouts', 'Buttermilk', 'Peanuts', 'Whole Moong',
+      'Dried Fruits (in moderation)', 'Sprouted Grains'
     ],
     'non-vegetarian': [
-      'Chicken', 'Fish', 'Eggs', 'Mutton', 'Prawns',
-      'Paneer', 'Dal Makhani', 'Rajma', 'Chana',
-      'Moong Dal', 'Toor Dal', 'Greek Yogurt'
+      'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
+      'Local Fish Varieties', 'Soya Chunks', 'Dal Makhani', 'Rajma',
+      'Chana', 'Moong Dal', 'Toor Dal', 'Mixed Sprouts'
     ],
     'eggitarian': [
-      'Eggs'
+      'Eggs', 'Mixed Sprouts', 'Soya Chunks', 'Moong Dal',
+      'Toor Dal', 'Chana Dal', 'Peanuts', 'Besan (Gram Flour)'
     ]
   };
   
@@ -41,30 +43,30 @@ export const getProteinSources = (dietaryPreference: DietaryPreference) => {
 };
 
 export const getGrainSources = () => [
-  'Brown Rice', 'Quinoa', 'Bajra Roti', 'Jowar Roti', 'Ragi Roti',
-  'Whole Wheat Roti', 'Oats', 'Millet', 'Brown Rice Poha',
-  'Whole Wheat Bread', 'Multigrain Dosa', 'Red Rice'
+  'Rice (Local Variety)', 'Broken Wheat', 'Ragi', 'Jowar',
+  'Bajra', 'Whole Wheat Atta', 'Poha', 'Local Millet Varieties',
+  'Suji (Semolina)', 'Barley', 'Mixed Millet Roti', 'Rice Flakes'
 ];
 
 export const getVegetableSources = () => [
-  'Spinach', 'Methi (Fenugreek Leaves)', 'Palak (Spinach)', 'Broccoli',
-  'Lauki (Bottle Gourd)', 'Bhindi (Okra)', 'Baingan (Eggplant)',
-  'Capsicum (Bell Pepper)', 'Carrots', 'Tomatoes', 'Cabbage',
-  'Cauliflower', 'Green Beans', 'Peas', 'Beetroot', 'Pumpkin',
-  'Zucchini', 'Asparagus', 'Brussels Sprouts', 'Kale'
+  'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
+  'Cabbage', 'Cauliflower', 'Carrots', 'Green Peas',
+  'Onions', 'Tomatoes', 'Potatoes', 'Local Beans',
+  'Cucumber', 'Pumpkin', 'Radish', 'Beetroot'
 ];
 
 export const getFruitSources = () => [
-  'Apple', 'Banana', 'Papaya', 'Watermelon', 'Muskmelon',
-  'Orange', 'Guava', 'Pomegranate', 'Pineapple', 'Strawberry',
-  'Kiwi', 'Mango (in moderation)', 'Jamun', 'Chikoo'
+  'Seasonal Local Fruits', 'Bananas', 'Local Varieties of Apples',
+  'Oranges', 'Mosambi', 'Watermelon', 'Papaya',
+  'Guava', 'Local Berries', 'Jamun (in season)',
+  'Musk Melon', 'Indian Plums'
 ];
 
 export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean) => {
   const baseSnacks = [
-    'Roasted Chana', 'Makhana (Fox Nuts)', 'Murmura (Puffed Rice)',
-    'Sprouts Chaat', 'Cucumber Slices', 'Carrot Sticks',
-    'Homemade Hummus', 'Buttermilk', 'Vegetable Soup'
+    'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
+    'Homemade Poha', 'Boiled Sprouts', 'Seasonal Fruit',
+    'Buttermilk', 'Lemon Water', 'Homemade Chaas'
   ];
   
   if (dietaryPreference === 'eggitarian' && !isWeightLoss) {
@@ -73,3 +75,4 @@ export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLo
   
   return baseSnacks;
 };
+
