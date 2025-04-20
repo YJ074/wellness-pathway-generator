@@ -1,9 +1,9 @@
-
 export type ExerciseType = {
   name: string;
   reps: string;
   description: string;
   imageUrl: string;
+  tutorialUrl?: string;
 };
 
 export type WorkoutDay = {

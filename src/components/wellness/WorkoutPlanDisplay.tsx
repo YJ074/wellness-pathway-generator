@@ -1,13 +1,15 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Youtube } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Exercise {
   name: string;
   reps: string;
   description: string;
   imageUrl?: string;
+  tutorialUrl?: string;
 }
 
 interface WorkoutDay {
@@ -50,9 +52,22 @@ const WorkoutPlanDisplay = ({ days }: WorkoutPlanDisplayProps) => {
                     <ul className="space-y-4 pl-4">
                       {day.exercises.map((exercise, idx) => (
                         <li key={idx} className="flex flex-col gap-2">
-                          <div>
-                            <span className="font-medium">{exercise.name}</span> - {exercise.reps}
-                            <p className="text-sm text-gray-600">{exercise.description}</p>
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <span className="font-medium">{exercise.name}</span> - {exercise.reps}
+                              <p className="text-sm text-gray-600">{exercise.description}</p>
+                            </div>
+                            {exercise.tutorialUrl && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="shrink-0"
+                                onClick={() => window.open(exercise.tutorialUrl, '_blank')}
+                              >
+                                <Youtube className="mr-1 h-4 w-4" />
+                                Tutorial
+                              </Button>
+                            )}
                           </div>
                           {exercise.imageUrl && (
                             <img
