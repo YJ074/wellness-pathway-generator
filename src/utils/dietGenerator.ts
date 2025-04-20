@@ -10,39 +10,39 @@ interface DietPlan {
 
 const getProteinSources = (dietaryPreference: string) => {
   const proteins = {
-    'vegetarian': [
-      'Paneer', 'Tofu', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)', 
-      'Moong Dal', 'Toor Dal', 'Sprouts', 'Greek Yogurt',
-      'Cottage Cheese', 'Soy Chunks', 'Masoor Dal', 'Urad Dal'
+    'lacto-vegetarian': [
+      'Paneer', 'Curd', 'Buttermilk', 'Cottage Cheese',
+      'Dal Makhani', 'Rajma', 'Chana', 'Moong Dal',
+      'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Greek Yogurt'
     ],
-    'eggitarian': [
-      'Eggs', 'Paneer', 'Tofu', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)', 
-      'Moong Dal', 'Toor Dal', 'Sprouts', 'Greek Yogurt',
-      'Cottage Cheese', 'Soy Chunks', 'Masoor Dal', 'Urad Dal'
+    'lacto-ovo-vegetarian': [
+      'Paneer', 'Eggs', 'Curd', 'Buttermilk',
+      'Dal Makhani', 'Rajma', 'Chana', 'Moong Dal',
+      'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Greek Yogurt'
     ],
-    'vegan': [
-      'Tofu', 'Tempeh', 'Seitan', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)', 
-      'Moong Dal', 'Toor Dal', 'Sprouts', 'Soy Yogurt',
-      'Soy Chunks', 'Masoor Dal', 'Urad Dal', 'Quinoa', 'Edamame'
+    'pure-vegetarian': [
+      'Tofu', 'Tempeh', 'Soya Chunks', 'Chana',
+      'Rajma', 'Moong Dal', 'Toor Dal', 'Masoor Dal',
+      'Urad Dal', 'Peanuts', 'Almonds', 'Cashews'
     ],
-    'pescatarian': [
-      'Fish', 'Shrimp', 'Tofu', 'Chana (Chickpeas)', 'Rajma (Kidney Beans)',
-      'Greek Yogurt', 'Cottage Cheese', 'Salmon', 'Tuna',
-      'Sardines', 'Mackerel', 'Trout'
+    'jain': [
+      'Tofu', 'Moong Dal', 'Toor Dal', 'Masoor Dal',
+      'Urad Dal', 'Peanuts', 'Almonds', 'Cashews',
+      'Soya Products', 'Dried Beans', 'Chickpeas'
     ],
-    'gluten-free': [
-      'Chicken', 'Fish', 'Eggs', 'Tofu', 'Quinoa',
-      'Rice Protein', 'Buckwheat', 'Amaranth',
-      'Certified GF Oats', 'Legumes'
+    'sattvic': [
+      'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
+      'Fresh Paneer', 'Buttermilk', 'Ghee', 'Nuts',
+      'Dried Fruits', 'Sprouted Grains'
     ],
-    'keto': [
-      'Chicken', 'Fish', 'Eggs', 'Beef', 'Pork',
-      'Turkey', 'Duck', 'Lamb', 'Cottage Cheese',
-      'Greek Yogurt', 'Hard Cheese'
+    'non-vegetarian': [
+      'Chicken', 'Fish', 'Eggs', 'Mutton',
+      'Paneer', 'Dal Makhani', 'Rajma', 'Chana',
+      'Moong Dal', 'Toor Dal', 'Greek Yogurt'
     ]
   };
   
-  return proteins[dietaryPreference as keyof typeof proteins] || proteins['vegetarian'];
+  return proteins[dietaryPreference as keyof typeof proteins] || proteins['lacto-vegetarian'];
 };
 
 const getGrainSources = () => {

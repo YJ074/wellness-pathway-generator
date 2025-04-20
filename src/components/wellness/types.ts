@@ -4,7 +4,7 @@ export interface FormData {
   age: string;
   height: string;
   weight: string;
-  dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan' | 'pescatarian' | 'gluten-free' | 'keto';
+  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
   fitnessGoal: string;
   exerciseFrequency: string;
 }
@@ -33,3 +33,4 @@ export interface WorkoutPlan {
     cooldown: string[];
   }>;
 }
+

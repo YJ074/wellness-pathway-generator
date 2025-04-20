@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { generateWorkoutPlan } from '@/utils/workoutGenerator';
@@ -15,7 +14,7 @@ const WellnessForm = () => {
     age: '',
     height: '',
     weight: '',
-    dietaryPreference: 'vegetarian',
+    dietaryPreference: 'lacto-vegetarian',
     fitnessGoal: '',
     exerciseFrequency: ''
   });

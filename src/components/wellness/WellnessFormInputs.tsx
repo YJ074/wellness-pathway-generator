@@ -1,8 +1,13 @@
 import React from 'react';
-import { User, Mail, Cake, Ruler, Weight, Egg, Target, Activity } from 'lucide-react';
+import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
 interface FormInputsProps {
   formData: {
@@ -11,12 +16,21 @@ interface FormInputsProps {
     age: string;
     height: string;
     weight: string;
-    dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan' | 'pescatarian' | 'gluten-free' | 'keto';
+    dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
     fitnessGoal: string;
     exerciseFrequency: string;
   };
   handleInputChange: (field: string, value: string) => void;
 }
+
+const dietaryDescriptions = {
+  'lacto-vegetarian': 'Excludes meat, eggs, and seafood but includes dairy products. Common in many Indian households.',
+  'lacto-ovo-vegetarian': 'Includes dairy and eggs but excludes meat and seafood. Suitable for flexible vegetarians.',
+  'pure-vegetarian': 'Excludes all animal products except dairy. Similar to vegan but allows dairy products.',
+  'jain': 'Follows Jain dietary principles - no root vegetables, strictly vegetarian, no foods harvested after sunset.',
+  'sattvic': 'Based on Ayurvedic principles - pure, essential, natural, vital, energy-containing foods.',
+  'non-vegetarian': 'Includes all food groups including meat, fish, and eggs along with vegetarian options.'
+};
 
 const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) => {
   return (
@@ -88,24 +102,33 @@ const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) =>
 
       <div className="space-y-2">
         <Label htmlFor="dietary" className="flex items-center gap-2">
-          <Egg className="w-4 h-4" /> Dietary Preference
+          <Salad className="w-4 h-4" /> Dietary Preference
         </Label>
-        <Select
-          value={formData.dietaryPreference}
-          onValueChange={(value) => handleInputChange('dietaryPreference', value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select dietary preference" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="vegetarian">Vegetarian</SelectItem>
-            <SelectItem value="eggitarian">Eggitarian</SelectItem>
-            <SelectItem value="vegan">Vegan</SelectItem>
-            <SelectItem value="pescatarian">Pescatarian</SelectItem>
-            <SelectItem value="gluten-free">Gluten-Free</SelectItem>
-            <SelectItem value="keto">Keto</SelectItem>
-          </SelectContent>
-        </Select>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Select
+              value={formData.dietaryPreference}
+              onValueChange={(value) => handleInputChange('dietaryPreference', value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select dietary preference" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lacto-vegetarian">Lacto Vegetarian</SelectItem>
+                <SelectItem value="lacto-ovo-vegetarian">Lacto-Ovo Vegetarian</SelectItem>
+                <SelectItem value="pure-vegetarian">Pure Vegetarian</SelectItem>
+                <SelectItem value="jain">Jain</SelectItem>
+                <SelectItem value="sattvic">Sattvic</SelectItem>
+                <SelectItem value="non-vegetarian">Non-Vegetarian</SelectItem>
+              </SelectContent>
+            </Select>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80">
+            <p className="text-sm text-muted-foreground">
+              {dietaryDescriptions[formData.dietaryPreference] || 'Select a dietary preference to see description'}
+            </p>
+          </HoverCardContent>
+        </HoverCard>
       </div>
 
       <div className="space-y-2">
