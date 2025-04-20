@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { User, Mail, Cake, Ruler, Weight, Egg, Send } from 'lucide-react';
+import { User, Mail, Cake, Ruler, Weight, Egg, Send, Target, Activity } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
