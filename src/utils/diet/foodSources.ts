@@ -4,17 +4,17 @@ import { DietaryPreference } from './types';
 export const getProteinSources = (dietaryPreference: DietaryPreference) => {
   const proteins = {
     'lacto-vegetarian': [
-      'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
-      'Curd', 'Buttermilk', 'Soya Chunks', 'Besan (Gram Flour)',
+      'Paneer', 'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
+      'Curd', 'Buttermilk', 'Besan (Gram Flour)',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts'
     ],
     'lacto-ovo-vegetarian': [
-      'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
-      'Curd', 'Buttermilk', 'Soya Chunks', 'Besan (Gram Flour)',
+      'Paneer', 'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
+      'Curd', 'Buttermilk', 'Besan (Gram Flour)',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts'
     ],
     'pure-vegetarian': [
-      'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
+      'Paneer', 'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
       'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong'
     ],
@@ -24,17 +24,17 @@ export const getProteinSources = (dietaryPreference: DietaryPreference) => {
       'Chickpeas', 'Whole Moong', 'Besan (Gram Flour)'
     ],
     'sattvic': [
-      'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
+      'Paneer', 'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
       'Mixed Sprouts', 'Buttermilk', 'Peanuts', 'Whole Moong',
       'Dried Fruits (in moderation)', 'Sprouted Grains'
     ],
     'non-vegetarian': [
       'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
-      'Local Fish Varieties', 'Soya Chunks', 'Dal Makhani', 'Rajma',
+      'Local Fish Varieties', 'Paneer', 'Dal Makhani', 'Rajma',
       'Chana', 'Moong Dal', 'Toor Dal', 'Mixed Sprouts'
     ],
     'eggitarian': [
-      'Eggs', 'Mixed Sprouts', 'Soya Chunks', 'Moong Dal',
+      'Eggs', 'Mixed Sprouts', 'Paneer', 'Moong Dal',
       'Toor Dal', 'Chana Dal', 'Peanuts', 'Besan (Gram Flour)'
     ]
   };
