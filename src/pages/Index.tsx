@@ -13,7 +13,7 @@ const Index = () => {
           />
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Wellness Pathway Generator</h1>
-            <p className="text-lg text-gray-600">Complete the form below to receive your personalized wellness plan</p>
+            <p className="text-lg text-gray-600">Complete the form below to receive your personalized 75-day wellness plan</p>
           </div>
           <WellnessForm />
         </div>
