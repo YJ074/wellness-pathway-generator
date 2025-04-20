@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -46,17 +45,17 @@ const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessR
       
       <PlanDetailsCard formData={formData} />
       
-      <div className="grid gap-6">
+      <div className="space-y-6">
         {dietPlan.days.map((dietDay, index) => {
           const workoutDay = workoutPlan.days[index];
           return (
             <Card key={dietDay.day} className="w-full">
-              <CardHeader className="pb-2">
+              <CardHeader>
                 <CardTitle className="text-2xl">Day {dietDay.day}</CardTitle>
               </CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-6">
+              <CardContent className="space-y-6">
                 {/* Diet Plan Section */}
-                <div className="space-y-4">
+                <div className="space-y-4 border-b pb-6">
                   <h3 className="text-xl font-semibold text-primary">Diet Plan</h3>
                   <div className="space-y-2">
                     <p><strong>Breakfast:</strong> {dietDay.breakfast}</p>
