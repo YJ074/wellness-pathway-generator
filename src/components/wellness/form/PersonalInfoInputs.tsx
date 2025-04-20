@@ -42,21 +42,30 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
       const cleanedValue = numberPart.replace(/[^\d]/g, '');
       const formattedValue = `+91${cleanedValue}`;
       
-      // Validate mobile number (should be 10 digits after +91 and start with 6,7,8,9)
-      if (cleanedValue.length > 0) {
-        if (cleanedValue.length !== 10) {
-          toast({
-            title: "Invalid Mobile Number",
-            description: "Please enter a valid 10-digit mobile number",
-            variant: "destructive"
-          });
-        } else if (!['6', '7', '8', '9'].includes(cleanedValue[0])) {
-          toast({
-            title: "Invalid Mobile Number",
-            description: "Mobile number must start with 6, 7, 8, or 9",
-            variant: "destructive"
-          });
-        }
+      // Strict validation: exactly 10 digits, starting with 6, 7, 8, or 9
+      if (cleanedValue.length > 10) {
+        toast({
+          title: "Invalid Mobile Number",
+          description: "Mobile number cannot exceed 10 digits",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (cleanedValue.length > 0 && cleanedValue.length !== 10) {
+        toast({
+          title: "Incomplete Mobile Number",
+          description: "Please enter a complete 10-digit mobile number",
+          variant: "destructive"
+        });
+      }
+
+      if (cleanedValue.length === 10 && !['6', '7', '8', '9'].includes(cleanedValue[0])) {
+        toast({
+          title: "Invalid Mobile Number",
+          description: "Mobile number must start with 6, 7, 8, or 9",
+          variant: "destructive"
+        });
       }
       
       handleInputChange('mobileNumber', formattedValue);
