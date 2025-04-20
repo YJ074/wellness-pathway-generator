@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { User, Mail, Cake, Ruler, Weight, PhoneCall } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 interface PersonalInfoInputsProps {
   formData: {
@@ -17,11 +17,43 @@ interface PersonalInfoInputsProps {
 }
 
 const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsProps) => {
+  const { toast } = useToast();
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleMobileNumberChange = (value: string) => {
     // Remove any non-digit characters except the initial +91
     const cleanedValue = value.replace(/[^\d]/g, '');
     const formattedValue = cleanedValue.length > 0 ? `+91${cleanedValue}` : '+91';
+    
+    // Validate mobile number (should be 10 digits after +91)
+    if (cleanedValue.length > 0 && cleanedValue.length !== 10) {
+      toast({
+        title: "Invalid Mobile Number",
+        description: "Please enter a valid 10-digit mobile number",
+        variant: "destructive"
+      });
+    }
+    
     handleInputChange('mobileNumber', formattedValue);
+  };
+
+  const handleEmailChange = (value: string) => {
+    handleInputChange('email', value);
+    if (value.length > 0) {
+      validateEmail(value);
+    }
   };
 
   return (
@@ -53,7 +85,7 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           className="w-full"
         />
         <p className="text-sm text-muted-foreground mt-1">
-          Mobile number must start with +91
+          Mobile number must start with +91 and have 10 digits
         </p>
       </div>
 
@@ -66,7 +98,8 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
           type="email"
           required
           value={formData.email}
-          onChange={(e) => handleInputChange('email', e.target.value)}
+          onChange={(e) => handleEmailChange(e.target.value)}
+          className="w-full"
         />
       </div>
 
