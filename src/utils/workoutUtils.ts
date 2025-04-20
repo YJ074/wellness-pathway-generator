@@ -1,4 +1,3 @@
-
 import { ExerciseType, FitnessLevel } from '../types/workout';
 
 export const getInitialLevel = (exerciseFrequency: string): FitnessLevel => {
@@ -31,11 +30,22 @@ export const getRandomItems = <T,>(array: T[], count: number): T[] => {
 };
 
 export const adjustRepsForGoal = (baseReps: string, fitnessGoal: string): string => {
+  const extractNumbers = (rep: string) => rep.match(/\d+(\.\d+)?/g)?.map(Number) || [];
+  
+  const roundNumber = (num: number) => Math.round(num);
+
+  const replaceNumbers = (rep: string, multiplier: number) => {
+    return rep.replace(/\d+(\.\d+)?/g, (match) => {
+      const num = parseFloat(match);
+      return roundNumber(num * multiplier).toString();
+    });
+  };
+
   if (fitnessGoal === 'endurance') {
-    return baseReps.replace(/\d+/g, (match) => (parseInt(match) * 1.5).toString());
+    return replaceNumbers(baseReps, 1.5);
   }
   if (fitnessGoal === 'muscle-gain') {
-    return baseReps.replace(/\d+/g, (match) => (parseInt(match) * 1.2).toString());
+    return replaceNumbers(baseReps, 1.2);
   }
   return baseReps;
 };
