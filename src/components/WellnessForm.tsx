@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User, Mail, Cake, Ruler, Weight, Egg, Send, Target, Activity } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { generateWorkoutPlan } from '@/utils/workoutGenerator';
 
 interface FormData {
   name: string;
@@ -29,6 +29,20 @@ interface DietPlan {
   }>;
 }
 
+interface WorkoutPlan {
+  days: Array<{
+    day: number;
+    isRestDay: boolean;
+    warmup: string[];
+    exercises: Array<{
+      name: string;
+      reps: string;
+      description: string;
+    }>;
+    cooldown: string[];
+  }>;
+}
+
 const WellnessForm = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
@@ -43,28 +57,32 @@ const WellnessForm = () => {
   });
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsGenerating(true);
     
-    // Generate the diet plan based on user inputs
-    const generatedPlan = generateDietPlan(
+    // Generate both diet and workout plans
+    const generatedDietPlan = generateDietPlan(
       formData.dietaryPreference,
       formData.fitnessGoal,
       parseInt(formData.age),
       parseInt(formData.weight)
     );
     
-    setDietPlan(generatedPlan);
+    const generatedWorkoutPlan = {
+      days: generateWorkoutPlan(formData.exerciseFrequency, formData.fitnessGoal)
+    };
+    
+    setDietPlan(generatedDietPlan);
+    setWorkoutPlan(generatedWorkoutPlan);
     setIsGenerating(false);
     
     toast({
-      title: "Diet Plan Generated",
-      description: "Your 75-day wellness plan has been created.",
+      title: "Plans Generated",
+      description: "Your 75-day wellness and workout plans have been created.",
     });
-    
-    console.log(formData);
   };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -410,9 +428,12 @@ const WellnessForm = () => {
       ) : (
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Your 75-Day Diet Plan</h2>
+            <h2 className="text-2xl font-bold">Your 75-Day Wellness Plan</h2>
             <Button 
-              onClick={() => setDietPlan(null)} 
+              onClick={() => {
+                setDietPlan(null);
+                setWorkoutPlan(null);
+              }} 
               variant="outline"
             >
               Back to Form
@@ -433,20 +454,75 @@ const WellnessForm = () => {
               </CardContent>
             </Card>
             
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {dietPlan.days.map((day) => (
-                <Card key={day.day}>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl">Day {day.day}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <p><strong>Breakfast:</strong> {day.breakfast}</p>
-                    <p><strong>Lunch:</strong> {day.lunch}</p>
-                    <p><strong>Dinner:</strong> {day.dinner}</p>
-                    <p><strong>Snacks:</strong> {day.snacks}</p>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="grid gap-4">
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Diet Plan</h3>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {dietPlan.days.map((day) => (
+                    <Card key={day.day}>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-xl">Day {day.day}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <p><strong>Breakfast:</strong> {day.breakfast}</p>
+                        <p><strong>Lunch:</strong> {day.lunch}</p>
+                        <p><strong>Dinner:</strong> {day.dinner}</p>
+                        <p><strong>Snacks:</strong> {day.snacks}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {workoutPlan && (
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">Workout Plan</h3>
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {workoutPlan.days.map((day) => (
+                      <Card key={day.day}>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-xl">Day {day.day}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          {day.isRestDay ? (
+                            <p className="text-green-600 font-medium">Rest Day - Focus on recovery and light stretching</p>
+                          ) : (
+                            <>
+                              <div>
+                                <strong>Warm-up:</strong>
+                                <ul className="list-disc pl-4">
+                                  {day.warmup.map((exercise, idx) => (
+                                    <li key={idx}>{exercise}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                              <div>
+                                <strong>Exercises:</strong>
+                                <ul className="list-disc pl-4">
+                                  {day.exercises.map((exercise, idx) => (
+                                    <li key={idx}>
+                                      {exercise.name} - {exercise.reps}
+                                      <p className="text-sm text-gray-600">{exercise.description}</p>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                              <div>
+                                <strong>Cool-down:</strong>
+                                <ul className="list-disc pl-4">
+                                  {day.cooldown.map((stretch, idx) => (
+                                    <li key={idx}>{stretch}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
