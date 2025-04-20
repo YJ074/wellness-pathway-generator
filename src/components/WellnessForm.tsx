@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { User, Mail, Cake, Ruler, Weight, Salad, Target, Activity, Send } from 'lucide-react';
+import { User, Mail, Cake, Ruler, Weight, Egg, Send } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +12,7 @@ interface FormData {
   age: string;
   height: string;
   weight: string;
-  dietaryPreference: string;
+  dietaryPreference: 'vegetarian' | 'eggitarian' | 'vegan';
   fitnessGoal: string;
   exerciseFrequency: string;
 }
@@ -26,7 +25,7 @@ const WellnessForm = () => {
     age: '',
     height: '',
     weight: '',
-    dietaryPreference: '',
+    dietaryPreference: 'vegetarian',
     fitnessGoal: '',
     exerciseFrequency: ''
   });
@@ -113,20 +112,19 @@ const WellnessForm = () => {
 
       <div className="space-y-2">
         <Label htmlFor="dietary" className="flex items-center gap-2">
-          <Salad className="w-4 h-4" /> Dietary Preference
+          <Egg className="w-4 h-4" /> Dietary Preference
         </Label>
         <Select
           value={formData.dietaryPreference}
-          onValueChange={(value) => handleInputChange('dietaryPreference', value)}
+          onValueChange={(value) => handleInputChange('dietaryPreference', value as FormData['dietaryPreference'])}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select dietary preference" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="vegetarian">Vegetarian</SelectItem>
+            <SelectItem value="eggitarian">Eggitarian</SelectItem>
             <SelectItem value="vegan">Vegan</SelectItem>
-            <SelectItem value="omnivore">Omnivore</SelectItem>
-            <SelectItem value="pescatarian">Pescatarian</SelectItem>
           </SelectContent>
         </Select>
       </div>
