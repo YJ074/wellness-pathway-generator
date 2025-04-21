@@ -1,4 +1,3 @@
-
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { DietaryPreference } from './types';
 import { 
@@ -6,7 +5,8 @@ import {
   getGrainSources, 
   getVegetableSources, 
   getFruitSources, 
-  getSnackSources 
+  getSnackSources,
+  limitSoyaInDietDays,
 } from './foodSources';
 import {
   generateBreakfast,
@@ -84,8 +84,12 @@ export const generateDietPlan = (
   const dietaryPreference = formData.dietaryPreference;
   const proteinFocus = formData.fitnessGoal === 'muscle-gain';
   const calorieReduction = formData.fitnessGoal === 'weight-loss';
+
+  // Key change: limit soya appearance to once in any 30 days for protein sources!
+  const rawProteins = getProteinSources(dietaryPreference);
+  // Precompute 75-day protein rotation with soya limited
+  const proteinsByDay = limitSoyaInDietDays(rawProteins, 75, 30);
   
-  const proteins = getProteinSources(dietaryPreference);
   const grains = getGrainSources();
   const vegetables = getVegetableSources();
   const fruits = getFruitSources();
@@ -96,12 +100,16 @@ export const generateDietPlan = (
     
     const breakfast = generateBreakfast(dayIndex, dietaryPreference, calorieReduction);
     const midMorningSnack = generateMidMorningSnack(dayIndex, snacks, fruits, calorieReduction);
-    const lunch = generateLunch(dayIndex, proteins, grains, vegetables, calorieReduction, proteinFocus);
+
+    // Use protein for this day, limited for soya according to our rule
+    const proteinForDay = proteinsByDay[i - 1];
+    // Lunch and dinner use proteins; pass a single-item protein array so they use correct protein for the day
+    const lunch = generateLunch(dayIndex, [proteinForDay], grains, vegetables, calorieReduction, proteinFocus);
     const eveningSnack = generateEveningSnack(dayIndex, snacks, fruits, calorieReduction);
-    const dinner = generateDinner(dayIndex, proteins, vegetables, calorieReduction, proteinFocus);
+    const dinner = generateDinner(dayIndex, [proteinForDay], vegetables, calorieReduction, proteinFocus);
     
     // Calculate approximate calories for the day
-    const totalCalories = Math.round(dailyCalories / 10) * 10; // Round to nearest 10
+    const totalCalories = Math.round(dailyCalories / 10) * 10;
     
     // Recommended water intake (in liters)
     const waterIntake = formData.gender === 'male' ? 3.0 : 2.7;
