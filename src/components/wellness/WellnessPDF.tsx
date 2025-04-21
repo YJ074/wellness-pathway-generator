@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { DietPlan, FormData } from './types';
@@ -113,124 +112,126 @@ interface WellnessPDFProps {
   dietPlan: DietPlan;
 }
 
-const WellnessPDF = ({ formData, dietPlan }: WellnessPDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <Image src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" style={styles.logo} />
-      <Text style={styles.title}>
-        Personalized 75-Day Wellness Plan
-      </Text>
-      <Text style={styles.subtitle}>
-        Created for {formData.name}
-      </Text>
-      
-      {dietPlan.bmi && dietPlan.bmr && dietPlan.dailyCalories && (
-        <View style={styles.metricsSection}>
-          <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>BMI</Text>
-            <Text style={styles.metricValue}>{dietPlan.bmi.toFixed(1)}</Text>
-            <Text style={styles.metricSubtext}>Category: {dietPlan.bmiCategory}</Text>
-          </View>
-          
-          <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Base Metabolic Rate</Text>
-            <Text style={styles.metricValue}>{dietPlan.bmr} kcal</Text>
-            <Text style={styles.metricSubtext}>Calories at rest</Text>
-          </View>
-          
-          <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Daily Target</Text>
-            <Text style={styles.metricValue}>{dietPlan.dailyCalories} kcal</Text>
-            <Text style={styles.metricSubtext}>Adjusted for your goal</Text>
-          </View>
-        </View>
-      )}
-      
-      <View style={styles.infoSection}>
-        <Text style={styles.infoTitle}>Personal Information</Text>
-        <View style={styles.infoGrid}>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Age:</Text>
-            <Text style={styles.infoValue}>{formData.age} years</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Gender:</Text>
-            <Text style={styles.infoValue}>{formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1)}</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Weight:</Text>
-            <Text style={styles.infoValue}>{formData.weight} kg</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Height:</Text>
-            <Text style={styles.infoValue}>
-              {formData.height ? `${formData.height} cm` : 
-                `${formData.heightFeet || '0'}'${formData.heightInches || '0''}`}
-            </Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Diet Preference:</Text>
-            <Text style={styles.infoValue}>
-              {formData.dietaryPreference.split('-').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-              ).join(' ')}
-            </Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Fitness Goal:</Text>
-            <Text style={styles.infoValue}>
-              {formData.fitnessGoal.split('-').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-              ).join(' ')}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {dietPlan.days.map((dietDay) => (
-        <View key={dietDay.day} style={styles.dayBlock}>
-          <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
-          <View>
-            <Text style={styles.mealLabel}>Breakfast:</Text>
-            <Text style={styles.mealText}>{dietDay.breakfast}</Text>
+const WellnessPDF = ({ formData, dietPlan }: WellnessPDFProps) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Image src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" style={styles.logo} />
+        <Text style={styles.title}>
+          Personalized 75-Day Wellness Plan
+        </Text>
+        <Text style={styles.subtitle}>
+          Created for {formData.name}
+        </Text>
+        
+        {dietPlan.bmi && dietPlan.bmr && dietPlan.dailyCalories && (
+          <View style={styles.metricsSection}>
+            <View style={styles.metricBox}>
+              <Text style={styles.metricLabel}>BMI</Text>
+              <Text style={styles.metricValue}>{dietPlan.bmi.toFixed(1)}</Text>
+              <Text style={styles.metricSubtext}>Category: {dietPlan.bmiCategory}</Text>
+            </View>
             
-            {dietDay.midMorningSnack && (
-              <>
-                <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
-                <Text style={styles.mealText}>{dietDay.midMorningSnack}</Text>
-              </>
-            )}
+            <View style={styles.metricBox}>
+              <Text style={styles.metricLabel}>Base Metabolic Rate</Text>
+              <Text style={styles.metricValue}>{dietPlan.bmr} kcal</Text>
+              <Text style={styles.metricSubtext}>Calories at rest</Text>
+            </View>
             
-            <Text style={styles.mealLabel}>Lunch:</Text>
-            <Text style={styles.mealText}>{dietDay.lunch}</Text>
-            
-            {dietDay.eveningSnack && (
-              <>
-                <Text style={styles.mealLabel}>Evening Snack:</Text>
-                <Text style={styles.mealText}>{dietDay.eveningSnack}</Text>
-              </>
-            )}
-            
-            <Text style={styles.mealLabel}>Dinner:</Text>
-            <Text style={styles.mealText}>{dietDay.dinner}</Text>
-            
-            {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
-              <>
-                <Text style={styles.mealLabel}>Snacks:</Text>
-                <Text style={styles.mealText}>{dietDay.snacks}</Text>
-              </>
-            )}
-            
-            {dietDay.calories && (
-              <Text style={styles.footnote}>
-                Approx. Calories: {dietDay.calories} kcal • Water: {dietDay.water} L
+            <View style={styles.metricBox}>
+              <Text style={styles.metricLabel}>Daily Target</Text>
+              <Text style={styles.metricValue}>{dietPlan.dailyCalories} kcal</Text>
+              <Text style={styles.metricSubtext}>Adjusted for your goal</Text>
+            </View>
+          </View>
+        )}
+        
+        <View style={styles.infoSection}>
+          <Text style={styles.infoTitle}>Personal Information</Text>
+          <View style={styles.infoGrid}>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Age:</Text>
+              <Text style={styles.infoValue}>{formData.age} years</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Gender:</Text>
+              <Text style={styles.infoValue}>{formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1)}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Weight:</Text>
+              <Text style={styles.infoValue}>{formData.weight} kg</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Height:</Text>
+              <Text style={styles.infoValue}>
+                {formData.height ? `${formData.height} cm` : 
+                  `${formData.heightFeet || '0'}ft ${formData.heightInches || '0'}in`}
               </Text>
-            )}
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Diet Preference:</Text>
+              <Text style={styles.infoValue}>
+                {formData.dietaryPreference.split('-').map(word => 
+                  word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ')}
+              </Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Fitness Goal:</Text>
+              <Text style={styles.infoValue}>
+                {formData.fitnessGoal.split('-').map(word => 
+                  word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ')}
+              </Text>
+            </View>
           </View>
         </View>
-      ))}
-    </Page>
-  </Document>
-);
+
+        {dietPlan.days.map((dietDay) => (
+          <View key={dietDay.day} style={styles.dayBlock}>
+            <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
+            <View>
+              <Text style={styles.mealLabel}>Breakfast:</Text>
+              <Text style={styles.mealText}>{dietDay.breakfast}</Text>
+              
+              {dietDay.midMorningSnack && (
+                <>
+                  <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
+                  <Text style={styles.mealText}>{dietDay.midMorningSnack}</Text>
+                </>
+              )}
+              
+              <Text style={styles.mealLabel}>Lunch:</Text>
+              <Text style={styles.mealText}>{dietDay.lunch}</Text>
+              
+              {dietDay.eveningSnack && (
+                <>
+                  <Text style={styles.mealLabel}>Evening Snack:</Text>
+                  <Text style={styles.mealText}>{dietDay.eveningSnack}</Text>
+                </>
+              )}
+              
+              <Text style={styles.mealLabel}>Dinner:</Text>
+              <Text style={styles.mealText}>{dietDay.dinner}</Text>
+              
+              {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
+                <>
+                  <Text style={styles.mealLabel}>Snacks:</Text>
+                  <Text style={styles.mealText}>{dietDay.snacks}</Text>
+                </>
+              )}
+              
+              {dietDay.calories && (
+                <Text style={styles.footnote}>
+                  Approx. Calories: {dietDay.calories} kcal • Water: {dietDay.water} L
+                </Text>
+              )}
+            </View>
+          </View>
+        ))}
+      </Page>
+    </Document>
+  );
+};
 
 export default WellnessPDF;
