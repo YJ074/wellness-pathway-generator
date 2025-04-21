@@ -35,8 +35,8 @@ const WellnessFormInputs = ({ formData, handleInputChange }: WellnessFormInputsP
           transition={{ duration: 0.5 }}
         >
           <DietaryPreferenceInput 
-            selected={formData.dietaryPreference} 
-            onSelect={(value) => handleInputChange('dietaryPreference', value)}
+            value={formData.dietaryPreference} 
+            onChange={(value) => handleInputChange('dietaryPreference', value)}
           />
         </motion.div>
       </TabsContent>
