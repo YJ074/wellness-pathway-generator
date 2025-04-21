@@ -14,8 +14,9 @@ interface WellnessFormViewProps {
   isGenerating: boolean;
 }
 
-const TAB_KEYS = ['personal', 'diet', 'fitness'] as const;
-type TabKey = typeof TAB_KEYS[number];
+// Use a consistent TabKey type definition
+type TabKey = 'personal' | 'diet' | 'fitness';
+const TAB_KEYS: TabKey[] = ['personal', 'diet', 'fitness'];
 
 const WellnessFormView = ({ 
   formData, 

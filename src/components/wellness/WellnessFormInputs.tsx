@@ -7,12 +7,15 @@ import PersonalInfoInputs from './form/PersonalInfoInputs';
 import DietaryPreferenceInput from './form/DietaryPreferenceInput';
 import FitnessInputs from './form/FitnessInputs';
 
-// Add types for controlled tab navigation
+// Define the valid tab values
+type TabKey = 'personal' | 'diet' | 'fitness';
+
+// Update types for controlled tab navigation
 interface WellnessFormInputsProps {
   formData: FormData;
   handleInputChange: (field: keyof FormData, value: string | boolean) => void;
-  currentTab: string;
-  setCurrentTab: (tab: string) => void;
+  currentTab: TabKey;
+  setCurrentTab: (tab: TabKey) => void;
 }
 
 const WellnessFormInputs = ({ formData, handleInputChange, currentTab, setCurrentTab }: WellnessFormInputsProps) => {
