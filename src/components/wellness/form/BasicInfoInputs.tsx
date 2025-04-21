@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { User, Cake, Ruler, Weight } from 'lucide-react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup } from "@/components/ui/select";
@@ -74,7 +75,7 @@ const BasicInfoInputs = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <FormField
         id="name"
         label="Name"
@@ -92,60 +93,72 @@ const BasicInfoInputs = ({
         onChange={(value) => onInputChange('age', value)}
       />
 
-      {/* Gender dropdown above height */}
-      <div>
-        <label className="block mb-1 font-medium">Gender</label>
-        <Select
-          value={gender}
-          onValueChange={(value) => onInputChange('gender', value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select gender" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="male">Male</SelectItem>
-              <SelectItem value="female">Female</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-      
-      <div className="flex gap-2">
-        {/* Height in cm */}
-        <div className="w-1/2">
-          <FormField
-            id="height"
-            label="Height (cm)"
-            icon={Ruler}
-            value={height}
-            type="number"
-            onChange={handleHeightCmChange}
-            helperText="Auto-syncs with ft/in"
-          />
+      <div className="space-y-4">
+        {/* Gender dropdown */}
+        <div>
+          <label className="block mb-1 font-medium">Gender</label>
+          <Select
+            value={gender}
+            onValueChange={(value) => onInputChange('gender', value)}
+          >
+            <SelectTrigger className="w-full" aria-label="Select gender">
+              <SelectValue placeholder="Select gender" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
-        {/* Height in ft/in */}
-        <div className="w-1/2 flex items-end gap-2">
-          <FormField
-            id="heightFeet"
-            label="Height (ft)"
-            icon={Ruler}
-            value={heightFeet || ''}
-            type="number"
-            onChange={handleHeightFeetChange}
-            required={false}
-          />
-          <FormField
-            id="heightInches"
-            label="Height (in)"
-            icon={Ruler}
-            value={heightInches || ''}
-            type="number"
-            onChange={handleHeightInchesChange}
-            required={false}
-          />
-        </div>
+
+        {/* Height inputs group rounded and background */}
+        <fieldset className="border border-gray-300 rounded-md p-4 space-y-4">
+          <legend className="text-base font-semibold text-gray-700 px-2">Height</legend>
+
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+            {/* Height in cm */}
+            <div className="flex-1">
+              <FormField
+                id="height"
+                label="Height (cm)"
+                icon={Ruler}
+                value={height}
+                type="number"
+                onChange={handleHeightCmChange}
+                helperText="Auto-syncs with ft/in"
+              />
+            </div>
+
+            {/* Height in ft/in */}
+            <div className="flex gap-4">
+              <div className="w-24">
+                <FormField
+                  id="heightFeet"
+                  label="Feet"
+                  icon={Ruler}
+                  value={heightFeet || ''}
+                  type="number"
+                  onChange={handleHeightFeetChange}
+                  required={false}
+                />
+              </div>
+              <div className="w-24">
+                <FormField
+                  id="heightInches"
+                  label="Inches"
+                  icon={Ruler}
+                  value={heightInches || ''}
+                  type="number"
+                  onChange={handleHeightInchesChange}
+                  required={false}
+                />
+              </div>
+            </div>
+          </div>
+        </fieldset>
       </div>
       
       <FormField
@@ -161,3 +174,4 @@ const BasicInfoInputs = ({
 };
 
 export default BasicInfoInputs;
+
