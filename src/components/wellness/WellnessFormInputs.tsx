@@ -7,14 +7,17 @@ import PersonalInfoInputs from './form/PersonalInfoInputs';
 import DietaryPreferenceInput from './form/DietaryPreferenceInput';
 import FitnessInputs from './form/FitnessInputs';
 
+// Add types for controlled tab navigation
 interface WellnessFormInputsProps {
   formData: FormData;
   handleInputChange: (field: keyof FormData, value: string | boolean) => void;
+  currentTab: string;
+  setCurrentTab: (tab: string) => void;
 }
 
-const WellnessFormInputs = ({ formData, handleInputChange }: WellnessFormInputsProps) => {
+const WellnessFormInputs = ({ formData, handleInputChange, currentTab, setCurrentTab }: WellnessFormInputsProps) => {
   return (
-    <Tabs defaultValue="personal" className="w-full">
+    <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
       <TabsList className="grid w-full grid-cols-3 mb-6">
         <TabsTrigger value="personal">Personal Info</TabsTrigger>
         <TabsTrigger value="diet">Diet</TabsTrigger>
