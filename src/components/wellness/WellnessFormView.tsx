@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 interface WellnessFormViewProps {
   formData: FormData;
-  handleInputChange: (field: keyof FormData, value: string) => void;
+  handleInputChange: (field: keyof FormData, value: string | boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
   isGenerating: boolean;
 }

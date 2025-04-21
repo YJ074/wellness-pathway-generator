@@ -1,19 +1,21 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import BasicInfoInputs from './BasicInfoInputs';
 import ContactInputs from './ContactInputs';
 import { FormData } from '../types';
 
 interface PersonalInfoInputsProps {
   formData: FormData;
-  handleInputChange: (field: string, value: string) => void;
+  handleInputChange: (field: string, value: string | boolean) => void;
 }
 
 const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsProps) => {
   return (
     <motion.div 
-      className="space-y-4"
+      className="space-y-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -28,6 +30,20 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
         heightInches={formData.heightInches}
         onInputChange={handleInputChange}
       />
+      
+      <div className="flex items-center space-x-2 mt-4">
+        <Checkbox 
+          id="muscularBuild"
+          checked={!!formData.has_muscular_build}
+          onCheckedChange={(checked) => handleInputChange('has_muscular_build', Boolean(checked))}
+        />
+        <Label 
+          htmlFor="muscularBuild" 
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          I have a muscular build (this helps with more accurate BMI interpretation)
+        </Label>
+      </div>
       
       <ContactInputs
         email={formData.email}

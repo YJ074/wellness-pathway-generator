@@ -1,58 +1,59 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FormData } from './types';
 import PersonalInfoInputs from './form/PersonalInfoInputs';
 import DietaryPreferenceInput from './form/DietaryPreferenceInput';
 import FitnessInputs from './form/FitnessInputs';
-import { FormData } from './types';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Dumbbell } from "lucide-react";
 
-interface FormInputsProps {
+interface WellnessFormInputsProps {
   formData: FormData;
-  handleInputChange: (field: string, value: string | boolean) => void;
+  handleInputChange: (field: keyof FormData, value: string | boolean) => void;
 }
 
-const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) => {
+const WellnessFormInputs = ({ formData, handleInputChange }: WellnessFormInputsProps) => {
   return (
-    <div className="space-y-6">
-      <PersonalInfoInputs 
-        formData={formData} 
-        handleInputChange={handleInputChange} 
-      />
-
-      {/* Athletic/Muscular Build Self-ID Toggle */}
-      <div className="flex items-center gap-4 border rounded-lg px-4 py-3 bg-slate-50">
-        <Dumbbell className="w-5 h-5 text-blue-600" />
-        <div className="flex flex-col flex-1">
-          <Label htmlFor="has_muscular_build" className="font-medium mb-1">
-            Do you have an athletic or muscular build that may affect your BMI reading?
-          </Label>
-          <span className="text-xs text-muted-foreground">
-            If you have high muscle mass, BMI may not accurately reflect your health risk.
-          </span>
-        </div>
-        <div className="flex space-x-2 items-center">
-          <Switch
-            id="has_muscular_build"
-            checked={!!formData.has_muscular_build}
-            onCheckedChange={(checked) =>
-              handleInputChange('has_muscular_build', checked)
-            }
+    <Tabs defaultValue="personal" className="w-full">
+      <TabsList className="grid w-full grid-cols-3 mb-6">
+        <TabsTrigger value="personal">Personal Info</TabsTrigger>
+        <TabsTrigger value="diet">Diet</TabsTrigger>
+        <TabsTrigger value="fitness">Fitness</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="personal">
+        <PersonalInfoInputs 
+          formData={formData} 
+          handleInputChange={handleInputChange} 
+        />
+      </TabsContent>
+      
+      <TabsContent value="diet">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <DietaryPreferenceInput 
+            selected={formData.dietaryPreference} 
+            onSelect={(value) => handleInputChange('dietaryPreference', value)}
           />
-          <span className="text-sm ml-2">
-            {formData.has_muscular_build ? "Yes" : "No"}
-          </span>
-        </div>
-      </div>
-
-      <DietaryPreferenceInput 
-        value={formData.dietaryPreference} 
-        onChange={(value) => handleInputChange('dietaryPreference', value)} 
-      />
-      <FitnessInputs formData={formData} handleInputChange={handleInputChange} />
-    </div>
+        </motion.div>
+      </TabsContent>
+      
+      <TabsContent value="fitness">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <FitnessInputs 
+            formData={formData} 
+            handleInputChange={handleInputChange}
+          />
+        </motion.div>
+      </TabsContent>
+    </Tabs>
   );
 };
 
