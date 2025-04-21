@@ -22,6 +22,25 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
   const [isEmailSending, setIsEmailSending] = useState(false);
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
   
+  // Helper function to get appropriate BMI category color
+  const getBmiCategoryColor = (category: string): string => {
+    switch (category) {
+      case 'underweight':
+        return 'text-amber-600';
+      case 'normal':
+        return 'text-green-600';
+      case 'athletic build':
+        return 'text-blue-600';
+      case 'overweight':
+        return 'text-orange-600';
+      case 'high BMI':
+      case 'obese':
+        return 'text-red-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
+  
   const handleSendEmail = async () => {
     if (!formData.email) {
       toast({
@@ -135,8 +154,15 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
             <div className="p-3 bg-white rounded-md border">
               <div className="text-sm text-gray-500">Body Mass Index (BMI)</div>
               <div className="text-2xl font-bold">{dietPlan.bmi.toFixed(1)}</div>
-              <div className="text-sm capitalize">
-                Category: <span className="font-medium">{dietPlan.bmiCategory}</span>
+              <div className="text-sm">
+                Category: <span className={`font-medium ${getBmiCategoryColor(dietPlan.bmiCategory)}`}>
+                  {dietPlan.bmiCategory.charAt(0).toUpperCase() + dietPlan.bmiCategory.slice(1)}
+                </span>
+                {dietPlan.bmiCategory === 'athletic build' && (
+                  <p className="text-xs italic mt-1">
+                    Based on your exercise frequency, your higher BMI likely reflects muscle mass rather than excess fat.
+                  </p>
+                )}
               </div>
             </div>
             

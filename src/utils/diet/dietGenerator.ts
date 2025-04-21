@@ -1,3 +1,4 @@
+
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { DietaryPreference } from './types';
 import { 
@@ -23,12 +24,25 @@ export const calculateBMI = (weight: number, heightCm: number): number => {
   return weight / (heightM * heightM);
 };
 
-// Get BMI category
-export const getBMICategory = (bmi: number): string => {
-  if (bmi < 18.5) return 'underweight';
-  if (bmi < 25) return 'normal';
-  if (bmi < 30) return 'overweight';
-  return 'obese';
+// Get BMI category - Updated to consider exercise frequency and fitness goals
+export const getBMICategory = (bmi: number, exerciseFrequency: string, fitnessGoal: string): string => {
+  // For highly active individuals or those focused on muscle gain, adjust BMI interpretation
+  const isHighlyActive = exerciseFrequency === '5+' || exerciseFrequency === '3-4';
+  const isFocusedOnMuscle = fitnessGoal === 'muscle-gain';
+  
+  if (isHighlyActive || isFocusedOnMuscle) {
+    // Allow for higher BMI thresholds for athletic individuals
+    if (bmi < 18.5) return 'underweight';
+    if (bmi < 27) return 'normal'; // Increased upper threshold for "normal" 
+    if (bmi < 32) return 'athletic build'; // New category for muscular individuals
+    return 'high BMI'; // More neutral term than "obese"
+  } else {
+    // Standard BMI categories for less active individuals
+    if (bmi < 18.5) return 'underweight';
+    if (bmi < 25) return 'normal';
+    if (bmi < 30) return 'overweight';
+    return 'obese';
+  }
 };
 
 // Calculate BMR using Mifflin-St Jeor equation
@@ -73,7 +87,7 @@ export const generateDietPlan = (
   
   // Calculate BMI
   const bmi = calculateBMI(weight, heightCm);
-  const bmiCategory = getBMICategory(bmi);
+  const bmiCategory = getBMICategory(bmi, formData.exerciseFrequency, formData.fitnessGoal);
   
   // Calculate BMR
   const bmr = calculateBMR(weight, heightCm, age, formData.gender);
