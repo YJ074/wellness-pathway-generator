@@ -10,29 +10,29 @@ import {
 
 export const generateBreakfast = (dayIndex: number, dietaryPreference: DietaryPreference, isWeightLoss: boolean) => {
   const breakfastOptions = [
-    'Vegetable Poha with curd',
-    'Oats Idli with sambhar',
-    'Vegetable Upma with a side of sprouts',
-    'Besan Chilla with mint chutney',
-    'Multigrain Dosa with coconut chutney',
-    'Masala Daliya (Broken Wheat) with vegetables',
-    'Ragi Dosa with tomato chutney',
-    'Vegetable Uttapam with sambar',
-    'Moong Dal Cheela with curd',
-    'Steamed Sprouts Dhokla',
-    'Vegetable Daliya Khichdi',
-    'Jowar Upma with vegetables',
-    'Quinoa Poha with vegetables',
-    'Brown Rice Idli with tomato chutney',
-    'Bajra Roti with vegetable curry'
+    'Vegetable Poha (1 cup) with curd (1/2 cup)',
+    'Oats Idli (3 pieces) with sambhar (1/2 cup)',
+    'Vegetable Upma (1 cup) with a side of sprouts (1/2 cup)',
+    'Besan Chilla (2 pieces) with mint chutney (2 tbsp)',
+    'Multigrain Dosa (2 pieces) with coconut chutney (2 tbsp)',
+    'Masala Daliya (1 cup, Broken Wheat) with vegetables',
+    'Ragi Dosa (2 pieces) with tomato chutney (2 tbsp)',
+    'Vegetable Uttapam (2 pieces) with sambar (1/2 cup)',
+    'Moong Dal Cheela (2 pieces) with curd (1/2 cup)',
+    'Steamed Sprouts Dhokla (4 pieces)',
+    'Vegetable Daliya Khichdi (1 cup)',
+    'Jowar Upma (1 cup) with seasonal vegetables',
+    'Quinoa Poha (3/4 cup) with vegetables',
+    'Brown Rice Idli (3 pieces) with tomato chutney (2 tbsp)',
+    'Bajra Roti (2 pieces) with vegetable curry (1/2 cup)'
   ];
   
-  if (dietaryPreference === 'eggitarian') {
+  if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
     const eggBreakfasts = [
-      'Egg Bhurji with multigrain roti',
-      'Masala Omelette with vegetable stuffing',
-      'Boiled Eggs with vegetable sandwich',
-      'Egg and Vegetable Wrap'
+      'Egg Bhurji (2 eggs) with multigrain roti (1 piece)',
+      'Masala Omelette (2 eggs) with vegetable stuffing',
+      'Boiled Eggs (2) with vegetable sandwich (1)',
+      'Egg and Vegetable Wrap (1 whole wheat wrap)'
     ];
     
     if (dayIndex % 4 === 0) {
@@ -41,6 +41,28 @@ export const generateBreakfast = (dayIndex: number, dietaryPreference: DietaryPr
   }
   
   return breakfastOptions[dayIndex];
+};
+
+export const generateMidMorningSnack = (
+  dayIndex: number, 
+  snacks: string[], 
+  fruits: string[], 
+  isWeightLoss: boolean
+) => {
+  const midMorningOptions = [
+    'Seasonal fruit (1 medium)',
+    'Buttermilk (1 glass)',
+    'Roasted chana (1/4 cup)',
+    'Apple slices (1 small apple) with a thin spread of peanut butter (1 tsp)',
+    'Sprouts salad (1/2 cup)',
+    'Plain yogurt (1/2 cup) with berries',
+    'Handful of mixed nuts (10-12 pieces)',
+    'Cucumber and carrot sticks (1 cup)',
+    'Fresh coconut pieces (1/4 cup)',
+    'Small bowl of makhana (fox nuts, 1/4 cup)'
+  ];
+  
+  return midMorningOptions[dayIndex % midMorningOptions.length];
 };
 
 export const generateLunch = (
@@ -57,11 +79,33 @@ export const generateLunch = (
   const veggie2 = vegetables[(dayIndex + 5) % vegetables.length];
   
   if (isWeightLoss) {
-    return `${grain} (small portion), ${protein} curry, ${veggie1} and ${veggie2} stir-fry, small bowl of curd`;
+    return `${grain} (small portion, 1/2 cup), ${protein} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), small bowl of curd (1/2 cup)`;
   } else if (isProteinFocus) {
-    return `${grain}, double portion of ${protein} curry, ${veggie1} and ${veggie2} stir-fry, bowl of curd`;
+    return `${grain} (3/4 cup), double portion of ${protein} curry (1 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (1 cup)`;
   }
-  return `${grain}, ${protein} curry, ${veggie1} and ${veggie2} stir-fry, bowl of curd`;
+  return `${grain} (3/4 cup), ${protein} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (1 cup)`;
+};
+
+export const generateEveningSnack = (
+  dayIndex: number,
+  snacks: string[],
+  fruits: string[],
+  isWeightLoss: boolean
+) => {
+  const eveningSnackOptions = [
+    'Roasted makhana (1/4 cup)',
+    'Vegetable cutlet (2 small pieces, baked)',
+    'Multigrain dhokla (2 pieces)',
+    'Roasted chana (1/4 cup) with chopped onions and tomatoes',
+    'Masala puffed rice (1/2 cup)',
+    'Steamed corn kernels (1/2 cup) with lemon and black salt',
+    'Paneer tikka (4-5 small pieces, grilled)',
+    'Peanut chaat (1/4 cup)',
+    'Roasted sweet potato (1 small)',
+    'Mixed vegetable soup (1 bowl)'
+  ];
+  
+  return eveningSnackOptions[(dayIndex + 3) % eveningSnackOptions.length];
 };
 
 export const generateDinner = (
@@ -76,11 +120,11 @@ export const generateDinner = (
   const veggie2 = vegetables[(dayIndex + 8) % vegetables.length];
   
   if (isWeightLoss) {
-    return `${protein} curry (light), ${veggie1} and ${veggie2} sabzi, small bowl of buttermilk`;
+    return `${protein} curry (light, 3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (1 piece), small bowl of buttermilk (1 cup)`;
   } else if (isProteinFocus) {
-    return `${protein} curry (generous portion), ${veggie1} and ${veggie2} sabzi, bowl of buttermilk`;
+    return `${protein} curry (generous portion, 1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces), bowl of buttermilk (1 cup)`;
   }
-  return `${protein} curry, ${veggie1} and ${veggie2} sabzi, bowl of buttermilk`;
+  return `${protein} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces), bowl of buttermilk (1 cup)`;
 };
 
 export const generateSnacks = (

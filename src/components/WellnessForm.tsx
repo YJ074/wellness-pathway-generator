@@ -15,7 +15,7 @@ const WellnessForm = () => {
     height: '',
     weight: '',
     mobileNumber: '+91',
-    gender: 'male', // Added default gender
+    gender: 'male', // Default gender
     dietaryPreference: 'lacto-vegetarian',
     fitnessGoal: '',
     exerciseFrequency: ''
@@ -32,8 +32,7 @@ const WellnessForm = () => {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.name || !formData.age || !formData.height || !formData.weight || 
-        !formData.email || !formData.mobileNumber || 
+    if (!formData.name || !formData.age || !formData.email || !formData.mobileNumber || 
         !formData.dietaryPreference || !formData.fitnessGoal) {
       toast({
         title: "Missing Information",
@@ -43,22 +42,37 @@ const WellnessForm = () => {
       return;
     }
     
+    // Height validation - ensure either cm or feet/inches is provided
+    if (!formData.height && (!formData.heightFeet || !formData.heightInches)) {
+      toast({
+        title: "Height Required",
+        description: "Please provide your height in either centimeters or feet/inches.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Weight validation
+    if (!formData.weight) {
+      toast({
+        title: "Weight Required",
+        description: "Please provide your weight in kilograms.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsGenerating(true);
 
-    // Generate the diet plan
-    const generatedDietPlan = generateDietPlan(
-      formData.dietaryPreference,
-      formData.fitnessGoal,
-      parseInt(formData.age),
-      parseInt(formData.weight)
-    );
+    // Generate the diet plan passing the entire formData
+    const generatedDietPlan = generateDietPlan(formData);
 
     setDietPlan(generatedDietPlan);
     setIsGenerating(false);
 
     toast({
-      title: "Diet Plan Generated",
-      description: "Your 75-day diet plan has been created. You can download, email, or share it via WhatsApp.",
+      title: "Wellness Plan Generated",
+      description: "Your 75-day personalized plan has been created. You can download, email, or share it via WhatsApp.",
     });
   };
 

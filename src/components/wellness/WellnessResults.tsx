@@ -1,12 +1,12 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PlanDetailsCard from './PlanDetailsCard';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import WellnessPDF from './WellnessPDF';
 import { FormData, DietPlan } from './types';
-import { Download, Mail, Send, Share } from 'lucide-react';
+import { Download, Mail, Send, Share, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from "@/hooks/use-toast";
 import { sendPlanViaEmail, sendPlanViaWhatsApp } from '@/utils/sharing';
@@ -88,7 +88,7 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
       transition={{ duration: 0.5 }}
     >
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <h2 className="text-2xl font-bold">Your 75-Day Diet Plan</h2>
+        <h2 className="text-2xl font-bold">Your 75-Day Personalized Wellness Plan</h2>
         <div className="flex flex-wrap gap-2">
           <PDFDownloadLink
             document={
@@ -97,7 +97,7 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
                 dietPlan={dietPlan}
               />
             }
-            fileName={`${formData.name}-75-day-diet-plan.pdf`}
+            fileName={`${formData.name}-75-day-wellness-plan.pdf`}
           >
             {({ loading }) => (
               <Button variant="outline">
@@ -123,6 +123,38 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
         </div>
       </div>
       
+      {dietPlan.bmi && dietPlan.bmr && (
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="bg-slate-50 p-4 rounded-lg border shadow-sm"
+        >
+          <h3 className="text-lg font-semibold mb-2">Your Health Metrics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-3 bg-white rounded-md border">
+              <div className="text-sm text-gray-500">Body Mass Index (BMI)</div>
+              <div className="text-2xl font-bold">{dietPlan.bmi.toFixed(1)}</div>
+              <div className="text-sm capitalize">
+                Category: <span className="font-medium">{dietPlan.bmiCategory}</span>
+              </div>
+            </div>
+            
+            <div className="p-3 bg-white rounded-md border">
+              <div className="text-sm text-gray-500">Basal Metabolic Rate (BMR)</div>
+              <div className="text-2xl font-bold">{dietPlan.bmr} kcal</div>
+              <div className="text-sm">Base calories needed at rest</div>
+            </div>
+            
+            <div className="p-3 bg-white rounded-md border">
+              <div className="text-sm text-gray-500">Daily Calorie Target</div>
+              <div className="text-2xl font-bold">{dietPlan.dailyCalories} kcal</div>
+              <div className="text-sm">Adjusted for your fitness goal</div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+      
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -146,11 +178,36 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
               <CardContent className="space-y-6">
                 <div className="space-y-4 border-b pb-6">
                   <h3 className="text-xl font-semibold text-primary">Diet Plan</h3>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <p><strong>Breakfast:</strong> {dietDay.breakfast}</p>
+                    
+                    {dietDay.midMorningSnack && (
+                      <p><strong>Mid-Morning Snack:</strong> {dietDay.midMorningSnack}</p>
+                    )}
+                    
                     <p><strong>Lunch:</strong> {dietDay.lunch}</p>
+                    
+                    {dietDay.eveningSnack && (
+                      <p><strong>Evening Snack:</strong> {dietDay.eveningSnack}</p>
+                    )}
+                    
                     <p><strong>Dinner:</strong> {dietDay.dinner}</p>
-                    <p><strong>Snacks:</strong> {dietDay.snacks}</p>
+                    
+                    {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
+                      <p><strong>Snacks:</strong> {dietDay.snacks}</p>
+                    )}
+                    
+                    {dietDay.calories && (
+                      <p className="italic text-sm text-gray-600 mt-2">
+                        <strong>Approx. Calories:</strong> {dietDay.calories} kcal
+                      </p>
+                    )}
+                    
+                    {dietDay.water && (
+                      <p className="italic text-sm text-gray-600">
+                        <strong>Water:</strong> {dietDay.water} L
+                      </p>
+                    )}
                   </div>
                 </div>
               </CardContent>
