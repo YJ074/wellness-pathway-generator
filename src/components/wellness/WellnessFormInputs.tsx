@@ -4,7 +4,7 @@ import PersonalInfoInputs from './form/PersonalInfoInputs';
 import DietaryPreferenceInput from './form/DietaryPreferenceInput';
 import FitnessInputs from './form/FitnessInputs';
 import { FormData } from './types';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectLabel } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup } from "@/components/ui/select";
 
 interface FormInputsProps {
   formData: FormData;
@@ -25,10 +25,11 @@ const WellnessFormInputs = ({ formData, handleInputChange }: FormInputsProps) =>
             <SelectValue placeholder="Select gender" />
           </SelectTrigger>
           <SelectContent>
-            <SelectLabel>Choose Gender</SelectLabel>
-            <SelectItem value="male">Male</SelectItem>
-            <SelectItem value="female">Female</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+            <SelectGroup>
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
       </div>
