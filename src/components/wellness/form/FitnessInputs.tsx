@@ -1,15 +1,16 @@
-
 import React from 'react';
 import { Target, Activity } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 interface FitnessInputsProps {
   formData: {
     fitnessGoal: string;
     exerciseFrequency: string;
+    has_muscular_build?: boolean; // now accept muscular build toggle as well
   };
-  handleInputChange: (field: string, value: string) => void;
+  handleInputChange: (field: string, value: string | boolean) => void;
 }
 
 const FitnessInputs = ({ formData, handleInputChange }: FitnessInputsProps) => {
@@ -53,6 +54,21 @@ const FitnessInputs = ({ formData, handleInputChange }: FitnessInputsProps) => {
             <SelectItem value="5+">5+ times/week</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Muscular Build Toggle */}
+      <div className="flex items-center space-x-3 mt-4">
+        <Switch
+          id="muscularBuild"
+          checked={!!formData.has_muscular_build}
+          onCheckedChange={checked => handleInputChange('has_muscular_build', Boolean(checked))}
+        />
+        <Label 
+          htmlFor="muscularBuild"
+          className="text-sm font-medium"
+        >
+          I have a muscular build (this helps with more accurate BMI interpretation)
+        </Label>
       </div>
     </div>
   );

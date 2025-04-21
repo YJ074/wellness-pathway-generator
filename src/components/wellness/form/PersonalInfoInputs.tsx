@@ -1,8 +1,5 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import BasicInfoInputs from './BasicInfoInputs';
 import ContactInputs from './ContactInputs';
 import { FormData } from '../types';
@@ -31,21 +28,8 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
         onInputChange={handleInputChange}
       />
 
-      {/* Muscular Build Toggle */}
-      <div className="flex items-center space-x-3 mt-4">
-        <Switch
-          id="muscularBuild"
-          checked={!!formData.has_muscular_build}
-          onCheckedChange={checked => handleInputChange('has_muscular_build', Boolean(checked))}
-        />
-        <Label 
-          htmlFor="muscularBuild"
-          className="text-sm font-medium"
-        >
-          I have a muscular build (this helps with more accurate BMI interpretation)
-        </Label>
-      </div>
-      
+      {/* Muscular Build toggle removed - now in Fitness tab section */}
+
       <ContactInputs
         email={formData.email}
         mobileNumber={formData.mobileNumber}
