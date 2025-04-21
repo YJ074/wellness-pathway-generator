@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { generateWorkoutPlan } from '@/utils/workoutGenerator';
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
 import WellnessFormView from './wellness/WellnessFormView';
 import WellnessResults from './wellness/WellnessResults';
-import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
+import { FormData, DietPlan } from './wellness/types';
 
 const WellnessForm = () => {
   const { toast } = useToast();
@@ -22,7 +22,6 @@ const WellnessForm = () => {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
-  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -31,31 +30,25 @@ const WellnessForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsGenerating(true);
-    
+
     const generatedDietPlan = generateDietPlan(
       formData.dietaryPreference,
       formData.fitnessGoal,
       parseInt(formData.age),
       parseInt(formData.weight)
     );
-    
-    const generatedWorkoutPlan = {
-      days: generateWorkoutPlan(formData.exerciseFrequency, formData.fitnessGoal)
-    };
-    
+
     setDietPlan(generatedDietPlan);
-    setWorkoutPlan(generatedWorkoutPlan);
     setIsGenerating(false);
-    
+
     toast({
-      title: "Plans Generated",
-      description: "Your 75-day wellness and workout plans have been created.",
+      title: "Diet Plan Generated",
+      description: "Your 75-day diet plan has been created.",
     });
   };
 
   const handleReset = () => {
     setDietPlan(null);
-    setWorkoutPlan(null);
   };
 
   return (
@@ -71,7 +64,6 @@ const WellnessForm = () => {
         <WellnessResults
           formData={formData}
           dietPlan={dietPlan}
-          workoutPlan={workoutPlan!}
           onReset={handleReset}
         />
       )}
