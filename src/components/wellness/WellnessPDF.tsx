@@ -2,10 +2,7 @@
 import React from 'react';
 import { Document, Page, StyleSheet } from '@react-pdf/renderer';
 import { DietPlan, FormData } from './types';
-import PDFHeaderSection from './PDFHeaderSection';
-import PDFMetricsSection from './PDFMetricsSection';
-import PDFPersonalInfoSection from './PDFPersonalInfoSection';
-import PDFDayBlock from './PDFDayBlock';
+import WellnessPDFContainer from './WellnessPDFContainer';
 
 const styles = StyleSheet.create({
   page: {
@@ -22,24 +19,10 @@ interface WellnessPDFProps {
 const WellnessPDF = ({ formData, dietPlan }: WellnessPDFProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <PDFHeaderSection name={formData.name} />
-
-      {dietPlan.bmi && dietPlan.bmr && dietPlan.dailyCalories && (
-        <PDFMetricsSection
-          bmi={dietPlan.bmi}
-          bmiCategory={dietPlan.bmiCategory || ''}
-          bmr={dietPlan.bmr}
-          dailyCalories={dietPlan.dailyCalories}
-        />
-      )}
-
-      <PDFPersonalInfoSection formData={formData} />
-
-      {dietPlan.days.map((dietDay) => (
-        <PDFDayBlock key={dietDay.day} {...dietDay} />
-      ))}
+      <WellnessPDFContainer formData={formData} dietPlan={dietPlan} />
     </Page>
   </Document>
 );
 
 export default WellnessPDF;
+
