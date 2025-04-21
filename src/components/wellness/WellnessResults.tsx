@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -107,6 +108,30 @@ const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessR
                               <li key={idx} className="border-l-2 border-primary pl-4">
                                 <p className="font-medium">{exercise.name} - {exercise.reps}</p>
                                 <p className="text-sm text-gray-600">{exercise.description}</p>
+                                {(exercise.tutorialUrl || exercise.tutorialUrlHindi) && (
+                                  <div className="flex flex-wrap gap-2 mt-1">
+                                    {exercise.tutorialUrl && (
+                                      <a
+                                        href={exercise.tutorialUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 underline text-sm"
+                                      >
+                                        Tutorial (English)
+                                      </a>
+                                    )}
+                                    {exercise.tutorialUrlHindi && (
+                                      <a
+                                        href={exercise.tutorialUrlHindi}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-green-700 underline text-sm"
+                                      >
+                                        Tutorial (Hindi)
+                                      </a>
+                                    )}
+                                  </div>
+                                )}
                               </li>
                             ))}
                           </ul>
@@ -133,3 +158,4 @@ const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessR
 };
 
 export default WellnessResults;
+
