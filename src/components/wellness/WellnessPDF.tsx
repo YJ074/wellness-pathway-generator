@@ -8,6 +8,13 @@ const styles = StyleSheet.create({
     padding: 30,
     fontFamily: 'Helvetica',
   },
+  logo: {
+    width: 90,
+    height: 90,
+    margin: '0 auto',
+    marginBottom: 10,
+    objectFit: 'contain',
+  },
   title: {
     fontSize: 24,
     marginBottom: 20,
@@ -61,6 +68,7 @@ interface WellnessPDFProps {
 const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
+      <Image src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" style={styles.logo} />
       <Text style={styles.title}>
         Personalized 75-Day Wellness Plan for {formData.name}
       </Text>
