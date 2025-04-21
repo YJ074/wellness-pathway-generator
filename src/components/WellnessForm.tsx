@@ -30,8 +30,22 @@ const WellnessForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name || !formData.age || !formData.height || !formData.weight || 
+        !formData.email || !formData.mobileNumber || 
+        !formData.dietaryPreference || !formData.fitnessGoal) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields to generate your wellness plan.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsGenerating(true);
 
+    // Generate the diet plan
     const generatedDietPlan = generateDietPlan(
       formData.dietaryPreference,
       formData.fitnessGoal,
@@ -44,7 +58,7 @@ const WellnessForm = () => {
 
     toast({
       title: "Diet Plan Generated",
-      description: "Your 75-day diet plan has been created.",
+      description: "Your 75-day diet plan has been created. You can download, email, or share it via WhatsApp.",
     });
   };
 
