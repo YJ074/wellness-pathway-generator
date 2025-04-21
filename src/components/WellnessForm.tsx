@@ -18,13 +18,14 @@ const WellnessForm = () => {
     gender: 'male', // Default gender
     dietaryPreference: 'lacto-vegetarian',
     fitnessGoal: '',
-    exerciseFrequency: ''
+    exerciseFrequency: '',
+    has_muscular_build: false, // Default: not selected
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 

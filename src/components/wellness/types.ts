@@ -1,4 +1,3 @@
-
 export interface FormData {
   name: string;
   email: string;
@@ -12,6 +11,7 @@ export interface FormData {
   exerciseFrequency: string;
   heightFeet?: string;   // optional, for feet input
   heightInches?: string; // optional, for inches input
+  has_muscular_build?: boolean; // NEW: Athletic build self-identification
 }
 
 export interface DietPlan {
