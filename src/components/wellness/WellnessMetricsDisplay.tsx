@@ -36,8 +36,8 @@ const WellnessMetricsDisplay = ({
 }: WellnessMetricsDisplayProps) => {
   if (bmi === undefined || bmr === undefined) return null;
 
-  // Logic to display the note only when hasMuscularBuild is true and the BMI suggests overweight or higher
-  const showMuscleNote = hasMuscularBuild && ["overweight", "obese", "high BMI", "athletic build"].includes(bmiCategory ?? "");
+  // Show the extra muscular build note if hasMuscularBuild is true.
+  const showMuscleNote = !!hasMuscularBuild;
 
   return (
     <div className="bg-slate-50 p-4 rounded-lg border shadow-sm">
@@ -53,14 +53,16 @@ const WellnessMetricsDisplay = ({
                 ? bmiCategory.charAt(0).toUpperCase() + bmiCategory.slice(1)
                 : ""}
             </span>
-            {bmiCategory === "athletic build" && (
-              <p className="text-xs italic mt-1">
-                Based on your exercise frequency, your higher BMI likely reflects muscle mass rather than excess fat.
-              </p>
-            )}
+            {/* New logic: Show the muscular build note if user self-ID'd */}
             {showMuscleNote && (
               <p className="text-xs italic mt-1 text-blue-600">
-                Note: BMI may appear high due to higher muscle mass, which is healthy in your case.
+                This BMI is likely influenced by lean muscle mass, not excess fat.
+              </p>
+            )}
+            {/* Retain original note for athletic build (based on BMI logic) only if NOT self-ID'd */}
+            {!showMuscleNote && bmiCategory === "athletic build" && (
+              <p className="text-xs italic mt-1">
+                Based on your exercise frequency, your higher BMI likely reflects muscle mass rather than excess fat.
               </p>
             )}
           </div>
@@ -81,4 +83,3 @@ const WellnessMetricsDisplay = ({
 };
 
 export default WellnessMetricsDisplay;
-

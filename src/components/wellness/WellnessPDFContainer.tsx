@@ -21,6 +21,7 @@ const WellnessPDFContainer = ({ formData, dietPlan }: WellnessPDFContainerProps)
         bmiCategory={dietPlan.bmiCategory || ''}
         bmr={dietPlan.bmr}
         dailyCalories={dietPlan.dailyCalories}
+        hasMuscularBuild={!!formData.has_muscular_build}
       />
     )}
     <PDFPersonalInfoSection formData={formData} />
@@ -29,4 +30,3 @@ const WellnessPDFContainer = ({ formData, dietPlan }: WellnessPDFContainerProps)
 );
 
 export default WellnessPDFContainer;
-

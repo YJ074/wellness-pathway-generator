@@ -1,4 +1,3 @@
-
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { DietaryPreference } from './types';
 import { 
@@ -53,15 +52,17 @@ export const calculateBMR = (weight: number, heightCm: number, age: number, gend
   return gender === 'male' ? baseBMR + 5 : baseBMR - 161;
 };
 
-// Adjust calories based on fitness goal
-export const calculateDailyCalories = (bmr: number, fitnessGoal: string): number => {
+// Adjust calories based on fitness goal, muscular build overrides BMI-based loss logic
+export const calculateDailyCalories = (bmr: number, fitnessGoal: string, hasMuscularBuild?: boolean): number => {
+  // If muscular build, IGNORE BMI and user is NOT forced into weight loss
   switch (fitnessGoal) {
     case 'weight-loss':
-      return Math.max(bmr - 500, 1200); // Don't go below 1200 calories
+      // If user has muscular build, don't restrict calories by BMI
+      return hasMuscularBuild ? bmr : Math.max(bmr - 500, 1200);
     case 'muscle-gain':
-      return bmr + 400; // Average of 300-500 calorie surplus
+      return bmr + 400;
     case 'endurance':
-      return bmr + 150; // Average of 100-200 calorie surplus
+      return bmr + 150;
     case 'maintenance':
     default:
       return bmr;
@@ -92,12 +93,12 @@ export const generateDietPlan = (
   // Calculate BMR
   const bmr = calculateBMR(weight, heightCm, age, formData.gender);
   
-  // Adjust calories based on fitness goal
-  const dailyCalories = calculateDailyCalories(bmr, formData.fitnessGoal);
+  // Adjust calories based on fitness goal (muscular build disables BMI-based forced loss)
+  const dailyCalories = calculateDailyCalories(bmr, formData.fitnessGoal, formData.has_muscular_build);
   
   const dietaryPreference = formData.dietaryPreference;
   const proteinFocus = formData.fitnessGoal === 'muscle-gain';
-  const calorieReduction = formData.fitnessGoal === 'weight-loss';
+  // Only trigger calorie reduction for non-muscular build users (previous code already handled this!)
 
   // Key change: limit soya appearance to once in any 30 days for protein sources!
   const rawProteins = getProteinSources(dietaryPreference);
@@ -107,6 +108,8 @@ export const generateDietPlan = (
   const grains = getGrainSources();
   const vegetables = getVegetableSources();
   const fruits = getFruitSources();
+  // Calorie reduction only if not muscular build
+  const calorieReduction = formData.fitnessGoal === 'weight-loss' && !formData.has_muscular_build;
   const snacks = getSnackSources(dietaryPreference, calorieReduction);
   
   for (let i = 1; i <= 75; i++) {

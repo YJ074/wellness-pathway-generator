@@ -27,6 +27,12 @@ const styles = {
     fontSize: 8,
     color: '#64748b',
   },
+  muscleNote: {
+    fontSize: 7,
+    fontStyle: 'italic' as const,
+    color: '#1d4ed8',
+    marginTop: 2,
+  }
 };
 
 interface PDFMetricsSectionProps {
@@ -34,6 +40,7 @@ interface PDFMetricsSectionProps {
   bmiCategory: string;
   bmr: number;
   dailyCalories: number;
+  hasMuscularBuild?: boolean;
 }
 
 const PDFMetricsSection = ({
@@ -41,12 +48,18 @@ const PDFMetricsSection = ({
   bmiCategory,
   bmr,
   dailyCalories,
+  hasMuscularBuild
 }: PDFMetricsSectionProps) => (
   <View style={styles.metricsSection}>
     <View style={styles.metricBox}>
       <Text style={styles.metricLabel}>BMI</Text>
       <Text style={styles.metricValue}>{bmi.toFixed(1)}</Text>
       <Text style={styles.metricSubtext}>Category: {bmiCategory}</Text>
+      {hasMuscularBuild && (
+        <Text style={styles.muscleNote}>
+          This BMI is likely influenced by lean muscle mass, not excess fat.
+        </Text>
+      )}
     </View>
     <View style={styles.metricBox}>
       <Text style={styles.metricLabel}>Base Metabolic Rate</Text>
@@ -62,4 +75,3 @@ const PDFMetricsSection = ({
 );
 
 export default PDFMetricsSection;
-
