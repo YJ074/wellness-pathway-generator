@@ -1,9 +1,11 @@
+
 export type ExerciseType = {
   name: string;
   reps: string;
   description: string;
   imageUrl: string;
   tutorialUrl?: string;
+  tutorialUrlHindi?: string; // Added to support Indian language video links
 };
 
 export type WorkoutDay = {
