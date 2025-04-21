@@ -67,7 +67,7 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
 
       <View style={styles.section}>
         <Text style={styles.heading}>Diet Plan</Text>
-        {dietPlan.days.slice(0, 3).map((day) => (
+        {dietPlan.days.map((day) => (
           <View key={day.day} style={styles.dayContainer}>
             <Text style={styles.dayTitle}>Day {day.day}</Text>
             <View style={styles.mealContainer}>
@@ -88,12 +88,11 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
             </View>
           </View>
         ))}
-        <Text>... and more days in your complete plan</Text>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.heading}>Exercise Plan</Text>
-        {workoutPlan.days.slice(0, 3).map((day) => (
+        {workoutPlan.days.map((day) => (
           <View key={day.day} style={styles.dayContainer}>
             <Text style={styles.dayTitle}>Day {day.day}</Text>
             {day.isRestDay ? (
@@ -116,7 +115,6 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
             )}
           </View>
         ))}
-        <Text>... and more days in your complete plan</Text>
       </View>
     </Page>
   </Document>
