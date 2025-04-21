@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     height: 90,
     margin: '0 auto',
     marginBottom: 10,
-    objectFit: 'contain',
   },
   title: {
     fontSize: 24,
@@ -45,17 +44,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   exerciseContainer: {
-    flexDirection: 'row',
     marginBottom: 8,
-    gap: 10,
-  },
-  exerciseImage: {
-    width: 100,
-    height: 80,
-    objectFit: 'cover',
   },
   exerciseDetails: {
     flex: 1,
+  },
+  exerciseName: {
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
+  exerciseDescription: {
+    fontSize: 10,
+    marginBottom: 2,
+  },
+  exerciseReps: {
+    fontSize: 10,
+    fontStyle: 'italic',
   },
 });
 
@@ -109,13 +113,10 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
               <>
                 {day.exercises.map((exercise, index) => (
                   <View key={index} style={styles.exerciseContainer}>
-                    {exercise.imageUrl && (
-                      <Image src={exercise.imageUrl} style={styles.exerciseImage} />
-                    )}
                     <View style={styles.exerciseDetails}>
-                      <Text style={styles.mealLabel}>{exercise.name}</Text>
-                      <Text>{exercise.reps}</Text>
-                      <Text>{exercise.description}</Text>
+                      <Text style={styles.exerciseName}>{exercise.name}</Text>
+                      <Text style={styles.exerciseReps}>{exercise.reps}</Text>
+                      <Text style={styles.exerciseDescription}>{exercise.description}</Text>
                     </View>
                   </View>
                 ))}
