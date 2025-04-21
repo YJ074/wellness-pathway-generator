@@ -27,11 +27,13 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
         onReset={onReset}
       />
 
+      {/* Pass has_muscular_build to the metrics display */}
       <WellnessMetricsDisplay
         bmi={dietPlan.bmi}
         bmiCategory={dietPlan.bmiCategory}
         bmr={dietPlan.bmr}
         dailyCalories={dietPlan.dailyCalories}
+        hasMuscularBuild={!!formData.has_muscular_build}
       />
 
       <motion.div
@@ -59,3 +61,4 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
 };
 
 export default WellnessResults;
+

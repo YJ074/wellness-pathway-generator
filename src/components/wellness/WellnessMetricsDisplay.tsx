@@ -6,6 +6,7 @@ interface WellnessMetricsDisplayProps {
   bmiCategory: string | undefined;
   bmr: number | undefined;
   dailyCalories: number | undefined;
+  hasMuscularBuild?: boolean;
 }
 
 const getBmiCategoryColor = (category: string): string => {
@@ -31,8 +32,12 @@ const WellnessMetricsDisplay = ({
   bmiCategory,
   bmr,
   dailyCalories,
+  hasMuscularBuild,
 }: WellnessMetricsDisplayProps) => {
   if (bmi === undefined || bmr === undefined) return null;
+
+  // Logic to display the note only when hasMuscularBuild is true and the BMI suggests overweight or higher
+  const showMuscleNote = hasMuscularBuild && ["overweight", "obese", "high BMI", "athletic build"].includes(bmiCategory ?? "");
 
   return (
     <div className="bg-slate-50 p-4 rounded-lg border shadow-sm">
@@ -53,6 +58,11 @@ const WellnessMetricsDisplay = ({
                 Based on your exercise frequency, your higher BMI likely reflects muscle mass rather than excess fat.
               </p>
             )}
+            {showMuscleNote && (
+              <p className="text-xs italic mt-1 text-blue-600">
+                Note: BMI may appear high due to higher muscle mass, which is healthy in your case.
+              </p>
+            )}
           </div>
         </div>
         <div className="p-3 bg-white rounded-md border">
@@ -71,3 +81,4 @@ const WellnessMetricsDisplay = ({
 };
 
 export default WellnessMetricsDisplay;
+
