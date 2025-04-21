@@ -1,15 +1,16 @@
-
 export interface FormData {
   name: string;
   email: string;
   age: string;
-  height: string;
+  height: string; // in cm
   weight: string;
   mobileNumber: string;
-  gender: 'male' | 'female' | 'other'; // Added for gender dropdown
+  gender: 'male' | 'female' | 'other';
   dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
   fitnessGoal: string;
   exerciseFrequency: string;
+  heightFeet?: string;   // new: optional, for feet input
+  heightInches?: string; // new: optional, for inches input
 }
 
 export interface DietPlan {

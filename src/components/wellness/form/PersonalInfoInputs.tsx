@@ -3,16 +3,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import BasicInfoInputs from './BasicInfoInputs';
 import ContactInputs from './ContactInputs';
+import { FormData } from '../types';
 
 interface PersonalInfoInputsProps {
-  formData: {
-    name: string;
-    email: string;
-    age: string;
-    height: string;
-    weight: string;
-    mobileNumber: string;
-  };
+  formData: FormData;
   handleInputChange: (field: string, value: string) => void;
 }
 
@@ -29,6 +23,9 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
         age={formData.age}
         height={formData.height}
         weight={formData.weight}
+        gender={formData.gender}
+        heightFeet={formData.heightFeet}
+        heightInches={formData.heightInches}
         onInputChange={handleInputChange}
       />
       
