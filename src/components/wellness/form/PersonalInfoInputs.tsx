@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import BasicInfoInputs from './BasicInfoInputs';
 import ContactInputs from './ContactInputs';
@@ -31,16 +31,16 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
         onInputChange={handleInputChange}
       />
 
-      {/* Muscular Build Checkbox */}
-      <div className="flex items-center space-x-2 mt-4">
-        <Checkbox 
+      {/* Muscular Build Toggle */}
+      <div className="flex items-center space-x-3 mt-4">
+        <Switch
           id="muscularBuild"
           checked={!!formData.has_muscular_build}
-          onCheckedChange={(checked) => handleInputChange('has_muscular_build', Boolean(checked))}
+          onCheckedChange={checked => handleInputChange('has_muscular_build', Boolean(checked))}
         />
         <Label 
-          htmlFor="muscularBuild" 
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          htmlFor="muscularBuild"
+          className="text-sm font-medium"
         >
           I have a muscular build (this helps with more accurate BMI interpretation)
         </Label>
