@@ -42,7 +42,49 @@ export const limitSoyaInDietDays = (proteinList: string[], totalDays: number, ma
   return out;
 };
 
-export const getProteinSources = (dietaryPreference: DietaryPreference) => {
+// Helper: remove ingredients based on allergy list (case-insensitive, strippable)
+const stripAndLower = (s: string) => s.trim().toLowerCase();
+const parseAllergies = (allergies?: string) =>
+  allergies?.split(',')
+    .map(stripAndLower)
+    .filter(Boolean)
+    || [];
+
+const isAllergic = (allergiesArr: string[], food: string) =>
+  allergiesArr.some(a => food.toLowerCase().includes(a));
+
+// Substitution helpers for common allergy cases
+const suggestSubstitutes = (item: string, allergiesArr: string[]): string => {
+  // If dairy
+  if (["paneer", "curd", "buttermilk", "milk", "yogurt"].some(d => item.toLowerCase().includes(d)) && allergiesArr.includes('dairy')) {
+    // Culturally relevant: tofu, coconut milk, cashew yogurt, etc.
+    if (item.toLowerCase().includes('paneer')) return "Tofu (dairy-free)";
+    if (item.toLowerCase().includes('curd') || item.toLowerCase().includes('yogurt') || item.toLowerCase().includes('buttermilk'))
+      return "Coconut Yogurt (dairy-free)";
+    return "Plant-based substitute";
+  }
+  if (item.toLowerCase().includes('egg') && allergiesArr.includes('egg')) return "Scrambled Tofu";
+  if (item.toLowerCase().includes('chicken') && allergiesArr.includes('chicken')) return "Grilled Mushrooms";
+  if (item.toLowerCase().includes('peanut') && allergiesArr.includes('peanuts')) return "Roasted Chickpeas";
+  if ((item.toLowerCase().includes('wheat') || item.toLowerCase().includes('roti')) && allergiesArr.includes('gluten')) {
+    // Gluten subs
+    if (item.toLowerCase().includes('roti')) return "Jowar/Bajra/Millet Roti";
+    return "Rice (gluten-free)";
+  }
+  return item;
+};
+
+export const filterAllergies = (list: string[], allergies?: string): string[] => {
+  const allergyArr = parseAllergies(allergies);
+  return list
+    .map(item => isAllergic(allergyArr, item) ? suggestSubstitutes(item, allergyArr) : item)
+    .filter(item => {
+      // Only keep if after substitute it's not still an allergen
+      return !isAllergic(allergyArr, item);
+    });
+};
+
+export const getProteinSources = (dietaryPreference: DietaryPreference, allergies?: string) => {
   const proteins: Record<DietaryPreference, string[]> = {
     'lacto-vegetarian': [
       'Paneer', 'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
@@ -85,83 +127,70 @@ export const getProteinSources = (dietaryPreference: DietaryPreference) => {
       'Toor Dal', 'Chana Dal', 'Peanuts', 'Besan (Gram Flour)'
     ]
   };
-  return proteins[dietaryPreference] || proteins['lacto-vegetarian'];
+  return filterAllergies(proteins[dietaryPreference] || proteins['lacto-vegetarian'], allergies);
 };
 
-export const getGrainSources = (dietaryPreference?: DietaryPreference) => {
-  // For "pure-jain", avoid fermented grains (no idli/dosa batter), keep basic millets/grains
-  if (dietaryPreference === 'pure-jain') {
-    return [
+export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
+  const allGrains = dietaryPreference === 'pure-jain' ? [
       'Rice (Local Variety)', 'Broken Wheat', 'Jowar',
       'Bajra', 'Whole Wheat Atta', 'Poha',
       'Local Millet Varieties', 'Barley', 'Rice Flakes'
-      // No suji (sometimes made into fermented foods), no mixed millet roti, no ragi (can be challenging if prepared as malt/fermented forms)
+    ] : [
+      'Rice (Local Variety)', 'Broken Wheat', 'Ragi', 'Jowar',
+      'Bajra', 'Whole Wheat Atta', 'Poha', 'Local Millet Varieties',
+      'Suji (Semolina)', 'Barley', 'Mixed Millet Roti', 'Rice Flakes'
     ];
-  }
-  return [
-    'Rice (Local Variety)', 'Broken Wheat', 'Ragi', 'Jowar',
-    'Bajra', 'Whole Wheat Atta', 'Poha', 'Local Millet Varieties',
-    'Suji (Semolina)', 'Barley', 'Mixed Millet Roti', 'Rice Flakes'
-  ];
+  return filterAllergies(allGrains, allergies);
 };
 
-export const getVegetableSources = (dietaryPreference?: DietaryPreference) => {
-  // Remove root vegetables and mushrooms for "pure-jain" and "jain"
-  const base = [
+export const getVegetableSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
+  let base: string[] = [
     'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds', 'Cabbage', 'Cauliflower',
     'Carrots', 'Green Peas', 'Onions', 'Tomatoes', 'Potatoes', 'Local Beans',
     'Cucumber', 'Pumpkin', 'Radish', 'Beetroot'
   ];
   if (dietaryPreference === 'pure-jain' || dietaryPreference === 'jain') {
-    // Strict list: No carrots, onions, potatoes, radish, beetroot, garlic, ginger; also no mushrooms, focus on gourds, cabbage, leafy greens, peas, tomatoes, cucumber, pumpkin, beans (no sprouted beans)
-    return [
+    base = [
       'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
       'Cabbage', 'Cauliflower', 'Green Peas',
       'Tomatoes', 'Local Beans', 'Cucumber', 'Pumpkin'
-      // All root vegetables and mushroom are removed!
     ];
-  }
-  if (dietaryPreference === 'sattvic') {
-    // Sattvic: No onion, garlic, mushrooms, radish, beetroot, focus on fresh veggies
-    return [
+  } else if (dietaryPreference === 'sattvic') {
+    base = [
       'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
       'Cabbage', 'Cauliflower', 'Carrots', 'Green Peas',
       'Tomatoes', 'Local Beans', 'Cucumber', 'Pumpkin'
     ];
   }
-  return base;
+  return filterAllergies(base, allergies);
 };
 
-export const getFruitSources = (dietaryPreference?: DietaryPreference) => {
-  // For "pure-jain" remove fruits that are NOT traditionally Jain permitted. For simplicity, restrict to some dried fruits/banana.
-  if (dietaryPreference === 'pure-jain') {
-    // Jain traditionally avoid certain fruits: restrict to bananas, dry fruit in moderation
-    return ['Bananas', 'Raisins', 'Almonds (soaked)', 'Cashews (soaked)', 'Figs (soaked)'];
-  }
-  return [
-    'Seasonal Local Fruits', 'Bananas', 'Local Varieties of Apples',
-    'Oranges', 'Mosambi', 'Watermelon', 'Papaya',
-    'Guava', 'Local Berries', 'Jamun (in season)',
-    'Musk Melon', 'Indian Plums'
-  ];
+export const getFruitSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
+  const fruits = dietaryPreference === 'pure-jain'
+    ? ['Bananas', 'Raisins', 'Almonds (soaked)', 'Cashews (soaked)', 'Figs (soaked)']
+    : [
+        'Seasonal Local Fruits', 'Bananas', 'Local Varieties of Apples',
+        'Oranges', 'Mosambi', 'Watermelon', 'Papaya',
+        'Guava', 'Local Berries', 'Jamun (in season)',
+        'Musk Melon', 'Indian Plums'
+      ];
+  return filterAllergies(fruits, allergies);
 };
 
-export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean) => {
-  // For "pure-jain", restrict to roasted nuts, dairy, and simple non-fermented options
-  if (dietaryPreference === 'pure-jain') {
-    return [
-      'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha',
-      'Dahi (plain curd)', 'Homemade Buttermilk', 'Soaked Dry Fruits',
-      'Lemon Water', 'Cucumber Slices'
-    ];
-  }
-  const baseSnacks = [
-    'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
-    'Homemade Poha', 'Boiled Sprouts', 'Seasonal Fruit',
-    'Buttermilk', 'Lemon Water', 'Homemade Chaas'
-  ];
+export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean, allergies?: string) => {
+  let baseSnacks = dietaryPreference === 'pure-jain'
+    ? [
+        'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha',
+        'Dahi (plain curd)', 'Homemade Buttermilk', 'Soaked Dry Fruits',
+        'Lemon Water', 'Cucumber Slices'
+      ]
+    : [
+        'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
+        'Homemade Poha', 'Boiled Sprouts', 'Seasonal Fruit',
+        'Buttermilk', 'Lemon Water', 'Homemade Chaas'
+      ];
   if (dietaryPreference === 'eggitarian' && !isWeightLoss) {
     baseSnacks.push('Boiled Egg');
   }
-  return baseSnacks;
+  return filterAllergies(baseSnacks, allergies);
 };

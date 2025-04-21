@@ -9,12 +9,12 @@ import {
   limitSoyaInDietDays,
 } from './foodSources';
 import {
-  generateBreakfast,
-  generateLunch,
-  generateDinner,
+  generateBreakfast as _generateBreakfast,
+  generateLunch as _generateLunch,
+  generateDinner as _generateDinner,
   generateSnacks,
-  generateMidMorningSnack,
-  generateEveningSnack
+  generateMidMorningSnack as _generateMidMorningSnack,
+  generateEveningSnack as _generateEveningSnack
 } from './mealGenerators';
 
 // Calculate BMI
@@ -98,32 +98,30 @@ export const generateDietPlan = (
   
   const dietaryPreference = formData.dietaryPreference;
   const proteinFocus = formData.fitnessGoal === 'muscle-gain';
-  // Only trigger calorie reduction for non-muscular build users (previous code already handled this!)
-
-  // Key change: limit soya appearance to once in any 30 days for protein sources!
-  const rawProteins = getProteinSources(dietaryPreference);
-  // Precompute 75-day protein rotation with soya limited
-  const proteinsByDay = limitSoyaInDietDays(rawProteins, 75, 30);
-  
-  const grains = getGrainSources();
-  const vegetables = getVegetableSources();
-  const fruits = getFruitSources();
-  // Calorie reduction only if not muscular build
   const calorieReduction = formData.fitnessGoal === 'weight-loss' && !formData.has_muscular_build;
-  const snacks = getSnackSources(dietaryPreference, calorieReduction);
+  const { allergies } = formData;
+
+  // Use new allergy-aware accessors
+  const rawProteins = getProteinSources(dietaryPreference, allergies);
+  const proteinsByDay = limitSoyaInDietDays(rawProteins, 75, 30);
+
+  const grains = getGrainSources(dietaryPreference, allergies);
+  const vegetables = getVegetableSources(dietaryPreference, allergies);
+  const fruits = getFruitSources(dietaryPreference, allergies);
+  const snacks = getSnackSources(dietaryPreference, calorieReduction, allergies);
   
   for (let i = 1; i <= 75; i++) {
     const dayIndex = (i - 1) % 15;
     
-    const breakfast = generateBreakfast(dayIndex, dietaryPreference, calorieReduction);
-    const midMorningSnack = generateMidMorningSnack(dayIndex, snacks, fruits, calorieReduction);
+    const breakfast = generateBreakfast(dayIndex, dietaryPreference, calorieReduction, allergies);
+    const midMorningSnack = generateMidMorningSnack(dayIndex, snacks, fruits, calorieReduction, allergies);
 
     // Use protein for this day, limited for soya according to our rule
     const proteinForDay = proteinsByDay[i - 1];
     // Lunch and dinner use proteins; pass a single-item protein array so they use correct protein for the day
-    const lunch = generateLunch(dayIndex, [proteinForDay], grains, vegetables, calorieReduction, proteinFocus);
-    const eveningSnack = generateEveningSnack(dayIndex, snacks, fruits, calorieReduction);
-    const dinner = generateDinner(dayIndex, [proteinForDay], vegetables, calorieReduction, proteinFocus);
+    const lunch = generateLunch(dayIndex, [proteinForDay], grains, vegetables, calorieReduction, proteinFocus, allergies);
+    const eveningSnack = generateEveningSnack(dayIndex, snacks, fruits, calorieReduction, allergies);
+    const dinner = generateDinner(dayIndex, [proteinForDay], vegetables, calorieReduction, proteinFocus, allergies);
     
     // Calculate approximate calories for the day
     const totalCalories = Math.round(dailyCalories / 10) * 10;
@@ -153,3 +151,30 @@ export const generateDietPlan = (
     dailyCalories: Math.round(dailyCalories)
   };
 };
+
+// Update mealGenerators' function signatures everywhere to accept allergies
+import * as mealGen from './mealGenerators';
+const {
+  generateBreakfast: _generateBreakfast,
+  generateMidMorningSnack: _generateMidMorningSnack,
+  generateLunch: _generateLunch,
+  generateEveningSnack: _generateEveningSnack,
+  generateDinner: _generateDinner,
+} = mealGen;
+
+// Re-export new allergy-aware wrappers:
+export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string) {
+  return _generateBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies);
+}
+export function generateMidMorningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
+  return _generateMidMorningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
+}
+export function generateLunch(dayIndex: number, proteins: string[], grains: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string) {
+  return _generateLunch(dayIndex, proteins, grains, vegetables, isWeightLoss, isProteinFocus, allergies);
+}
+export function generateEveningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
+  return _generateEveningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
+}
+export function generateDinner(dayIndex: number, proteins: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string) {
+  return _generateDinner(dayIndex, proteins, vegetables, isWeightLoss, isProteinFocus, allergies);
+}
