@@ -187,6 +187,7 @@ const BasicInfoInputs = ({
             </div>
           </div>
         </fieldset>
+      </div>
       
       <FormField
         id="weight"
