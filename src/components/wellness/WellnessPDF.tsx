@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Link, Image } from '@react-pdf/renderer';
 import { DietPlan, WorkoutPlan, FormData } from './types';
@@ -147,7 +146,6 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
                           Tutorial (English)
                         </Link>
                       )}
-                      {/* Hindi link, if present in your data structure */}
                       {exercise.tutorialUrlHindi && (
                         <Link style={styles.linkStyle} src={exercise.tutorialUrlHindi}>
                           Tutorial (Hindi)
@@ -171,4 +169,3 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
 );
 
 export default WellnessPDF;
-

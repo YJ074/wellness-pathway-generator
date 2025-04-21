@@ -31,8 +31,9 @@ export interface WorkoutPlan {
       reps: string;
       description: string;
       imageUrl?: string;  // Optional image URL for exercise illustration
+      tutorialUrl?: string; // Optional tutorial URL in English
+      tutorialUrlHindi?: string; // Optional tutorial URL in Hindi
     }>;
     cooldown: string[];
   }>;
 }
-
