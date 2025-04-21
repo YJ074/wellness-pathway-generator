@@ -1,4 +1,3 @@
-
 import { toast } from "@/hooks/use-toast";
 
 export const validateEmail = (email: string) => {
@@ -44,13 +43,19 @@ export const validateEmail = (email: string) => {
 };
 
 export const validateMobileNumber = (value: string) => {
-  // If empty or just +91, return +91 as base
-  if (!value || value === '+91') {
+  // If empty, return +91 as base
+  if (!value) {
     return '+91';
   }
 
-  // Remove all spaces and special characters after +91
-  let numberPart = value.startsWith('+91') ? value.substring(3) : value;
+  // Make sure we're working with the correct prefix
+  let formattedValue = value;
+  if (!value.startsWith('+91')) {
+    formattedValue = '+91' + value.replace(/[^\d]/g, '');
+  }
+
+  // Extract the number part after +91
+  const numberPart = formattedValue.substring(3);
   const cleanedValue = numberPart.replace(/[^\d]/g, '');
 
   // Validate number length
@@ -60,42 +65,28 @@ export const validateMobileNumber = (value: string) => {
       description: "Mobile number cannot exceed 10 digits",
       variant: "destructive"
     });
-    return null;
+    return formattedValue.substring(0, 13); // Keep only valid portion
   }
 
-  // Check if first digit is valid (6,7,8,9) when length is at least 1
+  // Check if first digit is valid (6,7,8,9) when user has entered at least one digit
   if (cleanedValue.length > 0 && !['6', '7', '8', '9'].includes(cleanedValue[0])) {
     toast({
       title: "Invalid Mobile Number",
       description: "Mobile number must start with 6, 7, 8, or 9",
       variant: "destructive"
     });
-    return null;
+    return '+91'; // Reset to base value
   }
 
-  // Show incomplete number message only when user has started typing
+  // Only show incomplete number message when at least 1 digit is entered and less than 10
   if (cleanedValue.length > 0 && cleanedValue.length < 10) {
     toast({
       title: "Incomplete Mobile Number",
       description: "Please enter a complete 10-digit mobile number",
       variant: "destructive"
     });
-    return null;
   }
 
-  // Validate complete number
-  if (cleanedValue.length === 10) {
-    const isValidPattern = /^[6-9]\d{9}$/.test(cleanedValue);
-    if (!isValidPattern) {
-      toast({
-        title: "Invalid Mobile Number",
-        description: "Please enter a valid 10-digit mobile number",
-        variant: "destructive"
-      });
-      return null;
-    }
-  }
-
-  return cleanedValue.length === 0 ? '+91' : `+91${cleanedValue}`;
+  // Return the current value as is - allow partial entry
+  return formattedValue;
 };
-
