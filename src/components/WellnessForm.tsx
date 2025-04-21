@@ -15,6 +15,7 @@ const WellnessForm = () => {
     height: '',
     weight: '',
     mobileNumber: '+91',
+    gender: 'male', // Added default gender
     dietaryPreference: 'lacto-vegetarian',
     fitnessGoal: '',
     exerciseFrequency: ''

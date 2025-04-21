@@ -5,7 +5,8 @@ export interface FormData {
   age: string;
   height: string;
   weight: string;
-  mobileNumber: string;  // New field
+  mobileNumber: string;
+  gender: 'male' | 'female' | 'other'; // Added for gender dropdown
   dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
   fitnessGoal: string;
   exerciseFrequency: string;
@@ -30,9 +31,9 @@ export interface WorkoutPlan {
       name: string;
       reps: string;
       description: string;
-      imageUrl?: string;  // Optional image URL for exercise illustration
-      tutorialUrl?: string; // Optional tutorial URL in English
-      tutorialUrlHindi?: string; // Optional tutorial URL in Hindi
+      imageUrl?: string;
+      tutorialUrl?: string;
+      tutorialUrlHindi?: string;
     }>;
     cooldown: string[];
   }>;
