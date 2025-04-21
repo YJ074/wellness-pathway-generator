@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Link, Image } from '@react-pdf/renderer';
 import { DietPlan, WorkoutPlan, FormData } from './types';
 
 const styles = StyleSheet.create({
@@ -19,47 +19,76 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-  section: {
-    marginBottom: 20,
+  dayBlock: {
+    marginBottom: 28,
+    borderBottom: '1pt solid #e2e8f0',
+    paddingBottom: 12,
   },
-  heading: {
+  dayHeader: {
     fontSize: 18,
     marginBottom: 10,
     color: '#334155',
-  },
-  dayContainer: {
-    marginBottom: 15,
-    borderBottom: '1pt solid #e2e8f0',
-    paddingBottom: 10,
-  },
-  dayTitle: {
-    fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 5,
   },
-  mealContainer: {
+  sectionLabel: {
+    fontSize: 15,
+    color: '#047857',
+    marginTop: 2,
     marginBottom: 8,
+    fontWeight: 'bold',
   },
   mealLabel: {
     fontWeight: 'bold',
+    fontSize: 12,
+    color: '#3b3b3b',
   },
-  exerciseContainer: {
-    marginBottom: 8,
-  },
-  exerciseDetails: {
-    flex: 1,
+  mealText: {
+    fontSize: 12,
+    marginBottom: 2
   },
   exerciseName: {
     fontWeight: 'bold',
+    fontSize: 12,
     marginBottom: 2,
-  },
-  exerciseDescription: {
-    fontSize: 10,
-    marginBottom: 2,
+    color: '#1e293b'
   },
   exerciseReps: {
-    fontSize: 10,
+    fontSize: 11,
     fontStyle: 'italic',
+    marginBottom: 2,
+  },
+  exerciseDesc: {
+    fontSize: 11,
+    marginBottom: 2,
+  },
+  tutorialLinks: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 6,
+  },
+  linkStyle: {
+    fontSize: 10,
+    color: '#2563eb',
+    textDecoration: 'underline',
+    marginRight: 8,
+  },
+  restDay: {
+    color: '#018430',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginVertical: 8,
+  },
+  warmupCdLabel: {
+    fontSize: 11,
+    marginTop: 3,
+    marginBottom: 2,
+    color: '#0f172a',
+    fontWeight: 'bold',
+  },
+  warmupCdItem: {
+    fontSize: 10,
+    marginLeft: 8,
+    marginBottom: 1,
   },
 });
 
@@ -76,57 +105,70 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
       <Text style={styles.title}>
         Personalized 75-Day Wellness Plan for {formData.name}
       </Text>
-
-      <View style={styles.section}>
-        <Text style={styles.heading}>Diet Plan</Text>
-        {dietPlan.days.map((day) => (
-          <View key={day.day} style={styles.dayContainer}>
-            <Text style={styles.dayTitle}>Day {day.day}</Text>
-            <View style={styles.mealContainer}>
+      {dietPlan.days.map((dietDay, idx) => {
+        const workoutDay = workoutPlan.days[idx];
+        return (
+          <View key={dietDay.day} style={styles.dayBlock}>
+            {/* Diet Plan Section */}
+            <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
+            <View>
               <Text style={styles.mealLabel}>Breakfast:</Text>
-              <Text>{day.breakfast}</Text>
-            </View>
-            <View style={styles.mealContainer}>
+              <Text style={styles.mealText}>{dietDay.breakfast}</Text>
               <Text style={styles.mealLabel}>Lunch:</Text>
-              <Text>{day.lunch}</Text>
-            </View>
-            <View style={styles.mealContainer}>
+              <Text style={styles.mealText}>{dietDay.lunch}</Text>
               <Text style={styles.mealLabel}>Dinner:</Text>
-              <Text>{day.dinner}</Text>
-            </View>
-            <View style={styles.mealContainer}>
+              <Text style={styles.mealText}>{dietDay.dinner}</Text>
               <Text style={styles.mealLabel}>Snacks:</Text>
-              <Text>{day.snacks}</Text>
+              <Text style={styles.mealText}>{dietDay.snacks}</Text>
             </View>
-          </View>
-        ))}
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Exercise Plan</Text>
-        {workoutPlan.days.map((day) => (
-          <View key={day.day} style={styles.dayContainer}>
-            <Text style={styles.dayTitle}>Day {day.day}</Text>
-            {day.isRestDay ? (
-              <Text>Rest Day - Focus on recovery and light stretching</Text>
+            {/* Exercise Plan Section */}
+            <Text style={styles.dayHeader}>Day {dietDay.day} Exercise Plan</Text>
+            {workoutDay.isRestDay ? (
+              <Text style={styles.restDay}>
+                Rest Day - Focus on recovery and light stretching
+              </Text>
             ) : (
-              <>
-                {day.exercises.map((exercise, index) => (
-                  <View key={index} style={styles.exerciseContainer}>
-                    <View style={styles.exerciseDetails}>
-                      <Text style={styles.exerciseName}>{exercise.name}</Text>
-                      <Text style={styles.exerciseReps}>{exercise.reps}</Text>
-                      <Text style={styles.exerciseDescription}>{exercise.description}</Text>
+              <View>
+                <Text style={styles.warmupCdLabel}>Warm-up:</Text>
+                {workoutDay.warmup.map((item, i) => (
+                  <Text style={styles.warmupCdItem} key={i}>• {item}</Text>
+                ))}
+
+                <Text style={styles.sectionLabel}>Main Exercises:</Text>
+                {workoutDay.exercises.map((exercise, i) => (
+                  <View key={i} wrap={false}>
+                    <Text style={styles.exerciseName}>{exercise.name}</Text>
+                    <Text style={styles.exerciseReps}>{exercise.reps}</Text>
+                    <Text style={styles.exerciseDesc}>{exercise.description}</Text>
+                    <View style={styles.tutorialLinks}>
+                      {exercise.tutorialUrl && (
+                        <Link style={styles.linkStyle} src={exercise.tutorialUrl}>
+                          Tutorial (English)
+                        </Link>
+                      )}
+                      {/* Hindi link, if present in your data structure */}
+                      {exercise.tutorialUrlHindi && (
+                        <Link style={styles.linkStyle} src={exercise.tutorialUrlHindi}>
+                          Tutorial (Hindi)
+                        </Link>
+                      )}
                     </View>
                   </View>
                 ))}
-              </>
+
+                <Text style={styles.warmupCdLabel}>Cool-down:</Text>
+                {workoutDay.cooldown.map((item, i) => (
+                  <Text style={styles.warmupCdItem} key={i}>• {item}</Text>
+                ))}
+              </View>
             )}
           </View>
-        ))}
-      </View>
+        );
+      })}
     </Page>
   </Document>
 );
 
 export default WellnessPDF;
+
