@@ -1,3 +1,4 @@
+
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { DietaryPreference } from './types';
 import { 
@@ -9,12 +10,12 @@ import {
   limitSoyaInDietDays,
 } from './foodSources';
 import {
-  generateBreakfast as _generateBreakfast,
-  generateLunch as _generateLunch,
-  generateDinner as _generateDinner,
+  generateBreakfast as origGenerateBreakfast,
+  generateLunch as origGenerateLunch,
+  generateDinner as origGenerateDinner,
   generateSnacks,
-  generateMidMorningSnack as _generateMidMorningSnack,
-  generateEveningSnack as _generateEveningSnack
+  generateMidMorningSnack as origGenerateMidMorningSnack,
+  generateEveningSnack as origGenerateEveningSnack
 } from './mealGenerators';
 
 // Calculate BMI
@@ -68,6 +69,27 @@ export const calculateDailyCalories = (bmr: number, fitnessGoal: string, hasMusc
       return bmr;
   }
 };
+
+// Re-export new allergy-aware wrappers:
+export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string) {
+  return origGenerateBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies);
+}
+
+export function generateMidMorningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
+  return origGenerateMidMorningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
+}
+
+export function generateLunch(dayIndex: number, proteins: string[], grains: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string) {
+  return origGenerateLunch(dayIndex, proteins, grains, vegetables, isWeightLoss, isProteinFocus, allergies);
+}
+
+export function generateEveningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
+  return origGenerateEveningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
+}
+
+export function generateDinner(dayIndex: number, proteins: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string) {
+  return origGenerateDinner(dayIndex, proteins, vegetables, isWeightLoss, isProteinFocus, allergies);
+}
 
 export const generateDietPlan = (
   formData: FormData
@@ -151,30 +173,3 @@ export const generateDietPlan = (
     dailyCalories: Math.round(dailyCalories)
   };
 };
-
-// Update mealGenerators' function signatures everywhere to accept allergies
-import * as mealGen from './mealGenerators';
-const {
-  generateBreakfast: _generateBreakfast,
-  generateMidMorningSnack: _generateMidMorningSnack,
-  generateLunch: _generateLunch,
-  generateEveningSnack: _generateEveningSnack,
-  generateDinner: _generateDinner,
-} = mealGen;
-
-// Re-export new allergy-aware wrappers:
-export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string) {
-  return _generateBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies);
-}
-export function generateMidMorningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
-  return _generateMidMorningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
-}
-export function generateLunch(dayIndex: number, proteins: string[], grains: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string) {
-  return _generateLunch(dayIndex, proteins, grains, vegetables, isWeightLoss, isProteinFocus, allergies);
-}
-export function generateEveningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
-  return _generateEveningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
-}
-export function generateDinner(dayIndex: number, proteins: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string) {
-  return _generateDinner(dayIndex, proteins, vegetables, isWeightLoss, isProteinFocus, allergies);
-}
