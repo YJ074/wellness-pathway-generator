@@ -38,6 +38,23 @@ const WellnessFormInputs = ({ formData, handleInputChange }: WellnessFormInputsP
             value={formData.dietaryPreference} 
             onChange={(value) => handleInputChange('dietaryPreference', value)}
           />
+          {/* Allergies Field MOVED HERE */}
+          <div className="space-y-1 mt-6">
+            <label htmlFor="allergies" className="block text-sm font-medium text-gray-700">
+              Allergies or Ingredients to Exclude
+            </label>
+            <input
+              id="allergies"
+              type="text"
+              placeholder="e.g. Peanuts, Dairy, Gluten"
+              value={formData.allergies || ''}
+              onChange={e => handleInputChange('allergies', e.target.value)}
+              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+            />
+            <span className="text-xs text-muted-foreground">
+              List any food allergies or intolerances (comma-separated).
+            </span>
+          </div>
         </motion.div>
       </TabsContent>
       
