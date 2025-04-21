@@ -1,5 +1,6 @@
 
-import { DietaryPreference, DietPlan, FormData } from '@/components/wellness/types';
+import { DietPlan, FormData } from '@/components/wellness/types';
+import { DietaryPreference } from './types';
 import { 
   getProteinSources, 
   getGrainSources, 
