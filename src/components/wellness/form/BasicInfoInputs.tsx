@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { User, Cake, Ruler, Weight } from 'lucide-react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup } from "@/components/ui/select";
 import FormField from '@/components/ui/form-field';
 
 interface BasicInfoInputsProps {
@@ -7,6 +9,7 @@ interface BasicInfoInputsProps {
   age: string;
   height: string;
   weight: string;
+  gender: 'male' | 'female' | 'other';
   onInputChange: (field: string, value: string) => void;
 }
 
@@ -15,6 +18,7 @@ const BasicInfoInputs = ({
   age, 
   height, 
   weight, 
+  gender,
   onInputChange 
 }: BasicInfoInputsProps) => {
   return (
@@ -35,6 +39,26 @@ const BasicInfoInputs = ({
         type="number"
         onChange={(value) => onInputChange('age', value)}
       />
+
+      {/* Gender dropdown above height */}
+      <div>
+        <label className="block mb-1 font-medium">Gender</label>
+        <Select
+          value={gender}
+          onValueChange={(value) => onInputChange('gender', value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select gender" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       
       <FormField
         id="height"
