@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { User, Cake, Ruler, Weight } from 'lucide-react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup } from "@/components/ui/select";
@@ -119,7 +118,6 @@ const BasicInfoInputs = ({
           <legend className="text-base font-semibold text-gray-700 px-2">Height</legend>
 
           <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-            {/* Height in cm */}
             <div className="flex-1">
               <FormField
                 id="height"
@@ -131,30 +129,46 @@ const BasicInfoInputs = ({
                 helperText="Auto-syncs with ft/in"
               />
             </div>
-
-            {/* Height in ft/in */}
-            <div className="flex gap-4">
-              <div className="w-24">
-                <FormField
+            {/* MOBILE-STYLE TIME/ALARM PICKER FOR FEET/INCHES */}
+            <div className="flex items-center gap-0 rounded-xl bg-neutral-100 border border-gray-200 shadow-inner px-2 py-1"
+                 style={{ minWidth: 172, maxWidth: 220, width: "100%", height: 64 }}>
+              {/* Feet */}
+              <div className="w-24 flex flex-col items-center justify-center px-2">
+                <input
                   id="heightFeet"
-                  label="Feet"
-                  icon={Ruler}
-                  value={heightFeet || ''}
                   type="number"
-                  onChange={handleHeightFeetChange}
-                  required={false}
+                  value={heightFeet}
+                  onChange={e => handleHeightFeetChange(e.target.value)}
+                  placeholder="Feet"
+                  min={0}
+                  max={9}
+                  className="w-full text-center text-2xl font-bold bg-transparent outline-none focus:ring-2 focus:ring-brand-blue rounded-md transition-all duration-150 h-12"
+                  style={{
+                    appearance: "textfield",
+                    scrollbarWidth: "none"
+                  }}
                 />
+                <span className="block text-xs text-gray-500 mt-1">Feet</span>
               </div>
-              <div className="w-24">
-                <FormField
+              {/* Divider */}
+              <div className="w-px h-8 bg-gray-300 mx-1" />
+              {/* Inches */}
+              <div className="w-24 flex flex-col items-center justify-center px-2">
+                <input
                   id="heightInches"
-                  label="Inches"
-                  icon={Ruler}
-                  value={heightInches || ''}
                   type="number"
-                  onChange={handleHeightInchesChange}
-                  required={false}
+                  value={heightInches}
+                  onChange={e => handleHeightInchesChange(e.target.value)}
+                  placeholder="Inches"
+                  min={0}
+                  max={11}
+                  className="w-full text-center text-2xl font-bold bg-transparent outline-none focus:ring-2 focus:ring-brand-blue rounded-md transition-all duration-150 h-12"
+                  style={{
+                    appearance: "textfield",
+                    scrollbarWidth: "none"
+                  }}
                 />
+                <span className="block text-xs text-gray-500 mt-1">Inches</span>
               </div>
             </div>
           </div>
@@ -174,4 +188,3 @@ const BasicInfoInputs = ({
 };
 
 export default BasicInfoInputs;
-
