@@ -43,7 +43,7 @@ export const limitSoyaInDietDays = (proteinList: string[], totalDays: number, ma
 };
 
 export const getProteinSources = (dietaryPreference: DietaryPreference) => {
-  const proteins = {
+  const proteins: Record<DietaryPreference, string[]> = {
     'lacto-vegetarian': [
       'Paneer', 'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
       'Curd', 'Buttermilk', 'Besan (Gram Flour)',
@@ -64,6 +64,12 @@ export const getProteinSources = (dietaryPreference: DietaryPreference) => {
       'Soya Products', 'Dried Beans', 'Peanuts', 'Mixed Sprouts',
       'Chickpeas', 'Whole Moong', 'Besan (Gram Flour)'
     ],
+    'pure-jain': [
+      // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg, NO mushrooms, NO fermented
+      // Protein choices: dairy, legumes, pulses (only those allowed), NO soya, NO sprouts, NO beans that are typically sprouted
+      'Paneer', 'Curd', 'Buttermilk', 'Toor Dal', 'Moong Dal', 'Masoor Dal', 'Urad Dal',
+      'Chana Dal', 'Besan (Gram Flour)', 'Chickpeas' // All allowed pulses, NON-SPROUT only
+    ],
     'sattvic': [
       'Paneer', 'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
       'Mixed Sprouts', 'Buttermilk', 'Peanuts', 'Whole Moong',
@@ -79,40 +85,83 @@ export const getProteinSources = (dietaryPreference: DietaryPreference) => {
       'Toor Dal', 'Chana Dal', 'Peanuts', 'Besan (Gram Flour)'
     ]
   };
-  
   return proteins[dietaryPreference] || proteins['lacto-vegetarian'];
 };
 
-export const getGrainSources = () => [
-  'Rice (Local Variety)', 'Broken Wheat', 'Ragi', 'Jowar',
-  'Bajra', 'Whole Wheat Atta', 'Poha', 'Local Millet Varieties',
-  'Suji (Semolina)', 'Barley', 'Mixed Millet Roti', 'Rice Flakes'
-];
+export const getGrainSources = (dietaryPreference?: DietaryPreference) => {
+  // For "pure-jain", avoid fermented grains (no idli/dosa batter), keep basic millets/grains
+  if (dietaryPreference === 'pure-jain') {
+    return [
+      'Rice (Local Variety)', 'Broken Wheat', 'Jowar',
+      'Bajra', 'Whole Wheat Atta', 'Poha',
+      'Local Millet Varieties', 'Barley', 'Rice Flakes'
+      // No suji (sometimes made into fermented foods), no mixed millet roti, no ragi (can be challenging if prepared as malt/fermented forms)
+    ];
+  }
+  return [
+    'Rice (Local Variety)', 'Broken Wheat', 'Ragi', 'Jowar',
+    'Bajra', 'Whole Wheat Atta', 'Poha', 'Local Millet Varieties',
+    'Suji (Semolina)', 'Barley', 'Mixed Millet Roti', 'Rice Flakes'
+  ];
+};
 
-export const getVegetableSources = () => [
-  'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
-  'Cabbage', 'Cauliflower', 'Carrots', 'Green Peas',
-  'Onions', 'Tomatoes', 'Potatoes', 'Local Beans',
-  'Cucumber', 'Pumpkin', 'Radish', 'Beetroot'
-];
+export const getVegetableSources = (dietaryPreference?: DietaryPreference) => {
+  // Remove root vegetables and mushrooms for "pure-jain" and "jain"
+  const base = [
+    'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds', 'Cabbage', 'Cauliflower',
+    'Carrots', 'Green Peas', 'Onions', 'Tomatoes', 'Potatoes', 'Local Beans',
+    'Cucumber', 'Pumpkin', 'Radish', 'Beetroot'
+  ];
+  if (dietaryPreference === 'pure-jain' || dietaryPreference === 'jain') {
+    // Strict list: No carrots, onions, potatoes, radish, beetroot, garlic, ginger; also no mushrooms, focus on gourds, cabbage, leafy greens, peas, tomatoes, cucumber, pumpkin, beans (no sprouted beans)
+    return [
+      'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
+      'Cabbage', 'Cauliflower', 'Green Peas',
+      'Tomatoes', 'Local Beans', 'Cucumber', 'Pumpkin'
+      // All root vegetables and mushroom are removed!
+    ];
+  }
+  if (dietaryPreference === 'sattvic') {
+    // Sattvic: No onion, garlic, mushrooms, radish, beetroot, focus on fresh veggies
+    return [
+      'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
+      'Cabbage', 'Cauliflower', 'Carrots', 'Green Peas',
+      'Tomatoes', 'Local Beans', 'Cucumber', 'Pumpkin'
+    ];
+  }
+  return base;
+};
 
-export const getFruitSources = () => [
-  'Seasonal Local Fruits', 'Bananas', 'Local Varieties of Apples',
-  'Oranges', 'Mosambi', 'Watermelon', 'Papaya',
-  'Guava', 'Local Berries', 'Jamun (in season)',
-  'Musk Melon', 'Indian Plums'
-];
+export const getFruitSources = (dietaryPreference?: DietaryPreference) => {
+  // For "pure-jain" remove fruits that are NOT traditionally Jain permitted. For simplicity, restrict to some dried fruits/banana.
+  if (dietaryPreference === 'pure-jain') {
+    // Jain traditionally avoid certain fruits: restrict to bananas, dry fruit in moderation
+    return ['Bananas', 'Raisins', 'Almonds (soaked)', 'Cashews (soaked)', 'Figs (soaked)'];
+  }
+  return [
+    'Seasonal Local Fruits', 'Bananas', 'Local Varieties of Apples',
+    'Oranges', 'Mosambi', 'Watermelon', 'Papaya',
+    'Guava', 'Local Berries', 'Jamun (in season)',
+    'Musk Melon', 'Indian Plums'
+  ];
+};
 
 export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean) => {
+  // For "pure-jain", restrict to roasted nuts, dairy, and simple non-fermented options
+  if (dietaryPreference === 'pure-jain') {
+    return [
+      'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha',
+      'Dahi (plain curd)', 'Homemade Buttermilk', 'Soaked Dry Fruits',
+      'Lemon Water', 'Cucumber Slices'
+    ];
+  }
   const baseSnacks = [
     'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
     'Homemade Poha', 'Boiled Sprouts', 'Seasonal Fruit',
     'Buttermilk', 'Lemon Water', 'Homemade Chaas'
   ];
-  
   if (dietaryPreference === 'eggitarian' && !isWeightLoss) {
     baseSnacks.push('Boiled Egg');
   }
-  
   return baseSnacks;
 };

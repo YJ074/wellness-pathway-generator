@@ -3,11 +3,7 @@ import React from 'react';
 import { Salad, HelpCircle } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface DietaryPreferenceInputProps {
   value: string;
@@ -19,6 +15,7 @@ const dietaryDescriptions = {
   'lacto-ovo-vegetarian': 'A flexible vegetarian diet that includes dairy products and eggs, while excluding meat and fish.',
   'pure-vegetarian': 'A diet that excludes all animal products except dairy.',
   'jain': 'A strict vegetarian diet following Jain religious principles.',
+  'pure-jain': 'Strict Jain satvik diet. Excludes all root vegetables (potato, carrot, beetroot, radish, onion, garlic, ginger), sprouts, fruits (if not traditionally permitted), fermented foods, mushrooms, and absolutely all animal products. Focus on grains, pulses, gourds, leafy vegetables, and dairy.',
   'sattvic': 'A diet rooted in Ayurvedic and yogic traditions, emphasizing pure, natural, and minimally processed foods.',
   'non-vegetarian': 'A diet that includes all food groups: meats, fish, eggs, and vegetarian options.'
 };
@@ -60,6 +57,7 @@ const DietaryPreferenceInput = ({ value, onChange }: DietaryPreferenceInputProps
           <SelectItem value="lacto-ovo-vegetarian">Lacto-Ovo Vegetarian</SelectItem>
           <SelectItem value="pure-vegetarian">Pure Vegetarian</SelectItem>
           <SelectItem value="jain">Jain</SelectItem>
+          <SelectItem value="pure-jain">Pure Jain</SelectItem>
           <SelectItem value="sattvic">Sattvic</SelectItem>
           <SelectItem value="non-vegetarian">Non-Vegetarian</SelectItem>
         </SelectContent>

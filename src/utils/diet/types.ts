@@ -1,5 +1,12 @@
-
-export type DietaryPreference = 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian' | 'eggitarian';
+export type DietaryPreference =
+  | 'lacto-vegetarian'
+  | 'lacto-ovo-vegetarian'
+  | 'pure-vegetarian'
+  | 'jain'
+  | 'sattvic'
+  | 'non-vegetarian'
+  | 'eggitarian'
+  | 'pure-jain';
 
 export interface DietPlan {
   days: Array<{
@@ -10,3 +17,4 @@ export interface DietPlan {
     snacks: string;
   }>;
 }
+
