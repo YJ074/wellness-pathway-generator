@@ -129,11 +129,21 @@ const BasicInfoInputs = ({
                 helperText="Auto-syncs with ft/in"
               />
             </div>
-            {/* MOBILE-STYLE TIME/ALARM PICKER FOR FEET/INCHES */}
-            <div className="flex items-center gap-0 rounded-xl bg-neutral-100 border border-gray-200 shadow-inner px-2 py-1"
-                 style={{ minWidth: 172, maxWidth: 220, width: "100%", height: 64 }}>
+            {/* Enhanced alarm-like rotating wheel style for ft/in picker */}
+            <div
+              className="flex items-center justify-center gap-0 rounded-2xl bg-gradient-to-b from-white/70 via-neutral-100 to-white/70 border border-gray-200 shadow-inner px-0 py-0 relative"
+              style={{
+                minWidth: 172,
+                maxWidth: 220,
+                width: "100%",
+                height: 80,
+                overflow: "hidden"
+              }}
+            >
+              {/* "track" */}
+              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-14 bg-white/60 z-10 rounded-xl pointer-events-none border-y border-gray-200" style={{}} />
               {/* Feet */}
-              <div className="w-24 flex flex-col items-center justify-center px-2">
+              <div className="w-24 flex flex-col items-center justify-center px-2 relative z-20">
                 <input
                   id="heightFeet"
                   type="number"
@@ -142,18 +152,19 @@ const BasicInfoInputs = ({
                   placeholder="Feet"
                   min={0}
                   max={9}
-                  className="w-full text-center text-2xl font-bold bg-transparent outline-none focus:ring-2 focus:ring-brand-blue rounded-md transition-all duration-150 h-12"
+                  className="w-full text-center text-2xl font-extrabold bg-transparent outline-none focus:ring-2 focus:ring-brand-blue rounded-lg transition-all duration-150 h-14
+                    [appearance:textfield] scrollbar-hide select-none"
                   style={{
-                    appearance: "textfield",
-                    scrollbarWidth: "none"
+                    // Overriding for iOS/Android feel
+                    fontVariantNumeric: "tabular-nums",
                   }}
                 />
                 <span className="block text-xs text-gray-500 mt-1">Feet</span>
               </div>
               {/* Divider */}
-              <div className="w-px h-8 bg-gray-300 mx-1" />
+              <div className="w-px h-12 bg-gray-300 mx-0 relative z-20" />
               {/* Inches */}
-              <div className="w-24 flex flex-col items-center justify-center px-2">
+              <div className="w-24 flex flex-col items-center justify-center px-2 relative z-20">
                 <input
                   id="heightInches"
                   type="number"
@@ -162,18 +173,20 @@ const BasicInfoInputs = ({
                   placeholder="Inches"
                   min={0}
                   max={11}
-                  className="w-full text-center text-2xl font-bold bg-transparent outline-none focus:ring-2 focus:ring-brand-blue rounded-md transition-all duration-150 h-12"
+                  className="w-full text-center text-2xl font-extrabold bg-transparent outline-none focus:ring-2 focus:ring-brand-blue rounded-lg transition-all duration-150 h-14
+                    [appearance:textfield] scrollbar-hide select-none"
                   style={{
-                    appearance: "textfield",
-                    scrollbarWidth: "none"
+                    fontVariantNumeric: "tabular-nums",
                   }}
                 />
                 <span className="block text-xs text-gray-500 mt-1">Inches</span>
               </div>
+              {/* subtle fade overlays for depth */}
+              <div className="absolute left-0 top-0 w-8 h-full pointer-events-none z-30 bg-gradient-to-r from-white via-white/60 to-transparent" />
+              <div className="absolute right-0 top-0 w-8 h-full pointer-events-none z-30 bg-gradient-to-l from-white via-white/60 to-transparent" />
             </div>
           </div>
         </fieldset>
-      </div>
       
       <FormField
         id="weight"
