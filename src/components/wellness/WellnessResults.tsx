@@ -52,7 +52,10 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: dietDay.day * 0.01 }}
           >
-            <WellnessDietDayCard dietDay={dietDay} />
+            <WellnessDietDayCard 
+              dietDay={dietDay}
+              formData={formData} // Pass formData to access exercise frequency
+            />
           </motion.div>
         ))}
       </div>
@@ -61,4 +64,3 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
 };
 
 export default WellnessResults;
-
