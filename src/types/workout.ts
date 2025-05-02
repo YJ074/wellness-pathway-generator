@@ -3,7 +3,7 @@ export type ExerciseType = {
   name: string;
   reps: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string; // Changed from required to optional
   tutorialUrl?: string;
   tutorialUrlHindi?: string; // Added to support Indian language video links
 };

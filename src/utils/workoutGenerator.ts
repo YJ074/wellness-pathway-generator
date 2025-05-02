@@ -9,8 +9,9 @@ import {
   progressWorkout,
   adjustDifficultyForWeek
 } from './workoutUtils';
+import { WorkoutPlan } from '../components/wellness/types';
 
-export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: string): WorkoutDay[] => {
+export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: string): WorkoutPlan => {
   let workoutDays: WorkoutDay[] = [];
   const level = getInitialLevel(exerciseFrequency);
   let currentExercises = BODYWEIGHT_EXERCISES[level];
@@ -67,5 +68,6 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
     });
   }
 
-  return workoutDays;
+  // Return a proper WorkoutPlan object
+  return { days: workoutDays };
 };

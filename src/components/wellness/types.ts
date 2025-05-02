@@ -1,4 +1,6 @@
 
+import { WorkoutDay } from '../../types/workout';
+
 export interface FormData {
   name: string;
   email: string;
@@ -37,18 +39,5 @@ export interface DietPlan {
 }
 
 export interface WorkoutPlan {
-  days: Array<{
-    day: number;
-    isRestDay: boolean;
-    warmup: string[];
-    exercises: Array<{
-      name: string;
-      reps: string;
-      description: string;
-      imageUrl?: string;
-      tutorialUrl?: string;
-      tutorialUrlHindi?: string;
-    }>;
-    cooldown: string[];
-  }>;
+  days: WorkoutDay[];
 }
