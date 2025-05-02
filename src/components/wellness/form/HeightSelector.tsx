@@ -67,7 +67,7 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
   return (
     <fieldset className="border border-gray-300 rounded-md p-4 space-y-4">
       <legend className="text-base font-semibold text-gray-700 px-2">Height</legend>
-      <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+      <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 text-center">
         <div className="flex-1">
           <FormField
             id="height"
@@ -85,12 +85,12 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
             minWidth: 172,
             maxWidth: 220,
             width: "100%",
-            height: 80,
+            height: 70,
             overflow: "hidden",
           }}
         >
-          {/* Track */}
-          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-14 bg-white/60 z-10 rounded-xl pointer-events-none border-y border-gray-200" />
+          {/* Track border-y*/}
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-14 bg-white/60 z-10 rounded-xl pointer-events-none border-gray-200" />
           {/* Feet */}
           <div className="w-24 flex flex-col items-center justify-center px-2 relative z-20">
             <input
