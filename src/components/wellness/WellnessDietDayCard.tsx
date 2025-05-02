@@ -2,6 +2,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dumbbell, Utensils } from "lucide-react";
+import { WorkoutDay } from "@/types/workout";
 
 interface DietPlanDay {
   day: number;
@@ -21,13 +22,12 @@ interface WellnessDietDayCardProps {
   dietDay: DietPlanDay;
   formData?: {
     exerciseFrequency?: string;
+    fitnessGoal?: string;
   };
+  workoutDay?: WorkoutDay;
 }
 
-const WellnessDietDayCard = ({ dietDay, formData }: WellnessDietDayCardProps) => {
-  // Only show workout for Day 1
-  const isDay1 = dietDay.day === 1;
-  
+const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayCardProps) => {
   // Determine fitness level based on exercise frequency
   const getFitnessLevel = () => {
     const frequency = formData?.exerciseFrequency || '';
@@ -80,10 +80,11 @@ const WellnessDietDayCard = ({ dietDay, formData }: WellnessDietDayCardProps) =>
     return workoutData[fitnessLevel as keyof typeof workoutData];
   };
   
-  const workout = getWorkoutDetails();
-  
-  // Calculate total calories
+  // Total calories
   const totalCalories = dietDay.calories || 0;
+  
+  // Check if it's a rest day
+  const isRestDay = workoutDay?.isRestDay;
 
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
@@ -91,58 +92,108 @@ const WellnessDietDayCard = ({ dietDay, formData }: WellnessDietDayCardProps) =>
         <CardTitle className="text-2xl">Day {dietDay.day}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Show workout only for Day 1 */}
-        {isDay1 && (
-          <div className="space-y-4 border-b pb-6">
-            <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
-              <Dumbbell className="w-5 h-5" />
-              Workout (Personalized)
-            </h3>
-            <div className="space-y-3 pl-2">
-              <p className="text-sm text-muted-foreground">
-                {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {workout.rounds} round{workout.rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
-              </p>
-              <div className="space-y-2">
-                <p><strong>Dand (Hindu Push-up):</strong> {workout.dand} <br />
-                <em className="text-sm text-muted-foreground">Tip: Keep elbows close, core tight.</em></p>
-                
-                <p><strong>Baithak (Deep Squat):</strong> {workout.baithak} <br />
-                <em className="text-sm text-muted-foreground">Tip: Heels flat, chest upright.</em></p>
-                
-                <p><strong>Surya Namaskar:</strong> {workout.surya} <br />
-                <em className="text-sm text-muted-foreground">Tip: Flow smoothly, synchronize breath.</em></p>
-                
-                <p><strong>Bhujangasana (Cobra):</strong> {workout.bhujangasana} <br />
-                <em className="text-sm text-muted-foreground">Tip: Lift chest, relax shoulders.</em></p>
-                
-                <p><strong>Utkatasana (Chair Pose):</strong> {workout.utkatasana} <br />
-                <em className="text-sm text-muted-foreground">Tip: Sit back, weight in heels.</em></p>
-                
-                <p><strong>Arm Circles:</strong> {workout.armCircles} <br />
-                <em className="text-sm text-muted-foreground">Tip: Small controlled circles.</em></p>
-              </div>
-              <p className="mt-3 font-medium">
-                <strong>Workout Duration:</strong> {workout.duration}
+        {/* Workout Section - Now for all days */}
+        <div className="space-y-4 border-b pb-6">
+          <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
+            <Dumbbell className="w-5 h-5" />
+            {isRestDay ? "Rest Day" : "Workout (Personalized)"}
+          </h3>
+          
+          {isRestDay ? (
+            <div className="pl-2">
+              <p className="text-md">
+                Recovery day - Focus on light stretching, walking, and proper hydration. 
+                Rest is essential for muscle recovery and growth.
               </p>
             </div>
-          </div>
-        )}
+          ) : workoutDay ? (
+            <div className="space-y-3 pl-2">
+              <p className="text-sm text-muted-foreground">
+                {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
+              </p>
+              
+              <div className="space-y-2">
+                <h4 className="font-medium">Warmup:</h4>
+                <ul className="list-disc pl-5 text-sm">
+                  {workoutDay.warmup.map((exercise, index) => (
+                    <li key={index}>{exercise}</li>
+                  ))}
+                </ul>
+                
+                <h4 className="font-medium mt-3">Main Exercises:</h4>
+                <div className="space-y-2">
+                  {workoutDay.exercises.map((exercise, index) => (
+                    <div key={index}>
+                      <p><strong>{exercise.name}:</strong> {exercise.reps}</p>
+                      <p className="text-sm text-muted-foreground">{exercise.description}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <h4 className="font-medium mt-3">Cooldown:</h4>
+                <ul className="list-disc pl-5 text-sm">
+                  {workoutDay.cooldown.map((stretch, index) => (
+                    <li key={index}>{stretch}</li>
+                  ))}
+                </ul>
+              </div>
+              
+              <p className="mt-3 font-medium">
+                <strong>Workout Duration:</strong> ~{Math.round(15 + (workoutDay.exercises.length * 2) + (getWorkoutDetails().rounds * 5))} min
+              </p>
+            </div>
+          ) : (
+            // Fallback workout display for Day 1 if workoutDay is undefined
+            dietDay.day === 1 && (
+              <div className="space-y-3 pl-2">
+                <p className="text-sm text-muted-foreground">
+                  {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
+                </p>
+                
+                <div className="space-y-2">
+                  <p><strong>Dand (Hindu Push-up):</strong> {getWorkoutDetails().dand} <br />
+                  <em className="text-sm text-muted-foreground">Tip: Keep elbows close, core tight.</em></p>
+                  
+                  <p><strong>Baithak (Deep Squat):</strong> {getWorkoutDetails().baithak} <br />
+                  <em className="text-sm text-muted-foreground">Tip: Heels flat, chest upright.</em></p>
+                  
+                  <p><strong>Surya Namaskar:</strong> {getWorkoutDetails().surya} <br />
+                  <em className="text-sm text-muted-foreground">Tip: Flow smoothly, synchronize breath.</em></p>
+                  
+                  <p><strong>Bhujangasana (Cobra):</strong> {getWorkoutDetails().bhujangasana} <br />
+                  <em className="text-sm text-muted-foreground">Tip: Lift chest, relax shoulders.</em></p>
+                  
+                  <p><strong>Utkatasana (Chair Pose):</strong> {getWorkoutDetails().utkatasana} <br />
+                  <em className="text-sm text-muted-foreground">Tip: Sit back, weight in heels.</em></p>
+                  
+                  <p><strong>Arm Circles:</strong> {getWorkoutDetails().armCircles} <br />
+                  <em className="text-sm text-muted-foreground">Tip: Small controlled circles.</em></p>
+                </div>
+                
+                <p className="mt-3 font-medium">
+                  <strong>Workout Duration:</strong> {getWorkoutDetails().duration}
+                </p>
+              </div>
+            )
+          )}
+        </div>
         
+        {/* Diet Plan Section - Same as before */}
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
             <Utensils className="w-5 h-5" />
             Diet Plan (Calorie-Counted)
           </h3>
           <div className="space-y-3">
-            <p><strong>Breakfast:</strong> {dietDay.breakfast} {isDay1 ? '(200 kcal)' : ''}</p>
+            <p><strong>Breakfast:</strong> {dietDay.breakfast} {dietDay.day === 1 ? '(200 kcal)' : ''}</p>
             {dietDay.midMorningSnack && (
-              <p><strong>Mid-Morning Snack:</strong> {dietDay.midMorningSnack} {isDay1 ? '→ 125 kcal' : ''}</p>
+              <p><strong>Mid-Morning Snack:</strong> {dietDay.midMorningSnack} {dietDay.day === 1 ? '→ 125 kcal' : ''}</p>
             )}
-            <p><strong>Lunch:</strong> {dietDay.lunch} {isDay1 ? '→ 430 kcal' : ''}</p>
+            <p><strong>Lunch:</strong> {dietDay.lunch} {dietDay.day === 1 ? '→ 430 kcal' : ''}</p>
             {dietDay.eveningSnack && (
-              <p><strong>Evening Snack:</strong> {dietDay.eveningSnack} {isDay1 ? '→ 190 kcal' : ''}</p>
+              <p><strong>Evening Snack:</strong> {dietDay.eveningSnack} {dietDay.day === 1 ? '→ 190 kcal' : ''}</p>
             )}
-            <p><strong>Dinner:</strong> {dietDay.dinner} {isDay1 ? '→ 295 kcal' : ''}</p>
+            <p><strong>Dinner:</strong> {dietDay.dinner} {dietDay.day === 1 ? '→ 295 kcal' : ''}</p>
             {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
               <p><strong>Snacks:</strong> {dietDay.snacks}</p>
             )}

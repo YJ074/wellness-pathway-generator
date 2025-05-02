@@ -5,15 +5,16 @@ import WellnessResultsHeaderActions from "./WellnessResultsHeaderActions";
 import WellnessMetricsDisplay from "./WellnessMetricsDisplay";
 import WellnessDietDayCard from "./WellnessDietDayCard";
 import PlanDetailsCard from './PlanDetailsCard';
-import { FormData, DietPlan } from './types';
+import { FormData, DietPlan, WorkoutPlan } from './types';
 
 interface WellnessResultsProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan: WorkoutPlan | null; // Make it optional since we're adding it now
   onReset: () => void;
 }
 
-const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) => {
+const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessResultsProps) => {
   return (
     <motion.div 
       className="space-y-6"
@@ -27,7 +28,6 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
         onReset={onReset}
       />
 
-      {/* Pass has_muscular_build to the metrics display */}
       <WellnessMetricsDisplay
         bmi={dietPlan.bmi}
         bmiCategory={dietPlan.bmiCategory}
@@ -54,7 +54,8 @@ const WellnessResults = ({ formData, dietPlan, onReset }: WellnessResultsProps) 
           >
             <WellnessDietDayCard 
               dietDay={dietDay}
-              formData={formData} // Pass formData to access exercise frequency
+              formData={formData}
+              workoutDay={workoutPlan ? workoutPlan.days.find(w => w.day === dietDay.day) : undefined}
             />
           </motion.div>
         ))}

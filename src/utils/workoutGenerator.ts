@@ -6,7 +6,8 @@ import {
   shouldBeRestDay, 
   getRandomItems, 
   getWorkoutExercises,
-  progressWorkout 
+  progressWorkout,
+  adjustDifficultyForWeek
 } from './workoutUtils';
 
 export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: string): WorkoutDay[] => {
@@ -15,6 +16,7 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
   let currentExercises = BODYWEIGHT_EXERCISES[level];
   
   for (let day = 1; day <= 75; day++) {
+    // Determine if this should be a rest day based on exercise frequency
     if (shouldBeRestDay(day, exerciseFrequency)) {
       workoutDays.push({
         day,
@@ -26,17 +28,41 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
       continue;
     }
 
-    // Progress difficulty every 2 weeks
-    if (day % 14 === 0) {
+    // Calculate the week number (1-indexed)
+    const weekNumber = Math.floor((day - 1) / 7) + 1;
+    
+    // Progress difficulty every 2 weeks (except during deload weeks)
+    const isDeloadWeek = (weekNumber % 4 === 0);
+    
+    if (weekNumber % 2 === 0 && !isDeloadWeek) {
       const nextLevel = level === 'beginner' ? 'intermediate' : 'advanced';
       currentExercises = progressWorkout(currentExercises, BODYWEIGHT_EXERCISES[nextLevel]);
     }
+    
+    // Get base exercises
+    let exercises = getWorkoutExercises(currentExercises, fitnessGoal);
+    
+    // Apply progressive overload based on week number (unless it's a deload week)
+    if (!isDeloadWeek) {
+      exercises = adjustDifficultyForWeek(exercises, weekNumber);
+    } else {
+      // During deload week, reduce volume/intensity by ~30%
+      exercises = exercises.map(ex => ({
+        ...ex,
+        reps: ex.reps.replace(/\d+/g, (match) => {
+          const num = parseInt(match);
+          return Math.max(Math.round(num * 0.7), 1).toString();
+        }),
+        description: ex.description + " (Deload week: lower intensity)"
+      }));
+    }
 
+    // Create the workout day
     workoutDays.push({
       day,
       isRestDay: false,
       warmup: getRandomItems(WARMUP_EXERCISES, 3),
-      exercises: getWorkoutExercises(currentExercises, fitnessGoal),
+      exercises,
       cooldown: getRandomItems(COOLDOWN_STRETCHES, 3)
     });
   }

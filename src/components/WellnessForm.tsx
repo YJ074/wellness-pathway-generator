@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
+import { generateWorkoutPlan } from '@/utils/workoutGenerator';
 import WellnessFormView from './wellness/WellnessFormView';
 import WellnessResults from './wellness/WellnessResults';
-import { FormData, DietPlan } from './wellness/types';
+import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
 
 const WellnessForm = () => {
   const { toast } = useToast();
@@ -24,6 +25,7 @@ const WellnessForm = () => {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
 
   const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -67,8 +69,15 @@ const WellnessForm = () => {
 
     // Generate the diet plan passing the entire formData
     const generatedDietPlan = generateDietPlan(formData);
+    
+    // Generate the workout plan based on exercise frequency and fitness goal
+    const generatedWorkoutPlan = generateWorkoutPlan(
+      formData.exerciseFrequency || 'sedentary', 
+      formData.fitnessGoal || 'maintenance'
+    );
 
     setDietPlan(generatedDietPlan);
+    setWorkoutPlan(generatedWorkoutPlan);
     setIsGenerating(false);
 
     toast({
@@ -79,6 +88,7 @@ const WellnessForm = () => {
 
   const handleReset = () => {
     setDietPlan(null);
+    setWorkoutPlan(null);
   };
 
   return (
@@ -94,6 +104,7 @@ const WellnessForm = () => {
         <WellnessResults
           formData={formData}
           dietPlan={dietPlan}
+          workoutPlan={workoutPlan}
           onReset={handleReset}
         />
       )}
