@@ -105,9 +105,11 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
                 [appearance:textfield] scrollbar-hide select-none"
               style={{
                 fontVariantNumeric: "tabular-nums",
+                fontSize: "medium",
+                fontWeight: "400",
               }}
             />
-            <span className="block text-xs text-gray-500 mt-1">Feet</span>
+            {/* <span className="block text-xs text-gray-500 mt-1">Feet</span> */}
           </div>
           <div className="w-px h-12 bg-gray-300 mx-0 relative z-20" />
           {/* Inches */}
@@ -124,9 +126,11 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
                 [appearance:textfield] scrollbar-hide select-none"
               style={{
                 fontVariantNumeric: "tabular-nums",
+                fontSize: "medium",
+                fontWeight: "400",
               }}
             />
-            <span className="block text-xs text-gray-500 mt-1">Inches</span>
+            {/* <span className="block text-xs text-gray-500 mt-1">Inches</span> */}
           </div>
           {/* Fades */}
           <div className="absolute left-0 top-0 w-8 h-full pointer-events-none z-30 bg-gradient-to-r from-white via-white/60 to-transparent" />
