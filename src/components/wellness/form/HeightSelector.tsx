@@ -67,8 +67,15 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
   return (
     <fieldset className="border border-gray-300 rounded-md p-4 space-y-4">
       <legend className="text-base font-semibold text-gray-700 px-2">Height</legend>
-      <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 text-center">
-        <div className="flex-1">
+      {/* sm:flex-row */}
+      <div className="flex flex-col sm:space-x-4 space-y-4 sm:space-y-0 text-center"
+        style={{
+          alignItems: "center",
+        }}>
+        <div className="flex-1" 
+          style={{
+            width: "100%",
+          }}>
           <FormField
             id="height"
             label="Height (cm)"
@@ -83,16 +90,24 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
           className="flex items-center justify-center gap-0 rounded-2xl bg-gradient-to-b from-white/70 via-neutral-100 to-white/70 border border-gray-200 shadow-inner px-0 py-0 relative"
           style={{
             minWidth: 172,
-            maxWidth: 220,
+            // maxWidth: 220,
             width: "100%",
+            margin: "0",
+            marginTop: "10px",
             height: 70,
             overflow: "hidden",
           }}
         >
           {/* Track border-y*/}
-          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-14 bg-white/60 z-10 rounded-xl pointer-events-none border-gray-200" />
+          <div className="absolute ms-0 left-0 right-0 top-1/2 -translate-y-1/2 h-14 bg-white/60 z-10 rounded-xl pointer-events-none border-gray-200"
+          style={{
+            width: "100%",
+          }} />
           {/* Feet */}
-          <div className="w-24 flex flex-col items-center justify-center px-2 relative z-20">
+          <div className="flex flex-col items-center justify-center px-2 relative z-20"
+            style={{
+              width: "50%",
+            }}>
             <input
               id="heightFeet"
               type="number"
@@ -113,7 +128,10 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
           </div>
           <div className="w-px h-12 bg-gray-300 mx-0 relative z-20" />
           {/* Inches */}
-          <div className="w-24 flex flex-col items-center justify-center px-2 relative z-20">
+          <div className="flex flex-col items-center justify-center px-2 relative z-20"
+            style={{
+              width: "50%",
+            }}>
             <input
               id="heightInches"
               type="number"
