@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dumbbell, Utensils } from "lucide-react";
@@ -41,6 +42,21 @@ const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayC
   };
   
   const fitnessLevel = getFitnessLevel();
+
+  // Calculate calories for each meal based on total daily calories
+  const calculateMealCalories = () => {
+    const totalCalories = dietDay.calories || 2000;
+    
+    return {
+      breakfast: Math.round(totalCalories * 0.25), // 25% of daily calories
+      midMorningSnack: Math.round(totalCalories * 0.1), // 10% of daily calories
+      lunch: Math.round(totalCalories * 0.35), // 35% of daily calories
+      eveningSnack: Math.round(totalCalories * 0.1), // 10% of daily calories
+      dinner: Math.round(totalCalories * 0.2) // 20% of daily calories
+    };
+  };
+  
+  const mealCalories = calculateMealCalories();
   
   // Workout details based on fitness level
   const getWorkoutDetails = () => {
@@ -185,23 +201,55 @@ const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayC
             Diet Plan (Calorie-Counted)
           </h3>
           <div className="space-y-3">
-            <p><strong>Breakfast:</strong> {dietDay.breakfast} {dietDay.day === 1 ? '(200 kcal)' : ''}</p>
+            <p>
+              <strong>Breakfast:</strong> {dietDay.breakfast} 
+              <span className="text-sm font-medium text-amber-600 ml-1">
+                ({mealCalories.breakfast} kcal)
+              </span>
+            </p>
+            
             {dietDay.midMorningSnack && (
-              <p><strong>Mid-Morning Snack:</strong> {dietDay.midMorningSnack} {dietDay.day === 1 ? '→ 125 kcal' : ''}</p>
+              <p>
+                <strong>Mid-Morning Snack:</strong> {dietDay.midMorningSnack}
+                <span className="text-sm font-medium text-amber-600 ml-1">
+                  ({mealCalories.midMorningSnack} kcal)
+                </span>
+              </p>
             )}
-            <p><strong>Lunch:</strong> {dietDay.lunch} {dietDay.day === 1 ? '→ 430 kcal' : ''}</p>
+            
+            <p>
+              <strong>Lunch:</strong> {dietDay.lunch}
+              <span className="text-sm font-medium text-amber-600 ml-1">
+                ({mealCalories.lunch} kcal)
+              </span>
+            </p>
+            
             {dietDay.eveningSnack && (
-              <p><strong>Evening Snack:</strong> {dietDay.eveningSnack} {dietDay.day === 1 ? '→ 190 kcal' : ''}</p>
+              <p>
+                <strong>Evening Snack:</strong> {dietDay.eveningSnack}
+                <span className="text-sm font-medium text-amber-600 ml-1">
+                  ({mealCalories.eveningSnack} kcal)
+                </span>
+              </p>
             )}
-            <p><strong>Dinner:</strong> {dietDay.dinner} {dietDay.day === 1 ? '→ 295 kcal' : ''}</p>
+            
+            <p>
+              <strong>Dinner:</strong> {dietDay.dinner}
+              <span className="text-sm font-medium text-amber-600 ml-1">
+                ({mealCalories.dinner} kcal)
+              </span>
+            </p>
+            
             {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
               <p><strong>Snacks:</strong> {dietDay.snacks}</p>
             )}
+            
             {totalCalories > 0 && (
               <p className="mt-3 font-medium">
                 <strong>Approx. Total Calories:</strong> {totalCalories} kcal
               </p>
             )}
+            
             {dietDay.water && (
               <p className="italic text-sm text-gray-600">
                 <strong>Water:</strong> {dietDay.water} L
