@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 6,
     borderRadius: 3,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
   },
   subsectionTitle: {
     fontSize: 12,
@@ -26,14 +27,16 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     paddingLeft: 4,
     borderLeft: '2pt solid #e2e8f0',
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
   },
   restDayText: {
     fontSize: 11,
     marginBottom: 8,
     lineHeight: 1.4,
     paddingLeft: 5,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
   },
   exerciseItem: {
     marginBottom: 8,
@@ -43,11 +46,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginBottom: 4,
     lineHeight: 1.4,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
   },
   exerciseLabel: {
-    fontWeight: 'bold',
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
   },
   calorieInfo: {
     fontSize: 11,
@@ -56,7 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     borderRadius: 3,
     color: '#555',
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
   }
 });
 
@@ -75,7 +80,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   
   return (
     <View style={styles.planSection}>
-      <Text style={styles.sectionTitle}>💪 Workout Plan</Text>
+      <Text style={styles.sectionTitle}>Workout Plan</Text>
       
       {workoutDay ? (
         workoutDay.isRestDay ? (
@@ -85,7 +90,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
               Practice Shavasana (corpse pose) and deep breathing for relaxation.
             </Text>
             <Text style={styles.calorieInfo}>
-              🔥 Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
+              Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
             </Text>
           </View>
         ) : (
@@ -118,7 +123,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
             ))}
             
             <Text style={styles.calorieInfo}>
-              🔥 Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
+              Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
             </Text>
           </View>
         )

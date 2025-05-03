@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 6,
     borderRadius: 3,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
   },
   mealItem: {
     marginBottom: 12,
@@ -26,19 +27,22 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 5,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
   },
   mealDescription: {
     fontSize: 11,
     marginBottom: 4,
     lineHeight: 1.4,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
   },
   calorieInfo: {
     fontSize: 11,
     color: '#555',
     marginBottom: 4,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
   },
   nutritionBox: {
     marginTop: 12,
@@ -50,13 +54,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 5,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
   },
   nutritionText: {
     fontSize: 11,
     marginBottom: 4,
     lineHeight: 1.4,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
   },
 });
 
@@ -84,7 +90,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   
   return (
     <View style={styles.planSection}>
-      <Text style={styles.sectionTitle}>🍽️ Diet Plan</Text>
+      <Text style={styles.sectionTitle}>Diet Plan</Text>
       
       {/* Breakfast */}
       <View style={styles.mealItem}>

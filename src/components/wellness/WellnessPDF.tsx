@@ -4,21 +4,21 @@ import { Document, Page, StyleSheet, Font } from '@react-pdf/renderer';
 import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
 
-// Register fonts - this is crucial for mathematical symbols and subscripts
+// Register standard fonts that are highly compatible with PDF rendering
 Font.register({
-  family: 'Helvetica',
+  family: 'Roboto',
   fonts: [
-    { src: 'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5Q.ttf', fontStyle: 'normal', fontWeight: 'normal' },
-    { src: 'https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAw.ttf', fontWeight: 'bold', fontStyle: 'normal' },
-    { src: 'https://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xP.ttf', fontStyle: 'italic', fontWeight: 'normal' },
-    { src: 'https://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9.ttf', fontStyle: 'italic', fontWeight: 'bold' },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf', fontWeight: 300 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf', fontWeight: 400 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf', fontWeight: 500 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf', fontWeight: 700 }
   ]
 });
 
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
     lineHeight: 1.4,
   },
 });
