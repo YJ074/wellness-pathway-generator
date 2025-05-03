@@ -10,20 +10,27 @@ import { createElement } from 'react';
 export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
-      // In an actual implementation, this would send the PDF to a backend service
-      // that would handle email delivery
-      console.log("Sending email to:", formData.email);
+      // Generate PDF document
+      const pdfDocument = createElement(WellnessPDF, { formData, dietPlan });
       
-      // For demonstration, we'll simulate an API call
-      setTimeout(() => {
-        // Success case - in a real implementation, this would be after API confirmation
-        resolve();
-      }, 1500);
-      
-      // To implement actual email sending, you would:
-      // 1. Generate the PDF blob
-      // 2. Send it to a backend service via API call
-      // 3. The backend would attach the PDF and send the email
+      // Generate PDF blob - this is asynchronous
+      pdf(pdfDocument).toBlob().then((blob) => {
+        // In a real implementation with Supabase:
+        // 1. Upload the blob to Supabase Storage
+        // 2. Get the URL
+        // 3. Send email with the URL through Supabase Edge Function
+        
+        console.log(`Sending wellness plan to ${formData.email}`);
+        console.log(`Plan for ${formData.name}, age: ${formData.age}, goal: ${formData.fitnessGoal}`);
+        
+        // For now, simulate API call
+        setTimeout(() => {
+          resolve();
+        }, 1500);
+      }).catch(error => {
+        console.error("Error generating PDF:", error);
+        reject(error);
+      });
     } catch (error) {
       console.error("Error in sendPlanViaEmail:", error);
       reject(error);
@@ -37,31 +44,78 @@ export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan): 
 export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
-      // For a simple implementation, we'll open WhatsApp with a pre-filled message
+      // Clean the phone number by removing any spaces and ensuring it starts with +91
       const phoneNumber = formData.mobileNumber.replace(/\s+/g, '');
+      if (!phoneNumber.startsWith('+91')) {
+        throw new Error("Phone number must start with +91");
+      }
       
-      // Create a summary message for WhatsApp
-      const message = `Hello ${formData.name}, here's your 75-day wellness plan from Arogyam75! View your complete diet plan.`;
+      // Prepare a detailed message with the wellness plan summary
+      const message = `🌟 *Arogyam75 Wellness Plan* 🌟\n\n` +
+        `Hello ${formData.name},\n\n` +
+        `Your personalized 75-day wellness journey awaits! Here's a summary:\n\n` +
+        `🥗 *Diet Type:* ${formData.dietaryPreference.replace(/-/g, ' ')}\n` +
+        `🏋️ *Fitness Goal:* ${formData.fitnessGoal.replace(/-/g, ' ')}\n` +
+        `💧 *Daily Water Target:* ${(parseFloat(formData.weight) * 0.033).toFixed(1)}L\n\n` +
+        `Your first day plan includes:\n` +
+        `🍳 *Breakfast:* ${dietPlan.days[0].breakfast.substring(0, 40)}...\n` +
+        `🥗 *Lunch:* ${dietPlan.days[0].lunch.substring(0, 40)}...\n` +
+        `🍽️ *Dinner:* ${dietPlan.days[0].dinner.substring(0, 40)}...\n\n` +
+        `For the complete 75-day plan, check your email or login to the Arogyam75 portal.`;
       
-      // Encode the message for a URL
+      // Encode the message for URL
       const encodedMessage = encodeURIComponent(message);
       
-      // Create WhatsApp deep link
-      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+      // Create WhatsApp deep link - use the correct format for WhatsApp
+      // For Indian numbers, remove the + and use the country code directly
+      const whatsappNumber = phoneNumber.startsWith('+') ? phoneNumber.substring(1) : phoneNumber;
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
       
       // Open WhatsApp in a new tab
       window.open(whatsappUrl, '_blank');
       
-      // Resolve after a short delay to simulate completion
+      // Resolve after a short delay
       setTimeout(resolve, 1000);
-      
-      // Note: For a complete implementation with the actual PDF:
-      // 1. You would need a backend service that generates the PDF
-      // 2. Uploads it to a storage service that provides a public URL
-      // 3. Includes that URL in the WhatsApp message
     } catch (error) {
       console.error("Error in sendPlanViaWhatsApp:", error);
       reject(error);
     }
   });
 };
+
+/**
+ * Sends the wellness plan via both WhatsApp and email
+ */
+export const shareWellnessPlan = async (
+  formData: FormData, 
+  dietPlan: DietPlan, 
+  methods: { email: boolean, whatsapp: boolean }
+): Promise<{ success: boolean, error?: string }> => {
+  try {
+    const promises = [];
+    
+    if (methods.email && formData.email) {
+      promises.push(sendPlanViaEmail(formData, dietPlan));
+    }
+    
+    if (methods.whatsapp && formData.mobileNumber) {
+      promises.push(sendPlanViaWhatsApp(formData, dietPlan));
+    }
+    
+    if (promises.length === 0) {
+      return { 
+        success: false, 
+        error: "No sharing method selected or contact information missing" 
+      };
+    }
+    
+    await Promise.all(promises);
+    return { success: true };
+  } catch (error) {
+    console.error("Error sharing wellness plan:", error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Failed to share wellness plan" 
+    };
+  }
+}
