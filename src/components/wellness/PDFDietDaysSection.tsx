@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     padding: 8,
     borderRadius: 4,
+    fontFamily: 'Helvetica-Bold',
   }
 });
 

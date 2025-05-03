@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
-const styles = {
+const styles = StyleSheet.create({
   metricsSection: {
     marginBottom: 20,
-    flexDirection: 'row' as const,
-    justifyContent: 'space-between' as const,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   metricBox: {
     width: '30%',
@@ -17,23 +17,27 @@ const styles = {
   metricLabel: {
     fontSize: 10,
     color: '#64748b',
+    fontFamily: 'Helvetica',
   },
   metricValue: {
     fontSize: 16,
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
     color: '#334155',
+    fontFamily: 'Helvetica-Bold',
   },
   metricSubtext: {
     fontSize: 8,
     color: '#64748b',
+    fontFamily: 'Helvetica',
   },
   muscleNote: {
     fontSize: 7,
-    fontStyle: 'italic' as const,
+    fontStyle: 'italic',
     color: '#1d4ed8',
     marginTop: 2,
+    fontFamily: 'Helvetica',
   }
-};
+});
 
 interface PDFMetricsSectionProps {
   bmi: number;

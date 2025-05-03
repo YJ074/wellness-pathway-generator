@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 6,
     borderRadius: 3,
+    fontFamily: 'Helvetica-Bold',
   },
   subsectionTitle: {
     fontSize: 12,
@@ -25,12 +26,14 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     paddingLeft: 4,
     borderLeft: '2pt solid #e2e8f0',
+    fontFamily: 'Helvetica-Bold',
   },
   restDayText: {
     fontSize: 11,
-    marginBottom: 6,
+    marginBottom: 8,
     lineHeight: 1.4,
     paddingLeft: 5,
+    fontFamily: 'Helvetica',
   },
   exerciseItem: {
     marginBottom: 8,
@@ -38,11 +41,13 @@ const styles = StyleSheet.create({
   },
   bulletPoint: {
     fontSize: 11,
-    marginBottom: 3,
+    marginBottom: 4,
     lineHeight: 1.4,
+    fontFamily: 'Helvetica',
   },
   exerciseLabel: {
     fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   calorieInfo: {
     fontSize: 11,
@@ -51,6 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     borderRadius: 3,
     color: '#555',
+    fontFamily: 'Helvetica',
   }
 });
 

@@ -17,25 +17,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 6,
     borderRadius: 3,
+    fontFamily: 'Helvetica-Bold',
   },
   mealItem: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
   mealLabel: {
     fontSize: 12,
     fontWeight: 'bold',
-    marginBottom: 3,
+    marginBottom: 5,
+    fontFamily: 'Helvetica-Bold',
   },
   mealDescription: {
     fontSize: 11,
-    marginBottom: 2,
+    marginBottom: 4,
     lineHeight: 1.4,
+    fontFamily: 'Helvetica',
   },
   calorieInfo: {
     fontSize: 11,
     color: '#555',
-    fontStyle: 'italic',
     marginBottom: 4,
+    fontFamily: 'Helvetica',
   },
   nutritionBox: {
     marginTop: 12,
@@ -47,11 +50,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 5,
+    fontFamily: 'Helvetica-Bold',
   },
   nutritionText: {
     fontSize: 11,
-    marginBottom: 3,
-    lineHeight: 1.3,
+    marginBottom: 4,
+    lineHeight: 1.4,
+    fontFamily: 'Helvetica',
   },
 });
 
