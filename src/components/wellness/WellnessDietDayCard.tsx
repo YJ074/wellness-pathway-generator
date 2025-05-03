@@ -1,9 +1,10 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dumbbell, Utensils } from "lucide-react";
 import { WorkoutDay } from "@/types/workout";
-import WorkoutPlanDisplay from "./WorkoutPlanDisplay";
+import WorkoutSection from "./WorkoutSection";
+import DietSection from "./DietSection";
+import { getFitnessLevel } from "./utils/fitnessUtils";
 
 interface DietPlanDay {
   day: number;
@@ -29,78 +30,7 @@ interface WellnessDietDayCardProps {
 }
 
 const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayCardProps) => {
-  // Determine fitness level based on exercise frequency
-  const getFitnessLevel = () => {
-    const frequency = formData?.exerciseFrequency || '';
-    if (frequency === '3-4' || frequency === '5+') {
-      return 'advanced';
-    } else if (frequency === '1-2') {
-      return 'intermediate';
-    } else {
-      return 'beginner';
-    }
-  };
-  
-  const fitnessLevel = getFitnessLevel();
-
-  // Calculate calories for each meal based on total daily calories
-  const calculateMealCalories = () => {
-    const totalCalories = dietDay.calories || 2000;
-    
-    return {
-      breakfast: Math.round(totalCalories * 0.25), // 25% of daily calories
-      midMorningSnack: Math.round(totalCalories * 0.1), // 10% of daily calories
-      lunch: Math.round(totalCalories * 0.35), // 35% of daily calories
-      eveningSnack: Math.round(totalCalories * 0.1), // 10% of daily calories
-      dinner: Math.round(totalCalories * 0.2) // 20% of daily calories
-    };
-  };
-  
-  const mealCalories = calculateMealCalories();
-  
-  // Workout details based on fitness level
-  const getWorkoutDetails = () => {
-    const workoutData = {
-      beginner: {
-        rounds: 1,
-        dand: '5 reps',
-        baithak: '10 reps',
-        surya: '3 rounds',
-        bhujangasana: '20 sec hold',
-        utkatasana: '20 sec hold',
-        armCircles: '8 forward + 8 backward',
-        duration: '~15 min'
-      },
-      intermediate: {
-        rounds: 2,
-        dand: '8 reps',
-        baithak: '15 reps',
-        surya: '5 rounds',
-        bhujangasana: '30 sec hold',
-        utkatasana: '30 sec hold',
-        armCircles: '10 forward + 10 backward',
-        duration: '~20 min'
-      },
-      advanced: {
-        rounds: 3,
-        dand: '12 reps',
-        baithak: '20 reps',
-        surya: '7 rounds',
-        bhujangasana: '45 sec hold',
-        utkatasana: '45 sec hold',
-        armCircles: '12 forward + 12 backward',
-        duration: '~25 min'
-      }
-    };
-    
-    return workoutData[fitnessLevel as keyof typeof workoutData];
-  };
-  
-  // Total calories
-  const totalCalories = dietDay.calories || 0;
-  
-  // Check if it's a rest day
-  const isRestDay = workoutDay?.isRestDay;
+  const fitnessLevel = getFitnessLevel(formData?.exerciseFrequency);
   
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
@@ -108,155 +38,14 @@ const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayC
         <CardTitle className="text-2xl">Day {dietDay.day}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Workout Section - Now for all days */}
-        <div className="space-y-4 border-b pb-6">
-          <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
-            <Dumbbell className="w-5 h-5" />
-            {workoutDay?.isRestDay ? "Rest Day" : "Workout (Personalized)"}
-          </h3>
-          
-          {workoutDay?.isRestDay ? (
-            <div className="pl-2">
-              <p className="text-md">
-                Recovery day - Focus on light stretching, walking, and proper hydration. 
-                Rest is essential for muscle recovery and growth.
-              </p>
-            </div>
-          ) : workoutDay ? (
-            <div className="space-y-3 pl-2">
-              <p className="text-sm text-muted-foreground">
-                {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
-              </p>
-              
-              <div className="space-y-2">
-                <h4 className="font-medium">Warmup:</h4>
-                <ul className="list-disc pl-5 text-sm">
-                  {workoutDay.warmup.map((exercise, index) => (
-                    <li key={index}>{exercise}</li>
-                  ))}
-                </ul>
-                
-                <h4 className="font-medium mt-3">Main Exercises:</h4>
-                <div className="space-y-2">
-                  {workoutDay.exercises.map((exercise, index) => (
-                    <div key={index}>
-                      <p><strong>{exercise.name}:</strong> {exercise.reps}</p>
-                      <p className="text-sm text-muted-foreground">{exercise.description}</p>
-                    </div>
-                  ))}
-                </div>
-                
-                <h4 className="font-medium mt-3">Cooldown:</h4>
-                <ul className="list-disc pl-5 text-sm">
-                  {workoutDay.cooldown.map((stretch, index) => (
-                    <li key={index}>{stretch}</li>
-                  ))}
-                </ul>
-              </div>
-              
-              <p className="mt-3 font-medium">
-                <strong>Workout Duration:</strong> ~{Math.round(15 + (workoutDay.exercises.length * 2) + (getWorkoutDetails().rounds * 5))} min
-              </p>
-            </div>
-          ) : (
-            // Fallback workout display for Day 1 if workoutDay is undefined
-            dietDay.day === 1 && (
-              <div className="space-y-3 pl-2">
-                <p className="text-sm text-muted-foreground">
-                  {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
-                </p>
-                
-                <div className="space-y-2">
-                  <p><strong>Dand (Hindu Push-up):</strong> {getWorkoutDetails().dand} <br />
-                  <em className="text-sm text-muted-foreground">Tip: Keep elbows close, core tight.</em></p>
-                  
-                  <p><strong>Baithak (Deep Squat):</strong> {getWorkoutDetails().baithak} <br />
-                  <em className="text-sm text-muted-foreground">Tip: Heels flat, chest upright.</em></p>
-                  
-                  <p><strong>Surya Namaskar:</strong> {getWorkoutDetails().surya} <br />
-                  <em className="text-sm text-muted-foreground">Tip: Flow smoothly, synchronize breath.</em></p>
-                  
-                  <p><strong>Bhujangasana (Cobra):</strong> {getWorkoutDetails().bhujangasana} <br />
-                  <em className="text-sm text-muted-foreground">Tip: Lift chest, relax shoulders.</em></p>
-                  
-                  <p><strong>Utkatasana (Chair Pose):</strong> {getWorkoutDetails().utkatasana} <br />
-                  <em className="text-sm text-muted-foreground">Tip: Sit back, weight in heels.</em></p>
-                  
-                  <p><strong>Arm Circles:</strong> {getWorkoutDetails().armCircles} <br />
-                  <em className="text-sm text-muted-foreground">Tip: Small controlled circles.</em></p>
-                </div>
-                
-                <p className="mt-3 font-medium">
-                  <strong>Workout Duration:</strong> {getWorkoutDetails().duration}
-                </p>
-              </div>
-            )
-          )}
-        </div>
+        {/* Workout Section */}
+        <WorkoutSection 
+          workoutDay={workoutDay} 
+          fitnessLevel={fitnessLevel} 
+        />
         
         {/* Diet Plan Section */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
-            <Utensils className="w-5 h-5" />
-            Diet Plan (Calorie-Counted)
-          </h3>
-          <div className="space-y-3">
-            <p>
-              <strong>Breakfast:</strong> {dietDay.breakfast} 
-              <span className="text-sm font-medium text-amber-600 ml-1">
-                ({mealCalories.breakfast} kcal)
-              </span>
-            </p>
-            
-            {dietDay.midMorningSnack && (
-              <p>
-                <strong>Mid-Morning Snack:</strong> {dietDay.midMorningSnack}
-                <span className="text-sm font-medium text-amber-600 ml-1">
-                  ({mealCalories.midMorningSnack} kcal)
-                </span>
-              </p>
-            )}
-            
-            <p>
-              <strong>Lunch:</strong> {dietDay.lunch}
-              <span className="text-sm font-medium text-amber-600 ml-1">
-                ({mealCalories.lunch} kcal)
-              </span>
-            </p>
-            
-            {dietDay.eveningSnack && (
-              <p>
-                <strong>Evening Snack:</strong> {dietDay.eveningSnack}
-                <span className="text-sm font-medium text-amber-600 ml-1">
-                  ({mealCalories.eveningSnack} kcal)
-                </span>
-              </p>
-            )}
-            
-            <p>
-              <strong>Dinner:</strong> {dietDay.dinner}
-              <span className="text-sm font-medium text-amber-600 ml-1">
-                ({mealCalories.dinner} kcal)
-              </span>
-            </p>
-            
-            {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
-              <p><strong>Snacks:</strong> {dietDay.snacks}</p>
-            )}
-            
-            {totalCalories > 0 && (
-              <p className="mt-3 font-medium">
-                <strong>Approx. Total Calories:</strong> {totalCalories} kcal
-              </p>
-            )}
-            
-            {dietDay.water && (
-              <p className="italic text-sm text-gray-600">
-                <strong>Water:</strong> {dietDay.water} L
-              </p>
-            )}
-          </div>
-        </div>
+        <DietSection diet={dietDay} />
       </CardContent>
     </Card>
   );
