@@ -7,19 +7,21 @@ import PDFWorkoutSection from './pdf/PDFWorkoutSection';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 14,
+    marginTop: 10,
   },
   daySection: {
     marginBottom: 30,
     borderBottom: '1pt solid #e2e8f0',
-    paddingBottom: 15,
+    paddingBottom: 20,
   },
   dayTitle: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 12,
     backgroundColor: '#f0f0f0',
-    padding: 5,
+    padding: 8,
+    borderRadius: 4,
   }
 });
 

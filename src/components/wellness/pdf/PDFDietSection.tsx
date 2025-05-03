@@ -6,38 +6,52 @@ import { DietPlan, FormData } from '../types';
 
 const styles = StyleSheet.create({
   planSection: {
-    marginBottom: 15,
+    marginBottom: 20,
+    padding: 5,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
     marginTop: 10,
-    marginBottom: 6,
+    marginBottom: 10,
     backgroundColor: '#f9f9f9',
-    padding: 4,
+    padding: 6,
+    borderRadius: 3,
   },
-  text: {
-    fontSize: 10,
-    marginBottom: 4,
-    lineHeight: 1.4,
+  mealItem: {
+    marginBottom: 8,
   },
   mealLabel: {
+    fontSize: 12,
     fontWeight: 'bold',
+    marginBottom: 3,
+  },
+  mealDescription: {
+    fontSize: 11,
+    marginBottom: 2,
+    lineHeight: 1.4,
+  },
+  calorieInfo: {
+    fontSize: 11,
+    color: '#555',
+    fontStyle: 'italic',
+    marginBottom: 4,
   },
   nutritionBox: {
-    marginTop: 8,
-    padding: 5,
+    marginTop: 12,
+    padding: 8,
     backgroundColor: '#f5f5f5',
     borderRadius: 3,
   },
   nutritionTitle: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
-    marginBottom: 3,
+    marginBottom: 5,
   },
   nutritionText: {
-    fontSize: 9,
-    marginBottom: 2,
+    fontSize: 11,
+    marginBottom: 3,
+    lineHeight: 1.3,
   },
 });
 
@@ -65,47 +79,68 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   
   return (
     <View style={styles.planSection}>
-      <Text style={styles.sectionTitle}>🍽️ Diet Plan:</Text>
+      <Text style={styles.sectionTitle}>🍽️ Diet Plan</Text>
       
-      <Text style={styles.text}>
-        <Text style={styles.mealLabel}>Breakfast: </Text>
-        {day.breakfast} ({getEstimatedCalories('breakfast', dailyCalories, goalFactor)} kcal)
-      </Text>
+      {/* Breakfast */}
+      <View style={styles.mealItem}>
+        <Text style={styles.mealLabel}>• Breakfast</Text>
+        <Text style={styles.mealDescription}>{day.breakfast}</Text>
+        <Text style={styles.calorieInfo}>
+          Calories: {getEstimatedCalories('breakfast', dailyCalories, goalFactor)} kcal
+        </Text>
+      </View>
       
+      {/* Mid-Morning Snack */}
       {day.midMorningSnack && (
-        <Text style={styles.text}>
-          <Text style={styles.mealLabel}>Mid-Morning Snack: </Text>
-          {day.midMorningSnack} ({getEstimatedCalories('midMorningSnack', dailyCalories, goalFactor)} kcal)
-        </Text>
+        <View style={styles.mealItem}>
+          <Text style={styles.mealLabel}>• Mid-Morning Snack</Text>
+          <Text style={styles.mealDescription}>{day.midMorningSnack}</Text>
+          <Text style={styles.calorieInfo}>
+            Calories: {getEstimatedCalories('midMorningSnack', dailyCalories, goalFactor)} kcal
+          </Text>
+        </View>
       )}
       
-      <Text style={styles.text}>
-        <Text style={styles.mealLabel}>Lunch: </Text>
-        {day.lunch} ({getEstimatedCalories('lunch', dailyCalories, goalFactor)} kcal)
-      </Text>
+      {/* Lunch */}
+      <View style={styles.mealItem}>
+        <Text style={styles.mealLabel}>• Lunch</Text>
+        <Text style={styles.mealDescription}>{day.lunch}</Text>
+        <Text style={styles.calorieInfo}>
+          Calories: {getEstimatedCalories('lunch', dailyCalories, goalFactor)} kcal
+        </Text>
+      </View>
       
+      {/* Evening Snack */}
       {day.eveningSnack && (
-        <Text style={styles.text}>
-          <Text style={styles.mealLabel}>Evening Snack: </Text>
-          {day.eveningSnack} ({getEstimatedCalories('eveningSnack', dailyCalories, goalFactor)} kcal)
-        </Text>
+        <View style={styles.mealItem}>
+          <Text style={styles.mealLabel}>• Evening Snack</Text>
+          <Text style={styles.mealDescription}>{day.eveningSnack}</Text>
+          <Text style={styles.calorieInfo}>
+            Calories: {getEstimatedCalories('eveningSnack', dailyCalories, goalFactor)} kcal
+          </Text>
+        </View>
       )}
       
-      <Text style={styles.text}>
-        <Text style={styles.mealLabel}>Dinner: </Text>
-        {day.dinner} ({getEstimatedCalories('dinner', dailyCalories, goalFactor)} kcal)
-      </Text>
+      {/* Dinner */}
+      <View style={styles.mealItem}>
+        <Text style={styles.mealLabel}>• Dinner</Text>
+        <Text style={styles.mealDescription}>{day.dinner}</Text>
+        <Text style={styles.calorieInfo}>
+          Calories: {getEstimatedCalories('dinner', dailyCalories, goalFactor)} kcal
+        </Text>
+      </View>
       
+      {/* Nutrition Summary Box */}
       <View style={styles.nutritionBox}>
-        <Text style={styles.nutritionTitle}>🧪 Daily Nutrition:</Text>
+        <Text style={styles.nutritionTitle}>Daily Nutrition Summary</Text>
         <Text style={styles.nutritionText}>
           Total Calories: {dailyCalories} kcal  •  Water: {day.water || 2.5}L
         </Text>
         <Text style={styles.nutritionText}>
-          Protein: {macros.protein}g  •  Carbs: {macros.carbs}g  •  Fats: {macros.fat}g
+          Macronutrients: Protein: {macros.protein}g  •  Carbs: {macros.carbs}g  •  Fats: {macros.fat}g
         </Text>
         <Text style={styles.nutritionText}>
-          Est. Micronutrients: Calcium, Iron, Vitamins A, B-complex, C, D, E
+          Micronutrients: Calcium, Iron, Vitamins A, B-complex (B12), C, D, E, Zinc, Magnesium
         </Text>
       </View>
     </View>

@@ -7,29 +7,50 @@ import { FormData } from '../types';
 const styles = StyleSheet.create({
   planSection: {
     marginBottom: 15,
+    padding: 5,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
     marginTop: 10,
-    marginBottom: 6,
+    marginBottom: 10,
     backgroundColor: '#f9f9f9',
-    padding: 4,
+    padding: 6,
+    borderRadius: 3,
   },
-  text: {
-    fontSize: 10,
-    marginBottom: 4,
+  subsectionTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginTop: 8,
+    marginBottom: 6,
+    paddingLeft: 4,
+    borderLeft: '2pt solid #e2e8f0',
+  },
+  restDayText: {
+    fontSize: 11,
+    marginBottom: 6,
+    lineHeight: 1.4,
+    paddingLeft: 5,
+  },
+  exerciseItem: {
+    marginBottom: 8,
+    paddingLeft: 10,
+  },
+  bulletPoint: {
+    fontSize: 11,
+    marginBottom: 3,
     lineHeight: 1.4,
   },
   exerciseLabel: {
     fontWeight: 'bold',
   },
-  nutritionText: {
-    fontSize: 9,
-    marginBottom: 2,
-  },
-  exerciseItem: {
-    marginBottom: 5,
+  calorieInfo: {
+    fontSize: 11,
+    marginTop: 8,
+    padding: 5,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 3,
+    color: '#555',
   }
 });
 
@@ -48,43 +69,55 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   
   return (
     <View style={styles.planSection}>
-      <Text style={styles.sectionTitle}>💪 Workout Plan:</Text>
+      <Text style={styles.sectionTitle}>💪 Workout Plan</Text>
       
       {workoutDay ? (
         workoutDay.isRestDay ? (
-          <Text style={styles.text}>
-            Rest Day - Focus on recovery with light stretching and mobility work. 
-            Practice Shavasana (corpse pose) and deep breathing for relaxation.
-          </Text>
+          <View>
+            <Text style={styles.restDayText}>
+              Rest Day - Focus on recovery with light stretching and mobility work. 
+              Practice Shavasana (corpse pose) and deep breathing for relaxation.
+            </Text>
+            <Text style={styles.calorieInfo}>
+              🔥 Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
+            </Text>
+          </View>
         ) : (
           <View>
-            <Text style={styles.text}>
-              <Text style={styles.exerciseLabel}>Warm-up (5 min): </Text>
-              {workoutDay.warmup.join(', ')}
-            </Text>
+            {/* Warm-up Section */}
+            <Text style={styles.subsectionTitle}>Warm-up (5 min)</Text>
+            {workoutDay.warmup.map((exercise, idx) => (
+              <View key={`wu-${dayNumber}-${idx}`} style={styles.exerciseItem}>
+                <Text style={styles.bulletPoint}>• {exercise}</Text>
+              </View>
+            ))}
             
-            <Text style={styles.exerciseLabel}>Main Exercises (15-20 min):</Text>
+            {/* Main Exercises Section */}
+            <Text style={styles.subsectionTitle}>Main Workout (15-20 min)</Text>
             {workoutDay.exercises.map((exercise, idx) => (
               <View key={`ex-${dayNumber}-${idx}`} style={styles.exerciseItem}>
-                <Text style={styles.text}>
+                <Text style={styles.bulletPoint}>
                   • {exercise.name} - {exercise.reps}
                   {exercise.description ? ` (${exercise.description})` : ''}
                 </Text>
               </View>
             ))}
             
-            <Text style={styles.text}>
-              <Text style={styles.exerciseLabel}>Cool-down (5 min): </Text>
-              {workoutDay.cooldown.join(', ')}
-            </Text>
+            {/* Cool-down Section */}
+            <Text style={styles.subsectionTitle}>Cool-down (5 min)</Text>
+            {workoutDay.cooldown.map((exercise, idx) => (
+              <View key={`cd-${dayNumber}-${idx}`} style={styles.exerciseItem}>
+                <Text style={styles.bulletPoint}>• {exercise}</Text>
+              </View>
+            ))}
             
-            <Text style={styles.nutritionText}>
+            <Text style={styles.calorieInfo}>
               🔥 Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
             </Text>
           </View>
         )
       ) : (
-        <Text style={styles.text}>
+        <Text style={styles.restDayText}>
           No workout data available for this day.
         </Text>
       )}
