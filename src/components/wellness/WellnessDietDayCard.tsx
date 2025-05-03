@@ -1,8 +1,8 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dumbbell, Utensils } from "lucide-react";
 import { WorkoutDay } from "@/types/workout";
+import WorkoutPlanDisplay from "./WorkoutPlanDisplay";
 
 interface DietPlanDay {
   day: number;
@@ -85,7 +85,7 @@ const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayC
   
   // Check if it's a rest day
   const isRestDay = workoutDay?.isRestDay;
-
+  
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
@@ -96,10 +96,10 @@ const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayC
         <div className="space-y-4 border-b pb-6">
           <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
             <Dumbbell className="w-5 h-5" />
-            {isRestDay ? "Rest Day" : "Workout (Personalized)"}
+            {workoutDay?.isRestDay ? "Rest Day" : "Workout (Personalized)"}
           </h3>
           
-          {isRestDay ? (
+          {workoutDay?.isRestDay ? (
             <div className="pl-2">
               <p className="text-md">
                 Recovery day - Focus on light stretching, walking, and proper hydration. 
@@ -178,7 +178,7 @@ const WellnessDietDayCard = ({ dietDay, formData, workoutDay }: WellnessDietDayC
           )}
         </div>
         
-        {/* Diet Plan Section - Same as before */}
+        {/* Diet Plan Section */}
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
             <Utensils className="w-5 h-5" />

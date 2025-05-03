@@ -1,23 +1,28 @@
 
-import React from "react";
-import { FormData, DietPlan } from "./types";
-import ActionButtons from "./actions/ActionButtons";
+import React from 'react';
+import { FormData, DietPlan, WorkoutPlan } from './types';
+import ActionButtons from './actions/ActionButtons';
 
 interface WellnessResultsHeaderActionsProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan?: WorkoutPlan;
   onReset: () => void;
 }
 
-const WellnessResultsHeaderActions = ({
-  formData,
+const WellnessResultsHeaderActions = ({ 
+  formData, 
   dietPlan,
-  onReset,
+  workoutPlan,
+  onReset 
 }: WellnessResultsHeaderActionsProps) => {
   return (
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-      <h2 className="text-2xl font-bold">Your 75-Day Personalized Wellness Plan</h2>
-      <ActionButtons formData={formData} dietPlan={dietPlan} onReset={onReset} />
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b">
+      <div>
+        <h2 className="text-3xl font-bold">Your 75-Day Plan</h2>
+        <p className="text-gray-600">Personalized for {formData.name}</p>
+      </div>
+      <ActionButtons formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} onReset={onReset} />
     </div>
   );
 };

@@ -6,15 +6,18 @@ import WellnessMetricsDisplay from "./WellnessMetricsDisplay";
 import WellnessDietDayCard from "./WellnessDietDayCard";
 import PlanDetailsCard from './PlanDetailsCard';
 import { FormData, DietPlan, WorkoutPlan } from './types';
+import WorkoutPlanDisplay from './WorkoutPlanDisplay';
 
 interface WellnessResultsProps {
   formData: FormData;
   dietPlan: DietPlan;
-  workoutPlan: WorkoutPlan | null; // Make it optional since we're adding it now
+  workoutPlan: WorkoutPlan | null; // Optional since we're adding it now
   onReset: () => void;
 }
 
 const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessResultsProps) => {
+  console.log("WorkoutPlan in WellnessResults:", workoutPlan);
+  
   return (
     <motion.div 
       className="space-y-6"
@@ -43,6 +46,16 @@ const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessR
       >
         <PlanDetailsCard formData={formData} />
       </motion.div>
+      
+      {workoutPlan && (
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <WorkoutPlanDisplay days={workoutPlan.days.slice(0, 5)} />
+        </motion.div>
+      )}
       
       <div className="space-y-6">
         {dietPlan.days.map((dietDay) => (

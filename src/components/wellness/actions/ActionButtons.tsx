@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { FormData, DietPlan } from "../types";
+import { FormData, DietPlan, WorkoutPlan } from "../types";
 import DownloadPDFButton from "./DownloadPDFButton";
 import EmailShareButton from "./EmailShareButton";
 import WhatsAppShareButton from "./WhatsAppShareButton";
@@ -11,17 +11,18 @@ import MakeWebhookButton from "./MakeWebhookButton";
 interface ActionButtonsProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan?: WorkoutPlan;
   onReset: () => void;
 }
 
-const ActionButtons = ({ formData, dietPlan, onReset }: ActionButtonsProps) => {
+const ActionButtons = ({ formData, dietPlan, workoutPlan, onReset }: ActionButtonsProps) => {
   return (
     <div className="flex flex-wrap gap-2">
-      <DownloadPDFButton formData={formData} dietPlan={dietPlan} />
-      <EmailShareButton formData={formData} dietPlan={dietPlan} />
-      <WhatsAppShareButton formData={formData} dietPlan={dietPlan} />
-      <MakeWebhookButton formData={formData} dietPlan={dietPlan} />
-      <ShareOptionsDialog formData={formData} dietPlan={dietPlan} />
+      <DownloadPDFButton formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
+      <EmailShareButton formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
+      <WhatsAppShareButton formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
+      <MakeWebhookButton formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
+      <ShareOptionsDialog formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
       <Button onClick={onReset} variant="outline">
         Back to Form
       </Button>

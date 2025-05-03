@@ -12,8 +12,11 @@ import {
 import { WorkoutPlan } from '../components/wellness/types';
 
 export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: string): WorkoutPlan => {
+  console.log(`Generating workout plan: Exercise frequency=${exerciseFrequency}, Fitness goal=${fitnessGoal}`);
   let workoutDays: WorkoutDay[] = [];
   const level = getInitialLevel(exerciseFrequency);
+  console.log(`Initial fitness level determined: ${level}`);
+  
   let currentExercises = BODYWEIGHT_EXERCISES[level];
   
   for (let day = 1; day <= 75; day++) {
@@ -68,6 +71,8 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
     });
   }
 
+  console.log(`Generated ${workoutDays.length} workout days`);
+  
   // Return a proper WorkoutPlan object
   return { days: workoutDays };
 };
