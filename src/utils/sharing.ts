@@ -1,4 +1,3 @@
-
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
@@ -82,68 +81,6 @@ export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan
 };
 
 /**
- * Sends wellness plan data to Make.com via webhook
- */
-export const sendPlanToMake = async (formData: FormData, dietPlan: DietPlan, webhookUrl: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    try {
-      if (!webhookUrl) {
-        throw new Error("Make.com webhook URL is required");
-      }
-      
-      // Prepare data payload for Make.com
-      const payload = {
-        user: {
-          name: formData.name,
-          email: formData.email,
-          mobile: formData.mobileNumber,
-          age: formData.age,
-          weight: formData.weight,
-          height: formData.height || `${formData.heightFeet || 0}'${formData.heightInches || 0}"`,
-          gender: formData.gender,
-        },
-        plan: {
-          dietType: formData.dietaryPreference,
-          fitnessGoal: formData.fitnessGoal,
-          bmi: dietPlan.bmi,
-          dailyCalories: dietPlan.dailyCalories,
-          dayCount: dietPlan.days.length,
-          firstDayMeals: {
-            breakfast: dietPlan.days[0].breakfast,
-            lunch: dietPlan.days[0].lunch,
-            dinner: dietPlan.days[0].dinner,
-          }
-        },
-        timestamp: new Date().toISOString(),
-        source: window.location.origin
-      };
-      
-      console.log("Sending data to Make.com webhook:", webhookUrl);
-      
-      // Send the request to the Make.com webhook
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors", // Required for cross-origin requests
-        body: JSON.stringify(payload),
-      }).then(() => {
-        // Due to no-cors mode, we won't get a proper response
-        // So we assume success after a short delay
-        setTimeout(resolve, 1000);
-      }).catch(error => {
-        console.error("Error sending to Make.com:", error);
-        reject(error);
-      });
-    } catch (error) {
-      console.error("Error in sendPlanToMake:", error);
-      reject(error);
-    }
-  });
-};
-
-/**
  * Sends the wellness plan via both WhatsApp and email
  */
 export const shareWellnessPlan = async (
@@ -160,10 +97,6 @@ export const shareWellnessPlan = async (
     
     if (methods.whatsapp && formData.mobileNumber) {
       promises.push(sendPlanViaWhatsApp(formData, dietPlan));
-    }
-    
-    if (methods.make) {
-      promises.push(sendPlanToMake(formData, dietPlan, methods.make));
     }
     
     if (promises.length === 0) {

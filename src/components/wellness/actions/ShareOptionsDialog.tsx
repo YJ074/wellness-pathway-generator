@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 interface ShareOptionsDialogProps {
   formData: FormData;
@@ -29,22 +28,16 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [isEmailSending, setIsEmailSending] = useState(false);
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
-  const [isMakeSending, setIsMakeSending] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState(() => {
-    return localStorage.getItem("arogyam75_make_webhook") || "";
-  });
   
   const [shareOptions, setShareOptions] = useState({
     email: true,
     whatsapp: true,
-    make: false,
   });
 
   const handleSharePlan = async () => {
-    if ((!shareOptions.email && !shareOptions.whatsapp && !shareOptions.make) ||
+    if ((!shareOptions.email && !shareOptions.whatsapp) ||
         (shareOptions.email && !formData.email) ||
-        (shareOptions.whatsapp && !formData.mobileNumber) ||
-        (shareOptions.make && !webhookUrl)) {
+        (shareOptions.whatsapp && !formData.mobileNumber)) {
       toast({
         title: "Missing Information",
         description: "Please select at least one sharing method and provide the required contact information.",
@@ -56,12 +49,11 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
     try {
       setIsEmailSending(shareOptions.email);
       setIsWhatsAppSending(shareOptions.whatsapp);
-      setIsMakeSending(shareOptions.make);
       
       const result = await shareWellnessPlan(formData, dietPlan, {
         email: shareOptions.email,
         whatsapp: shareOptions.whatsapp,
-        make: shareOptions.make ? webhookUrl : "",
+        make: "", // Empty string for make, as we've removed this functionality
       });
       
       if (result.success) {
@@ -87,7 +79,6 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
     } finally {
       setIsEmailSending(false);
       setIsWhatsAppSending(false);
-      setIsMakeSending(false);
     }
   };
 
@@ -130,35 +121,6 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
               WhatsApp to {formData.mobileNumber || "[Mobile not provided]"}
             </Label>
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <Checkbox 
-              id="share-make" 
-              checked={shareOptions.make}
-              onCheckedChange={(checked) => 
-                setShareOptions(prev => ({ ...prev, make: checked === true }))}
-            />
-            <Label htmlFor="share-make">
-              Send to Make.com
-            </Label>
-          </div>
-          
-          {shareOptions.make && (
-            <div className="ml-6 space-y-2">
-              <Label htmlFor="webhook-url">Make.com Webhook URL</Label>
-              <Input
-                id="webhook-url"
-                placeholder="https://hook.eu1.make.com/..."
-                value={webhookUrl}
-                onChange={(e) => {
-                  setWebhookUrl(e.target.value);
-                  if (e.target.value) {
-                    localStorage.setItem("arogyam75_make_webhook", e.target.value);
-                  }
-                }}
-              />
-            </div>
-          )}
         </div>
         
         <DialogFooter>
@@ -167,10 +129,10 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
           </DialogClose>
           <Button 
             onClick={handleSharePlan}
-            disabled={isEmailSending || isWhatsAppSending || isMakeSending || 
-              (!shareOptions.email && !shareOptions.whatsapp && !shareOptions.make)}
+            disabled={isEmailSending || isWhatsAppSending || 
+              (!shareOptions.email && !shareOptions.whatsapp)}
           >
-            {(isEmailSending || isWhatsAppSending || isMakeSending) ? "Sending..." : "Share Now"}
+            {(isEmailSending || isWhatsAppSending) ? "Sending..." : "Share Now"}
           </Button>
         </DialogFooter>
       </DialogContent>
