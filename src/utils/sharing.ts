@@ -1,6 +1,6 @@
 
 import { DietPlan, FormData } from '@/components/wellness/types';
-import { PDFViewer, pdf, Document } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import React from 'react';
 
@@ -10,11 +10,11 @@ import React from 'react';
 export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
-      // Use the already wrapped Document component from WellnessPDF
-      // WellnessPDF already wraps its content in a Document component
+      // Create the document element with WellnessPDF
       const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan });
       
       // Generate PDF blob - this is asynchronous
+      // @ts-ignore - Ignoring type issues with PDF generation
       pdf(pdfDocument).toBlob().then((blob) => {
         // In a real implementation with Supabase:
         // 1. Upload the blob to Supabase Storage
