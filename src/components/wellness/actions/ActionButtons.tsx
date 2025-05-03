@@ -6,6 +6,7 @@ import DownloadPDFButton from "./DownloadPDFButton";
 import EmailShareButton from "./EmailShareButton";
 import WhatsAppShareButton from "./WhatsAppShareButton";
 import ShareOptionsDialog from "./ShareOptionsDialog";
+import MakeWebhookButton from "./MakeWebhookButton";
 
 interface ActionButtonsProps {
   formData: FormData;
@@ -19,6 +20,7 @@ const ActionButtons = ({ formData, dietPlan, onReset }: ActionButtonsProps) => {
       <DownloadPDFButton formData={formData} dietPlan={dietPlan} />
       <EmailShareButton formData={formData} dietPlan={dietPlan} />
       <WhatsAppShareButton formData={formData} dietPlan={dietPlan} />
+      <MakeWebhookButton formData={formData} dietPlan={dietPlan} />
       <ShareOptionsDialog formData={formData} dietPlan={dietPlan} />
       <Button onClick={onReset} variant="outline">
         Back to Form
