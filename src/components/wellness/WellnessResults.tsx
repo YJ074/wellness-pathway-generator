@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import WellnessResultsHeaderActions from "./WellnessResultsHeaderActions";
@@ -47,16 +46,6 @@ const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessR
       >
         <PlanDetailsCard formData={formData} />
       </motion.div>
-      
-      {workoutPlan && (
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <WorkoutPlanDisplay days={workoutPlan.days.slice(0, 5)} />
-        </motion.div>
-      )}
       
       <div className="space-y-6">
         {dietPlan.days.map((dietDay) => (
