@@ -9,13 +9,13 @@ import { FormData, DietPlan, WorkoutPlan } from "../types";
 interface DownloadPDFButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
-  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
+  workoutPlan?: WorkoutPlan;
 }
 
 const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButtonProps) => {
   return (
     <PDFDownloadLink
-      document={<WellnessPDF formData={formData} dietPlan={dietPlan} />}
+      document={<WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />}
       fileName={`${formData.name}-75-day-wellness-plan.pdf`}
     >
       {({ loading }) => (
