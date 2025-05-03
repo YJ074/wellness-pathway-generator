@@ -1,4 +1,3 @@
-
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { PDFViewer, pdf, Document } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
@@ -10,12 +9,9 @@ import React from 'react';
 export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
-      // Create a PDF document using the React component
-      // We wrap our component in a React.createElement call to ensure proper typing
-      const pdfDocument = React.createElement(WellnessPDF, { 
-        formData, 
-        dietPlan 
-      });
+      // Use the already wrapped Document component from WellnessPDF
+      // WellnessPDF already wraps its content in a Document component
+      const pdfDocument = <WellnessPDF formData={formData} dietPlan={dietPlan} />;
       
       // Generate PDF blob - this is asynchronous
       pdf(pdfDocument).toBlob().then((blob) => {
