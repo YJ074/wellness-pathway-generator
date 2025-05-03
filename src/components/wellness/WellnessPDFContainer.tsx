@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   mealLabel: {
     fontWeight: 'bold',
-    display: 'inline',
+    // Removing 'display: inline' which is causing the TypeScript error
   },
   exerciseLabel: {
     fontWeight: 'bold',
