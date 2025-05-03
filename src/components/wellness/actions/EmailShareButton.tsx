@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { sendPlanViaEmail } from "@/utils/sharing";
-import { FormData, DietPlan } from "../types";
+import { FormData, DietPlan, WorkoutPlan } from "../types";
 
 interface EmailShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
-const EmailShareButton = ({ formData, dietPlan }: EmailShareButtonProps) => {
+const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonProps) => {
   const { toast } = useToast();
   const [isEmailSending, setIsEmailSending] = useState(false);
 

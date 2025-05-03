@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Webhook } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { FormData, DietPlan } from "../types";
+import { FormData, DietPlan, WorkoutPlan } from "../types";
 import {
   Dialog,
   DialogContent,
@@ -19,9 +19,10 @@ import { Input } from "@/components/ui/input";
 interface MakeWebhookButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
-const MakeWebhookButton = ({ formData, dietPlan }: MakeWebhookButtonProps) => {
+const MakeWebhookButton = ({ formData, dietPlan, workoutPlan }: MakeWebhookButtonProps) => {
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState("");

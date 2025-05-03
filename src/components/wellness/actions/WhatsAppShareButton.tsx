@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { sendPlanViaWhatsApp } from "@/utils/sharing";
-import { FormData, DietPlan } from "../types";
+import { FormData, DietPlan, WorkoutPlan } from "../types";
 
 interface WhatsAppShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
-const WhatsAppShareButton = ({ formData, dietPlan }: WhatsAppShareButtonProps) => {
+const WhatsAppShareButton = ({ formData, dietPlan, workoutPlan }: WhatsAppShareButtonProps) => {
   const { toast } = useToast();
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
 

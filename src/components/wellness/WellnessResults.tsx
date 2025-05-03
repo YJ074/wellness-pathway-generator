@@ -28,6 +28,7 @@ const WellnessResults = ({ formData, dietPlan, workoutPlan, onReset }: WellnessR
       <WellnessResultsHeaderActions
         formData={formData}
         dietPlan={dietPlan}
+        workoutPlan={workoutPlan || undefined}
         onReset={onReset}
       />
 

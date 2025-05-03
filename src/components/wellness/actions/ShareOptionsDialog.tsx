@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { shareWellnessPlan } from "@/utils/sharing";
-import { FormData, DietPlan } from "../types";
+import { FormData, DietPlan, WorkoutPlan } from "../types";
 import {
   Dialog,
   DialogContent,
@@ -21,9 +21,10 @@ import { Input } from "@/components/ui/input";
 interface ShareOptionsDialogProps {
   formData: FormData;
   dietPlan: DietPlan;
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
-const ShareOptionsDialog = ({ formData, dietPlan }: ShareOptionsDialogProps) => {
+const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDialogProps) => {
   const { toast } = useToast();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [isEmailSending, setIsEmailSending] = useState(false);
