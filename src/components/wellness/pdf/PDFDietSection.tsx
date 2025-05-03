@@ -6,12 +6,11 @@ import { DietPlan, FormData } from '../types';
 
 const styles = StyleSheet.create({
   planSection: {
-    marginBottom: 20,
+    marginBottom: 15,
     padding: 5,
   },
   sectionTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: '#f9f9f9',
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
   },
   mealLabel: {
     fontSize: 12,
-    fontWeight: 'bold',
     marginBottom: 5,
     fontFamily: 'Roboto',
     fontWeight: 700,
@@ -52,7 +50,6 @@ const styles = StyleSheet.create({
   },
   nutritionTitle: {
     fontSize: 12,
-    fontWeight: 'bold',
     marginBottom: 5,
     fontFamily: 'Roboto',
     fontWeight: 700,

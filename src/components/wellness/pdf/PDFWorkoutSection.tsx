@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: '#f9f9f9',
@@ -22,7 +21,6 @@ const styles = StyleSheet.create({
   },
   subsectionTitle: {
     fontSize: 12,
-    fontWeight: 'bold',
     marginTop: 8,
     marginBottom: 6,
     paddingLeft: 4,
