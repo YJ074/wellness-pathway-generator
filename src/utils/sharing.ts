@@ -1,4 +1,3 @@
-
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
@@ -51,18 +50,8 @@ export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan
         throw new Error("Phone number must start with +91");
       }
       
-      // Prepare a detailed message with the wellness plan summary
-      const message = `🌟 *Arogyam75 Wellness Plan* 🌟\n\n` +
-        `Hello ${formData.name},\n\n` +
-        `Your personalized 75-day wellness journey awaits! Here's a summary:\n\n` +
-        `🥗 *Diet Type:* ${formData.dietaryPreference.replace(/-/g, ' ')}\n` +
-        `🏋️ *Fitness Goal:* ${formData.fitnessGoal.replace(/-/g, ' ')}\n` +
-        `💧 *Daily Water Target:* ${(parseFloat(formData.weight) * 0.033).toFixed(1)}L\n\n` +
-        `Your first day plan includes:\n` +
-        `🍳 *Breakfast:* ${dietPlan.days[0].breakfast.substring(0, 40)}...\n` +
-        `🥗 *Lunch:* ${dietPlan.days[0].lunch.substring(0, 40)}...\n` +
-        `🍽️ *Dinner:* ${dietPlan.days[0].dinner.substring(0, 40)}...\n\n` +
-        `For the complete 75-day plan, check your email or login to the Arogyam75 portal.`;
+      // Prepare a simplified message with the wellness plan summary to avoid link issues
+      const message = `Arogyam75 Wellness Plan for ${formData.name}: ${formData.dietaryPreference.replace(/-/g, ' ')} diet, ${formData.fitnessGoal.replace(/-/g, ' ')} goal. First day includes ${dietPlan.days[0].breakfast.substring(0, 20)}... for breakfast.`;
       
       // Encode the message for URL
       const encodedMessage = encodeURIComponent(message);
@@ -70,13 +59,20 @@ export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan
       // Create WhatsApp deep link - use the correct format for WhatsApp
       // For Indian numbers, remove the + and use the country code directly
       const whatsappNumber = phoneNumber.startsWith('+') ? phoneNumber.substring(1) : phoneNumber;
-      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
+      
+      console.log("Opening WhatsApp URL:", whatsappUrl);
       
       // Open WhatsApp in a new tab
-      window.open(whatsappUrl, '_blank');
+      const newWindow = window.open(whatsappUrl, '_blank');
       
-      // Resolve after a short delay
-      setTimeout(resolve, 1000);
+      // Check if window opened successfully
+      if (newWindow) {
+        newWindow.focus();
+        resolve();
+      } else {
+        throw new Error("Popup blocked or unable to open new window");
+      }
     } catch (error) {
       console.error("Error in sendPlanViaWhatsApp:", error);
       reject(error);

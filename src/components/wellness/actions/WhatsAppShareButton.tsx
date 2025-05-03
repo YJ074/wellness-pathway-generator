@@ -30,8 +30,8 @@ const WhatsAppShareButton = ({ formData, dietPlan }: WhatsAppShareButtonProps) =
     try {
       await sendPlanViaWhatsApp(formData, dietPlan);
       toast({
-        title: "WhatsApp Message Sent!",
-        description: `Your wellness plan has been shared via WhatsApp to ${formData.mobileNumber}`,
+        title: "WhatsApp Message Prepared",
+        description: `WhatsApp should open in a new tab with your wellness plan for ${formData.mobileNumber}`,
       });
     } catch (error) {
       console.error("Error sending WhatsApp:", error);
@@ -48,7 +48,7 @@ const WhatsAppShareButton = ({ formData, dietPlan }: WhatsAppShareButtonProps) =
   return (
     <Button variant="outline" onClick={handleSendWhatsApp} disabled={isWhatsAppSending}>
       <Share className="mr-2 h-4 w-4" />
-      {isWhatsAppSending ? "Sending..." : "WhatsApp"}
+      {isWhatsAppSending ? "Opening..." : "WhatsApp"}
     </Button>
   );
 };
