@@ -34,6 +34,15 @@ const Index = () => {
             <p className="text-lg text-gray-600 leading-relaxed">
               Embark on a personalized 75-day wellness journey tailored to your unique health goals and lifestyle.
             </p>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-4 text-gray-700 bg-blue-50 p-3 rounded-lg border border-blue-100 shadow-sm"
+            >
+              Arogyam75 creates customized diet and workout plans based on your personal health data, 
+              dietary preferences, and fitness goals. Fill out the form below to generate your 75-day wellness pathway.
+            </motion.p>
           </div>
           <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <WellnessForm />
