@@ -121,10 +121,6 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
       'Local Fish Varieties', 'Paneer', 'Dal Makhani', 'Rajma',
       'Chana', 'Moong Dal', 'Toor Dal', 'Mixed Sprouts'
-    ],
-    'eggitarian': [
-      'Eggs', 'Mixed Sprouts', 'Paneer', 'Moong Dal',
-      'Toor Dal', 'Chana Dal', 'Peanuts', 'Besan (Gram Flour)'
     ]
   };
   return filterAllergies(proteins[dietaryPreference] || proteins['lacto-vegetarian'], allergies);
@@ -189,8 +185,5 @@ export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLo
         'Homemade Poha', 'Boiled Sprouts', 'Seasonal Fruit',
         'Buttermilk', 'Lemon Water', 'Homemade Chaas'
       ];
-  if (dietaryPreference === 'eggitarian' && !isWeightLoss) {
-    baseSnacks.push('Boiled Egg');
-  }
   return filterAllergies(baseSnacks, allergies);
 };

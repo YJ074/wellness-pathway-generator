@@ -1,3 +1,4 @@
+
 export type DietaryPreference =
   | 'lacto-vegetarian'
   | 'lacto-ovo-vegetarian'
@@ -5,7 +6,6 @@ export type DietaryPreference =
   | 'jain'
   | 'sattvic'
   | 'non-vegetarian'
-  | 'eggitarian'
   | 'pure-jain';
 
 export interface DietPlan {
