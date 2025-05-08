@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Utensils, Droplet, Sparkles } from "lucide-react";
+import { Utensils, Droplet, Sparkles, MapPin } from "lucide-react";
 import { calculateMealCalories } from "./utils/mealCalories";
 import { WellnessGoal } from "@/utils/diet/types";
 
@@ -19,6 +19,7 @@ interface DietSectionProps {
     skinNutrients?: string;
     fatLossNotes?: string;
     herbalRecommendations?: string[];
+    regionalNote?: string;
   };
 }
 
@@ -87,6 +88,16 @@ const DietSection = ({ diet }: DietSectionProps) => {
             <Droplet className="h-3 w-3 mr-1 text-blue-500" />
             <strong>Water:</strong> {diet.water} L
           </p>
+        )}
+        
+        {/* Regional Note */}
+        {diet.regionalNote && (
+          <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber-100">
+            <p className="text-sm text-amber-800 flex items-center">
+              <MapPin className="h-3 w-3 mr-1 text-amber-500" />
+              <span>{diet.regionalNote}</span>
+            </p>
+          </div>
         )}
         
         {/* Wellness Goals Section */}

@@ -7,6 +7,7 @@ import PersonalInfoInputs from './form/PersonalInfoInputs';
 import DietaryPreferenceInput from './form/DietaryPreferenceInput';
 import FitnessInputs from './form/FitnessInputs';
 import WellnessGoalsInput from './form/WellnessGoalsInput';
+import RegionSelector from './form/RegionSelector';
 import { WellnessGoal } from '@/utils/diet/types';
 
 // Define the valid tab values
@@ -24,6 +25,11 @@ const WellnessFormInputs = ({ formData, handleInputChange, currentTab, setCurren
   // Handle wellness goals change
   const handleWellnessGoalsChange = (goals: WellnessGoal[]) => {
     handleInputChange('wellnessGoals', goals as any);
+  };
+
+  // Handle region selection
+  const handleRegionChange = (region: string) => {
+    handleInputChange('region', region);
   };
 
   return (
@@ -57,6 +63,12 @@ const WellnessFormInputs = ({ formData, handleInputChange, currentTab, setCurren
           <WellnessGoalsInput
             selectedGoals={formData.wellnessGoals || []}
             onChange={handleWellnessGoalsChange}
+          />
+          
+          {/* Regional Preferences */}
+          <RegionSelector 
+            selectedRegion={formData.region || ''} 
+            onChange={handleRegionChange}
           />
           
           {/* Allergies Field */}

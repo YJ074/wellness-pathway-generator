@@ -23,6 +23,7 @@ const WellnessForm = () => {
     exerciseFrequency: '',
     has_muscular_build: false, // Default: not selected
     wellnessGoals: ['general-wellness'], // Default wellness goal
+    region: '', // Default: no region selected
   });
 
   const [isGenerating, setIsGenerating] = useState(false);

@@ -10,7 +10,7 @@ export interface FormData {
   weight: string;
   mobileNumber: string;
   gender: 'male' | 'female' | 'other';
-  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian';
+  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian' | 'pure-jain';
   fitnessGoal: string;
   exerciseFrequency: string;
   heightFeet?: string;   // optional, for feet input
@@ -18,6 +18,7 @@ export interface FormData {
   has_muscular_build: boolean; // Muscular build self-identification
   allergies?: string; // New field to support allergies/exclusions
   wellnessGoals?: WellnessGoal[]; // New field for specific wellness goals
+  region?: string; // New field for regional preferences
 }
 
 export interface DietPlan {
@@ -38,6 +39,7 @@ export interface DietPlan {
     skinNutrients?: string;
     fatLossNotes?: string;
     herbalRecommendations?: string[];
+    regionalNote?: string; // New field for regional cultural notes
   }>;
   bmi?: number;
   bmiCategory?: string;
