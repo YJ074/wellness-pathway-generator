@@ -6,6 +6,8 @@ import { FormData } from './types';
 import PersonalInfoInputs from './form/PersonalInfoInputs';
 import DietaryPreferenceInput from './form/DietaryPreferenceInput';
 import FitnessInputs from './form/FitnessInputs';
+import WellnessGoalsInput from './form/WellnessGoalsInput';
+import { WellnessGoal } from '@/utils/diet/types';
 
 // Define the valid tab values
 type TabKey = 'personal' | 'diet' | 'fitness';
@@ -19,6 +21,11 @@ interface WellnessFormInputsProps {
 }
 
 const WellnessFormInputs = ({ formData, handleInputChange, currentTab, setCurrentTab }: WellnessFormInputsProps) => {
+  // Handle wellness goals change
+  const handleWellnessGoalsChange = (goals: WellnessGoal[]) => {
+    handleInputChange('wellnessGoals', goals as any);
+  };
+
   return (
     <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
       <TabsList className="grid w-full grid-cols-3 mb-6">
@@ -39,12 +46,20 @@ const WellnessFormInputs = ({ formData, handleInputChange, currentTab, setCurren
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="space-y-6"
         >
           <DietaryPreferenceInput 
             value={formData.dietaryPreference} 
             onChange={(value) => handleInputChange('dietaryPreference', value)}
           />
-          {/* Allergies Field MOVED HERE */}
+          
+          {/* Wellness Goals Input */}
+          <WellnessGoalsInput
+            selectedGoals={formData.wellnessGoals || []}
+            onChange={handleWellnessGoalsChange}
+          />
+          
+          {/* Allergies Field */}
           <div className="space-y-1 mt-6">
             <label htmlFor="allergies" className="block text-sm font-medium text-gray-700">
               Allergies or Ingredients to Exclude

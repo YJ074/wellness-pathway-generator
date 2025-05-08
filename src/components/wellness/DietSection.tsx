@@ -1,7 +1,8 @@
 
 import React from "react";
-import { Utensils } from "lucide-react";
+import { Utensils, Droplet, Sparkles } from "lucide-react";
 import { calculateMealCalories } from "./utils/mealCalories";
+import { WellnessGoal } from "@/utils/diet/types";
 
 interface DietSectionProps {
   diet: {
@@ -13,6 +14,11 @@ interface DietSectionProps {
     snacks?: string;
     calories?: number;
     water?: number;
+    wellnessGoals?: WellnessGoal[];
+    hairNutrients?: string;
+    skinNutrients?: string;
+    fatLossNotes?: string;
+    herbalRecommendations?: string[];
   };
 }
 
@@ -77,9 +83,45 @@ const DietSection = ({ diet }: DietSectionProps) => {
         )}
         
         {diet.water && (
-          <p className="italic text-sm text-gray-600">
+          <p className="flex items-center text-sm text-gray-600 mt-1">
+            <Droplet className="h-3 w-3 mr-1 text-blue-500" />
             <strong>Water:</strong> {diet.water} L
           </p>
+        )}
+        
+        {/* Wellness Goals Section */}
+        {diet.wellnessGoals && diet.wellnessGoals.length > 0 && (
+          <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <h4 className="font-medium flex items-center gap-2 text-blue-700">
+              <Sparkles className="h-4 w-4" />
+              Wellness Benefits
+            </h4>
+            
+            <div className="mt-2 space-y-2 text-sm">
+              {diet.hairNutrients && (
+                <p><strong>Hair Health:</strong> {diet.hairNutrients}</p>
+              )}
+              
+              {diet.skinNutrients && (
+                <p><strong>Skin Health:</strong> {diet.skinNutrients}</p>
+              )}
+              
+              {diet.fatLossNotes && (
+                <p><strong>Weight Management:</strong> {diet.fatLossNotes}</p>
+              )}
+              
+              {diet.herbalRecommendations && diet.herbalRecommendations.length > 0 && (
+                <div>
+                  <strong>Recommended Beverages:</strong>
+                  <ul className="list-disc list-inside ml-2">
+                    {diet.herbalRecommendations.map((herb, index) => (
+                      <li key={index}>{herb}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
         )}
       </div>
     </div>

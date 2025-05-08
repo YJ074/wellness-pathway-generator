@@ -8,6 +8,13 @@ export type DietaryPreference =
   | 'non-vegetarian'
   | 'pure-jain';
 
+export type WellnessGoal = 
+  | 'hair-fall-control'
+  | 'glowing-skin'
+  | 'fat-loss'
+  | 'inch-loss'
+  | 'general-wellness';
+
 export interface DietPlan {
   days: Array<{
     day: number;
@@ -15,6 +22,10 @@ export interface DietPlan {
     lunch: string;
     dinner: string;
     snacks: string;
+    wellnessGoals?: WellnessGoal[];
+    hairNutrients?: string;
+    skinNutrients?: string;
+    fatLossNotes?: string;
+    herbalRecommendations?: string[];
   }>;
 }
-

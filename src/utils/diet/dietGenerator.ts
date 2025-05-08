@@ -1,6 +1,6 @@
 
 import { DietPlan, FormData } from '@/components/wellness/types';
-import { DietaryPreference } from './types';
+import { DietaryPreference, WellnessGoal } from './types';
 import { 
   getProteinSources, 
   getGrainSources, 
@@ -54,8 +54,16 @@ export const calculateBMR = (weight: number, heightCm: number, age: number, gend
 };
 
 // Adjust calories based on fitness goal, muscular build overrides BMI-based loss logic
-export const calculateDailyCalories = (bmr: number, fitnessGoal: string, hasMuscularBuild?: boolean): number => {
+export const calculateDailyCalories = (bmr: number, fitnessGoal: string, wellnessGoals: WellnessGoal[] = [], hasMuscularBuild?: boolean): number => {
+  // If fat-loss or inch-loss is selected, adjust calories
+  const isFatLossGoal = wellnessGoals.includes('fat-loss') || wellnessGoals.includes('inch-loss');
+  
   // If muscular build, IGNORE BMI and user is NOT forced into weight loss
+  if (isFatLossGoal && !hasMuscularBuild) {
+    // For fat loss goals, restrict to 1200-1600 calories
+    return Math.max(Math.min(bmr - 500, 1600), 1200);
+  }
+  
   switch (fitnessGoal) {
     case 'weight-loss':
       // If user has muscular build, don't restrict calories by BMI
@@ -68,6 +76,108 @@ export const calculateDailyCalories = (bmr: number, fitnessGoal: string, hasMusc
     default:
       return bmr;
   }
+};
+
+// Generate hair nutrients information based on the meal
+const generateHairNutrients = (meal: string): string => {
+  const hairNutrientOptions = [
+    "Rich in biotin and protein for hair strength",
+    "Contains zinc and iron to prevent hair fall",
+    "Provides B vitamins essential for hair growth",
+    "Supplies omega-3 fatty acids for scalp health",
+    "Contains silica for hair elasticity and strength",
+    "Rich in vitamin E to improve blood circulation to scalp",
+    "Provides copper to maintain hair color"
+  ];
+  
+  // Seed based on meal content to get consistent but different results
+  const seedValue = Array.from(meal).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return hairNutrientOptions[seedValue % hairNutrientOptions.length];
+};
+
+// Generate skin nutrients information based on the meal
+const generateSkinNutrients = (meal: string): string => {
+  const skinNutrientOptions = [
+    "Contains antioxidants that protect skin from damage",
+    "Rich in vitamin C for collagen production",
+    "Provides vitamin E for skin repair and moisture",
+    "Contains zinc to regulate oil production and reduce acne",
+    "Rich in beta-carotene for natural skin glow",
+    "Supplies omega-3 fatty acids for skin elasticity",
+    "Contains selenium to protect against sun damage",
+    "Provides hydration and essential minerals for skin health"
+  ];
+  
+  // Seed based on meal content to get consistent but different results
+  const seedValue = Array.from(meal).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return skinNutrientOptions[seedValue % skinNutrientOptions.length];
+};
+
+// Generate fat loss notes based on the meal
+const generateFatLossNotes = (meal: string, calories: number): string => {
+  const fatLossOptions = [
+    "High fiber content increases satiety and reduces cravings",
+    "Balanced protein-to-carb ratio for sustained energy and fat burning",
+    "Contains thermogenic ingredients to boost metabolism",
+    "Low glycemic index foods to prevent insulin spikes",
+    "Healthy fats for hormone balance and improved fat metabolism",
+    "Rich in nutrients that support the body's fat burning processes",
+    "Designed to keep blood sugar stable and reduce fat storage"
+  ];
+  
+  // Seed based on meal content to get consistent but different results
+  const seedValue = Array.from(meal).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return `${fatLossOptions[seedValue % fatLossOptions.length]}. Portion controlled at ${calories} calories.`;
+};
+
+// Generate herbal recommendations
+const generateHerbalRecommendations = (dayIndex: number, wellnessGoals: WellnessGoal[]): string[] => {
+  const recommendations: string[] = [];
+  
+  // Base recommendations for everyone
+  const baseOptions = [
+    "Warm lemon water before breakfast",
+    "Green tea after meals",
+    "Tulsi tea in the evening",
+    "Cumin-coriander-fennel tea after lunch",
+    "Cinnamon water throughout the day"
+  ];
+  
+  // Add base recommendation
+  recommendations.push(baseOptions[dayIndex % baseOptions.length]);
+  
+  // Add goal-specific recommendations
+  if (wellnessGoals.includes('hair-fall-control')) {
+    const hairOptions = [
+      "Brahmi or bhringraj tea in the evening",
+      "Amla juice mixed with water before breakfast",
+      "Fenugreek seed water in the morning"
+    ];
+    recommendations.push(hairOptions[dayIndex % hairOptions.length]);
+  }
+  
+  if (wellnessGoals.includes('glowing-skin')) {
+    const skinOptions = [
+      "Aloe vera juice in the morning",
+      "Turmeric milk before bedtime",
+      "Rose water in your regular water for hydration"
+    ];
+    recommendations.push(skinOptions[dayIndex % skinOptions.length]);
+  }
+  
+  if (wellnessGoals.includes('fat-loss') || wellnessGoals.includes('inch-loss')) {
+    const weightOptions = [
+      "Jeera water before meals",
+      "Apple cider vinegar with warm water before breakfast",
+      "Triphala water before bedtime",
+      "Ginger-lemon tea in the morning",
+      "Cinnamon-honey water before breakfast"
+    ];
+    recommendations.push(weightOptions[dayIndex % weightOptions.length]);
+  }
+  
+  // Return unique recommendations
+  return [...new Set(recommendations)];
 };
 
 // Re-export new allergy-aware wrappers:
@@ -115,12 +225,18 @@ export const generateDietPlan = (
   // Calculate BMR
   const bmr = calculateBMR(weight, heightCm, age, formData.gender);
   
-  // Adjust calories based on fitness goal (muscular build disables BMI-based forced loss)
-  const dailyCalories = calculateDailyCalories(bmr, formData.fitnessGoal, formData.has_muscular_build);
+  // Get wellness goals (default to general wellness if none selected)
+  const wellnessGoals = formData.wellnessGoals || ['general-wellness'];
+  
+  // Adjust calories based on fitness goal and wellness goals
+  const dailyCalories = calculateDailyCalories(bmr, formData.fitnessGoal, wellnessGoals, formData.has_muscular_build);
   
   const dietaryPreference = formData.dietaryPreference;
   const proteinFocus = formData.fitnessGoal === 'muscle-gain';
-  const calorieReduction = formData.fitnessGoal === 'weight-loss' && !formData.has_muscular_build;
+  const calorieReduction = (formData.fitnessGoal === 'weight-loss' || 
+                           wellnessGoals.includes('fat-loss') || 
+                           wellnessGoals.includes('inch-loss')) && 
+                           !formData.has_muscular_build;
   const { allergies } = formData;
 
   // Use new allergy-aware accessors
@@ -151,6 +267,18 @@ export const generateDietPlan = (
     // Recommended water intake (in liters)
     const waterIntake = formData.gender === 'male' ? 3.0 : 2.7;
     
+    // Generate wellness goal specific information
+    const hairNutrients = wellnessGoals.includes('hair-fall-control') ? 
+      generateHairNutrients(`${breakfast} ${lunch} ${dinner}`) : undefined;
+      
+    const skinNutrients = wellnessGoals.includes('glowing-skin') ? 
+      generateSkinNutrients(`${breakfast} ${lunch} ${dinner}`) : undefined;
+      
+    const fatLossNotes = (wellnessGoals.includes('fat-loss') || wellnessGoals.includes('inch-loss')) ? 
+      generateFatLossNotes(`${breakfast} ${lunch} ${dinner}`, totalCalories) : undefined;
+      
+    const herbalRecommendations = generateHerbalRecommendations(dayIndex, wellnessGoals);
+    
     days.push({
       day: i,
       breakfast,
@@ -161,7 +289,12 @@ export const generateDietPlan = (
       calories: totalCalories,
       water: waterIntake,
       bmi,
-      bmiCategory
+      bmiCategory,
+      wellnessGoals,
+      hairNutrients,
+      skinNutrients,
+      fatLossNotes,
+      herbalRecommendations
     });
   }
   

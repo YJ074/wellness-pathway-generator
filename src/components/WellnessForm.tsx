@@ -6,6 +6,7 @@ import { generateWorkoutPlan } from '@/utils/workoutGenerator';
 import WellnessFormView from './wellness/WellnessFormView';
 import WellnessResults from './wellness/WellnessResults';
 import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
+import { WellnessGoal } from '@/utils/diet/types';
 
 const WellnessForm = () => {
   const { toast } = useToast();
@@ -21,13 +22,14 @@ const WellnessForm = () => {
     fitnessGoal: '',
     exerciseFrequency: '',
     has_muscular_build: false, // Default: not selected
+    wellnessGoals: ['general-wellness'], // Default wellness goal
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
 
-  const handleInputChange = (field: keyof FormData, value: string | boolean) => {
+  const handleInputChange = (field: keyof FormData, value: string | boolean | WellnessGoal[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
