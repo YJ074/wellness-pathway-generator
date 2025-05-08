@@ -26,21 +26,21 @@ interface DietSectionProps {
 const DietSection = ({ diet }: DietSectionProps) => {
   const mealCalories = calculateMealCalories(diet.calories || 2000);
   const totalCalories = diet.calories || 0;
+  const hasRegionalNote = !!diet.regionalNote && diet.regionalNote.trim() !== '';
 
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
         <Utensils className="w-5 h-5" />
-        Diet Plan (Calorie-Counted)
+        Diet Plan {totalCalories > 0 ? `(${totalCalories} kcal)` : ''}
       </h3>
       
-      {/* Regional Note - Now displayed at the top */}
-      {diet.regionalNote && (
-        <div className="p-3 bg-amber-50 rounded-lg border border-amber-100 mb-4">
+      {/* Regional Note */}
+      {hasRegionalNote && (
+        <div className="p-3 bg-amber-50 rounded-lg border border-amber-100">
           <p className="text-sm text-amber-800 flex items-center">
-            <MapPin className="h-4 w-4 mr-2 text-amber-600" />
-            <span className="font-medium">Cultural Context: </span>
-            <span className="ml-1">{diet.regionalNote}</span>
+            <MapPin className="h-4 w-4 mr-2 text-amber-600 flex-shrink-0" />
+            <span className="italic">{diet.regionalNote}</span>
           </p>
         </div>
       )}
@@ -87,12 +87,6 @@ const DietSection = ({ diet }: DietSectionProps) => {
         
         {diet.snacks && !diet.midMorningSnack && !diet.eveningSnack && (
           <p><strong>Snacks:</strong> {diet.snacks}</p>
-        )}
-        
-        {totalCalories > 0 && (
-          <p className="mt-3 font-medium">
-            <strong>Approx. Total Calories:</strong> {totalCalories} kcal
-          </p>
         )}
         
         {diet.water && (

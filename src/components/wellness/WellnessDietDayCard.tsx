@@ -18,6 +18,7 @@ interface DietPlanDay {
   water?: number;
   bmi?: number;
   bmiCategory?: string;
+  regionalNote?: string;
 }
 
 interface WellnessDietDayCardProps {
@@ -25,6 +26,7 @@ interface WellnessDietDayCardProps {
   formData?: {
     exerciseFrequency?: string;
     fitnessGoal?: string;
+    region?: string;
   };
   workoutDay?: WorkoutDay;
 }
