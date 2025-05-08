@@ -2,7 +2,6 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -12,52 +11,30 @@ interface RegionSelectorProps {
 }
 
 const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
-  // Broad regions
-  const regions = [
-    { id: 'north', name: 'North Indian' },
-    { id: 'south', name: 'South Indian' },
-    { id: 'east', name: 'East Indian' },
-    { id: 'west', name: 'West Indian' },
-    { id: 'central', name: 'Central Indian' },
-    { id: 'northeast', name: 'Northeast Indian' }
-  ];
-  
-  // Specific states mapped to regions
+  // Specific states
   const states = [
-    // North India
-    { id: 'punjab', name: 'Punjab', region: 'north' },
-    { id: 'haryana', name: 'Haryana', region: 'north' },
-    { id: 'delhi', name: 'Delhi', region: 'north' },
-    { id: 'uttarpradesh', name: 'Uttar Pradesh', region: 'north' },
-    // South India
-    { id: 'kerala', name: 'Kerala', region: 'south' },
-    { id: 'tamilnadu', name: 'Tamil Nadu', region: 'south' },
-    { id: 'karnataka', name: 'Karnataka', region: 'south' },
-    { id: 'andhra', name: 'Andhra Pradesh', region: 'south' },
-    { id: 'telangana', name: 'Telangana', region: 'south' },
-    // East India
-    { id: 'westbengal', name: 'West Bengal', region: 'east' },
-    { id: 'odisha', name: 'Odisha', region: 'east' },
-    { id: 'bihar', name: 'Bihar', region: 'east' },
-    // West India
-    { id: 'maharashtra', name: 'Maharashtra', region: 'west' },
-    { id: 'gujarat', name: 'Gujarat', region: 'west' },
-    { id: 'rajasthan', name: 'Rajasthan', region: 'west' },
-    { id: 'goa', name: 'Goa', region: 'west' },
-    // Central India
-    { id: 'madhyapradesh', name: 'Madhya Pradesh', region: 'central' },
-    { id: 'chhattisgarh', name: 'Chhattisgarh', region: 'central' },
-    // Northeast India
-    { id: 'assam', name: 'Assam', region: 'northeast' },
-    { id: 'manipur', name: 'Manipur', region: 'northeast' },
-    { id: 'meghalaya', name: 'Meghalaya', region: 'northeast' }
+    { id: 'punjab', name: 'Punjab' },
+    { id: 'haryana', name: 'Haryana' },
+    { id: 'delhi', name: 'Delhi' },
+    { id: 'uttarpradesh', name: 'Uttar Pradesh' },
+    { id: 'kerala', name: 'Kerala' },
+    { id: 'tamilnadu', name: 'Tamil Nadu' },
+    { id: 'karnataka', name: 'Karnataka' },
+    { id: 'andhra', name: 'Andhra Pradesh' },
+    { id: 'telangana', name: 'Telangana' },
+    { id: 'westbengal', name: 'West Bengal' },
+    { id: 'odisha', name: 'Odisha' },
+    { id: 'bihar', name: 'Bihar' },
+    { id: 'maharashtra', name: 'Maharashtra' },
+    { id: 'gujarat', name: 'Gujarat' },
+    { id: 'rajasthan', name: 'Rajasthan' },
+    { id: 'goa', name: 'Goa' },
+    { id: 'madhyapradesh', name: 'Madhya Pradesh' },
+    { id: 'chhattisgarh', name: 'Chhattisgarh' },
+    { id: 'assam', name: 'Assam' },
+    { id: 'manipur', name: 'Manipur' },
+    { id: 'meghalaya', name: 'Meghalaya' }
   ];
-
-  // Group states by region
-  const statesByRegion: Record<string, {id: string, name: string}[]> = {};
-  regions.forEach(region => {
-    statesByRegion[region.id] = states.filter(state => state.region === region.id);
-  });
 
   return (
     <div className="space-y-4">
@@ -80,10 +57,6 @@ const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="no-preference">No Preference</SelectItem>
-                {regions.map((region) => (
-                  <SelectItem key={region.id} value={region.id}>{region.name}</SelectItem>
-                ))}
-                <SelectItem value="states-divider" disabled className="font-semibold pt-2">States</SelectItem>
                 {states.map((state) => (
                   <SelectItem key={state.id} value={state.id}>{state.name}</SelectItem>
                 ))}
