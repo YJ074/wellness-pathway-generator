@@ -4,6 +4,7 @@ import { MapPin } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface RegionSelectorProps {
   selectedRegion: string;
@@ -78,11 +79,11 @@ const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
                 <SelectValue placeholder="Choose a region" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">No Preference</SelectItem>
+                <SelectItem value="no-preference">No Preference</SelectItem>
                 {regions.map((region) => (
                   <SelectItem key={region.id} value={region.id}>{region.name}</SelectItem>
                 ))}
-                <SelectItem value="" disabled className="font-semibold pt-2">States</SelectItem>
+                <SelectItem value="states-divider" disabled className="font-semibold pt-2">States</SelectItem>
                 {states.map((state) => (
                   <SelectItem key={state.id} value={state.id}>{state.name}</SelectItem>
                 ))}
