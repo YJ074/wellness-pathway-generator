@@ -81,6 +81,24 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Features traditional Northeastern fermentation techniques for bamboo shoots and soybeans that enhance nutritional value while adding umami flavor.",
       "This meal includes minimal-oil preparation methods traditional to Naga, Manipuri and Assamese cooking that naturally keep calories controlled.",
       "Incorporates indigenous herbs like Sichuan pepper (thoiding) and wild perilla seeds used for centuries in Northeastern tribal nutrition."
+    ],
+    'andhra': [
+      "Andhra cuisine is known for its spicy flavors and unique use of tamarind. This meal incorporates traditional spices in moderation.",
+      "Features gunpowder (podi) preparations authentic to Andhra that enhance flavor with minimal oil and maximum nutrition.",
+      "This meal includes traditional Andhra-style vegetable preparations that preserve micronutrients while keeping authentic flavors.",
+      "Incorporates rice preparations like pulihora with controlled portions, balanced with protein sources common in Andhra households."
+    ],
+    'karnataka': [
+      "Karnataka cuisine features diverse regional variations. This meal incorporates elements of both North Karnataka's hearty dishes and South Karnataka's lighter fare.",
+      "Features traditional ragi-based preparations that were staples in Karnataka long before refined grains became common.",
+      "This meal includes traditional Karnataka-style sambar and huli preparations with authentic spice combinations.",
+      "Incorporates kosambari (moong dal salad) and other nutritious Karnataka specialties that provide balanced nutrition."
+    ],
+    'telangana': [
+      "Telangana cuisine features unique preparations distinct from neighboring regions. This meal incorporates traditional jowar and bajra preparations.",
+      "Features moderate use of red chilies and tamarind, signature flavors in Telangana cooking, balanced for both taste and nutrition.",
+      "This meal includes traditional Telangana-style pachadis and chutneys that enhance nutritional value with minimal processing.",
+      "Incorporates sarva pindi and other unique Telangana preparations adapted for balanced nutrition."
     ]
   };
   
@@ -107,6 +125,7 @@ export const generateRegionalNote = (region?: string): string | undefined => {
   // If specific state not found, fall back to the broader regional category
   // Map states to regions
   const stateToRegionMap: Record<string, string> = {
+    // North
     'punjab': 'north',
     'haryana': 'north',
     'uttarpradesh': 'north',
@@ -114,27 +133,38 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'himachalpradesh': 'north',
     'delhi': 'north',
     'jammuandkashmir': 'north',
+    'ladakh': 'north',
+    'chandigarh': 'north',
     
+    // South
     'kerala': 'south',
     'tamilnadu': 'south',
     'karnataka': 'south',
     'andhra': 'south',
     'andhrapradesh': 'south',
     'telangana': 'south',
+    'puducherry': 'south',
+    'lakshadweep': 'south',
     
+    // East
     'westbengal': 'east',
     'odisha': 'east',
     'bihar': 'east',
     'jharkhand': 'east',
+    'andamanandnicobar': 'east',
     
+    // West
     'maharashtra': 'west',
     'gujarat': 'west',
     'goa': 'west',
     'rajasthan': 'west',
+    'dadraandnagarhaveli': 'west',
     
+    // Central
     'madhyapradesh': 'central',
     'chhattisgarh': 'central',
     
+    // Northeast
     'assam': 'north east',
     'manipur': 'north east',
     'meghalaya': 'north east',

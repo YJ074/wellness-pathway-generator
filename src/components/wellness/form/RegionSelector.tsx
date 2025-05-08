@@ -10,29 +10,44 @@ interface RegionSelectorProps {
 }
 
 const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
-  // Specific states
+  // Complete list of all Indian states and union territories
   const states = [
-    { id: 'punjab', name: 'Punjab' },
-    { id: 'haryana', name: 'Haryana' },
-    { id: 'delhi', name: 'Delhi' },
-    { id: 'uttarpradesh', name: 'Uttar Pradesh' },
-    { id: 'kerala', name: 'Kerala' },
-    { id: 'tamilnadu', name: 'Tamil Nadu' },
-    { id: 'karnataka', name: 'Karnataka' },
     { id: 'andhra', name: 'Andhra Pradesh' },
-    { id: 'telangana', name: 'Telangana' },
-    { id: 'westbengal', name: 'West Bengal' },
-    { id: 'odisha', name: 'Odisha' },
-    { id: 'bihar', name: 'Bihar' },
-    { id: 'maharashtra', name: 'Maharashtra' },
-    { id: 'gujarat', name: 'Gujarat' },
-    { id: 'rajasthan', name: 'Rajasthan' },
-    { id: 'goa', name: 'Goa' },
-    { id: 'madhyapradesh', name: 'Madhya Pradesh' },
-    { id: 'chhattisgarh', name: 'Chhattisgarh' },
+    { id: 'arunachalpradesh', name: 'Arunachal Pradesh' },
     { id: 'assam', name: 'Assam' },
+    { id: 'bihar', name: 'Bihar' },
+    { id: 'chhattisgarh', name: 'Chhattisgarh' },
+    { id: 'delhi', name: 'Delhi' },
+    { id: 'goa', name: 'Goa' },
+    { id: 'gujarat', name: 'Gujarat' },
+    { id: 'haryana', name: 'Haryana' },
+    { id: 'himachalpradesh', name: 'Himachal Pradesh' },
+    { id: 'jharkhand', name: 'Jharkhand' },
+    { id: 'jammuandkashmir', name: 'Jammu & Kashmir' },
+    { id: 'karnataka', name: 'Karnataka' },
+    { id: 'kerala', name: 'Kerala' },
+    { id: 'ladakh', name: 'Ladakh' },
+    { id: 'madhyapradesh', name: 'Madhya Pradesh' },
+    { id: 'maharashtra', name: 'Maharashtra' },
     { id: 'manipur', name: 'Manipur' },
-    { id: 'meghalaya', name: 'Meghalaya' }
+    { id: 'meghalaya', name: 'Meghalaya' },
+    { id: 'mizoram', name: 'Mizoram' },
+    { id: 'nagaland', name: 'Nagaland' },
+    { id: 'odisha', name: 'Odisha' },
+    { id: 'punjab', name: 'Punjab' },
+    { id: 'rajasthan', name: 'Rajasthan' },
+    { id: 'sikkim', name: 'Sikkim' },
+    { id: 'tamilnadu', name: 'Tamil Nadu' },
+    { id: 'telangana', name: 'Telangana' },
+    { id: 'tripura', name: 'Tripura' },
+    { id: 'uttarakhand', name: 'Uttarakhand' },
+    { id: 'uttarpradesh', name: 'Uttar Pradesh' },
+    { id: 'westbengal', name: 'West Bengal' },
+    { id: 'andamanandnicobar', name: 'Andaman & Nicobar Islands' },
+    { id: 'chandigarh', name: 'Chandigarh' },
+    { id: 'dadraandnagarhaveli', name: 'Dadra & Nagar Haveli and Daman & Diu' },
+    { id: 'lakshadweep', name: 'Lakshadweep' },
+    { id: 'puducherry', name: 'Puducherry' }
   ];
 
   return (
