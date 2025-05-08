@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WellnessGoal } from '@/utils/diet/types';
-import { Sparkles, Leaf } from 'lucide-react';
+import { Sparkles, Leaf, MapPin } from 'lucide-react';
 
 interface DietPlanDay {
   day: number;
@@ -19,6 +19,7 @@ interface DietPlanDay {
   skinNutrients?: string;
   fatLossNotes?: string;
   herbalRecommendations?: string[];
+  regionalNote?: string;
 }
 
 interface DietPlanDisplayProps {
@@ -36,6 +37,16 @@ const DietPlanDisplay = ({ days }: DietPlanDisplayProps) => {
               <CardTitle className="text-xl">Day {day.day}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4">
+              {/* Regional Note */}
+              {day.regionalNote && (
+                <div className="mb-2 pb-2 border-b border-amber-100">
+                  <p className="text-xs text-amber-800 flex items-start">
+                    <MapPin className="h-3 w-3 mr-1 mt-0.5 flex-shrink-0 text-amber-600" />
+                    <span className="italic">{day.regionalNote}</span>
+                  </p>
+                </div>
+              )}
+              
               <p><strong>Breakfast:</strong> {day.breakfast}</p>
               
               {day.midMorningSnack && (

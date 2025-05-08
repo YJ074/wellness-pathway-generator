@@ -33,6 +33,18 @@ const DietSection = ({ diet }: DietSectionProps) => {
         <Utensils className="w-5 h-5" />
         Diet Plan (Calorie-Counted)
       </h3>
+      
+      {/* Regional Note - Now displayed at the top */}
+      {diet.regionalNote && (
+        <div className="p-3 bg-amber-50 rounded-lg border border-amber-100 mb-4">
+          <p className="text-sm text-amber-800 flex items-center">
+            <MapPin className="h-4 w-4 mr-2 text-amber-600" />
+            <span className="font-medium">Cultural Context: </span>
+            <span className="ml-1">{diet.regionalNote}</span>
+          </p>
+        </div>
+      )}
+      
       <div className="space-y-3">
         <p>
           <strong>Breakfast:</strong> {diet.breakfast} 
@@ -88,16 +100,6 @@ const DietSection = ({ diet }: DietSectionProps) => {
             <Droplet className="h-3 w-3 mr-1 text-blue-500" />
             <strong>Water:</strong> {diet.water} L
           </p>
-        )}
-        
-        {/* Regional Note */}
-        {diet.regionalNote && (
-          <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber-100">
-            <p className="text-sm text-amber-800 flex items-center">
-              <MapPin className="h-3 w-3 mr-1 text-amber-500" />
-              <span>{diet.regionalNote}</span>
-            </p>
-          </div>
         )}
         
         {/* Wellness Goals Section */}
