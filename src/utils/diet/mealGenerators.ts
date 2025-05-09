@@ -1,5 +1,4 @@
-
-import { DietaryPreference } from './types';
+import { DietaryPreference } from '@/components/wellness/types';
 import { 
   getProteinSources, 
   getGrainSources, 
@@ -15,7 +14,7 @@ import { filterAllergies } from './foodSources';
 
 export const generateBreakfast = (
   dayIndex: number,
-  dietaryPreference: string,
+  dietaryPreference: DietaryPreference,
   isWeightLoss: boolean,
   allergies?: string,
   region?: string

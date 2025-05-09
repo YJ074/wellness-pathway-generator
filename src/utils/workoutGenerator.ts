@@ -25,9 +25,9 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
       workoutDays.push({
         day,
         isRestDay: true,
-        warmup: [],
-        exercises: [],
-        cooldown: []
+        warmup: [], // Always provide an empty array for required properties
+        exercises: [], // Always provide an empty array for required properties
+        cooldown: [] // Always provide an empty array for required properties
       });
       continue;
     }
