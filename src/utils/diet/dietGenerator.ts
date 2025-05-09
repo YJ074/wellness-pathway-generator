@@ -85,7 +85,7 @@ export const generateDietPlan = (
   // Adjust calories based on fitness goal and wellness goals
   const dailyCalories = calculateDailyCalories(bmr, formData.fitnessGoal, wellnessGoals, formData.has_muscular_build);
   
-  const dietaryPreference = formData.dietaryPreference;
+  const dietaryPreference = formData.dietaryPreference as DietaryPreference;
   const proteinFocus = formData.fitnessGoal === 'muscle-gain';
   const calorieReduction = (formData.fitnessGoal === 'weight-loss' || 
                            wellnessGoals.includes('fat-loss') || 
