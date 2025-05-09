@@ -16,6 +16,7 @@ export interface FormData {
   heightFeet?: string;   // optional, for feet input
   heightInches?: string; // optional, for inches input
   has_muscular_build: boolean; // Muscular build self-identification
+  includeWorkoutPlan?: boolean; // New field to indicate if workout plan should be generated
   allergies?: string; // New field to support allergies/exclusions
   wellnessGoals?: WellnessGoal[]; // New field for specific wellness goals
   region?: string; // New field for regional preferences
