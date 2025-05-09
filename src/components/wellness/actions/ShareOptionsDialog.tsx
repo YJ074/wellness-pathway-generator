@@ -16,11 +16,12 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import MakeWebhookInput from "./MakeWebhookInput";
 
 interface ShareOptionsDialogProps {
   formData: FormData;
   dietPlan: DietPlan;
-  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
+  workoutPlan?: WorkoutPlan;
 }
 
 const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDialogProps) => {
@@ -28,19 +29,27 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [isEmailSending, setIsEmailSending] = useState(false);
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
+  const [isMakeSending, setIsMakeSending] = useState(false);
+  
+  // For storing the Make.com webhook URL - could persist in localStorage if needed
+  const [makeWebhookUrl, setMakeWebhookUrl] = useState("");
   
   const [shareOptions, setShareOptions] = useState({
     email: true,
     whatsapp: true,
+    make: false,
   });
 
   const handleSharePlan = async () => {
-    if ((!shareOptions.email && !shareOptions.whatsapp) ||
-        (shareOptions.email && !formData.email) ||
-        (shareOptions.whatsapp && !formData.mobileNumber)) {
+    if (
+      (!shareOptions.email && !shareOptions.whatsapp && !shareOptions.make) ||
+      (shareOptions.email && !formData.email) ||
+      (shareOptions.whatsapp && !formData.mobileNumber) ||
+      (shareOptions.make && !makeWebhookUrl)
+    ) {
       toast({
         title: "Missing Information",
-        description: "Please select at least one sharing method and provide the required contact information.",
+        description: "Please select at least one sharing method and provide the required information.",
         variant: "destructive",
       });
       return;
@@ -49,12 +58,18 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
     try {
       setIsEmailSending(shareOptions.email);
       setIsWhatsAppSending(shareOptions.whatsapp);
+      setIsMakeSending(shareOptions.make);
       
-      const result = await shareWellnessPlan(formData, dietPlan, {
-        email: shareOptions.email,
-        whatsapp: shareOptions.whatsapp,
-        make: "", // Empty string for make, as we've removed this functionality
-      });
+      const result = await shareWellnessPlan(
+        formData, 
+        dietPlan, 
+        {
+          email: shareOptions.email,
+          whatsapp: shareOptions.whatsapp,
+          make: shareOptions.make ? makeWebhookUrl : "",
+        },
+        workoutPlan
+      );
       
       if (result.success) {
         setIsShareDialogOpen(false);
@@ -79,6 +94,15 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
     } finally {
       setIsEmailSending(false);
       setIsWhatsAppSending(false);
+      setIsMakeSending(false);
+    }
+  };
+
+  const handleWebhookChange = (url: string) => {
+    setMakeWebhookUrl(url);
+    if (url) {
+      // Automatically enable the Make option if a URL is provided
+      setShareOptions(prev => ({ ...prev, make: true }));
     }
   };
 
@@ -121,6 +145,29 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
               WhatsApp to {formData.mobileNumber || "[Mobile not provided]"}
             </Label>
           </div>
+          
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="share-make" 
+              checked={shareOptions.make}
+              onCheckedChange={(checked) => 
+                setShareOptions(prev => ({ ...prev, make: checked === true }))}
+              disabled={!makeWebhookUrl}
+            />
+            <Label htmlFor="share-make" className={!makeWebhookUrl ? "text-gray-400" : ""}>
+              Send via Make.com (WhatsApp & Email)
+            </Label>
+          </div>
+          
+          <div className="pt-2">
+            <MakeWebhookInput onWebhookChange={handleWebhookChange} webhookUrl={makeWebhookUrl} />
+            
+            {makeWebhookUrl && (
+              <p className="text-xs text-gray-500 mt-2 px-2">
+                Using webhook: {makeWebhookUrl.substring(0, 25)}...
+              </p>
+            )}
+          </div>
         </div>
         
         <DialogFooter>
@@ -129,10 +176,10 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
           </DialogClose>
           <Button 
             onClick={handleSharePlan}
-            disabled={isEmailSending || isWhatsAppSending || 
-              (!shareOptions.email && !shareOptions.whatsapp)}
+            disabled={isEmailSending || isWhatsAppSending || isMakeSending || 
+              (!shareOptions.email && !shareOptions.whatsapp && !shareOptions.make)}
           >
-            {(isEmailSending || isWhatsAppSending) ? "Sending..." : "Share Now"}
+            {(isEmailSending || isWhatsAppSending || isMakeSending) ? "Sending..." : "Share Now"}
           </Button>
         </DialogFooter>
       </DialogContent>

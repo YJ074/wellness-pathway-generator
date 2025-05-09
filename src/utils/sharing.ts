@@ -1,4 +1,4 @@
-import { DietPlan, FormData } from '@/components/wellness/types';
+import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import React from 'react';
@@ -6,11 +6,11 @@ import React from 'react';
 /**
  * Sends the wellness plan via email
  */
-export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan): Promise<void> => {
+export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan, workoutPlan?: WorkoutPlan): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
       // Create the document element with WellnessPDF
-      const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan });
+      const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan, workoutPlan });
       
       // Generate PDF blob - this is asynchronous
       // @ts-ignore - Ignoring type issues with PDF generation
@@ -41,7 +41,7 @@ export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan): 
 /**
  * Shares the wellness plan via WhatsApp
  */
-export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan): Promise<void> => {
+export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan, workoutPlan?: WorkoutPlan): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
       // Clean the phone number by removing any spaces and ensuring it starts with +91
@@ -81,22 +81,118 @@ export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan
 };
 
 /**
+ * Sends wellness plan data to a Make.com webhook
+ */
+export const sendToMakeWebhook = async (
+  formData: FormData, 
+  dietPlan: DietPlan, 
+  workoutPlan?: WorkoutPlan,
+  webhookUrl: string
+): Promise<void> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!webhookUrl) {
+        throw new Error("Make.com webhook URL is required");
+      }
+
+      // Create the document element with WellnessPDF
+      const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan, workoutPlan });
+      
+      // Generate PDF blob
+      // @ts-ignore - Ignoring type issues with PDF generation
+      const pdfBlob = await pdf(pdfDocument).toBlob();
+      
+      // Convert blob to base64 for sending in JSON
+      const reader = new FileReader();
+      reader.readAsDataURL(pdfBlob);
+      
+      reader.onloadend = async () => {
+        // Get base64 data (remove the data:application/pdf;base64, prefix)
+        const base64data = reader.result?.toString().split(',')[1];
+        
+        if (!base64data) {
+          throw new Error("Failed to convert PDF to base64");
+        }
+        
+        // Prepare the payload for Make.com
+        const payload = {
+          userData: {
+            name: formData.name,
+            email: formData.email,
+            mobileNumber: formData.mobileNumber,
+            age: formData.age,
+            gender: formData.gender,
+            dietaryPreference: formData.dietaryPreference,
+            fitnessGoal: formData.fitnessGoal,
+            wellnessGoals: formData.wellnessGoals
+          },
+          // Include basic plan metadata but not full data to keep payload size manageable
+          planMeta: {
+            hasDietPlan: true,
+            hasWorkoutPlan: !!workoutPlan,
+            dietDays: dietPlan.days.length,
+            workoutDays: workoutPlan ? workoutPlan.days.length : 0,
+            bmi: dietPlan.bmi,
+            bmr: dietPlan.bmr,
+            dailyCalories: dietPlan.dailyCalories
+          },
+          // Send the PDF as base64
+          pdfBase64: base64data,
+          timestamp: new Date().toISOString()
+        };
+        
+        console.log("Sending data to Make.com webhook:", webhookUrl);
+        
+        // Make API call to webhook
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Webhook error: ${response.status}`);
+        }
+        
+        console.log("Successfully sent data to Make.com webhook");
+        resolve();
+      };
+      
+      reader.onerror = () => {
+        reject(new Error("Error reading PDF file"));
+      };
+      
+    } catch (error) {
+      console.error("Error in sendToMakeWebhook:", error);
+      reject(error);
+    }
+  });
+};
+
+/**
  * Sends the wellness plan via both WhatsApp and email
  */
 export const shareWellnessPlan = async (
   formData: FormData, 
   dietPlan: DietPlan, 
-  methods: { email: boolean, whatsapp: boolean, make?: string }
+  methods: { email: boolean, whatsapp: boolean, make?: string },
+  workoutPlan?: WorkoutPlan
 ): Promise<{ success: boolean, error?: string }> => {
   try {
     const promises = [];
     
     if (methods.email && formData.email) {
-      promises.push(sendPlanViaEmail(formData, dietPlan));
+      promises.push(sendPlanViaEmail(formData, dietPlan, workoutPlan));
     }
     
     if (methods.whatsapp && formData.mobileNumber) {
-      promises.push(sendPlanViaWhatsApp(formData, dietPlan));
+      promises.push(sendPlanViaWhatsApp(formData, dietPlan, workoutPlan));
+    }
+    
+    if (methods.make && methods.make.trim() !== '') {
+      promises.push(sendToMakeWebhook(formData, dietPlan, workoutPlan, methods.make));
     }
     
     if (promises.length === 0) {
@@ -115,4 +211,4 @@ export const shareWellnessPlan = async (
       error: error instanceof Error ? error.message : "Failed to share wellness plan" 
     };
   }
-}
+};
