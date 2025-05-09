@@ -86,8 +86,8 @@ export const sendPlanViaWhatsApp = async (formData: FormData, dietPlan: DietPlan
 export const sendToMakeWebhook = async (
   formData: FormData, 
   dietPlan: DietPlan, 
-  workoutPlan?: WorkoutPlan,
-  webhookUrl: string
+  webhookUrl: string,
+  workoutPlan?: WorkoutPlan
 ): Promise<void> => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -192,7 +192,7 @@ export const shareWellnessPlan = async (
     }
     
     if (methods.make && methods.make.trim() !== '') {
-      promises.push(sendToMakeWebhook(formData, dietPlan, workoutPlan, methods.make));
+      promises.push(sendToMakeWebhook(formData, dietPlan, methods.make, workoutPlan));
     }
     
     if (promises.length === 0) {
