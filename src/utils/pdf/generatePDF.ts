@@ -21,7 +21,18 @@ export const generateWellnessPDF = async (
         workoutDays: workoutPlan ? workoutPlan.days.length : 0 
       });
       
-      // Create the PDF document with proper typing
+      console.log('Diet plan structure:', {
+        hasBMI: !!dietPlan.bmi,
+        hasBMR: !!dietPlan.bmr,
+        hasCalories: !!dietPlan.dailyCalories,
+        firstDay: dietPlan.days[0] ? 
+          {
+            breakfast: !!dietPlan.days[0].breakfast,
+            lunch: !!dietPlan.days[0].lunch,
+            dinner: !!dietPlan.days[0].dinner
+          } : 'No days'
+      });
+      
       // We need to cast the component to any to bypass the type checking
       // since WellnessPDF returns a Document component but TypeScript can't infer this properly
       const pdfDocument = React.createElement(WellnessPDF, {
@@ -29,6 +40,8 @@ export const generateWellnessPDF = async (
         dietPlan: dietPlan,
         workoutPlan: workoutPlan
       }) as any; // Cast to any to bypass the TypeScript error
+      
+      console.log('PDF document created, generating blob...');
       
       // Generate PDF blob - this is asynchronous
       pdf(pdfDocument)

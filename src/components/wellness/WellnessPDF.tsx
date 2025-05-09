@@ -36,17 +36,31 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
   console.log('Creating WellnessPDF with:', { 
     name: formData.name,
     dietDays: dietPlan.days.length,
-    workoutDays: workoutPlan ? workoutPlan.days.length : 0
+    workoutDays: workoutPlan ? workoutPlan.days.length : 0,
+    hasFormData: !!formData,
+    hasDietPlan: !!dietPlan
   });
 
-  // Return the Document directly to ensure type compatibility
-  return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <WellnessPDFContainer formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
-      </Page>
-    </Document>
-  );
+  try {
+    // Return the Document directly to ensure type compatibility
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          <WellnessPDFContainer formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
+        </Page>
+      </Document>
+    );
+  } catch (error) {
+    console.error("Error rendering WellnessPDF:", error);
+    // Return an empty document on error
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          {/* Empty page on error */}
+        </Page>
+      </Document>
+    );
+  }
 };
 
 export default WellnessPDF;
