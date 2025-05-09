@@ -1,4 +1,3 @@
-
 import { DietaryPreference } from './types';
 import { 
   getProteinSources, 
@@ -7,9 +6,9 @@ import {
   getFruitSources, 
   getSnackSources,
   getDryFruits,
-  getRegionalFoods
+  getRegionalFoods,
+  filterAllergies
 } from './foodSources';
-import { filterAllergies } from './foodSources';
 
 // Add allergies arg to all functions. If allergies provided, filter options accordingly.
 
