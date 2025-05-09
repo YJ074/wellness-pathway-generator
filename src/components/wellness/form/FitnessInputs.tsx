@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Target, Activity } from 'lucide-react';
+import { Target, Activity, Dumbbell } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
@@ -8,7 +9,8 @@ interface FitnessInputsProps {
   formData: {
     fitnessGoal: string;
     exerciseFrequency: string;
-    has_muscular_build?: boolean; // now accept muscular build toggle as well
+    has_muscular_build?: boolean;
+    includeWorkoutPlan?: boolean; // Add the new field
   };
   handleInputChange: (field: string, value: string | boolean) => void;
 }
@@ -54,6 +56,21 @@ const FitnessInputs = ({ formData, handleInputChange }: FitnessInputsProps) => {
             <SelectItem value="5+">5+ times/week</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Workout Plan Toggle */}
+      <div className="flex items-center space-x-3 mt-4">
+        <Switch
+          id="workoutPlan"
+          checked={!!formData.includeWorkoutPlan}
+          onCheckedChange={checked => handleInputChange('includeWorkoutPlan', Boolean(checked))}
+        />
+        <Label 
+          htmlFor="workoutPlan"
+          className="flex items-center gap-2 text-sm font-medium cursor-pointer"
+        >
+          <Dumbbell className="w-4 h-4" /> Include workout plan with my diet plan
+        </Label>
       </div>
 
       {/* Muscular Build Toggle */}
