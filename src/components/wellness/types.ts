@@ -44,7 +44,7 @@ export interface FormData {
   weight: string;
   mobileNumber: string;
   gender: 'male' | 'female' | 'other';
-  dietaryPreference: DietaryPreference; // Changed from string to DietaryPreference
+  dietaryPreference: DietaryPreference;
   fitnessGoal: string;
   exerciseFrequency: string;
   wellnessGoals: WellnessGoal[];
@@ -58,12 +58,12 @@ export interface WorkoutPlan {
   days: Array<{
     day: number;
     isRestDay: boolean;
-    warmup: string[]; // Required
-    exercises: Array<{  // Required
+    warmup: string[];
+    exercises: Array<{
       name: string;
       reps: string;
-      description?: string;
+      description?: string; // Mark as optional to match ExerciseType
     }>;
-    cooldown: string[]; // Required
+    cooldown: string[];
   }>;
 }
