@@ -9,7 +9,7 @@ import { FormData, DietPlan, WorkoutPlan } from "../types";
 interface WhatsAppShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
-  workoutPlan?: WorkoutPlan;
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
 const WhatsAppShareButton = ({ formData, dietPlan, workoutPlan }: WhatsAppShareButtonProps) => {
@@ -29,7 +29,7 @@ const WhatsAppShareButton = ({ formData, dietPlan, workoutPlan }: WhatsAppShareB
 
     setIsWhatsAppSending(true);
     try {
-      await sendPlanViaWhatsApp(formData, dietPlan, workoutPlan);
+      await sendPlanViaWhatsApp(formData, dietPlan);
       toast({
         title: "WhatsApp Message Prepared",
         description: `WhatsApp should open in a new tab with your wellness plan for ${formData.mobileNumber}`,

@@ -1,71 +1,52 @@
 
-export type DietaryPreference =
-  | 'lacto-vegetarian'
-  | 'lacto-ovo-vegetarian'
-  | 'pure-vegetarian'
-  | 'jain'
-  | 'sattvic'
-  | 'non-vegetarian'
-  | 'pure-jain';
+import { WorkoutDay } from '../../types/workout';
+import { WellnessGoal } from '../../utils/diet/types';
 
-export type WellnessGoal = 
-  | 'hair-fall-control'
-  | 'glowing-skin'
-  | 'fat-loss'
-  | 'inch-loss'
-  | 'general-wellness';
+export interface FormData {
+  name: string;
+  email: string;
+  age: string;
+  height: string; // in cm
+  weight: string;
+  mobileNumber: string;
+  gender: 'male' | 'female' | 'other';
+  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian' | 'pure-jain';
+  fitnessGoal: string;
+  exerciseFrequency: string;
+  heightFeet?: string;   // optional, for feet input
+  heightInches?: string; // optional, for inches input
+  has_muscular_build: boolean; // Muscular build self-identification
+  allergies?: string; // New field to support allergies/exclusions
+  wellnessGoals?: WellnessGoal[]; // New field for specific wellness goals
+  region?: string; // New field for regional preferences
+}
 
 export interface DietPlan {
   days: Array<{
     day: number;
     breakfast: string;
-    lunch: string;
-    dinner: string;
-    snacks?: string;
     midMorningSnack?: string;
+    lunch: string;
     eveningSnack?: string;
+    dinner: string;
+    snacks?: string; // legacy field
+    calories?: number;
+    water?: number;
+    bmi?: number;
+    bmiCategory?: string;
     wellnessGoals?: WellnessGoal[];
     hairNutrients?: string;
     skinNutrients?: string;
     fatLossNotes?: string;
     herbalRecommendations?: string[];
-    calories?: number;
-    water?: number;
-    regionalNote?: string;
-    bmi?: number;
-    bmiCategory?: string;
+    regionalNote?: string; // New field for regional cultural notes
   }>;
-  // Add these properties to the DietPlan interface
   bmi?: number;
   bmiCategory?: string;
   bmr?: number;
   dailyCalories?: number;
 }
 
-// Import the WorkoutDay type from the workout types file
-import { WorkoutDay } from '../../types/workout';
-
-// Define WorkoutPlan interface
 export interface WorkoutPlan {
   days: WorkoutDay[];
-}
-
-export interface FormData {
-  name: string;
-  email: string;
-  age: string;
-  height: string;
-  heightFeet?: string;
-  heightInches?: string;
-  weight: string;
-  mobileNumber: string;
-  gender: 'male' | 'female' | 'other';
-  dietaryPreference: string;
-  fitnessGoal: string;
-  exerciseFrequency: string;
-  wellnessGoals: WellnessGoal[];
-  region?: string;
-  allergies?: string;
-  has_muscular_build?: boolean;
-  includeWorkoutPlan?: boolean; // Add this new field
 }

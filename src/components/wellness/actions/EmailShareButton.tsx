@@ -9,7 +9,7 @@ import { FormData, DietPlan, WorkoutPlan } from "../types";
 interface EmailShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
-  workoutPlan?: WorkoutPlan;
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
 const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonProps) => {
@@ -28,7 +28,7 @@ const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonP
 
     setIsEmailSending(true);
     try {
-      await sendPlanViaEmail(formData, dietPlan, workoutPlan);
+      await sendPlanViaEmail(formData, dietPlan);
       toast({
         title: "Success!",
         description: `Your wellness plan has been sent to ${formData.email}`,

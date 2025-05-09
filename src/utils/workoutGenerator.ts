@@ -9,7 +9,7 @@ import {
   progressWorkout,
   adjustDifficultyForWeek
 } from './workoutUtils';
-import { WorkoutPlan } from '@/components/wellness/types';
+import { WorkoutPlan } from '../components/wellness/types';
 
 export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: string): WorkoutPlan => {
   console.log(`Generating workout plan: Exercise frequency=${exerciseFrequency}, Fitness goal=${fitnessGoal}`);
