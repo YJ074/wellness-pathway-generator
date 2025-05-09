@@ -22,12 +22,13 @@ export const generateWellnessPDF = async (
       });
       
       // Create the PDF document with proper typing
-      // @ts-ignore - Ignoring type issues as WellnessPDF returns a valid Document component
+      // We need to cast the component to any to bypass the type checking
+      // since WellnessPDF returns a Document component but TypeScript can't infer this properly
       const pdfDocument = React.createElement(WellnessPDF, {
         formData: formData,
         dietPlan: dietPlan,
         workoutPlan: workoutPlan
-      });
+      }) as any; // Cast to any to bypass the TypeScript error
       
       // Generate PDF blob - this is asynchronous
       pdf(pdfDocument)
