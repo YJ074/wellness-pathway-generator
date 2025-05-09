@@ -11,7 +11,9 @@ Font.register({
     { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf', fontWeight: 300 },
     { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf', fontWeight: 400 },
     { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf', fontWeight: 500 },
-    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf', fontWeight: 700 }
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf', fontWeight: 700 },
+    // Add italic version for Roboto
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-italic-webfont.ttf', fontWeight: 400, fontStyle: 'italic' }
   ]
 });
 
@@ -29,6 +31,8 @@ interface WellnessPDFProps {
   workoutPlan?: WorkoutPlan;
 }
 
+// This component must return a Document component from react-pdf/renderer
+// The pdf() function expects a Document component directly
 const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
   // Console log to debug PDF creation
   console.log('Creating WellnessPDF with:', { 

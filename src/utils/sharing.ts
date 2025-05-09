@@ -1,5 +1,6 @@
+
 import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
-import { pdf } from '@react-pdf/renderer';
+import { pdf, Document, Page } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import React from 'react';
 
@@ -20,15 +21,16 @@ export const generateWellnessPDF = async (
         workoutDays: workoutPlan ? workoutPlan.days.length : 0 
       });
       
-      // Create the document element with WellnessPDF using React.createElement instead of JSX
-      const element = React.createElement(WellnessPDF, {
+      // Create WellnessPDF content - note that our component accepts these props
+      // and internally uses Document from react-pdf
+      const wellnessPDFComponent = React.createElement(WellnessPDF, {
         formData: formData,
         dietPlan: dietPlan,
         workoutPlan: workoutPlan
       });
       
       // Generate PDF blob - this is asynchronous
-      pdf(element)
+      pdf(wellnessPDFComponent)
         .toBlob()
         .then((blob) => {
           console.log('PDF generated successfully, size:', Math.round(blob.size / 1024), 'KB');
