@@ -15,17 +15,18 @@ export const generateWellnessPDF = async (
 ): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     try {
-      // Create the document element with WellnessPDF
-      const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan, workoutPlan });
-      
       console.log('Starting PDF generation with:', { 
         name: formData.name,
         dietDays: dietPlan.days.length, 
         workoutDays: workoutPlan ? workoutPlan.days.length : 0 
       });
       
+      // Create the document element with WellnessPDF
+      // The element already contains a Document component inside it, so we don't need to wrap it
+      const element = <WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />;
+      
       // Generate PDF blob - this is asynchronous
-      pdf(pdfDocument)
+      pdf(element)
         .toBlob()
         .then((blob) => {
           console.log('PDF generated successfully, size:', Math.round(blob.size / 1024), 'KB');
