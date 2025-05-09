@@ -1,36 +1,63 @@
+
 import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import React from 'react';
 
 /**
- * Sends the wellness plan via email
+ * Generates a PDF document for the wellness plan
+ * This is a shared function used by all sharing methods
  */
-export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan, workoutPlan?: WorkoutPlan): Promise<void> => {
+export const generateWellnessPDF = async (
+  formData: FormData, 
+  dietPlan: DietPlan, 
+  workoutPlan?: WorkoutPlan
+): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     try {
       // Create the document element with WellnessPDF
       const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan, workoutPlan });
       
-      // Generate PDF blob - this is asynchronous
-      // @ts-ignore - Ignoring type issues with PDF generation
-      pdf(pdfDocument).toBlob().then((blob) => {
-        // In a real implementation with Supabase:
-        // 1. Upload the blob to Supabase Storage
-        // 2. Get the URL
-        // 3. Send email with the URL through Supabase Edge Function
-        
-        console.log(`Sending wellness plan to ${formData.email}`);
-        console.log(`Plan for ${formData.name}, age: ${formData.age}, goal: ${formData.fitnessGoal}`);
-        
-        // For now, simulate API call
-        setTimeout(() => {
-          resolve();
-        }, 1500);
-      }).catch(error => {
-        console.error("Error generating PDF:", error);
-        reject(error);
+      console.log('Starting PDF generation with:', { 
+        name: formData.name,
+        dietDays: dietPlan.days.length, 
+        workoutDays: workoutPlan ? workoutPlan.days.length : 0 
       });
+      
+      // Generate PDF blob - this is asynchronous
+      pdf(pdfDocument)
+        .toBlob()
+        .then((blob) => {
+          console.log('PDF generated successfully, size:', Math.round(blob.size / 1024), 'KB');
+          resolve(blob);
+        })
+        .catch(error => {
+          console.error("Error in PDF generation:", error);
+          reject(error);
+        });
+    } catch (error) {
+      console.error("Error in generateWellnessPDF:", error);
+      reject(error);
+    }
+  });
+};
+
+/**
+ * Sends the wellness plan via email
+ */
+export const sendPlanViaEmail = async (formData: FormData, dietPlan: DietPlan, workoutPlan?: WorkoutPlan): Promise<void> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Generate the PDF using the shared function
+      const pdfBlob = await generateWellnessPDF(formData, dietPlan, workoutPlan);
+      
+      console.log(`Sending wellness plan to ${formData.email}`);
+      console.log(`Plan for ${formData.name}, age: ${formData.age}, goal: ${formData.fitnessGoal}`);
+      
+      // For now, simulate API call
+      setTimeout(() => {
+        resolve();
+      }, 1500);
     } catch (error) {
       console.error("Error in sendPlanViaEmail:", error);
       reject(error);
@@ -95,12 +122,8 @@ export const sendToMakeWebhook = async (
         throw new Error("Make.com webhook URL is required");
       }
 
-      // Create the document element with WellnessPDF
-      const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan, workoutPlan });
-      
-      // Generate PDF blob
-      // @ts-ignore - Ignoring type issues with PDF generation
-      const pdfBlob = await pdf(pdfDocument).toBlob();
+      // Generate the PDF using the shared function
+      const pdfBlob = await generateWellnessPDF(formData, dietPlan, workoutPlan);
       
       // Convert blob to base64 for sending in JSON
       const reader = new FileReader();
