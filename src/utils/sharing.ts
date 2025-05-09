@@ -1,3 +1,4 @@
+
 import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
@@ -23,9 +24,9 @@ export const generateWellnessPDF = async (
       // Create the Document element by rendering the WellnessPDF component
       // Use React.createElement instead of JSX since this is a .ts file
       const pdfElement = React.createElement(WellnessPDF, {
-        formData: formData,
-        dietPlan: dietPlan,
-        workoutPlan: workoutPlan
+        formData,
+        dietPlan,
+        workoutPlan
       });
       
       // Generate PDF blob - this is asynchronous
