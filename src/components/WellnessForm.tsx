@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
 import { generateWorkoutPlan } from '@/utils/workoutGenerator';
@@ -31,11 +31,11 @@ const WellnessForm = () => {
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
 
-  const handleInputChange = (field: keyof FormData, value: string | boolean | WellnessGoal[]) => {
+  const handleInputChange = useCallback((field: keyof FormData, value: string | boolean | WellnessGoal[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -71,32 +71,45 @@ const WellnessForm = () => {
     
     setIsGenerating(true);
 
-    // Generate the diet plan passing the entire formData
-    const generatedDietPlan = generateDietPlan(formData);
-    
-    // Only generate workout plan if user opted in
-    let generatedWorkoutPlan = null;
-    if (formData.includeWorkoutPlan) {
-      generatedWorkoutPlan = generateWorkoutPlan(
-        formData.exerciseFrequency || 'sedentary', 
-        formData.fitnessGoal || 'maintenance'
-      );
-    }
+    // Use setTimeout to avoid blocking the main thread during generation
+    setTimeout(() => {
+      try {
+        // Generate the diet plan passing the entire formData
+        const generatedDietPlan = generateDietPlan(formData);
+        
+        // Only generate workout plan if user opted in
+        let generatedWorkoutPlan = null;
+        if (formData.includeWorkoutPlan) {
+          generatedWorkoutPlan = generateWorkoutPlan(
+            formData.exerciseFrequency || 'sedentary', 
+            formData.fitnessGoal || 'maintenance'
+          );
+        }
 
-    setDietPlan(generatedDietPlan);
-    setWorkoutPlan(generatedWorkoutPlan);
-    setIsGenerating(false);
+        setDietPlan(generatedDietPlan);
+        setWorkoutPlan(generatedWorkoutPlan);
 
-    toast({
-      title: "Wellness Plan Generated",
-      description: `Your 75-day personalized ${formData.includeWorkoutPlan ? 'diet and workout' : 'diet'} plan has been created.`,
-    });
-  };
+        toast({
+          title: "Wellness Plan Generated",
+          description: `Your 75-day personalized ${formData.includeWorkoutPlan ? 'diet and workout' : 'diet'} plan has been created.`,
+        });
+      } catch (error) {
+        console.error("Error generating wellness plan:", error);
+        toast({
+          title: "Generation Error",
+          description: "There was an error generating your wellness plan. Please try again.",
+          variant: "destructive"
+        });
+      } finally {
+        setIsGenerating(false);
+      }
+    }, 100); // Small delay to allow UI to update
+  }, [formData, toast]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setDietPlan(null);
     setWorkoutPlan(null);
-  };
+  }, []);
 
   return (
     <div className="space-y-6 w-full max-w-4xl">

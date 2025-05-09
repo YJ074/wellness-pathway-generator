@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -32,4 +32,5 @@ const PDFRegionalNote = ({ regionalNote }: PDFRegionalNoteProps) => {
   );
 };
 
-export default PDFRegionalNote;
+// Export memoized component to prevent unnecessary re-renders
+export default memo(PDFRegionalNote);

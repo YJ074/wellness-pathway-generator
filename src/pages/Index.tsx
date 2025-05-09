@@ -1,7 +1,8 @@
 
 import WellnessForm from "@/components/WellnessForm";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
   useEffect(() => {
@@ -18,15 +19,18 @@ const Index = () => {
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center justify-center space-y-8"
         >
-          <motion.img 
-            src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" 
-            alt="Arogyam75 Logo" 
-            className="h-36 w-auto mb-4 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1.2 }}
-          />
+          <Suspense fallback={<Skeleton className="h-36 w-36 rounded-md" />}>
+            <motion.img 
+              src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" 
+              alt="Arogyam75 Logo" 
+              loading="lazy"
+              className="h-36 w-auto mb-4 hover:scale-110 transition-transform duration-300 cursor-pointer"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 1.2 }}
+            />
+          </Suspense>
           <div className="text-center mb-8 max-w-2xl">
             <h1 className="text-4xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
               Fit India Movement
