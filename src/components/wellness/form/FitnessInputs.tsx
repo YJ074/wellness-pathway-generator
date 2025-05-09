@@ -68,7 +68,7 @@ const FitnessInputs = ({
             <Dumbbell className="w-4 h-4 text-blue-600" />
             Include 75-day workout plan
           </Label>
-          <p className="text-sm text-muted-foreground">Generate a personalized exercise routine alongside your diet plan at Rs 150</p>
+          <p className="text-sm text-muted-foreground">Generate a personalized exercise routine without GYM alongside your diet plan at Rs 150</p>
         </div>
       </div>
     </div>;
