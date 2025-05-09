@@ -1,9 +1,22 @@
-
 import React from 'react';
 import { Ruler } from 'lucide-react';
 import FormField from '@/components/ui/form-field';
 
-// Remove the conversion helper functions since we no longer want to auto-convert
+// Helper functions (for cm/ft-inches conversions)
+function cmToFeetInches(cmStr: string) {
+  const cm = parseFloat(cmStr || '0');
+  const totalInches = cm / 2.54;
+  const feet = Math.floor(totalInches / 12);
+  const inches = Math.round(totalInches % 12);
+  return { feet: feet.toString(), inches: inches.toString() };
+}
+
+function feetInchesToCm(feetStr: string, inchesStr: string) {
+  const feet = parseFloat(feetStr || '0');
+  const inches = parseFloat(inchesStr || '0');
+  const cm = (feet * 12 + inches) * 2.54;
+  return Math.round(cm).toString();
+}
 
 interface HeightSelectorProps {
   height: string; // cm
@@ -19,22 +32,36 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
   heightInches = '',
   onInputChange
 }) => {
-  // Remove the useEffect that kept conversions in sync
-  
-  // Input handlers - simplified to just update the specific field without conversions
+  // Keep conversions in sync between fields
+  React.useEffect(() => {
+    if (height && (heightFeet === '' || heightInches === '')) {
+      const { feet, inches } = cmToFeetInches(height);
+      onInputChange('heightFeet', feet);
+      onInputChange('heightInches', inches);
+    } else if ((heightFeet !== '' || heightInches !== '') && height === '') {
+      const cm = feetInchesToCm(heightFeet, heightInches);
+      onInputChange('height', cm);
+    }
+    // Only fire on change
+    // eslint-disable-next-line
+  }, [height, heightFeet, heightInches]);
+
+  // Input handlers
   const handleHeightCmChange = (value: string) => {
     onInputChange('height', value);
-    // No longer auto-updating feet/inches
+    const { feet, inches } = cmToFeetInches(value);
+    onInputChange('heightFeet', feet);
+    onInputChange('heightInches', inches);
   };
-  
   const handleHeightFeetChange = (value: string) => {
     onInputChange('heightFeet', value);
-    // No longer auto-updating cm
+    const cm = feetInchesToCm(value, heightInches || '0');
+    onInputChange('height', cm);
   };
-  
   const handleHeightInchesChange = (value: string) => {
     onInputChange('heightInches', value);
-    // No longer auto-updating cm
+    const cm = feetInchesToCm(heightFeet || '0', value);
+    onInputChange('height', cm);
   };
 
   return (
@@ -56,7 +83,7 @@ const HeightSelector: React.FC<HeightSelectorProps> = ({
             value={height}
             type="number"
             onChange={handleHeightCmChange}
-            helperText="Enter your height in centimeters"
+            helperText="Auto-syncs with ft/in"
           />
         </div>
         <div
