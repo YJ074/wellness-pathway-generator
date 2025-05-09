@@ -1,4 +1,3 @@
-
 import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
@@ -21,9 +20,12 @@ export const generateWellnessPDF = async (
         workoutDays: workoutPlan ? workoutPlan.days.length : 0 
       });
       
-      // Create the document element with WellnessPDF
-      // The element already contains a Document component inside it, so we don't need to wrap it
-      const element = <WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />;
+      // Create the document element with WellnessPDF using React.createElement instead of JSX
+      const element = React.createElement(WellnessPDF, {
+        formData: formData,
+        dietPlan: dietPlan,
+        workoutPlan: workoutPlan
+      });
       
       // Generate PDF blob - this is asynchronous
       pdf(element)
