@@ -17,11 +17,13 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
     <PDFDownloadLink
       document={<WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />}
       fileName={`${formData.name}-75-day-wellness-plan.pdf`}
+      className="inline-block"  // Add this to prevent layout issues
     >
-      {({ loading }) => (
-        <Button variant="outline">
+      {({ loading, error }) => (
+        <Button variant="outline" disabled={loading}>
           <Download className="mr-2 h-4 w-4" />
           {loading ? "Generating PDF..." : "Download PDF"}
+          {error && console.error("PDF generation error:", error)}
         </Button>
       )}
     </PDFDownloadLink>
