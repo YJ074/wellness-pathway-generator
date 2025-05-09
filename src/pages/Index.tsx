@@ -6,7 +6,7 @@ import { useEffect } from "react";
 const Index = () => {
   useEffect(() => {
     console.log('Index component mounted');
-    console.log('WellnessForm import check:', WellnessForm);
+    document.title = "Arogyam75 - Wellness Pathway Generator";
   }, []);
 
   return (
