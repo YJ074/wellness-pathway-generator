@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Document, Page, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, StyleSheet, Font, DocumentProps } from '@react-pdf/renderer';
 import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
 
@@ -39,6 +39,7 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
     workoutDays: workoutPlan ? workoutPlan.days.length : 0
   });
 
+  // Return the Document directly to ensure type compatibility
   return (
     <Document>
       <Page size="A4" style={styles.page}>
