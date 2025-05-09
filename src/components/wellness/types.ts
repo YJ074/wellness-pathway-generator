@@ -1,3 +1,4 @@
+
 export type DietaryPreference =
   | 'lacto-vegetarian'
   | 'lacto-ovo-vegetarian'
@@ -27,6 +28,10 @@ export interface DietPlan {
     fatLossNotes?: string;
     herbalRecommendations?: string[];
   }>;
+  bmi?: number;
+  bmr?: number;
+  bmiCategory?: string;
+  dailyCalories?: number;
 }
 
 export interface FormData {
@@ -46,5 +51,19 @@ export interface FormData {
   region?: string;
   allergies?: string;
   has_muscular_build?: boolean;
-  includeWorkoutPlan?: boolean; // Add this new field
+  includeWorkoutPlan?: boolean;
+}
+
+export interface WorkoutPlan {
+  days: Array<{
+    day: number;
+    isRestDay: boolean;
+    warmup?: string[];
+    exercises?: Array<{
+      name: string;
+      reps: string;
+      description?: string;
+    }>;
+    cooldown?: string[];
+  }>;
 }
