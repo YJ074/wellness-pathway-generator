@@ -23,11 +23,11 @@ export const generateWellnessPDF = async (
       
       // Create the PDF document with proper typing
       // @ts-ignore - Ignoring type issues as WellnessPDF returns a valid Document component
-      const pdfDocument = <WellnessPDF
-        formData={formData}
-        dietPlan={dietPlan}
-        workoutPlan={workoutPlan}
-      />;
+      const pdfDocument = React.createElement(WellnessPDF, {
+        formData: formData,
+        dietPlan: dietPlan,
+        workoutPlan: workoutPlan
+      });
       
       // Generate PDF blob - this is asynchronous
       pdf(pdfDocument)
