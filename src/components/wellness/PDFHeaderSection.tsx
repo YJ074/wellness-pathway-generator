@@ -31,15 +31,20 @@ interface PDFHeaderSectionProps {
   name: string;
 }
 
-const PDFHeaderSection = ({ name }: PDFHeaderSectionProps) => (
-  <View>
-    <Image
-      src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png"
-      style={styles.logo}
-    />
-    <Text style={styles.title}>Personalized 75-Day Wellness Plan</Text>
-    <Text style={styles.subtitle}>Created for {name}</Text>
-  </View>
-);
+const PDFHeaderSection = ({ name }: PDFHeaderSectionProps) => {
+  // Use a static image URL for PDF generation that's publicly accessible
+  const logoUrl = "https://lovable-uploads.s3.amazonaws.com/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png";
+  
+  return (
+    <View>
+      <Image
+        src={logoUrl}
+        style={styles.logo}
+      />
+      <Text style={styles.title}>Personalized 75-Day Wellness Plan</Text>
+      <Text style={styles.subtitle}>Created for {name}</Text>
+    </View>
+  );
+};
 
 export default PDFHeaderSection;

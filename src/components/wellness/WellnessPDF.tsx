@@ -29,12 +29,21 @@ interface WellnessPDFProps {
   workoutPlan?: WorkoutPlan;
 }
 
-const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <WellnessPDFContainer formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
-    </Page>
-  </Document>
-);
+const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
+  // Console log to debug PDF creation
+  console.log('Creating WellnessPDF with:', { 
+    name: formData.name,
+    dietDays: dietPlan.days.length,
+    workoutDays: workoutPlan ? workoutPlan.days.length : 0
+  });
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <WellnessPDFContainer formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />
+      </Page>
+    </Document>
+  );
+};
 
 export default WellnessPDF;
