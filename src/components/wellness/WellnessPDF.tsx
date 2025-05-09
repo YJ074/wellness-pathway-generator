@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Document, Page, StyleSheet, Font, DocumentProps } from '@react-pdf/renderer';
+import { Document, Page, StyleSheet, Font } from '@react-pdf/renderer';
 import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
 
