@@ -19,13 +19,18 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
       fileName={`${formData.name}-75-day-wellness-plan.pdf`}
       className="inline-block"  // Add this to prevent layout issues
     >
-      {({ loading, error }) => (
-        <Button variant="outline" disabled={loading}>
-          <Download className="mr-2 h-4 w-4" />
-          {loading ? "Generating PDF..." : "Download PDF"}
-          {error && console.error("PDF generation error:", error)}
-        </Button>
-      )}
+      {({ loading, error }) => {
+        if (error) {
+          console.error("PDF generation error:", error);
+        }
+        
+        return (
+          <Button variant="outline" disabled={loading}>
+            <Download className="mr-2 h-4 w-4" />
+            {loading ? "Generating PDF..." : "Download PDF"}
+          </Button>
+        );
+      }}
     </PDFDownloadLink>
   );
 };
