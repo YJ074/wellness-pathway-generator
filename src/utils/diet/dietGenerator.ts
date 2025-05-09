@@ -1,5 +1,6 @@
+
 import { DietPlan, FormData } from '@/components/wellness/types';
-import { DietaryPreference, WellnessGoal } from '@/components/wellness/types';
+import { DietaryPreference, WellnessGoal } from './types';
 import { 
   getProteinSources, 
   getGrainSources, 
@@ -34,7 +35,7 @@ import { generateRegionalNote } from './regional/regionalRecommendations';
 export { calculateBMI, getBMICategory, calculateBMR, calculateDailyCalories };
 
 // Re-export new allergy-aware wrappers:
-export function generateBreakfast(dayIndex: number, dietaryPreference: DietaryPreference, isWeightLoss: boolean, allergies?: string, region?: string) {
+export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string, region?: string) {
   return origGenerateBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies, region);
 }
 

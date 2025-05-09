@@ -1,4 +1,5 @@
-import { DietaryPreference } from '@/components/wellness/types';
+
+import { DietaryPreference } from './types';
 
 // Utility to limit soya source appearances
 export const limitSoyaInDietDays = (proteinList: string[], totalDays: number, maxPerDays: number = 30): string[] => {

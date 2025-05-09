@@ -1,4 +1,5 @@
-import { DietaryPreference } from '@/components/wellness/types';
+
+import { DietaryPreference } from './types';
 import { 
   getProteinSources, 
   getGrainSources, 
@@ -14,7 +15,7 @@ import { filterAllergies } from './foodSources';
 
 export const generateBreakfast = (
   dayIndex: number,
-  dietaryPreference: DietaryPreference,
+  dietaryPreference: string,
   isWeightLoss: boolean,
   allergies?: string,
   region?: string
@@ -58,21 +59,7 @@ export const generateBreakfast = (
     'Jowar Dosa (2 pieces) with vegetable kurma (1/2 cup)',
     'Amaranth Porridge (1 cup) with seasonal fruits',
     'Buckwheat Pancakes (2) with honey (1 tsp)',
-    'Quinoa Upma (1 cup) with coconut chutney (2 tbsp)',
-    // New breakfast options being added
-    'Ragi Malt (1 cup) with jaggery and nuts',
-    'Kodo Millet Porridge (1 cup) with nuts and seeds',
-    'Sorghum Idli (3 pieces) with onion chutney (2 tbsp)',
-    'Barnyard Millet Dosa (2 pieces) with tomato chutney (2 tbsp)',
-    'Kuttu Paratha (2 pieces) with curd (1/2 cup)',
-    'Sabudana Khichdi (3/4 cup) with peanuts and green chillies',
-    'Little Millet Upma (1 cup) with nuts and coconut',
-    'Foxtail Millet Porridge (1 cup) with seasonal fruits',
-    'Bajra Dhokla (4 pieces) with mint-coriander chutney (2 tbsp)',
-    'Pearl Millet Idli (3 pieces) with tomato-onion chutney (2 tbsp)',
-    'Rajgira Paratha (2 pieces) with curd (1/2 cup)',
-    'Multi-Millet Dosa (2 pieces) with coconut chutney (2 tbsp)',
-    'Adai Dosa (2 pieces) with avial (1/2 cup)'
+    'Quinoa Upma (1 cup) with coconut chutney (2 tbsp)'
   ];
   
   // Add dry fruits to breakfast occasionally (every 4th day)
@@ -91,13 +78,7 @@ export const generateBreakfast = (
       'Egg Poha (1 cup) with vegetables',
       'Egg White Omelette (3 egg whites) with spinach and herbs',
       'Egg Muffins (2) with vegetables',
-      'Egg Upma (1 cup) with mixed vegetables',
-      // New egg breakfast options
-      'Egg Scramble with Tomato and Spinach (2 eggs) with multigrain toast (1 piece)',
-      'Egg Khichdi (1 cup) with vegetables and turmeric',
-      'Mediterranean Egg Bowl (2 eggs) with olives and feta',
-      'Egg Dosa (2 pieces) with tomato chutney (2 tbsp)',
-      'High-Protein Egg Wrap with Paneer and Vegetables (1 whole wheat wrap)'
+      'Egg Upma (1 cup) with mixed vegetables'
     ];
     
     // Add dry fruits to egg breakfasts occasionally
@@ -136,16 +117,7 @@ export const generateMidMorningSnack = (
     'Handful of mixed nuts (10-12 pieces)',
     'Cucumber and carrot sticks (1 cup)',
     'Fresh coconut pieces (1/4 cup)',
-    'Small bowl of makhana (fox nuts, 1/4 cup)',
-    // New mid-morning snack options
-    'Beetroot and carrot juice (1 small glass)',
-    'Roasted flaxseeds and pumpkin seeds (2 tbsp)',
-    'Green apple with cinnamon powder (1 small)',
-    'Kiwi and strawberry mix (1/2 cup)',
-    'Multigrain crackers (2) with hummus (1 tbsp)',
-    'Sattu drink (1 glass) with lemon and mint',
-    'Amla juice (1 small glass) with honey (1 tsp)',
-    'Coconut water with chia seeds (1 glass)'
+    'Small bowl of makhana (fox nuts, 1/4 cup)'
   ];
   
   // Add dry fruits option
@@ -166,16 +138,7 @@ export const generateMidMorningSnack = (
     'Homemade vegetable soup (1 small cup)',
     'Steamed sweet corn kernels (1/2 cup)',
     'Multigrain khakhra (2 pieces)',
-    'Vegetable cutlet (1 small piece, baked)',
-    // New additional options
-    'Aloe vera juice (1 small glass)',
-    'Mixed berry smoothie (1 small glass)',
-    'Roasted edamame (1/4 cup)',
-    'Lentil and vegetable soup (1 small cup)',
-    'Wheatgrass shot (30ml)',
-    'Homemade protein bars (1 small piece)',
-    'Trail mix with nuts and seeds (2 tbsp)',
-    'Masala chaas with mint and cumin (1 glass)'
+    'Vegetable cutlet (1 small piece, baked)'
   ];
   
   // Integrate additional options
@@ -269,18 +232,7 @@ export const generateEveningSnack = (
     'Paneer tikka (4-5 small pieces, grilled)',
     'Peanut chaat (1/4 cup)',
     'Roasted sweet potato (1 small)',
-    'Mixed vegetable soup (1 bowl)',
-    // New evening snack options
-    'Ragi cookies (2 small)',
-    'Baked vegetable chips (1/2 cup)',
-    'Sprouts sandwich (1/2)',
-    'Cucumber and mint raita (1 small bowl)',
-    'Multigrain crackers with beetroot hummus (2 tbsp)',
-    'Roasted makhana with herbs and spices (1/4 cup)',
-    'Baked tomato and cheese toast (1 small piece)',
-    'Mixed vegetable idli (2 small pieces)',
-    'Baked chakli (2 pieces)',
-    'Jowar puffs with seasoning (1/3 cup)'
+    'Mixed vegetable soup (1 bowl)'
   ];
   
   // Add more variety with traditional Indian snacks
@@ -293,18 +245,7 @@ export const generateEveningSnack = (
     'Steamed muthia (2 pieces)',
     'Roasted jowar puffs (1/2 cup)',
     'Cucumber and mint raita (1 small bowl)',
-    'Spinach and oats tikki (2 small pieces)',
-    // New traditional Indian snacks
-    'Ragi murukku (2 pieces)',
-    'Bajra methi muthia (2 small pieces)',
-    'Soya chunks chaat (1/3 cup)',
-    'Baked beetroot chips (1/4 cup)',
-    'Mixed dal vada (2 small pieces, baked)',
-    'Quinoa upma (1/2 cup)',
-    'Rajma and vegetable patty (1 small, baked)',
-    'Moong dal namkeen (2 tbsp)',
-    'Masala peanuts (2 tbsp)',
-    'Coconut ladoo (1 small piece)'
+    'Spinach and oats tikki (2 small pieces)'
   ];
   
   // Add dry fruits occasionally (every 5th day)

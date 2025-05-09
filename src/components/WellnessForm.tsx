@@ -24,7 +24,6 @@ const WellnessForm = () => {
     has_muscular_build: false, // Default: not selected
     wellnessGoals: ['general-wellness'], // Default wellness goal
     region: '', // Default: no region selected
-    includeWorkoutPlan: false, // New field for workout plan toggle
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -74,14 +73,11 @@ const WellnessForm = () => {
     // Generate the diet plan passing the entire formData
     const generatedDietPlan = generateDietPlan(formData);
     
-    // Only generate workout plan if the option is selected
-    let generatedWorkoutPlan = null;
-    if (formData.includeWorkoutPlan) {
-      generatedWorkoutPlan = generateWorkoutPlan(
-        formData.exerciseFrequency || 'sedentary', 
-        formData.fitnessGoal || 'maintenance'
-      );
-    }
+    // Generate the workout plan based on exercise frequency and fitness goal
+    const generatedWorkoutPlan = generateWorkoutPlan(
+      formData.exerciseFrequency || 'sedentary', 
+      formData.fitnessGoal || 'maintenance'
+    );
 
     setDietPlan(generatedDietPlan);
     setWorkoutPlan(generatedWorkoutPlan);
@@ -89,7 +85,7 @@ const WellnessForm = () => {
 
     toast({
       title: "Wellness Plan Generated",
-      description: `Your 75-day personalized ${formData.includeWorkoutPlan ? 'diet and workout' : 'diet'} plan has been created. You can download, email, or share it via WhatsApp.`,
+      description: "Your 75-day personalized plan has been created. You can download, email, or share it via WhatsApp.",
     });
   };
 

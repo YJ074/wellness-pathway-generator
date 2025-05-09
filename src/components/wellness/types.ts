@@ -1,69 +1,52 @@
 
-export type DietaryPreference =
-  | 'lacto-vegetarian'
-  | 'lacto-ovo-vegetarian'
-  | 'pure-vegetarian'
-  | 'jain'
-  | 'sattvic'
-  | 'non-vegetarian'
-  | 'pure-jain';
-
-export type WellnessGoal = 
-  | 'hair-fall-control'
-  | 'glowing-skin'
-  | 'fat-loss'
-  | 'inch-loss'
-  | 'general-wellness';
-
-export interface DietPlan {
-  days: Array<{
-    day: number;
-    breakfast: string;
-    lunch: string;
-    dinner: string;
-    snacks: string;
-    wellnessGoals?: WellnessGoal[];
-    hairNutrients?: string;
-    skinNutrients?: string;
-    fatLossNotes?: string;
-    herbalRecommendations?: string[];
-  }>;
-  bmi?: number;
-  bmr?: number;
-  bmiCategory?: string;
-  dailyCalories?: number;
-}
+import { WorkoutDay } from '../../types/workout';
+import { WellnessGoal } from '../../utils/diet/types';
 
 export interface FormData {
   name: string;
   email: string;
   age: string;
-  height: string;
-  heightFeet?: string;
-  heightInches?: string;
+  height: string; // in cm
   weight: string;
   mobileNumber: string;
   gender: 'male' | 'female' | 'other';
-  dietaryPreference: DietaryPreference;
+  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian' | 'pure-jain';
   fitnessGoal: string;
   exerciseFrequency: string;
-  wellnessGoals: WellnessGoal[];
-  region?: string;
-  allergies?: string;
-  has_muscular_build?: boolean;
-  includeWorkoutPlan?: boolean;
+  heightFeet?: string;   // optional, for feet input
+  heightInches?: string; // optional, for inches input
+  has_muscular_build: boolean; // Muscular build self-identification
+  allergies?: string; // New field to support allergies/exclusions
+  wellnessGoals?: WellnessGoal[]; // New field for specific wellness goals
+  region?: string; // New field for regional preferences
+}
+
+export interface DietPlan {
+  days: Array<{
+    day: number;
+    breakfast: string;
+    midMorningSnack?: string;
+    lunch: string;
+    eveningSnack?: string;
+    dinner: string;
+    snacks?: string; // legacy field
+    calories?: number;
+    water?: number;
+    bmi?: number;
+    bmiCategory?: string;
+    wellnessGoals?: WellnessGoal[];
+    hairNutrients?: string;
+    skinNutrients?: string;
+    fatLossNotes?: string;
+    herbalRecommendations?: string[];
+    regionalNote?: string; // New field for regional cultural notes
+  }>;
+  bmi?: number;
+  bmiCategory?: string;
+  bmr?: number;
+  dailyCalories?: number;
 }
 
 export interface WorkoutPlan {
-  days: Array<{
-    day: number;
-    isRestDay: boolean;
-    warmup: string[];
-    exercises: Array<{
-      name: string;
-      reps: string;
-      description?: string; // Mark as optional to match ExerciseType
-    }>;
-    cooldown: string[];
-  }>;
+  days: WorkoutDay[];
 }
