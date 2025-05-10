@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   regionalNoteText: {
     fontSize: 11,
     fontFamily: 'Helvetica',
-    fontStyle: 'italic',
+    // Removed fontStyle: 'italic' that was causing issues
     lineHeight: 1.4,
   },
 });
