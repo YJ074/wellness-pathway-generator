@@ -15,14 +15,14 @@ interface DownloadPDFButtonProps {
 
 const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButtonProps) => {
   const { toast } = useToast();
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(true);
 
-  // Handle any PDF generation errors
-  const handleError = (error: Error) => {
-    console.error("PDF generation error:", error);
+  // Show a toast message when PDF generation fails
+  const handleGenerationError = () => {
+    console.error("PDF generation failed");
     toast({
-      title: "Download Error",
-      description: "There was a problem generating your PDF. Please try again.",
+      title: "PDF Generation Failed",
+      description: "We couldn't generate your PDF. Please try again later.",
       variant: "destructive"
     });
   };
@@ -35,8 +35,8 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
       {({ loading, error }) => {
         // Handle error state
         if (error) {
-          // Use setTimeout to avoid state update during render
-          setTimeout(() => handleError(error), 0);
+          console.error("PDF error:", error);
+          setTimeout(() => handleGenerationError(), 0);
           
           return (
             <Button variant="outline" disabled>
@@ -46,14 +46,8 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
           );
         }
 
-        // Handle initialization and loading state
-        if (loading || isInitializing) {
-          // If we've been in initializing state for too long, consider it an error
-          if (isInitializing) {
-            // Clear initializing state after a short delay
-            setTimeout(() => setIsInitializing(false), 3000);
-          }
-          
+        // Handle loading state
+        if (loading) {
           return (
             <Button variant="outline" disabled>
               <Download className="mr-2 h-4 w-4" />
@@ -62,7 +56,11 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
           );
         }
         
-        // Handle success state
+        // Success state - PDF is ready for download
+        if (isGenerating) {
+          setIsGenerating(false);
+        }
+        
         return (
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
