@@ -29,13 +29,25 @@ export const generateDinner = (
   const veggie1 = vegetables[(dayIndex + 2) % vegetables.length];
   const veggie2 = vegetables[(dayIndex + 8) % vegetables.length];
   
+  // Add local names to protein if it doesn't already have them
+  let proteinWithLocalName = protein;
+  if (protein === 'Paneer' && !protein.includes('(')) {
+    proteinWithLocalName = 'Paneer (Indian Cottage Cheese)';
+  } else if (protein === 'Tofu' && !protein.includes('(')) {
+    proteinWithLocalName = 'Tofu (Soya Paneer)';
+  } else if (protein === 'Chana' && !protein.includes('(')) {
+    proteinWithLocalName = 'Chana (Chickpeas)';
+  } else if (protein === 'Rajma' && !protein.includes('(')) {
+    proteinWithLocalName = 'Rajma (Kidney Beans)';
+  }
+  
   let main = "";
   if (isWeightLoss) {
-    main = `${protein} curry (light, 3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (1 piece), small bowl of buttermilk (1 cup)`;
+    main = `${proteinWithLocalName} curry (light, 3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (1 piece), small bowl of buttermilk (Chaas - 1 cup)`;
   } else if (isProteinFocus) {
-    main = `${protein} curry (generous portion, 1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces), bowl of buttermilk (1 cup)`;
+    main = `${proteinWithLocalName} curry (generous portion, 1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces), bowl of buttermilk (Chaas - 1 cup)`;
   } else {
-    main = `${protein} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces), bowl of buttermilk (1 cup)`;
+    main = `${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces), bowl of buttermilk (Chaas - 1 cup)`;
   }
   if (allergies) {
     const allergiesArr = allergies.split(',').map(x=>x.trim().toLowerCase());

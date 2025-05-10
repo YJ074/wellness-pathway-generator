@@ -25,30 +25,30 @@ export const generateBreakfast = (
   }
   
   let breakfastOptions = [
-    'Vegetable Poha (1 cup) with curd (1/2 cup)',
+    'Vegetable Poha (Flattened Rice - 1 cup) with curd (1/2 cup)',
     'Oats Idli (3 pieces) with sambhar (1/2 cup)',
-    'Vegetable Upma (1 cup) with a side of sprouts (1/2 cup)',
-    'Besan Chilla (2 pieces) with mint chutney (2 tbsp)',
+    'Vegetable Upma (Semolina Porridge - 1 cup) with a side of sprouts (1/2 cup)',
+    'Besan Chilla (Gram Flour Pancakes - 2 pieces) with mint chutney (2 tbsp)',
     'Multigrain Dosa (2 pieces) with coconut chutney (2 tbsp)',
-    'Masala Daliya (1 cup, Broken Wheat) with vegetables',
-    'Ragi Dosa (2 pieces) with tomato chutney (2 tbsp)',
+    'Masala Daliya (Broken Wheat - 1 cup) with vegetables',
+    'Ragi Dosa (Finger Millet - 2 pieces) with tomato chutney (2 tbsp)',
     'Vegetable Uttapam (2 pieces) with sambar (1/2 cup)',
-    'Moong Dal Cheela (2 pieces) with curd (1/2 cup)',
+    'Moong Dal Cheela (Split Green Gram Pancakes - 2 pieces) with curd (1/2 cup)',
     'Steamed Sprouts Dhokla (4 pieces)',
-    'Vegetable Daliya Khichdi (1 cup)',
-    'Jowar Upma (1 cup) with seasonal vegetables',
+    'Vegetable Daliya Khichdi (Broken Wheat Porridge - 1 cup)',
+    'Jowar Upma (Sorghum Porridge - 1 cup) with seasonal vegetables',
     'Quinoa Poha (3/4 cup) with vegetables',
     'Brown Rice Idli (3 pieces) with tomato chutney (2 tbsp)',
-    'Bajra Roti (2 pieces) with vegetable curry (1/2 cup)',
+    'Bajra Roti (Pearl Millet Flatbread - 2 pieces) with vegetable curry (1/2 cup)',
     'Millet Upma (1 cup) with coconut chutney (2 tbsp)',
-    'Sattu Paratha (2 pieces) with curd (1/2 cup)',
+    'Sattu Paratha (Roasted Gram Flour Flatbread - 2 pieces) with curd (1/2 cup)',
     'Sprouted Moong Chilla (2 pieces) with pudina chutney (2 tbsp)',
-    'Vegetable Dalia (1 cup) with almond milk (1/2 cup)',
-    'Ragi Idli (3 pieces) with tomato sambar (1/2 cup)',
-    'Bajra Khichdi (1 cup) with buttermilk (1 glass)',
-    'Jowar Roti (2 pieces) with vegetable kurma (1/2 cup)',
-    'Amaranth Porridge (1 cup) with seasonal fruits',
-    'Buckwheat Pancakes (2) with honey (1 tsp)',
+    'Vegetable Dalia (Broken Wheat - 1 cup) with almond milk (1/2 cup)',
+    'Ragi Idli (Finger Millet - 3 pieces) with tomato sambar (1/2 cup)',
+    'Bajra Khichdi (Pearl Millet Porridge - 1 cup) with buttermilk (1 glass)',
+    'Jowar Roti (Sorghum Flatbread - 2 pieces) with vegetable kurma (1/2 cup)',
+    'Amaranth Porridge (Rajgira - 1 cup) with seasonal fruits',
+    'Buckwheat Pancakes (Kuttu - 2) with honey (1 tsp)',
     'Quinoa Upma (1 cup) with coconut chutney (2 tbsp)'
   ];
   
@@ -60,15 +60,15 @@ export const generateBreakfast = (
   
   if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
     let eggBreakfasts = [
-      'Egg Bhurji (2 eggs) with multigrain roti (1 piece)',
+      'Egg Bhurji (Scrambled Eggs - 2 eggs) with multigrain roti (1 piece)',
       'Masala Omelette (2 eggs) with vegetable stuffing',
       'Boiled Eggs (2) with vegetable sandwich (1)',
       'Egg and Vegetable Wrap (1 whole wheat wrap)',
-      'Egg Akuri (2 eggs) with multigrain toast (1 slice)',
-      'Egg Poha (1 cup) with vegetables',
+      'Egg Akuri (Parsi Style Eggs - 2 eggs) with multigrain toast (1 slice)',
+      'Egg Poha (Flattened Rice with Eggs - 1 cup) with vegetables',
       'Egg White Omelette (3 egg whites) with spinach and herbs',
       'Egg Muffins (2) with vegetables',
-      'Egg Upma (1 cup) with mixed vegetables'
+      'Egg Upma (Semolina with Eggs - 1 cup) with mixed vegetables'
     ];
     
     // Add dry fruits to egg breakfasts occasionally (same pattern as vegetarian breakfast)
