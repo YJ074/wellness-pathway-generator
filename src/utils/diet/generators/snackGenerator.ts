@@ -1,3 +1,4 @@
+
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getDryFruits } from '../data/dryFruits';
 import { getRegionalFoods } from '../data/regionalFoods';
@@ -108,7 +109,7 @@ export const generateEveningSnack = (
   let eveningSnackOptions = [
     'Roasted makhana (¼ katori)',
     'Sabzi cutlet (2 pieces, baked)',
-    'Multigrain dhokla (2 pieces)',
+    'Multigrain dhokla (2 dhokla)',
     'Bhuna chana (¼ katori) with pyaaz and tamatar',
     'Masala murmure (½ katori)',
     'Steamed bhutta dana (½ katori) with nimbu and kala namak',
@@ -118,7 +119,7 @@ export const generateEveningSnack = (
     'Mixed sabzi soup (1 katori)',
     'Kala chana chaat (½ katori)',
     'Ankurit anaj bhel (¾ katori)',
-    'Mini idlis with sambar (4 pieces)',
+    'Mini idlis with sambar (4 idlis)',
     'Moong dal cheela (1 piece)',
     'Baked mathri (2 pieces)',
     'Steamed muthia (2 pieces)',

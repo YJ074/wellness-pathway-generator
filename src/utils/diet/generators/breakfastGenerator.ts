@@ -1,3 +1,4 @@
+
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getDryFruits } from '../data/dryFruits';
@@ -39,7 +40,7 @@ export const generateBreakfast = (
     'Ragi Dosa (2 dosas) with tamatar chutney (2 chamach)',
     'Vegetable Uttapam (2 uttapams) with sambar (1 katori)',
     'Moong Dal Cheela (2 cheelas) with dahi (1 katori)',
-    'Steamed Sprouts Dhokla (4 pieces)',
+    'Steamed Sprouts Dhokla (4 dhokla)',
     'Vegetable Daliya Khichdi (1 katori)',
     'Jowar Upma (1 katori) with seasonal sabzi',
     'Quinoa Poha (1 katori) with sabzi',
