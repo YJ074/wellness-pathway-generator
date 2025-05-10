@@ -37,14 +37,6 @@ const WorkoutContent = ({ workoutDay, fitnessLevel, getWorkoutDetails }: Workout
             <div key={index}>
               <p><strong>{exercise.name}:</strong> {exercise.reps}</p>
               <p className="text-sm text-muted-foreground">{exercise.description}</p>
-              {exercise.tutorialUrl && (
-                <a href={exercise.tutorialUrl} 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
-                  <span>▶️</span> Watch tutorial
-                </a>
-              )}
             </div>
           ))}
         </div>

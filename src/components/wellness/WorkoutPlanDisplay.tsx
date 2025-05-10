@@ -2,8 +2,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Youtube } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { WorkoutDay } from '@/types/workout';
 
 interface Exercise {
@@ -79,13 +77,6 @@ const WorkoutPlanDisplay = ({ days }: WorkoutPlanDisplayProps) => {
                             <div className="flex flex-col">
                               <span className="font-medium">{exercise.name} - {exercise.reps}</span>
                               <span className="text-xs text-gray-500">{exercise.description}</span>
-                              {exercise.tutorialUrl && (
-                                <Button variant="ghost" className="flex items-center gap-2 p-0 h-auto text-xs mt-1" asChild>
-                                  <a href={exercise.tutorialUrl} target="_blank" rel="noopener noreferrer">
-                                    <Youtube className="h-3 w-3" /> Tutorial
-                                  </a>
-                                </Button>
-                              )}
                             </div>
                           </li>
                         ))}
