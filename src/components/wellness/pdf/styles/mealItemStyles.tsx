@@ -33,5 +33,22 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
     fontStyle: 'italic',
     fontFamily: 'Helvetica-Oblique',
+  },
+  // Add missing highlight styles for food descriptions
+  localNamesHighlight: {
+    color: '#6366f1', // indigo color for local names
+    fontFamily: 'Helvetica-Bold',
+  },
+  indianMeasurementHighlight: {
+    color: '#d97706', // amber color for Indian measurements
+    fontFamily: 'Helvetica-Bold',
+  },
+  probioticHighlight: {
+    color: '#4f46e5', // indigo for probiotic foods
+    fontFamily: 'Helvetica-Bold',
+  },
+  prebioticHighlight: {
+    color: '#059669', // emerald for prebiotic foods
+    fontFamily: 'Helvetica-Bold',
   }
 });
