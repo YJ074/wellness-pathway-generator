@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Utensils, Droplet, Sparkles, MapPin } from "lucide-react";
+import { Utensils, Droplet, Sparkles, MapPin, Heart } from "lucide-react";
 import { calculateMealCalories } from "./utils/mealCalories";
 import { WellnessGoal } from "@/utils/diet/types";
 
@@ -27,6 +27,26 @@ const DietSection = ({ diet }: DietSectionProps) => {
   const mealCalories = calculateMealCalories(diet.calories || 2000);
   const totalCalories = diet.calories || 0;
   const hasRegionalNote = !!diet.regionalNote && diet.regionalNote.trim() !== '';
+  
+  // Helper to extract health benefits from meal descriptions
+  const extractHealthBenefit = (mealText: string): { meal: string, benefit: string | null } => {
+    const benefitMatch = mealText.match(/ - \((.*?)\)$/);
+    if (benefitMatch && benefitMatch[1]) {
+      return {
+        meal: mealText.replace(benefitMatch[0], ''),
+        benefit: benefitMatch[1]
+      };
+    }
+    return { meal: mealText, benefit: null };
+  };
+
+  // Process each meal to extract benefits
+  const breakfast = extractHealthBenefit(diet.breakfast);
+  const midMorningSnack = diet.midMorningSnack ? extractHealthBenefit(diet.midMorningSnack) : null;
+  const lunch = extractHealthBenefit(diet.lunch);
+  const eveningSnack = diet.eveningSnack ? extractHealthBenefit(diet.eveningSnack) : null;
+  const dinner = extractHealthBenefit(diet.dinner);
+  const snacks = diet.snacks ? extractHealthBenefit(diet.snacks) : null;
 
   return (
     <div className="space-y-4">
@@ -46,47 +66,89 @@ const DietSection = ({ diet }: DietSectionProps) => {
       )}
       
       <div className="space-y-3">
-        <p>
-          <strong>Breakfast:</strong> {diet.breakfast} 
-          <span className="text-sm font-medium text-amber-600 ml-1">
-            ({mealCalories.breakfast} kcal)
-          </span>
-        </p>
-        
-        {diet.midMorningSnack && (
+        <div>
           <p>
-            <strong>Mid-Morning Snack:</strong> {diet.midMorningSnack}
+            <strong>Breakfast:</strong> {breakfast.meal} 
             <span className="text-sm font-medium text-amber-600 ml-1">
-              ({mealCalories.midMorningSnack} kcal)
+              ({mealCalories.breakfast} kcal)
             </span>
           </p>
+          {breakfast.benefit && (
+            <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
+              <Heart className="h-3 w-3 mr-1 inline-block" /> {breakfast.benefit}
+            </p>
+          )}
+        </div>
+        
+        {midMorningSnack && (
+          <div>
+            <p>
+              <strong>Mid-Morning Snack:</strong> {midMorningSnack.meal}
+              <span className="text-sm font-medium text-amber-600 ml-1">
+                ({mealCalories.midMorningSnack} kcal)
+              </span>
+            </p>
+            {midMorningSnack.benefit && (
+              <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
+                <Heart className="h-3 w-3 mr-1 inline-block" /> {midMorningSnack.benefit}
+              </p>
+            )}
+          </div>
         )}
         
-        <p>
-          <strong>Lunch:</strong> {diet.lunch}
-          <span className="text-sm font-medium text-amber-600 ml-1">
-            ({mealCalories.lunch} kcal)
-          </span>
-        </p>
-        
-        {diet.eveningSnack && (
+        <div>
           <p>
-            <strong>Evening Snack:</strong> {diet.eveningSnack}
+            <strong>Lunch:</strong> {lunch.meal}
             <span className="text-sm font-medium text-amber-600 ml-1">
-              ({mealCalories.eveningSnack} kcal)
+              ({mealCalories.lunch} kcal)
             </span>
           </p>
+          {lunch.benefit && (
+            <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
+              <Heart className="h-3 w-3 mr-1 inline-block" /> {lunch.benefit}
+            </p>
+          )}
+        </div>
+        
+        {eveningSnack && (
+          <div>
+            <p>
+              <strong>Evening Snack:</strong> {eveningSnack.meal}
+              <span className="text-sm font-medium text-amber-600 ml-1">
+                ({mealCalories.eveningSnack} kcal)
+              </span>
+            </p>
+            {eveningSnack.benefit && (
+              <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
+                <Heart className="h-3 w-3 mr-1 inline-block" /> {eveningSnack.benefit}
+              </p>
+            )}
+          </div>
         )}
         
-        <p>
-          <strong>Dinner:</strong> {diet.dinner}
-          <span className="text-sm font-medium text-amber-600 ml-1">
-            ({mealCalories.dinner} kcal)
-          </span>
-        </p>
+        <div>
+          <p>
+            <strong>Dinner:</strong> {dinner.meal}
+            <span className="text-sm font-medium text-amber-600 ml-1">
+              ({mealCalories.dinner} kcal)
+            </span>
+          </p>
+          {dinner.benefit && (
+            <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
+              <Heart className="h-3 w-3 mr-1 inline-block" /> {dinner.benefit}
+            </p>
+          )}
+        </div>
         
-        {diet.snacks && !diet.midMorningSnack && !diet.eveningSnack && (
-          <p><strong>Snacks:</strong> {diet.snacks}</p>
+        {snacks && !midMorningSnack && !eveningSnack && (
+          <div>
+            <p><strong>Snacks:</strong> {snacks.meal}</p>
+            {snacks.benefit && (
+              <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
+                <Heart className="h-3 w-3 mr-1 inline-block" /> {snacks.benefit}
+              </p>
+            )}
+          </div>
         )}
         
         {diet.water && (

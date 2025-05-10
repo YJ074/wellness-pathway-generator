@@ -2,6 +2,7 @@
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
+import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
 import { 
   getLocalizedProteinName, 
   getLocalizedGrainName,
@@ -36,6 +37,10 @@ export const generateLunch = (
     // For regional specialties, gently introduce pre/probiotics without forcing them
     lunch = enrichWithPrebiotics(lunch, dayIndex);
     lunch = enrichWithProbiotics(lunch, dayIndex);
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(lunch);
+    lunch += ` - (${healthBenefit})`;
     
     return lunch;
   }
@@ -93,5 +98,10 @@ export const generateLunch = (
       }
     });
   }
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(main);
+  main += ` - (${healthBenefit})`;
+  
   return main;
 };

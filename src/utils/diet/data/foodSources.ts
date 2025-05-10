@@ -8,48 +8,45 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Paneer', 'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
       'Curd', 'Buttermilk', 'Besan (Gram Flour)', 'Sattu',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
-      'Channa Flour Roti', 'Greek Yogurt', 'Cottage Cheese', 
+      'Channa Flour Roti', 'Milk', 'Cottage Cheese', 
       'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans',
-      'Whey Protein', 'Protein-Enriched Milk', 'High-Protein Yogurt',
+      'Milk Protein', 'Protein-Enriched Milk', 'Yogurt',
       'Chhena', 'Milk Solids (Khoya)'
     ],
     'lacto-ovo-vegetarian': [
       'Paneer', 'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
       'Curd', 'Buttermilk', 'Besan (Gram Flour)', 'Egg Whites',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
-      'Channa Flour Roti', 'Greek Yogurt', 'Boiled Eggs', 'Egg Bhurji',
+      'Channa Flour Roti', 'Yogurt', 'Boiled Eggs', 'Egg Bhurji',
       'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans',
-      'Whey Protein', 'Protein-Enriched Milk', 'Egg Protein Powder',
-      'High-Protein Yogurt', 'Egg Curry'
+      'Milk Protein', 'Protein-Enriched Milk', 'Egg Curry'
     ],
     'pure-vegetarian': [
       'Paneer', 'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
       'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Sattu',
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
-      'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Hemp Seeds', 
+      'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Flax Seeds', 
       'Kala Chana', 'White Beans', 'Moth Beans',
-      'Protein-Enriched Milk', 'High-Protein Yogurt', 'Soya Milk',
-      'Pea Protein', 'Chhena', 'Milk Solids (Khoya)'
+      'Protein-Enriched Milk', 'Yogurt', 'Soya Milk',
+      'Chhena', 'Milk Solids (Khoya)'
     ],
     'vegan': [
-      'Soya Chunks', 'Tofu', 'Tempeh', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
+      'Soya Chunks', 'Tofu', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
       'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Sattu',
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
-      'Channa Flour Roti', 'Lentil Soup', 'Hemp Seeds', 'Chia Seeds',
+      'Channa Flour Roti', 'Lentil Soup', 'Flax Seeds', 'Chia Seeds',
       'Kala Chana', 'White Beans', 'Moth Beans', 'Quinoa',
-      'Seitan', 'Textured Vegetable Protein', 'Nutritional Yeast',
-      'Pea Protein', 'Spirulina', 'Hemp Protein', 'Brown Rice Protein',
-      'Edamame', 'Soaked Almonds', 'Sunflower Seed Butter', 'Vegan Protein Shake'
+      'Soya Milk', 'Peanut Butter', 'Almond Milk'
     ],
     'pure-jain': [
-      // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg, NO mushrooms, NO fermented
+      // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg
       'Paneer (without animal rennet)', 'Curd', 'Buttermilk', 'Toor Dal', 
       'Moong Dal', 'Masoor Dal', 'Urad Dal', 'Chana Dal', 
       'Besan (Gram Flour)', 'Chickpeas', 'Rajma',
-      'White Beans', 'Channa Flour Roti', 'Hemp Seeds', 'Peanuts',
+      'White Beans', 'Channa Flour Roti', 'Flax Seeds', 'Peanuts',
       'Dry Fruits (assorted and soaked)', 'Milk Solids (Khoya)',
-      'Protein-Enriched Milk', 'High-Protein Yogurt', 'Almond Milk',
-      'Pea Protein (Pure Extract)', 'Sunflower Seeds', 'Pumpkin Seeds'
+      'Protein-Enriched Milk', 'Yogurt', 'Almond Milk',
+      'Sunflower Seeds', 'Pumpkin Seeds'
     ],
     'sattvic': [
       'Paneer', 'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
@@ -58,17 +55,16 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Fresh Yogurt', 'Ghee', 'Organic Honey', 'Fresh Cottage Cheese',
       'Kheer', 'White Beans', 'Channa Flour Roti', 'Amaranth',
       'Soaked and Peeled Almonds', 'Protein-Enriched Milk', 
-      'High-Protein Yogurt', 'Sattva Protein Shake', 'Organic Soy Milk'
+      'Yogurt', 'Organic Soy Milk'
     ],
     'non-vegetarian': [
       'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
       'Local Fish Varieties', 'Paneer', 'Dal Makhani', 'Rajma',
       'Chana', 'Moong Dal', 'Toor Dal', 'Mixed Sprouts',
       'Lean Mutton', 'Farm-Raised Prawns', 'Rohu Fish',
-      'Grilled Chicken Tikka', 'Egg Whites', 'Greek Yogurt',
-      'Tandoori Fish', 'Free-Range Eggs', 'Whey Protein',
-      'Egg Protein', 'Chicken Breast', 'Tuna', 'Salmon',
-      'Protein-Enriched Milk', 'High-Protein Yogurt'
+      'Grilled Chicken Tikka', 'Egg Whites', 'Yogurt',
+      'Tandoori Fish', 'Free-Range Eggs',
+      'Egg Protein', 'Chicken Breast'
     ]
   };
   return filterAllergies(proteins[dietaryPreference] || proteins['lacto-vegetarian'], allergies);
@@ -79,17 +75,17 @@ export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies
   const allGrains = dietaryPreference === 'pure-jain' ? [
       'Rice (Local Variety)', 'Wheat Roti', 'Jowar Roti (Sorghum Flatbread)',
       'Bajra Roti (Pearl Millet Flatbread)', 'Multigrain Roti', 'Poha (Rice Flakes)',
-      'Foxtail Millet Roti (Kangni Roti)', 'Barley Roti (Jau Roti)', 'Rice Flakes (Poha)',
-      'White Rice (Safed Chaval)', 'Red Rice', 'Barnyard Millet Khichdi (Samvat Khichdi)',
-      'Little Millet Roti (Kutki Roti)', 'Amaranth Roti (Rajgira Roti)', 
-      'Buckwheat Roti (Kuttu Roti)', 'Quinoa Pulao'
+      'Foxtail Millet Roti', 'Barley Roti (Jau Roti)', 'Rice Flakes (Poha)',
+      'White Rice (Safed Chaval)', 'Red Rice', 'Barnyard Millet Khichdi',
+      'Little Millet Roti', 'Amaranth Roti (Rajgira Roti)', 
+      'Buckwheat Roti (Kuttu Roti)'
     ] : [
       'Rice (Local Variety)', 'Wheat Roti', 'Ragi Roti (Finger Millet Roti)', 'Jowar Roti (Sorghum Roti)',
       'Bajra Roti (Pearl Millet Roti)', 'Multigrain Roti', 'Poha (Rice Flakes)', 
-      'Kodo Millet Roti (Kodra Roti)', 'Proso Millet Upma (Barri Upma)',
+      'Kodo Millet Roti', 'Proso Millet Upma',
       'Suji Roti (Semolina Roti)', 'Barley Roti (Jau Roti)', 'Mixed Millet Roti', 'Rice Flakes (Poha)',
       'Brown Rice (Bhura Chaval)', 'Black Rice', 'Red Rice', 'Hand-Pound Rice',
-      'Foxtail Millet Roti (Kangni Roti)', 'Little Millet Roti (Kutki Roti)',
+      'Foxtail Millet Roti', 'Little Millet Roti',
       'Amaranth Roti (Rajgira Roti)', 'Buckwheat Roti (Kuttu Roti)', 'Local Rice Pulao'
     ];
   return filterAllergies(allGrains, allergies);
@@ -97,17 +93,18 @@ export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies
 
 export const getVegetableSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
   let base: string[] = [
-    'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds', 'Cabbage', 'Cauliflower',
+    'Seasonal Local Greens', 'Palak (Spinach)', 'Lauki (Bottle Gourd)', 'Cabbage', 'Cauliflower',
     'Carrots', 'Green Peas', 'Onions', 'Tomatoes', 'Potatoes', 'Local Beans',
     'Cucumber', 'Pumpkin', 'Radish', 'Beetroot', 'Local Leafy Greens', 'Capsicum',
     'Bottle Gourd (Lauki)', 'Ridge Gourd (Turai)', 'Snake Gourd', 'Cluster Beans (Gawar)',
     'Ivy Gourd (Tindora)', 'Okra (Bhindi)', 'Drumstick (Moringa)',
     'Turnip', 'Colocasia Leaves', 'Amaranth Leaves', 'Mustard Leaves',
-    'Fenugreek Leaves', 'Curry Leaves'
+    'Fenugreek Leaves', 'Curry Leaves', 'Karela (Bitter Gourd)', 'Parwal', 'Arbi',
+    'Brinjal (Baingan)', 'Methi Leaves', 'Sem Phali (Flat Beans)'
   ];
   if (dietaryPreference === 'pure-jain') {
     base = [
-      'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
+      'Seasonal Local Greens', 'Palak (Spinach)', 'Lauki (Bottle Gourd)',
       'Cabbage', 'Cauliflower', 'Green Peas', 'Tomatoes',
       'Local Beans', 'Cucumber', 'Pumpkin', 'Capsicum',
       'Bottle Gourd (Lauki)', 'Ridge Gourd (Turai)', 'Snake Gourd',
@@ -116,7 +113,7 @@ export const getVegetableSources = (dietaryPreference?: DietaryPreference, aller
     ];
   } else if (dietaryPreference === 'sattvic') {
     base = [
-      'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
+      'Seasonal Local Greens', 'Palak (Spinach)', 'Lauki (Bottle Gourd)',
       'Cabbage', 'Cauliflower', 'Carrots', 'Green Peas',
       'Tomatoes', 'Local Beans', 'Cucumber', 'Pumpkin',
       'Bottle Gourd (Lauki)', 'Ash Gourd', 'Ridge Gourd (Turai)',
@@ -138,7 +135,7 @@ export const getFruitSources = (dietaryPreference?: DietaryPreference, allergies
         'Guava', 'Local Berries', 'Jamun (in season)',
         'Musk Melon', 'Indian Plums', 'Mangoes (seasonal)',
         'Pineapple', 'Pomegranate', 'Chickoo', 'Custard Apple',
-        'Wood Apple', 'Jackfruit', 'Star Fruit', 'Lychee (seasonal)',
+        'Wood Apple', 'Jackfruit', 'Lychee (seasonal)',
         'Amla (Indian Gooseberry)', 'Ber (Indian Jujube)',
         'Bael Fruit', 'Karonda', 'Sitaphal (Sugar-apple)'
       ];

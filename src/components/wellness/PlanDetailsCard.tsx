@@ -24,7 +24,7 @@ const PlanDetailsCard = ({ formData }: PlanDetailsProps) => {
   // Get protein requirement based on dietary preference
   const getProteinNote = (preference: string) => {
     const proteinNotes: Record<string, string> = {
-      'vegan': 'Plant proteins from legumes, tofu, tempeh, seitan',
+      'vegan': 'Plant proteins from legumes, tofu, soya chunks',
       'lacto-vegetarian': 'Dairy and legume based proteins',
       'lacto-ovo-vegetarian': 'Eggs, dairy and legume proteins',
       'pure-vegetarian': 'Dairy and plant-based proteins',
@@ -40,6 +40,11 @@ const PlanDetailsCard = ({ formData }: PlanDetailsProps) => {
   const getVarietyNote = () => {
     return 'Foods varied using prime number patterns to avoid repetition';
   };
+  
+  // Get note about affordable ingredients
+  const getIngredientsNote = () => {
+    return 'Plan focuses on common, affordable ingredients like seasonal vegetables, pulses, and local grains';
+  };
 
   return (
     <Card className="bg-blue-50">
@@ -54,6 +59,7 @@ const PlanDetailsCard = ({ formData }: PlanDetailsProps) => {
         <p><strong>Fitness Goal:</strong> {formData.fitnessGoal.replace('-', ' ')}</p>
         <p className="mt-2 text-sm italic text-blue-700">{getProteinNote(formData.dietaryPreference)}</p>
         <p className="text-sm italic text-green-700">{getVarietyNote()}</p>
+        <p className="text-sm italic text-amber-700">{getIngredientsNote()}</p>
       </CardContent>
     </Card>
   );

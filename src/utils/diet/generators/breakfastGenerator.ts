@@ -5,6 +5,7 @@ import { getDryFruits } from '../data/dryFruits';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getFruitSources } from '../data/foodSources';
 import { getStandardFruitPortion, getDailyNutsMixture } from '../helpers/portionHelpers';
+import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
 
 export const generateBreakfast = (
   dayIndex: number,
@@ -31,6 +32,10 @@ export const generateBreakfast = (
     const dailyNuts = getDailyNutsMixture(dayIndex);
     breakfast += `, with ${dailyNuts}`;
     
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(breakfast);
+    breakfast += ` - (${healthBenefit})`;
+    
     return breakfast;
   }
   
@@ -47,22 +52,22 @@ export const generateBreakfast = (
     'Steamed Sprouts Dhokla (4 dhokla)',
     'Vegetable Daliya Khichdi (1 katori)',
     'Jowar Upma (1 katori) with seasonal sabzi',
-    'Quinoa Poha (1 katori) with sabzi',
+    'Vegetable Poha (1 katori) with sabzi',
     'Brown Rice Idli (3 idli) with tamatar chutney (2 chamach)',
     'Bajra Roti (2 roti) with sabzi (1 katori)',
-    'Kodo Millet Upma (Kodra Upma - 1 katori) with nariyal chutney (2 chamach)',
+    'Kodo Millet Upma (1 katori) with nariyal chutney (2 chamach)',
     'Sattu Paratha (2 paratha) with dahi (1 katori)',
     'Sprouted Moong Chilla (2 chilla) with pudina chutney (2 chamach)',
-    'Vegetable Dalia (Daliya - 1 katori) with badam milk (1 glass)',
+    'Vegetable Dalia (1 katori) with badam milk (1 glass)',
     'Ragi Idli (3 idli) with tamatar sambar (1 katori)',
     'Bajra Khichdi (1 katori) with chaas (1 glass)',
     'Jowar Roti (2 roti) with sabzi (1 katori)',
     'Rajgira Porridge (1 katori) with seasonal fruits',
     'Kuttu Pancakes (2 pancakes) with shahad (1 chamach)',
-    'Proso Millet Upma (Barri Upma - 1 katori) with nariyal chutney (2 chamach)',
-    'Foxtail Millet Upma (Kangni Upma - 1 katori) with sabzi (1 katori)',
-    'Little Millet Dosa (Kutki Dosa - 2 dosa) with sambar (1 katori)',
-    'Barnyard Millet Porridge (Samvat Porridge - 1 katori) with mixed fruits'
+    'Millet Upma (1 katori) with nariyal chutney (2 chamach)',
+    'Millet Upma (1 katori) with sabzi (1 katori)',
+    'Millet Dosa (2 dosa) with sambar (1 katori)',
+    'Millet Porridge (1 katori) with mixed fruits'
   ];
   
   // Use a prime number offset to avoid repetition every 2 days
@@ -137,6 +142,10 @@ export const generateBreakfast = (
       // For egg breakfasts, we need to especially ensure probiotics as they naturally lack them
       breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
       
+      // Add health benefit
+      const healthBenefit = getHealthBenefit(breakfast);
+      breakfast += ` - (${healthBenefit})`;
+      
       return breakfast;
     }
   }
@@ -154,6 +163,10 @@ export const generateBreakfast = (
   } else {
     breakfast = enrichWithPrebiotics(breakfast, dayIndex, true);
   }
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(breakfast);
+  breakfast += ` - (${healthBenefit})`;
   
   return breakfast;
 };

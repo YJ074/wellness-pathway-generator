@@ -2,6 +2,7 @@
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
+import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
 import { 
   getLocalizedProteinName, 
   getBreadPortionSize,
@@ -36,6 +37,10 @@ export const generateDinner = (
     // Gently introduce pre/probiotics to regional specialties
     dinner = enrichWithPrebiotics(dinner, dayIndex);
     dinner = enrichWithProbiotics(dinner, dayIndex);
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(dinner);
+    dinner += ` - (${healthBenefit})`;
     
     return dinner;
   }
@@ -88,7 +93,7 @@ export const generateDinner = (
   );
   
   // Build a protein-optimized dinner with both protein sources
-  let main = `${protein1WithLocalName} and ${protein2WithLocalName} combined curry (${curryPortion} - protein-optimized), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Bhura Chaval (${ricePortion} Brown Rice)`;
+  let main = `${protein1WithLocalName} and ${protein2WithLocalName} combined curry (${curryPortion} - protein-optimized), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Brown Rice (${ricePortion})`;
   
   // Always include buttermilk (probiotic) with dinner
   main += `, chaas (1 glass)`;
@@ -102,6 +107,10 @@ export const generateDinner = (
   if (allergies) {
     main = filterAllergies([main], allergies)[0] || "";
   }
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(main);
+  main += ` - (${healthBenefit})`;
   
   return main;
 };

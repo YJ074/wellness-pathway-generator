@@ -3,6 +3,7 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getDryFruits } from '../data/dryFruits';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getFruitSources } from '../data/foodSources';
+import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
 import { 
   getStandardFruitPortion,
   composeRegionalMeal
@@ -33,7 +34,13 @@ export const generateMidMorningSnack = (
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     // Simple fruit-based snack with minimal processing
-    return `${seasonalFruit} ${fruitPortion}${dayIndex % 3 === 0 ? ' with a sprinkle of kala namak and kali mirch' : ''}`;
+    let snack = `${seasonalFruit} ${fruitPortion}${dayIndex % 3 === 0 ? ' with a sprinkle of kala namak and kali mirch' : ''}`;
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(snack);
+    snack += ` - (${healthBenefit})`;
+    
+    return snack;
   }
   
   let midMorningOptions = [
@@ -49,7 +56,7 @@ export const generateMidMorningSnack = (
     'Homemade lassi (1 glass)',
     'Nariyal pani (1 glass)',
     'Ragi malt (1 glass)',
-    'Chukandar juice (1 glass)',
+    'Beetroot juice (1 glass)',
     'Homemade sabzi soup (1 katori)',
     'Steam kiya hua makka (½ katori)',
     'Multigrain khakhra (2 pieces)',
@@ -68,7 +75,13 @@ export const generateMidMorningSnack = (
   
   // Use prime number offset for better variety across days
   const variedIndex = (dayIndex * 13 + 7) % midMorningOptions.length;
-  return midMorningOptions[variedIndex] || "";
+  let snack = midMorningOptions[variedIndex] || "";
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(snack);
+  snack += ` - (${healthBenefit})`;
+  
+  return snack;
 };
 
 export const generateEveningSnack = (
@@ -89,7 +102,13 @@ export const generateEveningSnack = (
     const regionalSnack = regionalFoods.snacks[regionalIndex];
     
     // Use the helper function for consistent formatting
-    return composeRegionalMeal(regionalSnack, isWeightLoss, false);
+    let snack = composeRegionalMeal(regionalSnack, isWeightLoss, false);
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(snack);
+    snack += ` - (${healthBenefit})`;
+    
+    return snack;
   }
   
   // Increase fruit frequency in evening snacks (3 days per week)
@@ -110,13 +129,20 @@ export const generateEveningSnack = (
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     // Create a more interesting fruit snack
+    let snack = "";
     if (dayIndex % 3 === 0) {
-      return `${seasonalFruit} slices ${fruitPortion} with a sprinkle of chaat masala`;
+      snack = `${seasonalFruit} slices ${fruitPortion} with a sprinkle of chaat masala`;
     } else if (dayIndex % 3 === 1) {
-      return `${seasonalFruit} ${fruitPortion} with mixed seeds (1 chamach)`;
+      snack = `${seasonalFruit} ${fruitPortion} with mixed seeds (1 chamach)`;
     } else {
-      return `${seasonalFruit} ${fruitPortion}`;
+      snack = `${seasonalFruit} ${fruitPortion}`;
     }
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(snack);
+    snack += ` - (${healthBenefit})`;
+    
+    return snack;
   }
   
   let eveningSnackOptions = [
@@ -147,7 +173,13 @@ export const generateEveningSnack = (
   
   // Use a different prime-based calculation for evening snacks
   const variedEveningIndex = (dayIndex * 17 + 13) % eveningSnackOptions.length;
-  return eveningSnackOptions[variedEveningIndex] || "";
+  let snack = eveningSnackOptions[variedEveningIndex] || "";
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(snack);
+  snack += ` - (${healthBenefit})`;
+  
+  return snack;
 };
 
 export const generateSnacks = (
@@ -174,6 +206,14 @@ export const generateSnacks = (
     snack = filterAllergies([snack], allergies)[0] || "";
     fruit = filterAllergies([fruit], allergies)[0] || "";
   }
+  
+  // Add health benefits
+  const snackHealthBenefit = getHealthBenefit(snack);
+  const fruitHealthBenefit = getHealthBenefit(fruit);
+  
+  snack += ` - (${snackHealthBenefit})`;
+  fruit += ` - (${fruitHealthBenefit})`;
+  
   if (isWeightLoss) {
     return `${fruit} OR ${snack} (choose one per day)`;
   }

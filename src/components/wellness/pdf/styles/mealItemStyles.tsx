@@ -3,41 +3,35 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
   mealItem: {
-    marginBottom: 12,
+    marginBottom: 10,
+    padding: 8,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 3,
   },
   mealLabel: {
-    fontSize: 12,
-    marginBottom: 5,
-    fontFamily: 'Helvetica',
-    fontWeight: 700,
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#334155',
+    marginBottom: 4,
+    fontFamily: 'Helvetica-Bold',
   },
   mealDescription: {
     fontSize: 11,
-    marginBottom: 4,
-    lineHeight: 1.4,
+    color: '#1e293b',
+    marginBottom: 6,
+    lineHeight: 1.5,
     fontFamily: 'Helvetica',
-    fontWeight: 400,
   },
   calorieInfo: {
-    fontSize: 11,
-    color: '#555',
-    marginBottom: 4,
+    fontSize: 10,
+    color: '#94a3b8',
     fontFamily: 'Helvetica',
-    fontWeight: 400,
   },
-  localNamesHighlight: {
-    fontFamily: 'Helvetica-Bold',
-  },
-  prebioticHighlight: {
-    fontFamily: 'Helvetica-Bold',
-    color: '#228B22', // Forest green
-  },
-  probioticHighlight: {
-    fontFamily: 'Helvetica-Bold',
-    color: '#1E90FF', // Dodger blue
-  },
-  indianMeasurementHighlight: {
-    fontFamily: 'Helvetica-Bold',
-    color: '#8B4513', // SaddleBrown
+  healthBenefit: {
+    fontSize: 10,
+    color: '#16a34a',
+    marginBottom: 4,
+    fontStyle: 'italic',
+    fontFamily: 'Helvetica-Oblique',
   }
 });
