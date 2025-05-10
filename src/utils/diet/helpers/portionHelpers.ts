@@ -14,7 +14,9 @@ export {
 export { 
   getLocalizedProteinName,
   getVeganProteinAlternative,
-  getProteinPortion
+  getProteinPortion,
+  getProteinPerKgRequirement,
+  calculateDailyProteinRequirement
 } from './portionTypes/proteinPortions';
 
 export {

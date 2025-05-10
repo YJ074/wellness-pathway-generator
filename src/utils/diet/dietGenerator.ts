@@ -92,7 +92,7 @@ export const generateDietPlan = (
                            wellnessGoals.includes('fat-loss') || 
                            wellnessGoals.includes('inch-loss')) && 
                            !formData.has_muscular_build;
-  const { allergies, region, exerciseFrequency } = formData;
+  const { allergies, region, exerciseFrequency, gender } = formData;
 
   // Optimize protein sources - get double the amount needed for variety
   const rawProteins = getProteinSources(dietaryPreference, allergies);
