@@ -23,12 +23,10 @@ export const generateMidMorningSnack = (
     'Small bowl of makhana (fox nuts, 1/4 cup)'
   ];
   
-  // Add dry fruits option - only for mid-morning (every 7th day)
-  const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
-  
-  // Every 7th day offer dry fruits as a snack option
-  if (dayIndex % 7 === 0) {
-    midMorningOptions.push(dryFruits);
+  // Add dry fruits to mid-morning snack on even-numbered days
+  if (dayIndex % 2 === 1) {
+    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
+    midMorningOptions = midMorningOptions.map(snack => `${snack}, with ${dryFruits}`);
   }
   
   // Add more variety

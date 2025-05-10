@@ -52,8 +52,8 @@ export const generateBreakfast = (
     'Quinoa Upma (1 cup) with coconut chutney (2 tbsp)'
   ];
   
-  // Add dry fruits to breakfast occasionally (every 4th day)
-  if (dayIndex % 4 === 0) {
+  // Add dry fruits to breakfast on odd days
+  if (dayIndex % 2 === 0) {
     const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
     breakfastOptions = breakfastOptions.map(breakfast => `${breakfast}, with ${dryFruits}`);
   }
@@ -72,7 +72,7 @@ export const generateBreakfast = (
     ];
     
     // Add dry fruits to egg breakfasts occasionally (same pattern as vegetarian breakfast)
-    if (dayIndex % 4 === 0) {
+    if (dayIndex % 2 === 0) {
       const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);
       eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${dryFruits}`);
     }
