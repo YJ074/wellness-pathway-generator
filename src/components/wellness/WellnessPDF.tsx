@@ -4,13 +4,14 @@ import { Document, Page, StyleSheet, Font } from '@react-pdf/renderer';
 import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
 
-// Register fonts that are built into PDF renderer
+// Register standard PDF fonts that don't need external files
+// Fixing the font registration to use only standard PDF fonts
 Font.register({
   family: 'Helvetica',
   fonts: [
     { src: 'Helvetica' },
-    { src: 'Helvetica-Bold', fontWeight: 'bold' },
-    { src: 'Helvetica-Oblique', fontStyle: 'italic' },
+    { src: 'Helvetica-Bold', fontWeight: 'bold' }
+    // Removed Helvetica-Oblique since it's causing issues
   ]
 });
 

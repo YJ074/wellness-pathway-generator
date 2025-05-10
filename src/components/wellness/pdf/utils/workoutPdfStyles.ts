@@ -91,14 +91,14 @@ export const workoutPdfStyles = StyleSheet.create({
   weekInfo: {
     fontSize: 10,
     color: '#64748b',
-    fontStyle: 'italic',
     fontFamily: 'Helvetica',
+    // Removed fontStyle: 'italic' that was causing issues
   },
   recoveryNote: {
     fontSize: 10,
     marginTop: 5,
     color: '#3b82f6',
-    fontStyle: 'italic',
     fontFamily: 'Helvetica',
+    // Removed fontStyle: 'italic' that was causing issues
   }
 });
