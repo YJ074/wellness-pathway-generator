@@ -1,4 +1,3 @@
-
 import React, { ReactNode } from 'react';
 import { Text } from '@react-pdf/renderer';
 import { prebioticFoods, probioticFoods } from '@/utils/diet/helpers/prebioticProbioticHelper';
@@ -179,4 +178,3 @@ export const formatMealDescription = (text: string): ReactNode[] => {
   
   return results;
 };
-
