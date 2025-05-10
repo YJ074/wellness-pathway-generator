@@ -32,6 +32,8 @@ export const styles = StyleSheet.create({
     color: '#16a34a',
     marginBottom: 4,
     fontFamily: 'Helvetica',
+    marginTop: 2, // Added to create spacing from meal description
+    paddingLeft: 5, // Added to indent slightly
   },
   // Highlight styles for food descriptions with improved contrast and spacing
   localNamesHighlight: {
