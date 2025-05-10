@@ -48,9 +48,9 @@ const PDFMealItem = ({
   dailyCalories, 
   goalFactor 
 }: PDFMealItemProps) => {
-  // Enhanced function to highlight local names in parentheses or with a dash
+  // Enhanced function to highlight local names in parentheses, with a dash, or specific millet patterns
   const formatMealDescription = (text: string) => {
-    // First, handle patterns with dash like "Rice Flakes - Poha"
+    // First, handle patterns with dash like "Rice Flakes - Poha" or "Broken Wheat - Daliya"
     const dashParts = text.split(/(\s-\s[^,\.]+)/g);
     
     return dashParts.map((part, dashIndex) => {
@@ -67,8 +67,40 @@ const PDFMealItem = ({
         if (subPart.startsWith('(') && subPart.endsWith(')')) {
           return <Text key={`parent-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>;
         }
+        
+        // Check for specific millet patterns that might not be in parentheses or after dashes
+        const milletPatterns = [
+          /(Foxtail Millet|Kangni)/, 
+          /(Pearl Millet|Bajra)/, 
+          /(Finger Millet|Ragi)/, 
+          /(Sorghum|Jowar)/, 
+          /(Little Millet|Kutki)/,
+          /(Proso Millet|Barri)/,
+          /(Kodo Millet|Kodra)/,
+          /(Barnyard Millet|Samvat)/,
+          /(Amaranth|Rajgira)/,
+          /(Buckwheat|Kuttu)/,
+          /(Rice Flakes|Poha)/,
+          /(Broken Wheat|Daliya|Dalia)/
+        ];
+        
+        // Check each pattern and add highlighting if found
+        let formattedText = subPart;
+        let matches = false;
+        
+        for (const pattern of milletPatterns) {
+          if (pattern.test(formattedText)) {
+            matches = true;
+            break;
+          }
+        }
+        
+        if (matches) {
+          return <Text key={`millet-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{formattedText}</Text>;
+        }
+        
         // Regular text
-        return <React.Fragment key={`text-${dashIndex}-${parenthIndex}`}>{subPart}</React.Fragment>;
+        return <React.Fragment key={`text-${dashIndex}-${parenthIndex}`}>{formattedText}</React.Fragment>;
       });
     });
   };

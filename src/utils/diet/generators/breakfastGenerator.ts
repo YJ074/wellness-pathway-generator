@@ -25,7 +25,7 @@ export const generateBreakfast = (
   }
   
   let breakfastOptions = [
-    'Vegetable Poha (Flattened Rice - 1 cup) with curd (1/2 cup)',
+    'Vegetable Poha (Rice Flakes - 1 cup) with curd (1/2 cup)',
     'Oats Idli (3 pieces) with sambhar (1/2 cup)',
     'Vegetable Upma (Semolina Porridge - 1 cup) with a side of sprouts (1/2 cup)',
     'Besan Chilla (Gram Flour Pancakes - 2 pieces) with mint chutney (2 tbsp)',
@@ -40,16 +40,19 @@ export const generateBreakfast = (
     'Quinoa Poha (3/4 cup) with vegetables',
     'Brown Rice Idli (3 pieces) with tomato chutney (2 tbsp)',
     'Bajra Roti (Pearl Millet Flatbread - 2 pieces) with vegetable curry (1/2 cup)',
-    'Millet Upma (1 cup) with coconut chutney (2 tbsp)',
+    'Kodo Millet Upma (Kodra - 1 cup) with coconut chutney (2 tbsp)',
     'Sattu Paratha (Roasted Gram Flour Flatbread - 2 pieces) with curd (1/2 cup)',
     'Sprouted Moong Chilla (2 pieces) with pudina chutney (2 tbsp)',
-    'Vegetable Dalia (Broken Wheat - 1 cup) with almond milk (1/2 cup)',
+    'Vegetable Dalia (Broken Wheat - Daliya - 1 cup) with almond milk (1/2 cup)',
     'Ragi Idli (Finger Millet - 3 pieces) with tomato sambar (1/2 cup)',
     'Bajra Khichdi (Pearl Millet Porridge - 1 cup) with buttermilk (1 glass)',
     'Jowar Roti (Sorghum Flatbread - 2 pieces) with vegetable kurma (1/2 cup)',
     'Amaranth Porridge (Rajgira - 1 cup) with seasonal fruits',
     'Buckwheat Pancakes (Kuttu - 2) with honey (1 tsp)',
-    'Quinoa Upma (1 cup) with coconut chutney (2 tbsp)'
+    'Proso Millet Upma (Barri - 1 cup) with coconut chutney (2 tbsp)',
+    'Foxtail Millet Upma (Kangni - 1 cup) with vegetable curry (1/2 cup)',
+    'Little Millet Dosa (Kutki - 2 pieces) with sambar (1/2 cup)',
+    'Barnyard Millet Porridge (Samvat - 1 cup) with mixed fruits'
   ];
   
   // Add dry fruits to breakfast on odd days
@@ -65,7 +68,7 @@ export const generateBreakfast = (
       'Boiled Eggs (2) with vegetable sandwich (1)',
       'Egg and Vegetable Wrap (1 whole wheat wrap)',
       'Egg Akuri (Parsi Style Eggs - 2 eggs) with multigrain toast (1 slice)',
-      'Egg Poha (Flattened Rice with Eggs - 1 cup) with vegetables',
+      'Egg Poha (Rice Flakes with Eggs - 1 cup) with vegetables',
       'Egg White Omelette (3 egg whites) with spinach and herbs',
       'Egg Muffins (2) with vegetables',
       'Egg Upma (Semolina with Eggs - 1 cup) with mixed vegetables'

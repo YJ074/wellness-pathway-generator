@@ -61,19 +61,20 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
 
 export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
   const allGrains = dietaryPreference === 'pure-jain' ? [
-      'Rice (Local Variety)', 'Roti', 'Jowar Roti',
-      'Bajra Roti', 'Multigrain Roti', 'Poha',
-      'Local Millet Varieties', 'Barley Roti', 'Rice Flakes',
+      'Rice (Local Variety)', 'Roti', 'Jowar Roti (Sorghum Flatbread)',
+      'Bajra Roti (Pearl Millet Flatbread)', 'Multigrain Roti', 'Poha (Rice Flakes)',
+      'Foxtail Millet (Kangni)', 'Barley Roti (Jau)', 'Rice Flakes (Poha)',
       'White Rice', 'Red Rice', 'Barnyard Millet (Samvat)',
-      'Little Millet (Kutki)', 'Amaranth (Rajgira) Roti',
-      'Buckwheat (Kuttu) Roti', 'Quinoa'
+      'Little Millet (Kutki)', 'Amaranth Roti (Rajgira)', 
+      'Buckwheat Roti (Kuttu)', 'Quinoa'
     ] : [
-      'Rice (Local Variety)', 'Roti', 'Ragi Roti', 'Jowar Roti',
-      'Bajra Roti', 'Multigrain Roti', 'Poha', 'Local Millet Rotis',
-      'Suji (Semolina) Roti', 'Barley Roti', 'Mixed Millet Roti', 'Rice Flakes',
+      'Rice (Local Variety)', 'Roti', 'Ragi Roti (Finger Millet)', 'Jowar Roti (Sorghum)',
+      'Bajra Roti (Pearl Millet)', 'Multigrain Roti', 'Poha (Rice Flakes)', 
+      'Kodo Millet (Kodra)', 'Proso Millet (Barri)',
+      'Suji Roti (Semolina)', 'Barley Roti (Jau)', 'Mixed Millet Roti', 'Rice Flakes (Poha)',
       'Brown Rice', 'Black Rice', 'Red Rice', 'Wild Rice',
       'Foxtail Millet (Kangni) Roti', 'Little Millet (Kutki) Roti',
-      'Amaranth (Rajgira) Roti', 'Buckwheat (Kuttu) Roti', 'Quinoa'
+      'Amaranth Roti (Rajgira)', 'Buckwheat Roti (Kuttu)', 'Quinoa'
     ];
   return filterAllergies(allGrains, allergies);
 };
@@ -131,19 +132,19 @@ export const getFruitSources = (dietaryPreference?: DietaryPreference, allergies
 export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean, allergies?: string) => {
   let baseSnacks = dietaryPreference === 'pure-jain'
     ? [
-        'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha',
+        'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha (Rice Flakes)',
         'Dahi (plain curd)', 'Homemade Buttermilk', 'Soaked Dry Fruits',
         'Lemon Water', 'Cucumber Slices', 'Makhana (Fox Nuts)',
         'Dry Fruit Ladoo', 'Fruit Salad', 'Coconut Water'
       ]
     : [
         'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
-        'Homemade Poha', 'Boiled Sprouts', 'Seasonal Fruit',
+        'Homemade Poha (Rice Flakes)', 'Boiled Sprouts', 'Seasonal Fruit',
         'Buttermilk', 'Lemon Water', 'Homemade Chaas',
         'Makhana (Fox Nuts)', 'Roasted Seeds Mix',
         'Baked Vegetable Chips', 'Cucumber Raita',
         'Multigrain Dhokla', 'Vegetable Cutlets',
-        'Ragi Cookies', 'Oats Chilla', 'Palak Patta Chaat',
+        'Ragi (Finger Millet) Cookies', 'Oats Chilla', 'Palak Patta Chaat',
         'Homemade Trail Mix', 'Steamed Sweet Corn'
       ];
   return filterAllergies(baseSnacks, allergies);
