@@ -61,20 +61,20 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
 
 export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
   const allGrains = dietaryPreference === 'pure-jain' ? [
-      'Rice (Local Variety)', 'Roti', 'Jowar Roti (Sorghum Flatbread)',
+      'Rice (Local Variety)', 'Wheat Roti', 'Jowar Roti (Sorghum Flatbread)',
       'Bajra Roti (Pearl Millet Flatbread)', 'Multigrain Roti', 'Poha (Rice Flakes)',
-      'Foxtail Millet (Kangni)', 'Barley Roti (Jau)', 'Rice Flakes (Poha)',
-      'White Rice', 'Red Rice', 'Barnyard Millet (Samvat)',
-      'Little Millet (Kutki)', 'Amaranth Roti (Rajgira)', 
-      'Buckwheat Roti (Kuttu)', 'Quinoa'
+      'Foxtail Millet Roti (Kangni Roti)', 'Barley Roti (Jau Roti)', 'Rice Flakes (Poha)',
+      'White Rice (Safed Chaval)', 'Red Rice', 'Barnyard Millet Khichdi (Samvat Khichdi)',
+      'Little Millet Roti (Kutki Roti)', 'Amaranth Roti (Rajgira Roti)', 
+      'Buckwheat Roti (Kuttu Roti)', 'Quinoa Pulao'
     ] : [
-      'Rice (Local Variety)', 'Roti', 'Ragi Roti (Finger Millet)', 'Jowar Roti (Sorghum)',
-      'Bajra Roti (Pearl Millet)', 'Multigrain Roti', 'Poha (Rice Flakes)', 
-      'Kodo Millet (Kodra)', 'Proso Millet (Barri)',
-      'Suji Roti (Semolina)', 'Barley Roti (Jau)', 'Mixed Millet Roti', 'Rice Flakes (Poha)',
-      'Brown Rice', 'Black Rice', 'Red Rice', 'Wild Rice',
-      'Foxtail Millet (Kangni) Roti', 'Little Millet (Kutki) Roti',
-      'Amaranth Roti (Rajgira)', 'Buckwheat Roti (Kuttu)', 'Quinoa'
+      'Rice (Local Variety)', 'Wheat Roti', 'Ragi Roti (Finger Millet Roti)', 'Jowar Roti (Sorghum Roti)',
+      'Bajra Roti (Pearl Millet Roti)', 'Multigrain Roti', 'Poha (Rice Flakes)', 
+      'Kodo Millet Roti (Kodra Roti)', 'Proso Millet Upma (Barri Upma)',
+      'Suji Roti (Semolina Roti)', 'Barley Roti (Jau Roti)', 'Mixed Millet Roti', 'Rice Flakes (Poha)',
+      'Brown Rice (Bhura Chaval)', 'Black Rice', 'Red Rice', 'Wild Rice',
+      'Foxtail Millet Roti (Kangni Roti)', 'Little Millet Roti (Kutki Roti)',
+      'Amaranth Roti (Rajgira Roti)', 'Buckwheat Roti (Kuttu Roti)', 'Quinoa Pulao'
     ];
   return filterAllergies(allGrains, allergies);
 };

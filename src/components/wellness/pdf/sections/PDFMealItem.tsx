@@ -83,7 +83,12 @@ const PDFMealItem = ({
           /(Rice Flakes|Poha)/,
           /(Broken Wheat|Daliya|Dalia)/,
           /(Brown Rice|Bhura Chaval)/,
-          /(White Rice|Safed Chaval)/
+          /(White Rice|Safed Chaval)/,
+          /(Ragi Roti|Finger Millet Roti)/,
+          /(Bajra Roti|Pearl Millet Roti)/,
+          /(Jowar Roti|Sorghum Roti)/,
+          /(Kangni Roti|Foxtail Millet Roti)/,
+          /(Kutki Roti|Little Millet Roti)/
         ];
         
         // Check each pattern and add highlighting if found

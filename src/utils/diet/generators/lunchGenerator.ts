@@ -44,27 +44,27 @@ export const generateLunch = (
     proteinWithLocalName = 'Rajma (Kidney Beans)';
   }
   
-  // Ensure local names for grains too
+  // Ensure local names for grains too with specific preparation method
   let grainWithLocalName = grain;
-  if (grain === 'Rice Flakes' && !grain.includes('(')) {
+  if (grain.includes('Rice Flakes') && !grain.includes('(')) {
     grainWithLocalName = 'Rice Flakes (Poha)';
-  } else if (grain === 'Broken Wheat' && !grain.includes('(')) {
-    grainWithLocalName = 'Broken Wheat (Daliya)';
+  } else if (grain.includes('Broken Wheat') && !grain.includes('(')) {
+    grainWithLocalName = 'Broken Wheat Porridge (Daliya)';
   } else if (grain.includes('Millet') && !grain.includes('(')) {
     if (grain.includes('Foxtail')) {
-      grainWithLocalName = 'Foxtail Millet (Kangni)';
+      grainWithLocalName = 'Foxtail Millet Roti (Kangni Roti)';
     } else if (grain.includes('Pearl')) {
-      grainWithLocalName = 'Pearl Millet (Bajra)';
+      grainWithLocalName = 'Pearl Millet Roti (Bajra Roti)';
     } else if (grain.includes('Finger')) {
-      grainWithLocalName = 'Finger Millet (Ragi)';
+      grainWithLocalName = 'Finger Millet Roti (Ragi Roti)';
     } else if (grain.includes('Little')) {
-      grainWithLocalName = 'Little Millet (Kutki)';
+      grainWithLocalName = 'Little Millet Roti (Kutki Roti)';
     } else if (grain.includes('Barnyard')) {
-      grainWithLocalName = 'Barnyard Millet (Samvat)';
+      grainWithLocalName = 'Barnyard Millet Khichdi (Samvat Khichdi)';
     } else if (grain.includes('Kodo')) {
-      grainWithLocalName = 'Kodo Millet (Kodra)';
+      grainWithLocalName = 'Kodo Millet Roti (Kodra Roti)';
     } else if (grain.includes('Proso')) {
-      grainWithLocalName = 'Proso Millet (Barri)';
+      grainWithLocalName = 'Proso Millet Upma (Barri Upma)';
     }
   }
 

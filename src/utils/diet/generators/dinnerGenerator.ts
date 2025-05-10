@@ -44,11 +44,11 @@ export const generateDinner = (
   // Include explicit carb portion in every dinner (rotis or rice)
   let main = "";
   if (isWeightLoss) {
-    main = `${proteinWithLocalName} curry (light, 3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (1 piece) or brown rice (1/3 cup), small bowl of buttermilk (Chaas - 1 cup)`;
+    main = `${proteinWithLocalName} curry (light, 3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), Wheat Roti (1 piece) or Brown Rice (Bhura Chaval - 1/3 cup), small bowl of buttermilk (Chaas - 1 cup)`;
   } else if (isProteinFocus) {
-    main = `${proteinWithLocalName} curry (generous portion, 1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces) or brown rice (1/2 cup), bowl of buttermilk (Chaas - 1 cup)`;
+    main = `${proteinWithLocalName} curry (generous portion, 1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), Wheat Roti (2 pieces) or Brown Rice (Bhura Chaval - 1/2 cup), bowl of buttermilk (Chaas - 1 cup)`;
   } else {
-    main = `${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), roti (2 pieces) or brown rice (1/2 cup), bowl of buttermilk (Chaas - 1 cup)`;
+    main = `${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), Wheat Roti (2 pieces) or Brown Rice (Bhura Chaval - 1/2 cup), bowl of buttermilk (Chaas - 1 cup)`;
   }
   if (allergies) {
     const allergiesArr = allergies.split(',').map(x=>x.trim().toLowerCase());
