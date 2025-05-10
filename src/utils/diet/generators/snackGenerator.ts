@@ -12,6 +12,7 @@ export const generateMidMorningSnack = (
   allergies?: string
 ) => {
   // Increase fruit frequency in mid-morning snacks (3-4 days per week)
+  // Monday, Wednesday, Friday
   const includeFruit = dayIndex % 7 === 1 || dayIndex % 7 === 3 || dayIndex % 7 === 5;
   
   if (includeFruit) {
@@ -77,6 +78,7 @@ export const generateEveningSnack = (
   }
   
   // Increase fruit frequency in evening snacks (3 days per week)
+  // Sunday, Tuesday, Thursday
   const includeFruit = dayIndex % 7 === 0 || dayIndex % 7 === 2 || dayIndex % 7 === 4;
   
   if (includeFruit) {

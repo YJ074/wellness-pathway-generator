@@ -69,12 +69,7 @@ export const generateDinner = (
   }
   
   if (allergies) {
-    const allergiesArr = allergies.split(',').map(x=>x.trim().toLowerCase());
-    allergiesArr.forEach(a => {
-      if (main.toLowerCase().includes(a)) {
-        main = main.replace(new RegExp('\\b' + a + '\\b', 'gi'), '');
-      }
-    });
+    main = filterAllergies([main], allergies)[0] || "";
   }
   return main;
 };
