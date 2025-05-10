@@ -37,28 +37,28 @@ export const styles = StyleSheet.create({
   localNamesHighlight: {
     color: '#6366f1', // indigo color for local names
     fontFamily: 'Helvetica-Bold',
-    display: 'inline',
+    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0, 
     margin: 0,
   },
   indianMeasurementHighlight: {
     color: '#d97706', // amber color for Indian measurements
     fontFamily: 'Helvetica-Bold',
-    display: 'inline',
+    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0,
     margin: 0,
   },
   probioticHighlight: {
     color: '#4f46e5', // indigo for probiotic foods
     fontFamily: 'Helvetica-Bold',
-    display: 'inline',
+    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0,
     margin: 0,
   },
   prebioticHighlight: {
     color: '#059669', // emerald for prebiotic foods
     fontFamily: 'Helvetica-Bold',
-    display: 'inline',
+    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0,
     margin: 0,
   }

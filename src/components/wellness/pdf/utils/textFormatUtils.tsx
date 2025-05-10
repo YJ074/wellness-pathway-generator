@@ -52,7 +52,7 @@ export const formatMealDescription = (text: string): ReactNode[] => {
   
   // Process each part sequentially
   // This approach prevents overlap by processing one pattern at a time
-  let segments = [processedText];
+  let segments: (string | ReactNode)[] = [processedText]; // Fix: Explicitly define type as (string | ReactNode)[]
   let segmentId = 0;
   
   for (const pattern of measurementPatterns) {
