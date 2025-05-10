@@ -2,7 +2,10 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getDryFruits } from '../data/dryFruits';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getFruitSources } from '../data/foodSources';
-import { getStandardFruitPortion } from '../helpers/portionHelpers';
+import { 
+  getStandardFruitPortion,
+  composeRegionalMeal
+} from '../helpers/portionHelpers';
 
 export const generateMidMorningSnack = (
   dayIndex: number, 
@@ -74,10 +77,9 @@ export const generateEveningSnack = (
   // Use regional snack options every 4th day if available
   if (region && regionalFoods.snacks.length > 0 && dayIndex % 4 === 0) {
     const regionalSnack = regionalFoods.snacks[dayIndex % regionalFoods.snacks.length];
-    if (isWeightLoss) {
-      return `${regionalSnack} (smaller portion)`;
-    }
-    return regionalSnack;
+    
+    // Use the helper function for consistent formatting
+    return composeRegionalMeal(regionalSnack, isWeightLoss, false);
   }
   
   // Increase fruit frequency in evening snacks (3 days per week)

@@ -52,3 +52,64 @@ export const getPortionSize = (
   }
   return options.standard;
 };
+
+// Helper for creating standardized meal items with portion sizes
+export const createMealItem = (
+  itemName: string,
+  portionInfo: string
+): string => {
+  return `${itemName} (${portionInfo})`;
+};
+
+// Helper to format grain names with local equivalents
+export const getLocalizedGrainName = (grain: string): string => {
+  if (grain.includes('Rice Flakes') && !grain.includes('(')) {
+    return 'Poha (Rice Flakes)';
+  } else if (grain.includes('Broken Wheat') && !grain.includes('(')) {
+    return 'Daliya (Broken Wheat Porridge)';
+  } else if (grain.includes('Millet') && !grain.includes('(')) {
+    if (grain.includes('Foxtail')) {
+      return 'Kangni Roti (Foxtail Millet Roti)';
+    } else if (grain.includes('Pearl')) {
+      return 'Bajra Roti (Pearl Millet Roti)';
+    } else if (grain.includes('Finger')) {
+      return 'Ragi Roti (Finger Millet Roti)';
+    } else if (grain.includes('Little')) {
+      return 'Kutki Roti (Little Millet Roti)';
+    } else if (grain.includes('Barnyard')) {
+      return 'Samvat Khichdi (Barnyard Millet Khichdi)';
+    } else if (grain.includes('Kodo')) {
+      return 'Kodra Roti (Kodo Millet Roti)';
+    } else if (grain.includes('Proso')) {
+      return 'Barri Upma (Proso Millet Upma)';
+    }
+  }
+  return grain;
+};
+
+// Helper for composing meals based on regional preferences
+export const composeRegionalMeal = (
+  regionalDish: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  if (isWeightLoss) {
+    return `${regionalDish} (lighter portion for evening)`;
+  } else if (isProteinFocus) {
+    return `${regionalDish} with extra protein`;
+  }
+  return regionalDish;
+};
+
+// Helper to create a standardized dinner meal with curry, vegetables, and carbs
+export const composeDinnerMeal = (
+  protein: string,
+  veggie1: string,
+  veggie2: string,
+  curryPortion: string,
+  veggiePortion: string,
+  rotiPortion: string,
+  ricePortion: string
+): string => {
+  return `${protein} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiPortion}) or Bhura Chaval (${ricePortion} Brown Rice)`;
+};

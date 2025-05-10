@@ -2,7 +2,12 @@
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
-import { getLocalizedProteinName, getPortionSize } from '../helpers/portionHelpers';
+import { 
+  getLocalizedProteinName, 
+  getPortionSize,
+  composeRegionalMeal,
+  composeDinnerMeal
+} from '../helpers/portionHelpers';
 
 export const generateDinner = (
   dayIndex: number, 
@@ -20,15 +25,8 @@ export const generateDinner = (
   if (region && regionalFoods.mains.length > 0 && dayIndex % 6 === 0) {
     const regionalDinner = regionalFoods.mains[(dayIndex + 2) % regionalFoods.mains.length];
     
-    // Format dinner based on dietary goals
-    let dinner = "";
-    if (isWeightLoss) {
-      dinner = `${regionalDinner} (lighter portion for evening)`;
-    } else if (isProteinFocus) {
-      dinner = `${regionalDinner} with extra protein`;
-    } else {
-      dinner = regionalDinner;
-    }
+    // Format dinner based on dietary goals using the helper function
+    let dinner = composeRegionalMeal(regionalDinner, isWeightLoss, isProteinFocus);
     
     // Gently introduce pre/probiotics to regional specialties
     dinner = enrichWithPrebiotics(dinner, dayIndex);
@@ -81,8 +79,16 @@ export const generateDinner = (
     }
   );
   
-  // Compose the main dinner meal
-  let main = `${proteinWithLocalName} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiPortion}) or Bhura Chaval (${ricePortion} Brown Rice)`;
+  // Compose the main dinner meal using the new helper function
+  let main = composeDinnerMeal(
+    proteinWithLocalName,
+    veggie1,
+    veggie2,
+    curryPortion,
+    veggiePortion,
+    rotiPortion,
+    ricePortion
+  );
   
   // Always include buttermilk (probiotic) with dinner
   main += `, chaas (1 glass)`;
