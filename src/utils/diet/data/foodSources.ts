@@ -8,28 +8,28 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Paneer', 'Toor Dal', 'Chana Dal', 'Moong Dal', 'Masoor Dal',
       'Curd', 'Buttermilk', 'Besan (Gram Flour)', 'Sattu',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
-      'Quinoa', 'Greek Yogurt', 'Cottage Cheese', 
+      'Channa Flour Roti', 'Greek Yogurt', 'Cottage Cheese', 
       'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans'
     ],
     'lacto-ovo-vegetarian': [
       'Paneer', 'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
       'Curd', 'Buttermilk', 'Besan (Gram Flour)', 'Egg Whites',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
-      'Quinoa', 'Greek Yogurt', 'Boiled Eggs', 'Egg Bhurji',
+      'Channa Flour Roti', 'Greek Yogurt', 'Boiled Eggs', 'Egg Bhurji',
       'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans'
     ],
     'pure-vegetarian': [
       'Paneer', 'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
       'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Sattu',
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
-      'Quinoa', 'Tofu', 'Tempeh', 'Hemp Seeds', 
+      'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Hemp Seeds', 
       'Kala Chana', 'White Beans', 'Moth Beans'
     ],
     'jain': [
       'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
       'Soya Products', 'Dried Beans', 'Peanuts', 'Mixed Sprouts',
       'Chickpeas', 'Whole Moong', 'Besan (Gram Flour)',
-      'Rajma', 'White Beans', 'Quinoa', 'Hemp Seeds',
+      'Rajma', 'White Beans', 'Channa Flour Roti', 'Hemp Seeds',
       'Paneer (without animal rennet)'
     ],
     'pure-jain': [
@@ -37,7 +37,7 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Paneer (without animal rennet)', 'Curd', 'Buttermilk', 'Toor Dal', 
       'Moong Dal', 'Masoor Dal', 'Urad Dal', 'Chana Dal', 
       'Besan (Gram Flour)', 'Chickpeas', 'Rajma',
-      'White Beans', 'Quinoa', 'Hemp Seeds', 'Peanuts',
+      'White Beans', 'Channa Flour Roti', 'Hemp Seeds', 'Peanuts',
       'Dry Fruits (assorted and soaked)'
     ],
     'sattvic': [
@@ -45,7 +45,7 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Mixed Sprouts', 'Buttermilk', 'Peanuts', 'Whole Moong',
       'Dried Fruits (in moderation)', 'Sprouted Grains', 'Cow Milk',
       'Fresh Yogurt', 'Ghee', 'Organic Honey', 'Fresh Cottage Cheese',
-      'Kheer', 'White Beans', 'Quinoa', 'Amaranth'
+      'Kheer', 'White Beans', 'Channa Flour Roti', 'Amaranth'
     ],
     'non-vegetarian': [
       'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
@@ -72,9 +72,9 @@ export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies
       'Bajra Roti (Pearl Millet Roti)', 'Multigrain Roti', 'Poha (Rice Flakes)', 
       'Kodo Millet Roti (Kodra Roti)', 'Proso Millet Upma (Barri Upma)',
       'Suji Roti (Semolina Roti)', 'Barley Roti (Jau Roti)', 'Mixed Millet Roti', 'Rice Flakes (Poha)',
-      'Brown Rice (Bhura Chaval)', 'Black Rice', 'Red Rice', 'Wild Rice',
+      'Brown Rice (Bhura Chaval)', 'Black Rice', 'Red Rice', 'Hand-Pound Rice',
       'Foxtail Millet Roti (Kangni Roti)', 'Little Millet Roti (Kutki Roti)',
-      'Amaranth Roti (Rajgira Roti)', 'Buckwheat Roti (Kuttu Roti)', 'Quinoa Pulao'
+      'Amaranth Roti (Rajgira Roti)', 'Buckwheat Roti (Kuttu Roti)', 'Local Rice Pulao'
     ];
   return filterAllergies(allGrains, allergies);
 };
@@ -83,7 +83,7 @@ export const getVegetableSources = (dietaryPreference?: DietaryPreference, aller
   let base: string[] = [
     'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds', 'Cabbage', 'Cauliflower',
     'Carrots', 'Green Peas', 'Onions', 'Tomatoes', 'Potatoes', 'Local Beans',
-    'Cucumber', 'Pumpkin', 'Radish', 'Beetroot', 'Broccoli', 'Capsicum',
+    'Cucumber', 'Pumpkin', 'Radish', 'Beetroot', 'Local Leafy Greens', 'Capsicum',
     'Bottle Gourd (Lauki)', 'Ridge Gourd (Turai)', 'Snake Gourd', 'Cluster Beans (Gawar)',
     'Ivy Gourd (Tindora)', 'Okra (Bhindi)', 'Drumstick (Moringa)',
     'Turnip', 'Colocasia Leaves', 'Amaranth Leaves', 'Mustard Leaves',

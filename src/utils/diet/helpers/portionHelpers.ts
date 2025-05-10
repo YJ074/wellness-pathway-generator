@@ -127,3 +127,17 @@ export const composeDinnerMeal = (
   return `${protein} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Bhura Chaval (${ricePortion} Brown Rice)`;
 };
 
+// Get daily nuts mixture - ensure nuts are included every day
+export const getDailyNutsMixture = (dayIndex: number): string => {
+  const nutOptions = [
+    'almonds (4-5 nos) and walnuts (2 nos)',
+    'peanuts (1 mutthi) and flax seeds (1 tsp)',
+    'mixed nuts (5-6 nos) and pumpkin seeds (1 tsp)',
+    'almonds (4 nos) and sunflower seeds (1 tsp)',
+    'cashews (3-4 nos) and chia seeds (1 tsp)',
+    'peanuts (1 mutthi) and sesame seeds (1 tsp)',
+    'almonds (3 nos) and pistachios (3 nos)'
+  ];
+  
+  return nutOptions[dayIndex % nutOptions.length];
+};

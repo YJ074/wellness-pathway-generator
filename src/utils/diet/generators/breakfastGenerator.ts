@@ -4,7 +4,7 @@ import { getRegionalFoods } from '../data/regionalFoods';
 import { getDryFruits } from '../data/dryFruits';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getFruitSources } from '../data/foodSources';
-import { getStandardFruitPortion } from '../helpers/portionHelpers';
+import { getStandardFruitPortion, getDailyNutsMixture } from '../helpers/portionHelpers';
 
 export const generateBreakfast = (
   dayIndex: number,
@@ -27,37 +27,41 @@ export const generateBreakfast = (
     breakfast = enrichWithPrebiotics(breakfast, dayIndex);
     breakfast = enrichWithProbiotics(breakfast, dayIndex);
     
+    // Add daily nuts mixture to every breakfast
+    const dailyNuts = getDailyNutsMixture(dayIndex);
+    breakfast += `, with ${dailyNuts}`;
+    
     return breakfast;
   }
   
   let breakfastOptions = [
     'Vegetable Poha (1 katori) with dahi (1 small katori)',
-    'Oats Idli (3 idlis) with sambhar (1 katori)',
+    'Oats Idli (3 idli) with sambhar (1 katori)',
     'Vegetable Upma (1 katori) with a side of sprouts (1 small katori)',
-    'Besan Chilla (2 chillas) with pudina chutney (2 chamach)',
-    'Multigrain Dosa (2 dosas) with nariyal chutney (2 chamach)',
+    'Besan Chilla (2 chilla) with pudina chutney (2 chamach)',
+    'Multigrain Dosa (2 dosa) with nariyal chutney (2 chamach)',
     'Masala Daliya (1 katori) with seasonal sabzi',
-    'Ragi Dosa (2 dosas) with tamatar chutney (2 chamach)',
-    'Vegetable Uttapam (2 uttapams) with sambar (1 katori)',
-    'Moong Dal Cheela (2 cheelas) with dahi (1 katori)',
+    'Ragi Dosa (2 dosa) with tamatar chutney (2 chamach)',
+    'Vegetable Uttapam (2 uttapam) with sambar (1 katori)',
+    'Moong Dal Cheela (2 cheela) with dahi (1 katori)',
     'Steamed Sprouts Dhokla (4 dhokla)',
     'Vegetable Daliya Khichdi (1 katori)',
     'Jowar Upma (1 katori) with seasonal sabzi',
     'Quinoa Poha (1 katori) with sabzi',
-    'Brown Rice Idli (3 idlis) with tamatar chutney (2 chamach)',
-    'Bajra Roti (2 rotis) with sabzi (1 katori)',
+    'Brown Rice Idli (3 idli) with tamatar chutney (2 chamach)',
+    'Bajra Roti (2 roti) with sabzi (1 katori)',
     'Kodo Millet Upma (Kodra Upma - 1 katori) with nariyal chutney (2 chamach)',
-    'Sattu Paratha (2 parathas) with dahi (1 katori)',
-    'Sprouted Moong Chilla (2 chillas) with pudina chutney (2 chamach)',
+    'Sattu Paratha (2 paratha) with dahi (1 katori)',
+    'Sprouted Moong Chilla (2 chilla) with pudina chutney (2 chamach)',
     'Vegetable Dalia (Daliya - 1 katori) with badam milk (1 glass)',
-    'Ragi Idli (3 idlis) with tamatar sambar (1 katori)',
+    'Ragi Idli (3 idli) with tamatar sambar (1 katori)',
     'Bajra Khichdi (1 katori) with chaas (1 glass)',
-    'Jowar Roti (2 rotis) with sabzi (1 katori)',
+    'Jowar Roti (2 roti) with sabzi (1 katori)',
     'Rajgira Porridge (1 katori) with seasonal fruits',
     'Kuttu Pancakes (2 pancakes) with shahad (1 chamach)',
     'Proso Millet Upma (Barri Upma - 1 katori) with nariyal chutney (2 chamach)',
     'Foxtail Millet Upma (Kangni Upma - 1 katori) with sabzi (1 katori)',
-    'Little Millet Dosa (Kutki Dosa - 2 dosas) with sambar (1 katori)',
+    'Little Millet Dosa (Kutki Dosa - 2 dosa) with sambar (1 katori)',
     'Barnyard Millet Porridge (Samvat Porridge - 1 katori) with mixed fruits'
   ];
   
@@ -66,19 +70,20 @@ export const generateBreakfast = (
     // Include fruit with breakfast on days 0, 2, 4, and 6 of each week (4 days)
     const availableFruits = getFruitSources(undefined, allergies);
     const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
-    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
     
     // Standardized fruit portion using our helper
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     breakfastOptions = breakfastOptions.map(breakfast => 
-      `${breakfast}, with ${seasonalFruit} ${fruitPortion} and ${dryFruits}`
+      `${breakfast}, with ${seasonalFruit} ${fruitPortion}`
     );
-  } else if (dayIndex % 2 === 0) {
-    // On other even days, just add dry fruits without fresh fruit
-    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
-    breakfastOptions = breakfastOptions.map(breakfast => `${breakfast}, with ${dryFruits}`);
   }
+
+  // Always add a daily nuts mixture to every breakfast
+  const dailyNuts = getDailyNutsMixture(dayIndex);
+  breakfastOptions = breakfastOptions.map(breakfast => 
+    `${breakfast}, with ${dailyNuts}`
+  );
   
   if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
     let eggBreakfasts = [
@@ -93,20 +98,21 @@ export const generateBreakfast = (
       'Anda Upma (1 katori) with mixed sabzi'
     ];
     
-    // Add fruit to egg breakfasts occasionally 
+    // Add fruit occasionally to egg breakfasts
     if (dayIndex % 7 === 1 || dayIndex % 7 === 5) {  // Days 1 and 5 of the week
       const availableFruits = getFruitSources(undefined, allergies);
       const seasonalFruit = availableFruits[(dayIndex + 3) % availableFruits.length];
       
-      // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
+      // Standardized fruit portion
       const fruitPortion = getStandardFruitPortion(seasonalFruit);
       
       eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} ${fruitPortion}`);
-    } else if (dayIndex % 2 === 0) {
-      // On other even days, add dry fruits
-      const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);
-      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${dryFruits}`);
     }
+    
+    // Always add daily nuts mixture to egg breakfasts
+    eggBreakfasts = eggBreakfasts.map(breakfast => 
+      `${breakfast}, with ${dailyNuts}`
+    );
     
     if (allergies) {
       eggBreakfasts = filterAllergies(eggBreakfasts, allergies);

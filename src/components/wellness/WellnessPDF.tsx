@@ -30,9 +30,11 @@ interface WellnessPDFProps {
 }
 
 const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
-  // Create a paginated approach with up to 3 days per page (reduced from 5)
+  // Create a paginated approach with up to 2 days per page (reduced from 3)
+  // This gives more space for the nutrition summary and nuts content we've added
   const totalDays = dietPlan.days.length;
-  const totalPages = Math.ceil(totalDays / 3);
+  const daysPerPage = 2; // Reduced from 3 to 2 days per page
+  const totalPages = Math.ceil(totalDays / daysPerPage);
   
   return (
     <Document>
@@ -42,14 +44,14 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
           formData={formData} 
           dietPlan={dietPlan} 
           workoutPlan={workoutPlan} 
-          dayRange={[1, 3]} 
+          dayRange={[1, daysPerPage]} 
         />
       </Page>
       
-      {/* Create additional pages with 3 days per page */}
-      {Array.from({ length: Math.ceil((totalDays - 3) / 3) }, (_, i) => {
-        const startDay = (i+1)*3+1;
-        const endDay = Math.min(startDay + 2, totalDays);
+      {/* Create additional pages with 2 days per page */}
+      {Array.from({ length: Math.ceil((totalDays - daysPerPage) / daysPerPage) }, (_, i) => {
+        const startDay = (i+1)*daysPerPage+1;
+        const endDay = Math.min(startDay + daysPerPage - 1, totalDays);
         
         return (
           <Page key={`page-${i+1}`} size="A4" style={styles.page}>

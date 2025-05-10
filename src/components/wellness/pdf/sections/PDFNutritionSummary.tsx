@@ -32,13 +32,23 @@ interface PDFNutritionSummaryProps {
   };
   weightKg?: number;
   fitnessGoal?: string;
+  gender?: string;
 }
 
 const PDFNutritionSummary = ({ 
   dailyCalories, 
   water, 
-  macros 
+  macros,
+  gender,
+  weightKg
 }: PDFNutritionSummaryProps) => {
+  // Add protein calculation note if weight and gender are provided
+  let proteinNote = '';
+  if (gender && weightKg) {
+    const proteinFactor = gender === 'female' ? '1' : '1.2-1.5'; 
+    proteinNote = `(${proteinFactor}g per kg bodyweight)`;
+  }
+  
   return (
     <View style={styles.nutritionBox}>
       <Text style={styles.nutritionTitle}>Daily Nutrition Summary</Text>
@@ -46,7 +56,7 @@ const PDFNutritionSummary = ({
         Total Calories: {dailyCalories} kcal  •  Water: {water}L
       </Text>
       <Text style={styles.nutritionText}>
-        Macronutrients: Protein: {macros.protein}g  •  Carbs: {macros.carbs}g  •  Fats: {macros.fat}g
+        Macronutrients: Protein: {macros.protein}g {proteinNote}  •  Carbs: {macros.carbs}g  •  Fats: {macros.fat}g
       </Text>
       <Text style={styles.nutritionText}>
         Micronutrients: Calcium, Iron, Vitamins A, B-complex (B12), C, D, E, Zinc, Magnesium

@@ -12,22 +12,23 @@ export const getEstimatedCalories = (mealType: string, baseCalories: number, goa
   return Math.round((baseCalories * mealFactors[mealType] || 0) * goalFactor);
 };
 
-// Helper to estimate macros based on calories, goals and weight
-export const estimateMacros = (totalCalories: number, fitnessGoal: string, weightKg: number = 70) => {
-  // Calculate protein based on weight (1-1.5g per kg of body weight)
-  let proteinPerKg = 1.0; // Default 1g per kg
+// Helper to estimate macros based on calories, goals, weight, and gender
+export const estimateMacros = (totalCalories: number, fitnessGoal: string, weightKg: number = 70, gender: string = 'female') => {
+  // Calculate protein based on weight and gender
+  // Female: 1g per kg, Male: 1.2-1.5g per kg based on goals
+  let proteinPerKg = gender === 'female' ? 1.0 : 1.2; // Default starting values
   
   // Adjust protein based on goal
   if (fitnessGoal === 'weight-loss') {
-    proteinPerKg = 1.2; // Higher protein for weight loss (preserves muscle)
+    proteinPerKg = gender === 'female' ? 1.0 : 1.3; // Higher protein for weight loss (preserves muscle)
   } else if (fitnessGoal === 'muscle-gain') {
-    proteinPerKg = 1.5; // Highest protein for muscle gain
+    proteinPerKg = gender === 'female' ? 1.1 : 1.5; // Highest protein for muscle gain
   } else {
-    proteinPerKg = 1.0; // Maintenance
+    proteinPerKg = gender === 'female' ? 1.0 : 1.2; // Maintenance
   }
   
-  // Calculate protein in grams based on weight
-  const proteinGrams = Math.round(weightKg * proteinPerKg);
+  // Calculate protein in grams based on weight - cap at 100g to avoid unrealistic values without supplements
+  const proteinGrams = Math.min(Math.round(weightKg * proteinPerKg), 100);
   
   // Calculate protein calories
   const proteinCalories = proteinGrams * 4; // 4 calories per gram of protein
