@@ -39,7 +39,8 @@ export function generateDays(
                            formData.wellnessGoals.includes('fat-loss') || 
                            formData.wellnessGoals.includes('inch-loss')) && 
                            !formData.has_muscular_build;
-  const { allergies, region, exerciseFrequency, gender, wellnessGoals, weight } = formData;
+  const { allergies, region, exerciseFrequency, gender, wellnessGoals } = formData;
+  const weight = parseInt(formData.weight); // Convert string weight to number
 
   // Optimize protein sources - get double the amount needed for variety
   const rawProteins = getProteinSources(dietaryPreference, allergies);
@@ -74,12 +75,12 @@ export function generateDays(
     
     // Apply varied patterns to ensure food diversity
     const breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
-    const midMorningSnack = generateMidMorningSnack(dayIndex + (i * 3) % 17, snacks, fruits, calorieReduction, allergies);
+    const midMorningSnack = generateMidMorningSnack(dayIndex + ((i * 3) % 17), snacks, fruits, calorieReduction, allergies);
 
     // Use the entire protein array for lunch/dinner to enable protein pairing for complete amino acids
     // Apply varied patterns to avoid repetition
     const lunch = generateLunch(dayIndex + lunchPatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
-    const eveningSnack = generateEveningSnack(dayIndex + (i * 5) % 19, snacks, fruits, calorieReduction, allergies, region);
+    const eveningSnack = generateEveningSnack(dayIndex + ((i * 5) % 19), snacks, fruits, calorieReduction, allergies, region);
     const dinner = generateDinner(dayIndex + dinnerPatterns[i-1], proteinsByDay, vegetables, calorieReduction, proteinFocus, allergies, region);
     
     // Calculate approximate calories for the day
@@ -88,8 +89,8 @@ export function generateDays(
     // Recommended water intake (in liters)
     // Adjusted based on gender and weight following scientific guidelines
     const waterIntake = gender === 'male' ? 
-      Math.max(2.5, Math.round(weight * 0.033 * 10) / 10) : 
-      Math.max(2.0, Math.round(weight * 0.03 * 10) / 10);
+      Math.max(2.5, Math.round((weight * 0.033) * 10) / 10) : 
+      Math.max(2.0, Math.round((weight * 0.03) * 10) / 10);
     
     // Generate wellness goal specific information
     const hairNutrients = wellnessGoals.includes('hair-fall-control') ? 
