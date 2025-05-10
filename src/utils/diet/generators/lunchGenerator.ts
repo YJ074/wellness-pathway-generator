@@ -1,7 +1,6 @@
 
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
-import { getDryFruits } from '../data/dryFruits';
 
 export const generateLunch = (
   dayIndex: number, 
@@ -32,16 +31,13 @@ export const generateLunch = (
   const veggie1 = vegetables[dayIndex % vegetables.length];
   const veggie2 = vegetables[(dayIndex + 5) % vegetables.length];
   
-  // Occasionally add dry fruits (every 7th day)
-  const dryFruitAddition = dayIndex % 7 === 0 ? `, with ${getDryFruits(isWeightLoss, isProteinFocus, dayIndex)}` : '';
-  
   let main = "";
   if (isWeightLoss) {
-    main = `${grain} (small portion, 1/2 cup), ${protein} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), small bowl of curd (1/2 cup)${dryFruitAddition}`;
+    main = `${grain} (small portion, 1/2 cup), ${protein} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), small bowl of curd (1/2 cup)`;
   } else if (isProteinFocus) {
-    main = `${grain} (3/4 cup), double portion of ${protein} curry (1 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (1 cup)${dryFruitAddition}`;
+    main = `${grain} (3/4 cup), double portion of ${protein} curry (1 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (1 cup)`;
   } else {
-    main = `${grain} (3/4 cup), ${protein} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (1 cup)${dryFruitAddition}`;
+    main = `${grain} (3/4 cup), ${protein} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (1 cup)`;
   }
   if (allergies) {
     // Remove or swap allergy terms inside lunch text (rough approach)

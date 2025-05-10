@@ -71,7 +71,7 @@ export const generateBreakfast = (
       'Egg Upma (1 cup) with mixed vegetables'
     ];
     
-    // Add dry fruits to egg breakfasts occasionally
+    // Add dry fruits to egg breakfasts occasionally (same pattern as vegetarian breakfast)
     if (dayIndex % 4 === 0) {
       const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);
       eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${dryFruits}`);

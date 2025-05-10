@@ -23,11 +23,11 @@ export const generateMidMorningSnack = (
     'Small bowl of makhana (fox nuts, 1/4 cup)'
   ];
   
-  // Add dry fruits option
+  // Add dry fruits option - only for mid-morning (every 7th day)
   const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
   
-  // Every 3rd day offer dry fruits as a snack option
-  if (dayIndex % 3 === 0) {
+  // Every 7th day offer dry fruits as a snack option
+  if (dayIndex % 7 === 0) {
     midMorningOptions.push(dryFruits);
   }
   
@@ -98,12 +98,6 @@ export const generateEveningSnack = (
     'Cucumber and mint raita (1 small bowl)',
     'Spinach and oats tikki (2 small pieces)'
   ];
-  
-  // Add dry fruits occasionally (every 5th day)
-  if (dayIndex % 5 === 0) {
-    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
-    eveningSnackOptions.push(dryFruits);
-  }
   
   // Combine all options
   eveningSnackOptions = [...eveningSnackOptions, ...additionalSnacks];
