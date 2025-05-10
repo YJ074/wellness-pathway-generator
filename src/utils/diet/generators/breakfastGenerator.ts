@@ -3,6 +3,7 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getDryFruits } from '../data/dryFruits';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
+import { getFruitSources } from '../data/foodSources';
 
 export const generateBreakfast = (
   dayIndex: number,
@@ -59,13 +60,14 @@ export const generateBreakfast = (
     'Barnyard Millet Porridge (Samvat Porridge - 1 cup) with mixed fruits'
   ];
   
-  // Add fruit to breakfast only on specific days for balance
-  if (dayIndex % 7 === 0 || dayIndex % 7 === 3) {
-    // Only include fruit with breakfast 2 times per week
-    // Use dry fruits on these days to complement
+  // Add fruit to breakfast 3-4 times a week (increased frequency since we're removing from lunch/dinner)
+  if (dayIndex % 7 === 0 || dayIndex % 7 === 2 || dayIndex % 7 === 4 || dayIndex % 7 === 6) {
+    // Include fruit with breakfast on days 0, 2, 4, and 6 of each week (4 days)
+    const availableFruits = getFruitSources(undefined, allergies);
+    const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
     const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
     breakfastOptions = breakfastOptions.map(breakfast => 
-      `${breakfast}, with seasonal fruit (1 small piece) and ${dryFruits}`
+      `${breakfast}, with ${seasonalFruit} (1 small piece) and ${dryFruits}`
     );
   } else if (dayIndex % 2 === 0) {
     // On other even days, just add dry fruits without fresh fruit
@@ -86,8 +88,13 @@ export const generateBreakfast = (
       'Egg Upma (Semolina with Eggs - 1 cup) with mixed vegetables'
     ];
     
-    // Add dry fruits to egg breakfasts occasionally
-    if (dayIndex % 2 === 0) {
+    // Add fruit to egg breakfasts occasionally 
+    if (dayIndex % 7 === 1 || dayIndex % 7 === 5) {  // Days 1 and 5 of the week
+      const availableFruits = getFruitSources(undefined, allergies);
+      const seasonalFruit = availableFruits[(dayIndex + 3) % availableFruits.length];
+      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} (1 small piece)`);
+    } else if (dayIndex % 2 === 0) {
+      // On other even days, add dry fruits
       const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);
       eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${dryFruits}`);
     }
@@ -110,7 +117,6 @@ export const generateBreakfast = (
   }
   
   // Get the breakfast option for today and ensure prebiotic/probiotic inclusion
-  // The pattern ensures at least 4 times a week (alternating between prebiotic-focused and probiotic-focused days)
   let breakfast = breakfastOptions[dayIndex % breakfastOptions.length] || "";
   
   // Every even day, ensure probiotics; every odd day, ensure prebiotics

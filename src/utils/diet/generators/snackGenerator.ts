@@ -11,37 +11,29 @@ export const generateMidMorningSnack = (
   isWeightLoss: boolean,
   allergies?: string
 ) => {
+  // Increase fruit frequency in mid-morning snacks (3-4 days per week)
+  const includeFruit = dayIndex % 7 === 1 || dayIndex % 7 === 3 || dayIndex % 7 === 5;
+  
+  if (includeFruit) {
+    // Get available fruits based on allergies
+    const availableFruits = getFruitSources(undefined, allergies);
+    // Select a seasonal/local fruit based on the day
+    const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
+    
+    // Simple fruit-based snack with minimal processing
+    return `${seasonalFruit} (1 medium piece)${dayIndex % 3 === 0 ? ' with a sprinkle of rock salt and black pepper' : ''}`;
+  }
+  
   let midMorningOptions = [
-    'Seasonal fruit (1 medium)',
     'Buttermilk (1 glass)',
     'Roasted chana (1/4 cup)',
-    'Apple slices (1 small apple) with a thin spread of peanut butter (1 tsp)',
     'Sprouts salad (1/2 cup)',
-    'Plain yogurt (1/2 cup) with berries',
+    'Plain yogurt (1/2 cup)',
     'Handful of mixed nuts (10-12 pieces)',
     'Cucumber and carrot sticks (1 cup)',
     'Fresh coconut pieces (1/4 cup)',
-    'Small bowl of makhana (fox nuts, 1/4 cup)'
-  ];
-  
-  // Create fruit-based snack options for variety but only add a few
-  // to avoid overwhelming the snack options with fruits
-  if (dayIndex % 7 === 2 || dayIndex % 7 === 5) {
-    // Only on specific days, add fruit-based options to mid-morning snacks
-    const availableFruits = getFruitSources(undefined, allergies);
-    const fruitSnacks = availableFruits.map(fruit => `${fruit} (1 small/medium piece)`);
-    midMorningOptions = [...midMorningOptions, ...fruitSnacks.slice(0, 3)];
-  }
-  
-  // Add dry fruits to mid-morning snack on even-numbered days
-  if (dayIndex % 2 === 1) {
-    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
-    midMorningOptions = midMorningOptions.map(snack => `${snack}, with ${dryFruits}`);
-  }
-  
-  // Add more variety
-  const additionalOptions = [
-    'Handful of roasted pumpkin seeds (2 tbsp)',
+    'Small bowl of makhana (fox nuts, 1/4 cup)',
+    'Roasted pumpkin seeds (2 tbsp)',
     'Homemade lassi (1 small glass)',
     'Coconut water (1 glass)',
     'Ragi malt (1 glass)',
@@ -52,8 +44,11 @@ export const generateMidMorningSnack = (
     'Vegetable cutlet (1 small piece, baked)'
   ];
   
-  // Integrate additional options
-  midMorningOptions = [...midMorningOptions, ...additionalOptions];
+  // Add dry fruits to mid-morning snack on even-numbered days
+  if (dayIndex % 2 === 1) {
+    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
+    midMorningOptions = midMorningOptions.map(snack => `${snack}, with ${dryFruits}`);
+  }
   
   if (allergies) {
     midMorningOptions = filterAllergies(midMorningOptions, allergies);
@@ -81,6 +76,25 @@ export const generateEveningSnack = (
     return regionalSnack;
   }
   
+  // Increase fruit frequency in evening snacks (3 days per week)
+  const includeFruit = dayIndex % 7 === 0 || dayIndex % 7 === 2 || dayIndex % 7 === 4;
+  
+  if (includeFruit) {
+    // Get available fruits based on allergies
+    const availableFruits = getFruitSources(undefined, allergies);
+    // Select a seasonal/local fruit based on the day
+    const seasonalFruit = availableFruits[(dayIndex + 2) % availableFruits.length];
+    
+    // Create a more interesting fruit snack
+    if (dayIndex % 3 === 0) {
+      return `${seasonalFruit} slices (1 small piece) with a sprinkle of chaat masala`;
+    } else if (dayIndex % 3 === 1) {
+      return `${seasonalFruit} (1 small piece) with a small handful of mixed seeds (1 tbsp)`;
+    } else {
+      return `${seasonalFruit} (1 small piece)`;
+    }
+  }
+  
   let eveningSnackOptions = [
     'Roasted makhana (1/4 cup)',
     'Vegetable cutlet (2 small pieces, baked)',
@@ -91,11 +105,7 @@ export const generateEveningSnack = (
     'Paneer tikka (4-5 small pieces, grilled)',
     'Peanut chaat (1/4 cup)',
     'Roasted sweet potato (1 small)',
-    'Mixed vegetable soup (1 bowl)'
-  ];
-  
-  // Add more variety with traditional Indian snacks
-  const additionalSnacks = [
+    'Mixed vegetable soup (1 bowl)',
     'Kala chana chaat (1/2 cup)',
     'Sprouts bhel (3/4 cup)',
     'Mini idlis with sambar (4 pieces)',
@@ -106,23 +116,6 @@ export const generateEveningSnack = (
     'Cucumber and mint raita (1 small bowl)',
     'Spinach and oats tikki (2 small pieces)'
   ];
-  
-  // Add fruit options to evening snacks on specific days of the week
-  // This ensures fruits appear in only 1-2 meals per day, not across all meals
-  if (dayIndex % 7 === 0 || dayIndex % 7 === 3 || dayIndex % 7 === 6) {
-    // Add fruits as evening snack options on days 0, 3, and 6 of each week
-    const availableFruits = getFruitSources(undefined, allergies);
-    const fruitSnacks = availableFruits.map(fruit => 
-      `${fruit} (1 small piece)${dayIndex % 3 === 0 ? ' with a sprinkle of rock salt and black pepper' : ''}`
-    );
-    
-    // Select a limited number of fruit snacks to add to options
-    const selectedFruitSnacks = fruitSnacks.slice(0, 5);
-    eveningSnackOptions = [...eveningSnackOptions, ...selectedFruitSnacks];
-  }
-  
-  // Combine all options
-  eveningSnackOptions = [...eveningSnackOptions, ...additionalSnacks];
   
   if (allergies) {
     eveningSnackOptions = filterAllergies(eveningSnackOptions, allergies);

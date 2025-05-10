@@ -1,7 +1,6 @@
 
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
-import { getFruitSources } from '../data/foodSources';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 
 export const generateDinner = (
@@ -67,17 +66,6 @@ export const generateDinner = (
   // For days that need additional prebiotics, add them to dinner
   if (dayIndex % 3 === 0) {
     main = enrichWithPrebiotics(main, dayIndex, true);
-  }
-  
-  // Add seasonal or local fruit to dinner only on specific days
-  // Only add fruit to dinner 2-3 times a week (when dayIndex % 7 is 1 or 4)
-  if (dayIndex % 7 === 1 || dayIndex % 7 === 4) {
-    // Get fruit sources based on dietary preference and allergies
-    const fruits = getFruitSources(undefined, allergies);
-    // Select a seasonal/local fruit based on the day
-    const seasonalFruit = fruits[(dayIndex + 4) % fruits.length];
-    // Add the seasonal fruit to dinner
-    main += `, with ${seasonalFruit} (1 small piece) for dessert`;
   }
   
   if (allergies) {
