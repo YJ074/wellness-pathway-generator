@@ -32,20 +32,12 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
       document={<WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />}
       fileName={`${formData.name}-75-day-wellness-plan.pdf`}
     >
-      {({ loading, error, url, blob }) => {
-        // Handle initialization state
-        if (loading && isInitializing) {
-          return (
-            <Button variant="outline" disabled>
-              <Download className="mr-2 h-4 w-4" />
-              Preparing PDF...
-            </Button>
-          );
-        }
-        
+      {({ loading, error }) => {
         // Handle error state
         if (error) {
-          handleError(error);
+          // Use setTimeout to avoid state update during render
+          setTimeout(() => handleError(error), 0);
+          
           return (
             <Button variant="outline" disabled>
               <Download className="mr-2 h-4 w-4" />
@@ -53,16 +45,27 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
             </Button>
           );
         }
-        
-        // Handle success state (URL exists)
-        if (url && isInitializing) {
-          setIsInitializing(false);
+
+        // Handle initialization and loading state
+        if (loading || isInitializing) {
+          return (
+            <Button variant="outline" disabled>
+              <Download className="mr-2 h-4 w-4" />
+              Preparing PDF...
+            </Button>
+          );
+        }
+
+        // If we get here, PDF is ready - make sure we're not in initializing state
+        if (isInitializing) {
+          setTimeout(() => setIsInitializing(false), 0);
         }
         
+        // Handle success state
         return (
-          <Button variant="outline" disabled={loading}>
+          <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            {loading ? "Preparing PDF..." : "Download PDF"}
+            Download PDF
           </Button>
         );
       }}
