@@ -16,7 +16,8 @@ export const processProbioticFoods = (segments: (string | ReactNode)[]): (string
     }
     
     // Skip processing if this is a health benefit note
-    if (segment.startsWith('Contains probiotics for gut health')) {
+    if (segment.startsWith('Contains probiotics for gut health') || 
+        segment.startsWith('♥ Contains probiotics')) {
       probioticSegments.push(segment);
       continue;
     }
@@ -68,7 +69,8 @@ export const processPrebioticFoods = (segments: (string | ReactNode)[]): (string
     }
     
     // Skip processing if this is a health benefit note
-    if (segment.startsWith('Contains probiotics for gut health')) {
+    if (segment.startsWith('Contains probiotics for gut health') || 
+        segment.startsWith('♥ Contains')) {
       prebioticSegments.push(segment);
       continue;
     }

@@ -21,7 +21,7 @@ const PDFMealItem = ({
   goalFactor 
 }: PDFMealItemProps) => {
   // Extract health benefit if present in the description
-  const benefitMatch = description.match(/ - \((.*?)\)$/);
+  const benefitMatch = description.match(/ - \((Contains [^)]+)\)$/);
   let healthBenefit = null;
   let mealDescription = description;
   
