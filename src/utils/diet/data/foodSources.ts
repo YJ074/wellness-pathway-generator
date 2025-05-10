@@ -25,13 +25,6 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Hemp Seeds', 
       'Kala Chana', 'White Beans', 'Moth Beans'
     ],
-    'jain': [
-      'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
-      'Soya Products', 'Dried Beans', 'Peanuts', 'Mixed Sprouts',
-      'Chickpeas', 'Whole Moong', 'Besan (Gram Flour)',
-      'Rajma', 'White Beans', 'Channa Flour Roti', 'Hemp Seeds',
-      'Paneer (without animal rennet)'
-    ],
     'pure-jain': [
       // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg, NO mushrooms, NO fermented
       'Paneer (without animal rennet)', 'Curd', 'Buttermilk', 'Toor Dal', 
@@ -89,7 +82,7 @@ export const getVegetableSources = (dietaryPreference?: DietaryPreference, aller
     'Turnip', 'Colocasia Leaves', 'Amaranth Leaves', 'Mustard Leaves',
     'Fenugreek Leaves', 'Curry Leaves'
   ];
-  if (dietaryPreference === 'pure-jain' || dietaryPreference === 'jain') {
+  if (dietaryPreference === 'pure-jain') {
     base = [
       'Seasonal Local Greens', 'Palak (Spinach)', 'Local Gourds',
       'Cabbage', 'Cauliflower', 'Green Peas', 'Tomatoes',

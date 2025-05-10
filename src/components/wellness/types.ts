@@ -1,4 +1,3 @@
-
 import { WorkoutDay } from '../../types/workout';
 import { WellnessGoal } from '../../utils/diet/types';
 
@@ -10,7 +9,7 @@ export interface FormData {
   weight: string;
   mobileNumber: string;
   gender: 'male' | 'female' | 'other';
-  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'jain' | 'sattvic' | 'non-vegetarian' | 'pure-jain';
+  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'sattvic' | 'non-vegetarian' | 'pure-jain';
   fitnessGoal: string;
   exerciseFrequency: string;
   heightFeet?: string;   // optional, for feet input
