@@ -6,7 +6,8 @@ import {
   getLocalizedProteinName, 
   getBreadPortionSize,
   composeRegionalMeal,
-  composeDinnerMeal
+  composeDinnerMeal,
+  getPortionSize
 } from '../helpers/portionHelpers';
 
 export const generateDinner = (
