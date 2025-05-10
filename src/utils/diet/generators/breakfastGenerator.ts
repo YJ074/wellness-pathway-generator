@@ -59,8 +59,16 @@ export const generateBreakfast = (
     'Barnyard Millet Porridge (Samvat Porridge - 1 cup) with mixed fruits'
   ];
   
-  // Add dry fruits to breakfast on odd days
-  if (dayIndex % 2 === 0) {
+  // Add fruit to breakfast only on specific days for balance
+  if (dayIndex % 7 === 0 || dayIndex % 7 === 3) {
+    // Only include fruit with breakfast 2 times per week
+    // Use dry fruits on these days to complement
+    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
+    breakfastOptions = breakfastOptions.map(breakfast => 
+      `${breakfast}, with seasonal fruit (1 small piece) and ${dryFruits}`
+    );
+  } else if (dayIndex % 2 === 0) {
+    // On other even days, just add dry fruits without fresh fruit
     const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
     breakfastOptions = breakfastOptions.map(breakfast => `${breakfast}, with ${dryFruits}`);
   }
@@ -78,7 +86,7 @@ export const generateBreakfast = (
       'Egg Upma (Semolina with Eggs - 1 cup) with mixed vegetables'
     ];
     
-    // Add dry fruits to egg breakfasts occasionally (same pattern as vegetarian breakfast)
+    // Add dry fruits to egg breakfasts occasionally
     if (dayIndex % 2 === 0) {
       const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);
       eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${dryFruits}`);

@@ -69,9 +69,9 @@ export const generateDinner = (
     main = enrichWithPrebiotics(main, dayIndex, true);
   }
   
-  // Add seasonal or local fruit to most dinners (5-6 times a week)
-  // Skip only once a week (when dayIndex % 7 == 6)
-  if (dayIndex % 7 !== 6) {
+  // Add seasonal or local fruit to dinner only on specific days
+  // Only add fruit to dinner 2-3 times a week (when dayIndex % 7 is 1 or 4)
+  if (dayIndex % 7 === 1 || dayIndex % 7 === 4) {
     // Get fruit sources based on dietary preference and allergies
     const fruits = getFruitSources(undefined, allergies);
     // Select a seasonal/local fruit based on the day

@@ -24,14 +24,14 @@ export const generateMidMorningSnack = (
     'Small bowl of makhana (fox nuts, 1/4 cup)'
   ];
   
-  // Get a list of all available fruits
-  const availableFruits = getFruitSources(undefined, allergies);
-  
-  // Create fruit-based snack options for variety
-  const fruitSnacks = availableFruits.map(fruit => `${fruit} (1 small/medium piece)`);
-  
-  // Add more fruit options to mid-morning snacks
-  midMorningOptions = [...midMorningOptions, ...fruitSnacks.slice(0, 8)];
+  // Create fruit-based snack options for variety but only add a few
+  // to avoid overwhelming the snack options with fruits
+  if (dayIndex % 7 === 2 || dayIndex % 7 === 5) {
+    // Only on specific days, add fruit-based options to mid-morning snacks
+    const availableFruits = getFruitSources(undefined, allergies);
+    const fruitSnacks = availableFruits.map(fruit => `${fruit} (1 small/medium piece)`);
+    midMorningOptions = [...midMorningOptions, ...fruitSnacks.slice(0, 3)];
+  }
   
   // Add dry fruits to mid-morning snack on even-numbered days
   if (dayIndex % 2 === 1) {
@@ -81,14 +81,6 @@ export const generateEveningSnack = (
     return regionalSnack;
   }
   
-  // Get all available fruits
-  const availableFruits = getFruitSources(undefined, allergies);
-  
-  // Create fruit-based evening snacks
-  const fruitSnacks = availableFruits.map(fruit => 
-    `${fruit} (1 small piece)${dayIndex % 3 === 0 ? ' with a sprinkle of rock salt and black pepper' : ''}`
-  );
-  
   let eveningSnackOptions = [
     'Roasted makhana (1/4 cup)',
     'Vegetable cutlet (2 small pieces, baked)',
@@ -115,35 +107,28 @@ export const generateEveningSnack = (
     'Spinach and oats tikki (2 small pieces)'
   ];
   
-  // Add fresh fruit options to evening snacks (emphasizing seasonal fruits)
-  // Only use some of the fruit options to maintain variety
-  const selectedFruitSnacks = fruitSnacks.slice(0, 10);
+  // Add fruit options to evening snacks on specific days of the week
+  // This ensures fruits appear in only 1-2 meals per day, not across all meals
+  if (dayIndex % 7 === 0 || dayIndex % 7 === 3 || dayIndex % 7 === 6) {
+    // Add fruits as evening snack options on days 0, 3, and 6 of each week
+    const availableFruits = getFruitSources(undefined, allergies);
+    const fruitSnacks = availableFruits.map(fruit => 
+      `${fruit} (1 small piece)${dayIndex % 3 === 0 ? ' with a sprinkle of rock salt and black pepper' : ''}`
+    );
+    
+    // Select a limited number of fruit snacks to add to options
+    const selectedFruitSnacks = fruitSnacks.slice(0, 5);
+    eveningSnackOptions = [...eveningSnackOptions, ...selectedFruitSnacks];
+  }
   
-  // Combine all options, with fruit-based options appearing frequently in the rotation
-  eveningSnackOptions = [...eveningSnackOptions, ...additionalSnacks, ...selectedFruitSnacks];
+  // Combine all options
+  eveningSnackOptions = [...eveningSnackOptions, ...additionalSnacks];
   
   if (allergies) {
     eveningSnackOptions = filterAllergies(eveningSnackOptions, allergies);
   }
   
-  // Ensure fruit appears very frequently (5-6 times a week)
-  // If today is not a fruit day (1 day out of 7), select from non-fruit options
-  if (dayIndex % 7 === 6) {
-    // This is the one day per week without fruit as snack
-    // Filter out fruit-based options for this day
-    const nonFruitOptions = eveningSnackOptions.filter(option => 
-      !selectedFruitSnacks.includes(option)
-    );
-    return nonFruitOptions[(dayIndex + 3) % nonFruitOptions.length] || "";
-  } else {
-    // For the other 6 days of the week, prioritize fruit options
-    // On even days, always pick from fruit options
-    if (dayIndex % 2 === 0) {
-      return selectedFruitSnacks[(dayIndex + 3) % selectedFruitSnacks.length] || "";
-    }
-    // On remaining odd days, use the full rotation (which includes fruits)
-    return eveningSnackOptions[(dayIndex + 3) % eveningSnackOptions.length] || "";
-  }
+  return eveningSnackOptions[(dayIndex + 3) % eveningSnackOptions.length] || "";
 };
 
 export const generateSnacks = (
