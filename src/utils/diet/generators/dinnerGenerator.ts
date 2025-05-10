@@ -2,18 +2,7 @@
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
-
-// Helper function to determine if a fruit is a "big fruit" that should be measured in bowls
-const isBigFruit = (fruitName: string): boolean => {
-  const bigFruits = [
-    'watermelon', 'muskmelon', 'pineapple', 'papaya', 'jackfruit',
-    'cantaloupe', 'honeydew', 'tarbuja', 'kharbooja', 'papita', 'kathal'
-  ];
-  
-  return bigFruits.some(fruit => 
-    fruitName.toLowerCase().includes(fruit.toLowerCase())
-  );
-};
+import { getLocalizedProteinName, getPortionSize } from '../helpers/portionHelpers';
 
 export const generateDinner = (
   dayIndex: number, 
@@ -30,6 +19,8 @@ export const generateDinner = (
   // Use regional dinner options every 6th day if available
   if (region && regionalFoods.mains.length > 0 && dayIndex % 6 === 0) {
     const regionalDinner = regionalFoods.mains[(dayIndex + 2) % regionalFoods.mains.length];
+    
+    // Format dinner based on dietary goals
     let dinner = "";
     if (isWeightLoss) {
       dinner = `${regionalDinner} (lighter portion for evening)`;
@@ -46,31 +37,52 @@ export const generateDinner = (
     return dinner;
   }
   
+  // Select ingredients for today's dinner
   const protein = proteins[(dayIndex + 3) % proteins.length];
   const veggie1 = vegetables[(dayIndex + 2) % vegetables.length];
   const veggie2 = vegetables[(dayIndex + 8) % vegetables.length];
   
   // Add local names to protein if it doesn't already have them
-  let proteinWithLocalName = protein;
-  if (protein === 'Paneer' && !protein.includes('(')) {
-    proteinWithLocalName = 'Paneer (Indian Cottage Cheese)';
-  } else if (protein === 'Tofu' && !protein.includes('(')) {
-    proteinWithLocalName = 'Tofu (Soya Paneer)';
-  } else if (protein === 'Chana' && !protein.includes('(')) {
-    proteinWithLocalName = 'Chana (Chickpeas)';
-  } else if (protein === 'Rajma' && !protein.includes('(')) {
-    proteinWithLocalName = 'Rajma (Kidney Beans)';
-  }
+  const proteinWithLocalName = getLocalizedProteinName(protein);
   
-  // Include explicit carb portion in every dinner (rotis or rice)
-  let main = "";
-  if (isWeightLoss) {
-    main = `${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori), Roti (1 roti) or Bhura Chaval (¼ katori Brown Rice)`;
-  } else if (isProteinFocus) {
-    main = `${proteinWithLocalName} curry (1 katori), ${veggie1} and ${veggie2} sabzi (1 katori), Roti (2 rotis) or Bhura Chaval (½ katori Brown Rice)`;
-  } else {
-    main = `${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori), Roti (2 rotis) or Bhura Chaval (½ katori Brown Rice)`;
-  }
+  // Define portion sizes based on dietary goals
+  const curryPortion = getPortionSize(
+    isWeightLoss,
+    isProteinFocus,
+    'curry',
+    {
+      standard: '¾ katori',
+      weightLoss: '¾ katori',
+      proteinFocus: '1 katori'
+    }
+  );
+  
+  const veggiePortion = '1 katori'; // Same across all plans
+  
+  const rotiPortion = getPortionSize(
+    isWeightLoss,
+    isProteinFocus,
+    'roti',
+    {
+      standard: '2 rotis',
+      weightLoss: '1 roti',
+      proteinFocus: '2 rotis'
+    }
+  );
+  
+  const ricePortion = getPortionSize(
+    isWeightLoss,
+    isProteinFocus,
+    'rice',
+    {
+      standard: '½ katori',
+      weightLoss: '¼ katori',
+      proteinFocus: '½ katori'
+    }
+  );
+  
+  // Compose the main dinner meal
+  let main = `${proteinWithLocalName} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiPortion}) or Bhura Chaval (${ricePortion} Brown Rice)`;
   
   // Always include buttermilk (probiotic) with dinner
   main += `, chaas (1 glass)`;
@@ -80,8 +92,10 @@ export const generateDinner = (
     main = enrichWithPrebiotics(main, dayIndex, true);
   }
   
+  // Filter for allergies if specified
   if (allergies) {
     main = filterAllergies([main], allergies)[0] || "";
   }
+  
   return main;
 };

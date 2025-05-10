@@ -1,20 +1,8 @@
-
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getDryFruits } from '../data/dryFruits';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getFruitSources } from '../data/foodSources';
-
-// Helper function to determine if a fruit is a "big fruit" that should be measured in bowls
-const isBigFruit = (fruitName: string): boolean => {
-  const bigFruits = [
-    'watermelon', 'muskmelon', 'pineapple', 'papaya', 'jackfruit',
-    'cantaloupe', 'honeydew', 'tarbuja', 'kharbooja', 'papita', 'kathal'
-  ];
-  
-  return bigFruits.some(fruit => 
-    fruitName.toLowerCase().includes(fruit.toLowerCase())
-  );
-};
+import { getStandardFruitPortion } from '../helpers/portionHelpers';
 
 export const generateMidMorningSnack = (
   dayIndex: number, 
@@ -33,8 +21,8 @@ export const generateMidMorningSnack = (
     // Select a seasonal/local fruit based on the day
     const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
     
-    // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
-    const fruitPortion = isBigFruit(seasonalFruit) ? "(1 bowl)" : "(1 nos)";
+    // Standardized fruit portion using our helper
+    const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     // Simple fruit-based snack with minimal processing
     return `${seasonalFruit} ${fruitPortion}${dayIndex % 3 === 0 ? ' with a sprinkle of kala namak and kali mirch' : ''}`;
@@ -102,8 +90,8 @@ export const generateEveningSnack = (
     // Select a seasonal/local fruit based on the day
     const seasonalFruit = availableFruits[(dayIndex + 2) % availableFruits.length];
     
-    // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
-    const fruitPortion = isBigFruit(seasonalFruit) ? "(1 bowl)" : "(1 nos)";
+    // Standardized fruit portion using our helper
+    const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     // Create a more interesting fruit snack
     if (dayIndex % 3 === 0) {
@@ -155,8 +143,8 @@ export const generateSnacks = (
   let snack = snacks[dayIndex % snacks.length];
   let fruit = fruits[dayIndex % fruits.length];
   
-  // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
-  const fruitPortion = isBigFruit(fruit) ? "(1 bowl)" : "(1 nos)";
+  // Standardized fruit portion using our helper
+  const fruitPortion = getStandardFruitPortion(fruit);
   fruit = `${fruit} ${fruitPortion}`;
   
   if (allergies) {

@@ -1,9 +1,9 @@
-
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getDryFruits } from '../data/dryFruits';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getFruitSources } from '../data/foodSources';
+import { getStandardFruitPortion } from '../helpers/portionHelpers';
 
 export const generateBreakfast = (
   dayIndex: number,
@@ -67,8 +67,8 @@ export const generateBreakfast = (
     const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
     const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
     
-    // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
-    const fruitPortion = isBigFruit(seasonalFruit) ? "(1 bowl)" : "(1 nos)";
+    // Standardized fruit portion using our helper
+    const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     breakfastOptions = breakfastOptions.map(breakfast => 
       `${breakfast}, with ${seasonalFruit} ${fruitPortion} and ${dryFruits}`
@@ -98,7 +98,7 @@ export const generateBreakfast = (
       const seasonalFruit = availableFruits[(dayIndex + 3) % availableFruits.length];
       
       // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
-      const fruitPortion = isBigFruit(seasonalFruit) ? "(1 bowl)" : "(1 nos)";
+      const fruitPortion = getStandardFruitPortion(seasonalFruit);
       
       eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} ${fruitPortion}`);
     } else if (dayIndex % 2 === 0) {
@@ -135,16 +135,4 @@ export const generateBreakfast = (
   }
   
   return breakfast;
-};
-
-// Helper function to determine if a fruit is a "big fruit" that should be measured in bowls
-const isBigFruit = (fruitName: string): boolean => {
-  const bigFruits = [
-    'watermelon', 'muskmelon', 'pineapple', 'papaya', 'jackfruit',
-    'cantaloupe', 'honeydew', 'tarbuja', 'kharbooja', 'papita', 'kathal'
-  ];
-  
-  return bigFruits.some(fruit => 
-    fruitName.toLowerCase().includes(fruit.toLowerCase())
-  );
 };
