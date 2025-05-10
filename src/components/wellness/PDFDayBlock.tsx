@@ -1,37 +1,41 @@
 
 import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
-const styles = {
+const styles = StyleSheet.create({
   dayBlock: {
-    marginBottom: 28,
+    marginBottom: 32, // Increased from 28
     borderBottom: '1pt solid #e2e8f0',
-    paddingBottom: 12,
+    paddingBottom: 16, // Increased from 12
   },
   dayHeader: {
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 14, // Increased from 10
     color: '#334155',
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
+  },
+  mealContainer: {
+    marginBottom: 8, // Add space between meal sections
   },
   mealLabel: {
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
     fontSize: 12,
     color: '#3b3b3b',
-    marginTop: 4,
+    marginTop: 6, // Increased from 4
+    marginBottom: 2, // Added space after label
   },
   mealText: {
     fontSize: 12,
-    marginBottom: 2,
-    lineHeight: 1.4,
+    marginBottom: 4, // Increased from 2
+    lineHeight: 1.5, // Increased from 1.4
   },
   footnote: {
     fontSize: 10,
-    marginTop: 8,
+    marginTop: 10, // Increased from 8
     color: '#64748b',
-    fontStyle: 'italic' as const,
+    fontStyle: 'italic',
   },
-};
+});
 
 type PDFDayBlockProps = {
   day: number;
@@ -46,45 +50,50 @@ type PDFDayBlockProps = {
 };
 
 const PDFDayBlock = (dietDay: PDFDayBlockProps) => (
-  <View style={styles.dayBlock}>
+  <View style={styles.dayBlock} wrap={false}>
     <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
-    <View>
+    
+    <View style={styles.mealContainer}>
       <Text style={styles.mealLabel}>Breakfast:</Text>
       <Text style={styles.mealText}>{dietDay.breakfast}</Text>
+    </View>
 
-      {dietDay.midMorningSnack && (
-        <>
-          <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
-          <Text style={styles.mealText}>{dietDay.midMorningSnack}</Text>
-        </>
-      )}
+    {dietDay.midMorningSnack && (
+      <View style={styles.mealContainer}>
+        <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
+        <Text style={styles.mealText}>{dietDay.midMorningSnack}</Text>
+      </View>
+    )}
 
+    <View style={styles.mealContainer}>
       <Text style={styles.mealLabel}>Lunch:</Text>
       <Text style={styles.mealText}>{dietDay.lunch}</Text>
+    </View>
 
-      {dietDay.eveningSnack && (
-        <>
-          <Text style={styles.mealLabel}>Evening Snack:</Text>
-          <Text style={styles.mealText}>{dietDay.eveningSnack}</Text>
-        </>
-      )}
+    {dietDay.eveningSnack && (
+      <View style={styles.mealContainer}>
+        <Text style={styles.mealLabel}>Evening Snack:</Text>
+        <Text style={styles.mealText}>{dietDay.eveningSnack}</Text>
+      </View>
+    )}
 
+    <View style={styles.mealContainer}>
       <Text style={styles.mealLabel}>Dinner:</Text>
       <Text style={styles.mealText}>{dietDay.dinner}</Text>
-
-      {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
-        <>
-          <Text style={styles.mealLabel}>Snacks:</Text>
-          <Text style={styles.mealText}>{dietDay.snacks}</Text>
-        </>
-      )}
-
-      {dietDay.calories && (
-        <Text style={styles.footnote}>
-          Approx. Calories: {dietDay.calories} kcal • Water: {dietDay.water} L
-        </Text>
-      )}
     </View>
+
+    {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
+      <View style={styles.mealContainer}>
+        <Text style={styles.mealLabel}>Snacks:</Text>
+        <Text style={styles.mealText}>{dietDay.snacks}</Text>
+      </View>
+    )}
+
+    {dietDay.calories && (
+      <Text style={styles.footnote}>
+        Approx. Calories: {dietDay.calories} kcal • Water: {dietDay.water} L
+      </Text>
+    )}
   </View>
 );
 

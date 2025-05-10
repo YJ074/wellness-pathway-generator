@@ -8,12 +8,19 @@ import PDFPersonalInfoSection from './PDFPersonalInfoSection';
 import PDFDietDaysSection from './PDFDietDaysSection';
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
   pageInfo: {
     fontSize: 10,
     color: '#666',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 15, // Increased from 10
+    marginTop: 10, // Added top margin
     fontFamily: 'Helvetica',
+  },
+  sectionSpacing: {
+    marginBottom: 15, // Added spacing between sections
   }
 });
 
@@ -39,21 +46,29 @@ const WellnessPDFContainer = ({
   };
   
   return (
-    <View>
+    <View style={styles.container}>
       {/* Only show header sections on the first page */}
       {!daysOnly && (
         <>
-          <PDFHeaderSection name={formData.name} />
+          <View style={styles.sectionSpacing}>
+            <PDFHeaderSection name={formData.name} />
+          </View>
+          
           {dietPlan.bmi && dietPlan.bmr && dietPlan.dailyCalories && (
-            <PDFMetricsSection
-              bmi={dietPlan.bmi}
-              bmiCategory={dietPlan.bmiCategory || ''}
-              bmr={dietPlan.bmr}
-              dailyCalories={dietPlan.dailyCalories}
-              hasMuscularBuild={!!formData.has_muscular_build}
-            />
+            <View style={styles.sectionSpacing}>
+              <PDFMetricsSection
+                bmi={dietPlan.bmi}
+                bmiCategory={dietPlan.bmiCategory || ''}
+                bmr={dietPlan.bmr}
+                dailyCalories={dietPlan.dailyCalories}
+                hasMuscularBuild={!!formData.has_muscular_build}
+              />
+            </View>
           )}
-          <PDFPersonalInfoSection formData={formData} />
+          
+          <View style={styles.sectionSpacing}>
+            <PDFPersonalInfoSection formData={formData} />
+          </View>
         </>
       )}
       

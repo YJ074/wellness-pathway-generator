@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     fontWeight: 'bold',
   },
+  spacing: {
+    marginBottom: 8, // Add spacing between meal sections
+  }
 });
 
 interface PDFDietSectionProps {
@@ -65,60 +68,72 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       <PDFRegionalNote regionalNote={day.regionalNote} />
       
       {/* Breakfast */}
-      <PDFMealItem 
-        label="Breakfast"
-        description={day.breakfast}
-        mealType="breakfast"
-        dailyCalories={dailyCalories}
-        goalFactor={goalFactor}
-      />
+      <View style={styles.spacing}>
+        <PDFMealItem 
+          label="Breakfast"
+          description={day.breakfast}
+          mealType="breakfast"
+          dailyCalories={dailyCalories}
+          goalFactor={goalFactor}
+        />
+      </View>
       
       {/* Mid-Morning Snack */}
       {day.midMorningSnack && (
-        <PDFMealItem 
-          label="Mid-Morning Snack"
-          description={day.midMorningSnack}
-          mealType="midMorningSnack"
-          dailyCalories={dailyCalories}
-          goalFactor={goalFactor}
-        />
+        <View style={styles.spacing}>
+          <PDFMealItem 
+            label="Mid-Morning Snack"
+            description={day.midMorningSnack}
+            mealType="midMorningSnack"
+            dailyCalories={dailyCalories}
+            goalFactor={goalFactor}
+          />
+        </View>
       )}
       
       {/* Lunch */}
-      <PDFMealItem 
-        label="Lunch"
-        description={day.lunch}
-        mealType="lunch"
-        dailyCalories={dailyCalories}
-        goalFactor={goalFactor}
-      />
-      
-      {/* Evening Snack */}
-      {day.eveningSnack && (
+      <View style={styles.spacing}>
         <PDFMealItem 
-          label="Evening Snack"
-          description={day.eveningSnack}
-          mealType="eveningSnack"
+          label="Lunch"
+          description={day.lunch}
+          mealType="lunch"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
         />
+      </View>
+      
+      {/* Evening Snack */}
+      {day.eveningSnack && (
+        <View style={styles.spacing}>
+          <PDFMealItem 
+            label="Evening Snack"
+            description={day.eveningSnack}
+            mealType="eveningSnack"
+            dailyCalories={dailyCalories}
+            goalFactor={goalFactor}
+          />
+        </View>
       )}
       
       {/* Dinner */}
-      <PDFMealItem 
-        label="Dinner"
-        description={day.dinner}
-        mealType="dinner"
-        dailyCalories={dailyCalories}
-        goalFactor={goalFactor}
-      />
+      <View style={styles.spacing}>
+        <PDFMealItem 
+          label="Dinner"
+          description={day.dinner}
+          mealType="dinner"
+          dailyCalories={dailyCalories}
+          goalFactor={goalFactor}
+        />
+      </View>
       
       {/* Nutrition Summary Box */}
-      <PDFNutritionSummary 
-        dailyCalories={dailyCalories}
-        water={day.water || 2.5}
-        macros={macros}
-      />
+      <View style={styles.spacing}>
+        <PDFNutritionSummary 
+          dailyCalories={dailyCalories}
+          water={day.water || 2.5}
+          macros={macros}
+        />
+      </View>
       
       {/* Wellness Benefits Section */}
       <PDFWellnessBenefits 

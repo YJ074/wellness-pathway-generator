@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   daySection: {
-    marginBottom: 30,
+    marginBottom: 40, // Increased from 30 to 40
     borderBottom: '1pt solid #e2e8f0',
     paddingBottom: 20,
   },
@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     padding: 8,
     borderRadius: 4,
+  },
+  pageBreak: {
+    breakAfter: 'page',
   }
 });
 
@@ -34,12 +37,12 @@ interface PDFDietDaysSectionProps {
 const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSectionProps) => {
   return (
     <View style={styles.container}>
-      {dietPlan.days.map((day) => {
+      {dietPlan.days.map((day, index) => {
         // Find matching workout day
         const workoutDay = workoutPlan?.days.find(w => w.day === day.day);
         
         return (
-          <View key={`day-${day.day}`} style={styles.daySection} wrap={false}>
+          <View key={`day-${day.day}`} style={styles.daySection} wrap={true} break={index > 0 && index % 3 === 0}>
             <Text style={styles.dayTitle}>Day {day.day}</Text>
             
             {/* Diet Plan Section */}
