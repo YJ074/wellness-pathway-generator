@@ -53,18 +53,20 @@ export const generateDinner = (
   const veggie1Index = (dayIndex * 11 + 7) % vegetables.length;
   const veggie2Index = (dayIndex * 13 + 11) % vegetables.length;
   
-  // Select ingredients for today's dinner - use 2 protein sources for better protein diversity
+  // Select ingredients for today's dinner with protein diversity
+  // Using two complementary protein sources increases amino acid profile completeness
   const protein1 = proteins[protein1Index];
   const protein2 = proteins[protein2Index]; // Different protein than lunch
   
   const veggie1 = vegetables[veggie1Index];
   const veggie2 = vegetables[veggie2Index];
   
-  // Add local names to proteins if they don't already have them
+  // Add local names to proteins for better understanding and cultural relevance
   const protein1WithLocalName = getLocalizedProteinName(protein1);
   const protein2WithLocalName = getLocalizedProteinName(protein2);
   
   // Define portion sizes based on dietary goals
+  // More scientific approach that considers satiety and macro distribution
   const curryPortion = getPortionSize(
     isWeightLoss,
     isProteinFocus,
@@ -76,11 +78,13 @@ export const generateDinner = (
     }
   );
   
+  // Maintain vegetable portion regardless of goal - vegetables are nutrient-dense and low-calorie
   const veggiePortion = '1 katori'; // Same across all plans
   
   // Get roti count (as a number, not a portion size)
   const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus);
   
+  // Rice portion varies by goal - higher for muscle gain, lower for weight loss
   const ricePortion = getPortionSize(
     isWeightLoss,
     isProteinFocus,
@@ -92,13 +96,14 @@ export const generateDinner = (
     }
   );
   
-  // Build a protein-optimized dinner with both protein sources
+  // Build a protein-optimized dinner with both protein sources for complementary amino acids
   let main = `${protein1WithLocalName} and ${protein2WithLocalName} combined curry (${curryPortion} - protein-optimized), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Brown Rice (${ricePortion})`;
   
-  // Always include buttermilk (probiotic) with dinner
+  // Include probiotic-rich buttermilk with dinner for gut health benefits
   main += `, chaas (1 glass)`;
   
   // For days that need additional prebiotics, add them to dinner
+  // Prebiotics support gut microbiome and enhance probiotic effectiveness
   if (dayIndex % 3 === 0) {
     main = enrichWithPrebiotics(main, dayIndex, true);
   }
@@ -108,7 +113,7 @@ export const generateDinner = (
     main = filterAllergies([main], allergies)[0] || "";
   }
   
-  // Add health benefit
+  // Add health benefit to help user understand nutritional value
   const healthBenefit = getHealthBenefit(main);
   main += ` - (${healthBenefit})`;
   

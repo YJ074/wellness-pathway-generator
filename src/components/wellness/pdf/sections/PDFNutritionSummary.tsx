@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
     marginTop: 2,
     fontFamily: 'Helvetica',
+  },
+  macroDetail: {
+    fontSize: 10,
+    color: '#555',
+    lineHeight: 1.3,
+    marginTop: 1,
+    fontFamily: 'Helvetica',
   }
 });
 
@@ -56,15 +63,32 @@ const PDFNutritionSummary = ({
   exerciseFrequency,
   fitnessGoal
 }: PDFNutritionSummaryProps) => {
-  // Add protein calculation note based on activity level
+  // Calculate protein per kg for the nutritional note
   let proteinNote = '';
-  if (weightKg && exerciseFrequency && fitnessGoal) {
-    const proteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
-    proteinNote = `(${proteinPerKg.toFixed(1)}g per kg bodyweight)`;
+  let proteinPerKg = 0;
+  
+  if (weightKg && macros.protein) {
+    // Calculate actual g/kg being recommended
+    proteinPerKg = Number((macros.protein / weightKg).toFixed(1));
+    
+    if (exerciseFrequency && fitnessGoal) {
+      // Show target range based on activity
+      const recommendedProteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
+      proteinNote = `(${proteinPerKg}g per kg bodyweight - target: ${recommendedProteinPerKg.toFixed(1)}g/kg)`;
+    } else {
+      // Simplified display if activity details missing
+      proteinNote = `(${proteinPerKg}g per kg bodyweight)`;
+    }
   } else if (gender && weightKg) {
-    // Fallback to simpler range if activity not provided
-    proteinNote = `(0.8-1.8g per kg bodyweight)`;
+    // Fallback if we don't have complete information
+    proteinNote = `(0.8-2.0g per kg bodyweight recommended range)`;
   }
+  
+  // Calculate macro percentages
+  const totalCalories = (macros.protein * 4) + (macros.carbs * 4) + (macros.fat * 9);
+  const proteinPct = Math.round((macros.protein * 4 / totalCalories) * 100);
+  const carbsPct = Math.round((macros.carbs * 4 / totalCalories) * 100);
+  const fatPct = Math.round((macros.fat * 9 / totalCalories) * 100);
   
   // Add specific protein source recommendations based on dietary preference
   let proteinSources = '';
@@ -90,6 +114,9 @@ const PDFNutritionSummary = ({
       </Text>
       <Text style={styles.nutritionText}>
         Macronutrients: Protein: {macros.protein}g {proteinNote}  •  Carbs: {macros.carbs}g  •  Fats: {macros.fat}g
+      </Text>
+      <Text style={styles.macroDetail}>
+        Distribution: Protein: {proteinPct}% • Carbs: {carbsPct}% • Fats: {fatPct}%
       </Text>
       <Text style={styles.nutritionText}>
         Micronutrients: Calcium, Iron, Vitamins A, B-complex (B12), C, D, E, Zinc, Magnesium

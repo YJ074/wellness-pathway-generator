@@ -52,38 +52,54 @@ export const getVeganProteinAlternative = (nonVeganProtein: string): string => {
   return nonVeganProtein;
 };
 
-// Helper to determine protein requirement per kg of body weight based on activity level
+/**
+ * Get protein requirement per kg based on scientific guidelines:
+ * - Sedentary: 0.8-1.0 g/kg (RDA baseline)
+ * - Light activity: 1.0-1.2 g/kg
+ * - Moderate: 1.2-1.4 g/kg
+ * - Very active: 1.4-1.8 g/kg
+ * - Athletes: 1.6-2.2 g/kg
+ * 
+ * Adjustments based on goals:
+ * - Weight loss: +0.2-0.4 g/kg (preserve lean mass)
+ * - Muscle gain: +0.2-0.4 g/kg
+ * 
+ * References: ACSM, ISSN, and ESPEN guidelines
+ */
 export const getProteinPerKgRequirement = (
   exerciseFrequency: string, 
   fitnessGoal: string
 ): number => {
-  // Default to sedentary if no value provided
-  if (!exerciseFrequency) return 0.8;
-  
-  // Activity level based rules - updated to use the range 0.8-1.8 g/kg
+  // Base protein requirements by activity level
   const activityMap: Record<string, number> = {
-    'sedentary': 0.8, // Minimum for sedentary individuals
-    'light': 1.2, // Light activity
-    'moderate': 1.5, // Regular exercise
-    'very-active': 1.8 // Maximum for very active individuals
+    'sedentary': 0.8,    // Minimum RDA for sedentary individuals
+    'light': 1.1,        // Light activity (1-3 days/week)
+    'moderate': 1.3,     // Regular exercise (3-5 days/week)
+    'very-active': 1.6   // Very active (6-7 days/week)
   };
   
-  // Adjust based on fitness goal
+  // Get base requirement from activity level
   let proteinFactor = activityMap[exerciseFrequency] || 0.8;
   
-  // Further adjust based on specific goals
+  // Adjust for specific fitness goals
   if (fitnessGoal === 'weight-loss') {
-    // Higher protein for weight loss to preserve muscle (within the corresponding activity range)
-    proteinFactor = Math.max(proteinFactor, 1.2); // At least 1.2 g/kg for weight loss
+    // Higher protein for weight loss to preserve muscle
+    proteinFactor += 0.3;
   } else if (fitnessGoal === 'muscle-gain') {
     // Maximum protein for muscle gain
-    proteinFactor = Math.max(proteinFactor, 1.5); // At least 1.5 g/kg for muscle gain
+    proteinFactor += 0.4;
   }
   
-  return proteinFactor;
+  // Cap at practical upper limit for non-athletes (2.0 g/kg)
+  return Math.min(proteinFactor, 2.0);
 };
 
-// Calculate total daily protein requirement in grams
+/**
+ * Calculate daily protein requirement in grams based on:
+ * - Body weight
+ * - Activity level
+ * - Fitness goals
+ */
 export const calculateDailyProteinRequirement = (
   weightKg: number = 70,
   exerciseFrequency: string = 'sedentary',
@@ -91,13 +107,14 @@ export const calculateDailyProteinRequirement = (
 ): number => {
   const proteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
   
-  // Cap at 1.8 g/kg which is the upper limit for our range
-  const cappedProteinPerKg = Math.min(proteinPerKg, 1.8);
-  
-  return Math.round(weightKg * cappedProteinPerKg);
+  // Calculate total daily protein requirement
+  return Math.round(weightKg * proteinPerKg);
 };
 
-// Helper to get adequate protein portion for dietary preference
+/**
+ * Get protein portion recommendation with appropriate guidance
+ * based on dietary preference and goals
+ */
 export const getProteinPortion = (
   dietaryPreference: string,
   isWeightLoss: boolean,
@@ -117,21 +134,22 @@ export const getProteinPortion = (
     
     baseProteinPortion = `${proteinGrams}g`;
   } else {
-    // Use simpler legacy logic if specific data not provided
-    baseProteinPortion = isWeightLoss ? '15-20g' : '20-25g';
+    // Fallback to basic ranges if specific data not provided
+    baseProteinPortion = isWeightLoss ? '1.2-1.5g/kg' : '0.8-1.2g/kg';
     
     if (isProteinFocus) {
-      baseProteinPortion = '25-30g';
+      baseProteinPortion = '1.6-2.0g/kg';
     }
   }
   
+  // Add specific guidance for different dietary preferences
   const proteinGuide: Record<string, string> = {
-    'vegan': `${baseProteinPortion} (combine legumes with whole grains for complete protein)`,
-    'lacto-vegetarian': baseProteinPortion,
+    'vegan': `${baseProteinPortion} (emphasis on complete protein combinations)`,
+    'lacto-vegetarian': `${baseProteinPortion} (focus on dairy and legume combinations)`,
     'lacto-ovo-vegetarian': baseProteinPortion,
-    'pure-vegetarian': baseProteinPortion,
-    'sattvic': baseProteinPortion,
-    'pure-jain': `${baseProteinPortion} (focus on allowed lentils and nuts)`,
+    'pure-vegetarian': `${baseProteinPortion} (vary protein sources throughout the day)`,
+    'sattvic': `${baseProteinPortion} (balance of dairy, legumes, and nuts)`,
+    'pure-jain': `${baseProteinPortion} (emphasize allowed legumes, nuts and dairy)`,
     'non-vegetarian': baseProteinPortion
   };
   

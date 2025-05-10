@@ -12,10 +12,20 @@ export const getEstimatedCalories = (mealType: string, baseCalories: number, goa
   return Math.round((baseCalories * mealFactors[mealType] || 0) * goalFactor);
 };
 
-// Import the new protein calculation function
+// Import the protein calculation function
 import { calculateDailyProteinRequirement, getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/proteinPortions';
 
-// Helper to estimate macros based on calories, goals, weight, and gender
+/**
+ * Estimate macronutrient distribution based on:
+ * - Total daily calories
+ * - Fitness goals
+ * - Body weight
+ * - Gender
+ * - Dietary preference
+ * - Activity level
+ * 
+ * Following evidence-based nutritional guidelines
+ */
 export const estimateMacros = (
   totalCalories: number, 
   fitnessGoal: string, 
@@ -24,42 +34,53 @@ export const estimateMacros = (
   dietaryPreference?: string,
   exerciseFrequency: string = 'sedentary'
 ) => {
-  // Calculate protein based on activity level and goals using the new function
-  let proteinGrams: number;
+  // Calculate protein requirement based on weight, activity and goals
+  let proteinGrams = calculateDailyProteinRequirement(weightKg, exerciseFrequency, fitnessGoal);
   
-  // Use new activity-based calculation with updated range (0.8-1.8g/kg)
-  proteinGrams = calculateDailyProteinRequirement(weightKg, exerciseFrequency, fitnessGoal);
-  
-  // For vegan diets, slightly increase the protein recommendation to account for lower bioavailability
+  // Adjust protein for vegan diets to account for lower bioavailability
+  // Science shows 15-20% higher intake may be needed for equivalent amino acid utilization
   if (dietaryPreference === 'vegan') {
-    proteinGrams = Math.round(proteinGrams * 1.1); // 10% more for vegans
+    proteinGrams = Math.round(proteinGrams * 1.15);
   }
   
-  // Cap protein at reasonable levels without supplements
-  proteinGrams = Math.min(proteinGrams, 140); // More reasonable cap for protein intake
+  // Calculate practical daily protein ceiling based on weight
+  // Most research shows diminishing returns above 2.2g/kg for most individuals
+  const proteinCeiling = Math.round(weightKg * 2.2);
   
-  // Calculate protein calories
-  const proteinCalories = proteinGrams * 4; // 4 calories per gram of protein
+  // Cap protein at reasonable levels achievable through whole foods
+  proteinGrams = Math.min(proteinGrams, proteinCeiling, 170); 
+  
+  // Calculate protein calories (4 calories per gram)
+  const proteinCalories = proteinGrams * 4;
   
   // Calculate remaining calories for fats and carbs
   const remainingCalories = totalCalories - proteinCalories;
   
-  // Default macro split for remaining calories
-  let fatPct = 0.4; // 40% of remaining calories from fat
-  let carbsPct = 0.6; // 60% of remaining calories from carbs
+  // Set macro ratios based on fitness goal
+  let fatPct, carbsPct;
   
-  // Adjust fat/carb ratio based on goal
   if (fitnessGoal === 'weight-loss') {
-    fatPct = 0.45; // Slightly more fat, less carbs for weight loss
-    carbsPct = 0.55;
+    // Higher fat, moderate carbs for satiety during weight loss
+    // Research supports higher fat helping with hunger management
+    fatPct = 0.40; 
+    carbsPct = 0.60;
   } else if (fitnessGoal === 'muscle-gain') {
-    fatPct = 0.35; // More carbs for muscle gain (for energy)
+    // Higher carbs for muscle glycogen replenishment and energy for workouts
+    fatPct = 0.35;
     carbsPct = 0.65;
+  } else {
+    // Balanced approach for maintenance
+    fatPct = 0.38;
+    carbsPct = 0.62;
   }
   
   // Calculate fat and carb grams
   const fatGrams = Math.round((remainingCalories * fatPct) / 9); // 9 calories per gram of fat
   const carbGrams = Math.round((remainingCalories * carbsPct) / 4); // 4 calories per gram of carbs
   
-  return { protein: proteinGrams, fat: fatGrams, carbs: carbGrams };
+  return { 
+    protein: proteinGrams, 
+    fat: fatGrams, 
+    carbs: carbGrams
+  };
 };

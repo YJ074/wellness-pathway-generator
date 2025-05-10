@@ -30,12 +30,12 @@ import {
   generateHerbalRecommendations
 } from './wellness/wellnessRecommendations';
 import { generateRegionalNote } from './regional/regionalRecommendations';
-import { getProteinPortion } from './helpers/portionHelpers';
+import { getProteinPortion, calculateDailyProteinRequirement } from './helpers/portionHelpers';
 
 // Re-export for backward compatibility
 export { calculateBMI, getBMICategory, calculateBMR, calculateDailyCalories };
 
-// Re-export new allergy-aware wrappers:
+// Re-export allergy-aware wrappers:
 export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string, region?: string) {
   return genBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies, region);
 }
@@ -94,10 +94,11 @@ export const generateDietPlan = (
                            !formData.has_muscular_build;
   const { allergies, region, exerciseFrequency } = formData;
 
-  // Optimize protein sources - get double the amount needed so we can pair different proteins
+  // Optimize protein sources - get double the amount needed for variety
   const rawProteins = getProteinSources(dietaryPreference, allergies);
   
-  // Enhance with adequate protein portions - now with weight and exercise frequency
+  // Calculate optimal protein intake using our enhanced science-based algorithm
+  // Passing weight and exercise frequency for personalized protein calculations
   const proteinRequirement = getProteinPortion(
     dietaryPreference, 
     calorieReduction, 
@@ -106,7 +107,16 @@ export const generateDietPlan = (
     exerciseFrequency
   );
   
+  // Calculate and log the actual protein target in grams for reference
+  const targetProteinGrams = calculateDailyProteinRequirement(
+    weight,
+    exerciseFrequency || 'moderate',
+    proteinFocus ? 'muscle-gain' : calorieReduction ? 'weight-loss' : 'maintenance'
+  );
+  console.log(`Target protein intake: ${targetProteinGrams}g (${(targetProteinGrams/weight).toFixed(1)}g/kg)`);
+  
   // Distribute soya in limited amounts throughout the diet
+  // This ensures we don't overuse soy products which can be problematic in excess
   const proteinsByDay = limitSoyaInDietDays(rawProteins, 75, 30);
 
   const grains = getGrainSources(dietaryPreference, allergies);
@@ -128,7 +138,6 @@ export const generateDietPlan = (
     const midMorningSnack = generateMidMorningSnack(dayIndex + (i * 3) % 17, snacks, fruits, calorieReduction, allergies);
 
     // Use proteins for this day, limited for soya according to our rule
-    // But use entire protein array to ensure variety and optimal pairing
     const proteinForDay = proteinsByDay[i - 1];
     
     // Use the entire protein array for lunch/dinner to enable protein pairing for complete amino acids
@@ -141,7 +150,10 @@ export const generateDietPlan = (
     const totalCalories = Math.round(dailyCalories / 10) * 10;
     
     // Recommended water intake (in liters)
-    const waterIntake = formData.gender === 'male' ? 3.0 : 2.7;
+    // Adjusted based on gender and weight following scientific guidelines
+    const waterIntake = gender === 'male' ? 
+      Math.max(2.5, Math.round(weight * 0.033 * 10) / 10) : 
+      Math.max(2.0, Math.round(weight * 0.03 * 10) / 10);
     
     // Generate wellness goal specific information
     const hairNutrients = wellnessGoals.includes('hair-fall-control') ? 
