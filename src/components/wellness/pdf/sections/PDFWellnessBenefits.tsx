@@ -65,12 +65,12 @@ const PDFWellnessBenefits = ({
       )}
       
       {herbalRecommendations && herbalRecommendations.length > 0 && (
-        <>
+        <View>
           <Text style={styles.herbalTitle}>Recommended Beverages:</Text>
           {herbalRecommendations.map((herb, index) => (
-            <Text key={index} style={styles.wellnessItem}>• {herb}</Text>
+            <Text key={`herb-${index}`} style={styles.wellnessItem}>• {herb}</Text>
           ))}
-        </>
+        </View>
       )}
     </View>
   );

@@ -17,12 +17,11 @@ const styles = StyleSheet.create({
   },
   dayTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     marginBottom: 12,
     backgroundColor: '#f0f0f0',
     padding: 8,
     borderRadius: 4,
-    fontFamily: 'Helvetica-Bold',
   }
 });
 
@@ -47,11 +46,13 @@ const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSect
             <PDFDietSection day={day} formData={formData} />
             
             {/* Workout Plan Section */}
-            <PDFWorkoutSection 
-              workoutDay={workoutDay} 
-              formData={formData} 
-              dayNumber={day.day} 
-            />
+            {workoutDay && (
+              <PDFWorkoutSection 
+                workoutDay={workoutDay} 
+                formData={formData} 
+                dayNumber={day.day} 
+              />
+            )}
           </View>
         );
       })}

@@ -16,15 +16,31 @@ interface DownloadPDFButtonProps {
 const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButtonProps) => {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(true);
+  const [hasErrored, setHasErrored] = useState(false);
 
   // Show a toast message when PDF generation fails
   const handleGenerationError = () => {
     console.error("PDF generation failed");
-    toast({
-      title: "PDF Generation Failed",
-      description: "We couldn't generate your PDF. Please try again later.",
-      variant: "destructive"
-    });
+    if (!hasErrored) {
+      setHasErrored(true);
+      toast({
+        title: "PDF Generation Failed",
+        description: "We couldn't generate your PDF. Please try again later.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Handle successful generation
+  const handleGenerationSuccess = () => {
+    if (isGenerating) {
+      setIsGenerating(false);
+      toast({
+        title: "PDF Generated Successfully",
+        description: "Your 75-day wellness plan PDF is ready for download.",
+        variant: "default"
+      });
+    }
   };
 
   return (
@@ -40,11 +56,10 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
         fileName={`${formData.name}-75-day-wellness-plan.pdf`}
         className="inline-block"
       >
-        {({ loading, error, url }) => {
+        {({ loading, error }) => {
           // Handle error state
           if (error) {
             console.error("PDF error:", error);
-            // Use setTimeout to avoid state updates during render
             setTimeout(() => handleGenerationError(), 0);
             
             return (
@@ -66,17 +81,7 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
           }
           
           // Success state - PDF is ready for download
-          if (isGenerating) {
-            setIsGenerating(false);
-            // Notify user of success
-            setTimeout(() => {
-              toast({
-                title: "PDF Generated Successfully",
-                description: "Your 75-day wellness plan PDF is ready for download.",
-                variant: "default"
-              });
-            }, 0);
-          }
+          setTimeout(() => handleGenerationSuccess(), 0);
           
           return (
             <Button variant="outline">

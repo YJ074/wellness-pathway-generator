@@ -31,5 +31,4 @@ const PDFRegionalNote = ({ regionalNote }: PDFRegionalNoteProps) => {
   );
 };
 
-// Export memoized component to prevent unnecessary re-renders
 export default memo(PDFRegionalNote);
