@@ -42,7 +42,10 @@ export const validateEmail = (email: string) => {
   return true;
 };
 
-export const validateMobileNumber = (value: string) => {
+export const validateMobileNumber = (
+  value: string,
+  showIncompleteToast: boolean = false // Only show incomplete toast if explicitly requested
+) => {
   // If empty, return +91 as base
   if (!value) {
     return '+91';
@@ -78,8 +81,12 @@ export const validateMobileNumber = (value: string) => {
     return '+91'; // Reset to base value
   }
 
-  // Only show incomplete number message when at least 1 digit is entered and less than 10
-  if (cleanedValue.length > 0 && cleanedValue.length < 10) {
+  // Only show incomplete number message if explicitly requested (e.g., on blur or submit)
+  if (
+    showIncompleteToast &&
+    cleanedValue.length > 0 &&
+    cleanedValue.length < 10
+  ) {
     toast({
       title: "Incomplete Mobile Number",
       description: "Please enter a complete 10-digit mobile number",
