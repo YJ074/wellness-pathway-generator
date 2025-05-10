@@ -12,34 +12,31 @@ export const getEstimatedCalories = (mealType: string, baseCalories: number, goa
   return Math.round((baseCalories * mealFactors[mealType] || 0) * goalFactor);
 };
 
+// Import the new protein calculation function
+import { calculateDailyProteinRequirement, getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/proteinPortions';
+
 // Helper to estimate macros based on calories, goals, weight, and gender
 export const estimateMacros = (
   totalCalories: number, 
   fitnessGoal: string, 
   weightKg: number = 70, 
   gender: string = 'female',
-  dietaryPreference?: string
+  dietaryPreference?: string,
+  exerciseFrequency: string = 'sedentary'
 ) => {
-  // Calculate protein based on weight and gender
-  // Female: 1g per kg, Male: 1.2-1.5g per kg based on goals
-  let proteinPerKg = gender === 'female' ? 1.0 : 1.2; // Default starting values
+  // Calculate protein based on activity level and goals using the new function
+  let proteinGrams: number;
   
-  // Adjust protein based on goal
-  if (fitnessGoal === 'weight-loss') {
-    proteinPerKg = gender === 'female' ? 1.0 : 1.3; // Higher protein for weight loss (preserves muscle)
-  } else if (fitnessGoal === 'muscle-gain') {
-    proteinPerKg = gender === 'female' ? 1.1 : 1.5; // Highest protein for muscle gain
-  } else {
-    proteinPerKg = gender === 'female' ? 1.0 : 1.2; // Maintenance
-  }
+  // Use new activity-based calculation
+  proteinGrams = calculateDailyProteinRequirement(weightKg, exerciseFrequency, fitnessGoal);
   
   // For vegan diets, slightly increase the protein recommendation to account for lower bioavailability
   if (dietaryPreference === 'vegan') {
-    proteinPerKg += 0.1;
+    proteinGrams = Math.round(proteinGrams * 1.1); // 10% more for vegans
   }
   
-  // Calculate protein in grams based on weight - cap at 120g to avoid unrealistic values without supplements
-  const proteinGrams = Math.min(Math.round(weightKg * proteinPerKg), 120);
+  // Cap protein at reasonable levels without supplements
+  proteinGrams = Math.min(proteinGrams, 160); // More reasonable cap considering activity levels
   
   // Calculate protein calories
   const proteinCalories = proteinGrams * 4; // 4 calories per gram of protein

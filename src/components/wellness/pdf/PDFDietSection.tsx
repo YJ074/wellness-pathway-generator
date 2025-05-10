@@ -57,8 +57,15 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   // Get weight in kg for protein calculation
   const weightKg = formData.weight ? parseInt(formData.weight) : 70;
   
-  // Pass weight to macro calculator
-  const macros = estimateMacros(dailyCalories, formData.fitnessGoal || 'maintenance', weightKg, formData.gender);
+  // Pass exercise frequency to macro calculator for protein calculation
+  const macros = estimateMacros(
+    dailyCalories, 
+    formData.fitnessGoal || 'maintenance', 
+    weightKg, 
+    formData.gender,
+    formData.dietaryPreference,
+    formData.exerciseFrequency
+  );
   
   return (
     <View style={styles.planSection}>
@@ -135,6 +142,8 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           weightKg={weightKg}
           gender={formData.gender}
           dietaryPreference={formData.dietaryPreference}
+          exerciseFrequency={formData.exerciseFrequency}
+          fitnessGoal={formData.fitnessGoal}
         />
       </View>
       

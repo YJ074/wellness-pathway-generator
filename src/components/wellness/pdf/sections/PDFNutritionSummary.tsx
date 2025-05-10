@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/proteinPortions';
 
 const styles = StyleSheet.create({
   nutritionBox: {
@@ -42,6 +43,7 @@ interface PDFNutritionSummaryProps {
   fitnessGoal?: string;
   gender?: string;
   dietaryPreference?: string;
+  exerciseFrequency?: string;
 }
 
 const PDFNutritionSummary = ({ 
@@ -50,11 +52,17 @@ const PDFNutritionSummary = ({
   macros,
   gender,
   weightKg,
-  dietaryPreference
+  dietaryPreference,
+  exerciseFrequency,
+  fitnessGoal
 }: PDFNutritionSummaryProps) => {
-  // Add protein calculation note if weight and gender are provided
+  // Add protein calculation note based on activity level
   let proteinNote = '';
-  if (gender && weightKg) {
+  if (weightKg && exerciseFrequency && fitnessGoal) {
+    const proteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
+    proteinNote = `(${proteinPerKg.toFixed(1)}g per kg bodyweight)`;
+  } else if (gender && weightKg) {
+    // Fallback to old calculation if activity not provided
     const proteinFactor = gender === 'female' ? '1' : '1.2-1.5'; 
     proteinNote = `(${proteinFactor}g per kg bodyweight)`;
   }

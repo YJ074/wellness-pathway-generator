@@ -92,12 +92,19 @@ export const generateDietPlan = (
                            wellnessGoals.includes('fat-loss') || 
                            wellnessGoals.includes('inch-loss')) && 
                            !formData.has_muscular_build;
-  const { allergies, region } = formData;
+  const { allergies, region, exerciseFrequency } = formData;
 
   // Optimize protein sources - get double the amount needed so we can pair different proteins
   const rawProteins = getProteinSources(dietaryPreference, allergies);
-  // Enhance with adequate protein portions
-  const proteinRequirement = getProteinPortion(dietaryPreference, calorieReduction, proteinFocus);
+  
+  // Enhance with adequate protein portions - now with weight and exercise frequency
+  const proteinRequirement = getProteinPortion(
+    dietaryPreference, 
+    calorieReduction, 
+    proteinFocus, 
+    weight, 
+    exerciseFrequency
+  );
   
   // Distribute soya in limited amounts throughout the diet
   const proteinsByDay = limitSoyaInDietDays(rawProteins, 75, 30);
