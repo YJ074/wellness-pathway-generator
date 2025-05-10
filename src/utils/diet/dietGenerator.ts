@@ -10,13 +10,13 @@ import {
   limitSoyaInDietDays,
 } from './foodSources';
 import {
-  generateBreakfast as origGenerateBreakfast,
-  generateLunch as origGenerateLunch,
-  generateDinner as origGenerateDinner,
-  generateSnacks,
-  generateMidMorningSnack as origGenerateMidMorningSnack,
-  generateEveningSnack as origGenerateEveningSnack
-} from './mealGenerators';
+  generateBreakfast as genBreakfast,
+  generateLunch as genLunch,
+  generateDinner as genDinner,
+  generateSnacks as genSnacks,
+  generateMidMorningSnack as genMidMorningSnack,
+  generateEveningSnack as genEveningSnack
+} from './generators';
 import { 
   calculateBMI, 
   getBMICategory, 
@@ -36,23 +36,23 @@ export { calculateBMI, getBMICategory, calculateBMR, calculateDailyCalories };
 
 // Re-export new allergy-aware wrappers:
 export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string, region?: string) {
-  return origGenerateBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies, region);
+  return genBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies, region);
 }
 
 export function generateMidMorningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string) {
-  return origGenerateMidMorningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
+  return genMidMorningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies);
 }
 
 export function generateLunch(dayIndex: number, proteins: string[], grains: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string, region?: string) {
-  return origGenerateLunch(dayIndex, proteins, grains, vegetables, isWeightLoss, isProteinFocus, allergies, region);
+  return genLunch(dayIndex, proteins, grains, vegetables, isWeightLoss, isProteinFocus, allergies, region);
 }
 
 export function generateEveningSnack(dayIndex: number, snacks: string[], fruits: string[], isWeightLoss: boolean, allergies?: string, region?: string) {
-  return origGenerateEveningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies, region);
+  return genEveningSnack(dayIndex, snacks, fruits, isWeightLoss, allergies, region);
 }
 
 export function generateDinner(dayIndex: number, proteins: string[], vegetables: string[], isWeightLoss: boolean, isProteinFocus: boolean, allergies?: string, region?: string) {
-  return origGenerateDinner(dayIndex, proteins, vegetables, isWeightLoss, isProteinFocus, allergies, region);
+  return genDinner(dayIndex, proteins, vegetables, isWeightLoss, isProteinFocus, allergies, region);
 }
 
 export const generateDietPlan = (
