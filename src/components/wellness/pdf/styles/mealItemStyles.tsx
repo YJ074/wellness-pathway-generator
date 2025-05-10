@@ -33,21 +33,33 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
     fontFamily: 'Helvetica',
   },
-  // Highlight styles for food descriptions
+  // Highlight styles for food descriptions with improved contrast and spacing
   localNamesHighlight: {
     color: '#6366f1', // indigo color for local names
     fontFamily: 'Helvetica-Bold',
+    display: 'inline',
+    padding: 0, 
+    margin: 0,
   },
   indianMeasurementHighlight: {
     color: '#d97706', // amber color for Indian measurements
     fontFamily: 'Helvetica-Bold',
+    display: 'inline',
+    padding: 0,
+    margin: 0,
   },
   probioticHighlight: {
     color: '#4f46e5', // indigo for probiotic foods
     fontFamily: 'Helvetica-Bold',
+    display: 'inline',
+    padding: 0,
+    margin: 0,
   },
   prebioticHighlight: {
     color: '#059669', // emerald for prebiotic foods
     fontFamily: 'Helvetica-Bold',
+    display: 'inline',
+    padding: 0,
+    margin: 0,
   }
 });

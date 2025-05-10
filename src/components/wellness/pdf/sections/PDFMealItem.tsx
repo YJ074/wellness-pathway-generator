@@ -30,12 +30,15 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
+  // Format the meal description using our improved formatting utility
+  const formattedDescription = formatMealDescription(mealDescription);
+  
   return (
-    <View style={styles.mealItem}>
+    <View style={styles.mealItem} wrap={false}>
       <Text style={styles.mealLabel}>• {label}</Text>
       
       <Text style={styles.mealDescription}>
-        {formatMealDescription(mealDescription)}
+        {formattedDescription}
       </Text>
       
       {healthBenefit && (

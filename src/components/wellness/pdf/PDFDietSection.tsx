@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   spacing: {
-    marginBottom: 8, // Add spacing between meal sections
+    marginBottom: 12, // Increased spacing between meal sections to prevent overlap
   }
 });
 
@@ -75,7 +75,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       <PDFRegionalNote regionalNote={day.regionalNote} />
       
       {/* Breakfast */}
-      <View style={styles.spacing}>
+      <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Breakfast"
           description={day.breakfast}
@@ -87,7 +87,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       
       {/* Mid-Morning Snack */}
       {day.midMorningSnack && (
-        <View style={styles.spacing}>
+        <View style={styles.spacing} wrap={false}>
           <PDFMealItem 
             label="Mid-Morning Snack"
             description={day.midMorningSnack}
@@ -99,7 +99,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       )}
       
       {/* Lunch */}
-      <View style={styles.spacing}>
+      <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Lunch"
           description={day.lunch}
@@ -111,7 +111,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       
       {/* Evening Snack */}
       {day.eveningSnack && (
-        <View style={styles.spacing}>
+        <View style={styles.spacing} wrap={false}>
           <PDFMealItem 
             label="Evening Snack"
             description={day.eveningSnack}
@@ -123,7 +123,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       )}
       
       {/* Dinner */}
-      <View style={styles.spacing}>
+      <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Dinner"
           description={day.dinner}
