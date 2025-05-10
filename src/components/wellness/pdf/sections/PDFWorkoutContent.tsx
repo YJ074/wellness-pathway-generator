@@ -10,8 +10,18 @@ interface PDFWorkoutContentProps {
 }
 
 const PDFWorkoutContent = ({ workoutDay, estimatedCaloriesBurned }: PDFWorkoutContentProps) => {
+  // Determine if the workout has progression information
+  const progressionInfo = workoutDay.progression || '';
+  
   return (
     <View>
+      {/* Show progression information if available */}
+      {progressionInfo && (
+        <Text style={workoutPdfStyles.progressionInfo}>
+          {progressionInfo}
+        </Text>
+      )}
+      
       {/* Warm-up Section */}
       <Text style={workoutPdfStyles.subsectionTitle}>Warm-up (5 min)</Text>
       {workoutDay.warmup.map((exercise, idx) => (

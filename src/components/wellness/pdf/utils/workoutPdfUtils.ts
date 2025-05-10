@@ -1,10 +1,23 @@
 
 import { FormData } from '../../types';
 
-export const getDifficultyLevel = (exerciseFrequency: string): string => {
-  if (exerciseFrequency === '5+') return 'Advanced';
-  if (exerciseFrequency === '3-4') return 'Intermediate';
-  return 'Beginner';
+export const getDifficultyLevel = (exerciseFrequency: string, weekNumber: number = 1): string => {
+  // Base difficulty on exercise frequency
+  let baseDifficulty = 'Beginner';
+  if (exerciseFrequency === '5+') {
+    baseDifficulty = 'Advanced';
+  } else if (exerciseFrequency === '3-4') {
+    baseDifficulty = 'Intermediate';
+  }
+  
+  // Progress difficulty based on week number
+  if (baseDifficulty === 'Beginner' && weekNumber > 8) {
+    return 'Intermediate';
+  } else if (baseDifficulty === 'Intermediate' && weekNumber > 10) {
+    return 'Advanced';
+  }
+  
+  return baseDifficulty;
 };
 
 export const getDailyFocusArea = (dayNumber: number, fitnessGoal: string): string => {
@@ -25,11 +38,17 @@ export const getDailyFocusArea = (dayNumber: number, fitnessGoal: string): strin
   }
 };
 
-export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency: string): number => {
+export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency: string, weekNumber: number = 1): number => {
   if (isRestDay) return 100;
-  if (exerciseFrequency === '5+') return 350;
-  if (exerciseFrequency === '3-4') return 280;
-  return 200;
+  
+  // Base calories based on exercise frequency
+  let baseCalories = 200;
+  if (exerciseFrequency === '5+') baseCalories = 350;
+  else if (exerciseFrequency === '3-4') baseCalories = 280;
+  
+  // Apply progression factor based on week number (5% increase per 2 weeks, max 50%)
+  const progressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * 0.05), 1.5);
+  return Math.round(baseCalories * progressionFactor);
 };
 
 export const getWeekInfoFromDay = (dayNumber: number) => {

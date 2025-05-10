@@ -3,102 +3,89 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const workoutPdfStyles = StyleSheet.create({
   planSection: {
-    marginBottom: 15,
-    padding: 5,
+    marginTop: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: '#f9fafb',
+    borderRadius: 5,
   },
   sectionTitle: {
     fontSize: 14,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: '#f9f9f9',
-    padding: 6,
-    borderRadius: 3,
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
-  subsectionTitle: {
-    fontSize: 12,
-    marginTop: 8,
-    marginBottom: 6,
-    paddingLeft: 4,
-    borderLeft: '2pt solid #e2e8f0',
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
-  restDayText: {
-    fontSize: 11,
-    marginBottom: 8,
-    lineHeight: 1.4,
-    paddingLeft: 5,
-    fontFamily: 'Helvetica',
-  },
-  exerciseItem: {
-    marginBottom: 8,
-    paddingLeft: 10,
-  },
-  bulletPoint: {
-    fontSize: 11,
-    marginBottom: 4,
-    lineHeight: 1.4,
-    fontFamily: 'Helvetica',
-  },
-  exerciseLabel: {
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
-  calorieInfo: {
-    fontSize: 11,
-    marginTop: 8,
-    padding: 5,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 3,
-    color: '#555',
-    fontFamily: 'Helvetica',
+    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 5,
+    marginRight: 8,
   },
   difficultyLabel: {
-    fontSize: 9,
-    marginLeft: 5,
-    padding: '2 5',
-    borderRadius: 3,
-    color: 'white',
-    fontFamily: 'Helvetica',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 10,
+    fontSize: 8,
   },
   beginnerLabel: {
-    backgroundColor: '#22c55e', // green
+    backgroundColor: '#dcfce7', // Light green
+    color: '#166534', // Dark green
   },
   intermediateLabel: {
-    backgroundColor: '#f59e0b', // amber
+    backgroundColor: '#dbeafe', // Light blue
+    color: '#1e40af', // Dark blue
   },
   advancedLabel: {
-    backgroundColor: '#ef4444', // red
+    backgroundColor: '#fef9c3', // Light yellow
+    color: '#854d0e', // Dark yellow
+  },
+  subsectionTitle: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  exerciseItem: {
+    marginBottom: 3,
+  },
+  bulletPoint: {
+    fontSize: 9,
+    fontFamily: 'Helvetica',
+    marginLeft: 5,
   },
   goalTag: {
+    backgroundColor: '#f3f4f6',
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    borderRadius: 10,
+    marginLeft: 5,
+    fontSize: 8,
+  },
+  calorieInfo: {
     fontSize: 9,
-    marginTop: 3,
-    marginLeft: 10,
-    padding: '1 4',
-    borderRadius: 2,
-    backgroundColor: '#e2e8f0',
-    color: '#334155',
     fontFamily: 'Helvetica',
+    marginTop: 10,
+    fontWeight: 'bold',
+    marginLeft: 5,
   },
   weekInfoContainer: {
-    marginBottom: 6,
-    marginTop: 4,
-    borderLeft: '2pt solid #64748b',
-    paddingLeft: 6,
+    backgroundColor: '#e5e7eb',
+    marginVertical: 6,
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+    borderRadius: 4,
   },
   weekInfo: {
-    fontSize: 10,
-    color: '#64748b',
+    fontSize: 8,
     fontFamily: 'Helvetica',
-    // Removed fontStyle: 'italic' that was causing issues
+    color: '#4b5563',
   },
-  recoveryNote: {
+  restDayText: {
     fontSize: 10,
-    marginTop: 5,
-    color: '#3b82f6',
-    fontFamily: 'Helvetica',
-    // Removed fontStyle: 'italic' that was causing issues
-  }
+    fontStyle: 'italic',
+    color: '#6b7280',
+    marginLeft: 8,
+    marginTop: 10,
+  },
+  progressionInfo: {
+    fontSize: 9,
+    fontStyle: 'italic',
+    color: '#4b5563',
+    marginBottom: 5,
+  },
 });

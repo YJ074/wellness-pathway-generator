@@ -9,9 +9,6 @@ import PDFWorkoutWeekInfo from './sections/PDFWorkoutWeekInfo';
 import PDFRestDayContent from './sections/PDFRestDayContent';
 import PDFWorkoutContent from './sections/PDFWorkoutContent';
 import { 
-  getDifficultyLevel, 
-  getDailyFocusArea, 
-  getEstimatedCaloriesBurned,
   getWeekInfoFromDay,
   isRecoveryDay
 } from './utils/workoutPdfUtils';
@@ -33,17 +30,31 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   const exerciseFrequency = formData.exerciseFrequency || 'sedentary';
   const fitnessGoal = formData.fitnessGoal || 'maintenance';
   
-  // Calculate estimated workout calories burned
-  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(
-    isRestDay, 
-    exerciseFrequency
-  );
+  // Calculate estimated workout calories burned with progression
+  // Start with base calories and increase by 5% every 2 weeks (up to 50% more)
+  const baseCalories = isRestDay ? 100 : 
+                    (exerciseFrequency === '5+' ? 350 :
+                    exerciseFrequency === '3-4' ? 280 : 200);
+                    
+  const weekNumber = Math.floor((validDayNumber - 1) / 7) + 1;
+  const calorieProgressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * 0.05), 1.5);
+  const estimatedCaloriesBurned = Math.round(baseCalories * calorieProgressionFactor);
   
-  // Determine fitness level based on exercise frequency
-  const difficultyLevel = getDifficultyLevel(exerciseFrequency);
+  // Determine fitness level based on week progression
+  let difficultyLevel = 'Beginner';
+  
+  // Progress difficulty level based on weeks completed
+  if (exerciseFrequency === '5+' || (exerciseFrequency === '3-4' && weekNumber > 4)) {
+    difficultyLevel = 'Advanced';
+  } else if (exerciseFrequency === '3-4' || (exerciseFrequency === '1-2' && weekNumber > 6)) {
+    difficultyLevel = 'Intermediate';
+  } else if (weekNumber > 8) {
+    // Even beginners progress after 8 weeks
+    difficultyLevel = 'Intermediate';
+  }
   
   // Get week information based on day number
-  const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
+  const { weekNumber: displayWeekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
   
   // Determine focus area through rotation or use the one from workout day
   const focusArea = workoutDay?.focusArea || 
@@ -58,7 +69,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
       
       {/* Week and progression information */}
       <PDFWorkoutWeekInfo 
-        weekNumber={weekNumber} 
+        weekNumber={displayWeekNumber} 
         isDeloadWeek={isDeloadWeek} 
         focusArea={focusArea} 
       />
@@ -83,5 +94,24 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
     </View>
   );
 };
+
+// Helper function to determine daily focus area (moved from workoutPdfUtils to avoid circular imports)
+function getDailyFocusArea(dayNumber: number, fitnessGoal: string): string {
+  // Ensure dayNumber is valid
+  if (!dayNumber || dayNumber < 1) return "General Fitness";
+  
+  const dayInWeek = dayNumber % 7;
+  
+  switch (dayInWeek) {
+    case 1: return "Core & Stability";
+    case 2: return "Mobility & Flexibility";
+    case 3: return "Strength & Power";
+    case 4: return "Yoga & Balance";
+    case 5: return "Functional Movement";
+    case 6: return fitnessGoal === 'weight-loss' ? "HIIT & Cardio" : "Endurance";
+    case 0: return "Recovery & Regeneration"; // Day 7, 14, etc.
+    default: return "General Fitness";
+  }
+}
 
 export default PDFWorkoutSection;
