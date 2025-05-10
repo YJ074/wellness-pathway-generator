@@ -62,9 +62,8 @@ const PDFNutritionSummary = ({
     const proteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
     proteinNote = `(${proteinPerKg.toFixed(1)}g per kg bodyweight)`;
   } else if (gender && weightKg) {
-    // Fallback to old calculation if activity not provided
-    const proteinFactor = gender === 'female' ? '1' : '1.2-1.5'; 
-    proteinNote = `(${proteinFactor}g per kg bodyweight)`;
+    // Fallback to simpler range if activity not provided
+    proteinNote = `(0.8-1.8g per kg bodyweight)`;
   }
   
   // Add specific protein source recommendations based on dietary preference

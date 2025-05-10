@@ -27,7 +27,7 @@ export const estimateMacros = (
   // Calculate protein based on activity level and goals using the new function
   let proteinGrams: number;
   
-  // Use new activity-based calculation
+  // Use new activity-based calculation with updated range (0.8-1.8g/kg)
   proteinGrams = calculateDailyProteinRequirement(weightKg, exerciseFrequency, fitnessGoal);
   
   // For vegan diets, slightly increase the protein recommendation to account for lower bioavailability
@@ -36,7 +36,7 @@ export const estimateMacros = (
   }
   
   // Cap protein at reasonable levels without supplements
-  proteinGrams = Math.min(proteinGrams, 160); // More reasonable cap considering activity levels
+  proteinGrams = Math.min(proteinGrams, 140); // More reasonable cap for protein intake
   
   // Calculate protein calories
   const proteinCalories = proteinGrams * 4; // 4 calories per gram of protein

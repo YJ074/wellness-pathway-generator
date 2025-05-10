@@ -58,26 +58,26 @@ export const getProteinPerKgRequirement = (
   fitnessGoal: string
 ): number => {
   // Default to sedentary if no value provided
-  if (!exerciseFrequency) return 0.9;
+  if (!exerciseFrequency) return 0.8;
   
-  // Activity level based rules
+  // Activity level based rules - updated to use the range 0.8-1.8 g/kg
   const activityMap: Record<string, number> = {
-    'sedentary': 0.9, // Mid-point of 0.8-1.0 g/kg
-    'light': 1.3, // Mid-point of 1.2-1.5 g/kg
-    'moderate': 1.8, // Mid-point of 1.6-2.0 g/kg
-    'very-active': 2.1 // Mid-point of 2.0-2.2 g/kg
+    'sedentary': 0.8, // Minimum for sedentary individuals
+    'light': 1.2, // Light activity
+    'moderate': 1.5, // Regular exercise
+    'very-active': 1.8 // Maximum for very active individuals
   };
   
   // Adjust based on fitness goal
-  let proteinFactor = activityMap[exerciseFrequency] || 0.9;
+  let proteinFactor = activityMap[exerciseFrequency] || 0.8;
   
   // Further adjust based on specific goals
   if (fitnessGoal === 'weight-loss') {
     // Higher protein for weight loss to preserve muscle (within the corresponding activity range)
-    proteinFactor = Math.max(proteinFactor, 1.3); // At least 1.3 g/kg for weight loss
+    proteinFactor = Math.max(proteinFactor, 1.2); // At least 1.2 g/kg for weight loss
   } else if (fitnessGoal === 'muscle-gain') {
     // Maximum protein for muscle gain
-    proteinFactor = Math.max(proteinFactor, 1.8); // At least 1.8 g/kg for muscle gain
+    proteinFactor = Math.max(proteinFactor, 1.5); // At least 1.5 g/kg for muscle gain
   }
   
   return proteinFactor;
@@ -91,8 +91,8 @@ export const calculateDailyProteinRequirement = (
 ): number => {
   const proteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
   
-  // Cap at 2.2 g/kg which is the upper limit for most athletes
-  const cappedProteinPerKg = Math.min(proteinPerKg, 2.2);
+  // Cap at 1.8 g/kg which is the upper limit for our range
+  const cappedProteinPerKg = Math.min(proteinPerKg, 1.8);
   
   return Math.round(weightKg * cappedProteinPerKg);
 };
