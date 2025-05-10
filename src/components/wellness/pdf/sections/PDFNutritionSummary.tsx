@@ -12,15 +12,13 @@ const styles = StyleSheet.create({
   nutritionTitle: {
     fontSize: 12,
     marginBottom: 5,
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
   },
   nutritionText: {
     fontSize: 11,
     marginBottom: 4,
     lineHeight: 1.4,
-    fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontFamily: 'Helvetica',
   },
 });
 

@@ -28,48 +28,65 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   };
 
   return (
-    <PDFDownloadLink
-      document={<WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />}
-      fileName={`${formData.name}-75-day-wellness-plan.pdf`}
-      className="inline-block"
-    >
-      {({ loading, error }) => {
-        // Handle error state
-        if (error) {
-          console.error("PDF error:", error);
-          setTimeout(() => handleGenerationError(), 0);
+    <div className="relative">
+      <PDFDownloadLink
+        document={
+          <WellnessPDF 
+            formData={formData} 
+            dietPlan={dietPlan} 
+            workoutPlan={workoutPlan} 
+          />
+        }
+        fileName={`${formData.name}-75-day-wellness-plan.pdf`}
+        className="inline-block"
+      >
+        {({ loading, error, url }) => {
+          // Handle error state
+          if (error) {
+            console.error("PDF error:", error);
+            // Use setTimeout to avoid state updates during render
+            setTimeout(() => handleGenerationError(), 0);
+            
+            return (
+              <Button variant="outline" disabled>
+                <Download className="mr-2 h-4 w-4" />
+                Failed to generate
+              </Button>
+            );
+          }
+
+          // Handle loading state
+          if (loading) {
+            return (
+              <Button variant="outline" disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Preparing PDF (75 days)...
+              </Button>
+            );
+          }
+          
+          // Success state - PDF is ready for download
+          if (isGenerating) {
+            setIsGenerating(false);
+            // Notify user of success
+            setTimeout(() => {
+              toast({
+                title: "PDF Generated Successfully",
+                description: "Your 75-day wellness plan PDF is ready for download.",
+                variant: "default"
+              });
+            }, 0);
+          }
           
           return (
-            <Button variant="outline" disabled>
+            <Button variant="outline">
               <Download className="mr-2 h-4 w-4" />
-              Failed to generate
+              Download PDF (75 days)
             </Button>
           );
-        }
-
-        // Handle loading state
-        if (loading) {
-          return (
-            <Button variant="outline" disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Preparing PDF (75 days)...
-            </Button>
-          );
-        }
-        
-        // Success state - PDF is ready for download
-        if (isGenerating) {
-          setIsGenerating(false);
-        }
-        
-        return (
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Download PDF (75 days)
-          </Button>
-        );
-      }}
-    </PDFDownloadLink>
+        }}
+      </PDFDownloadLink>
+    </div>
   );
 };
 

@@ -29,31 +29,40 @@ interface WellnessPDFProps {
   workoutPlan?: WorkoutPlan;
 }
 
-const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => (
-  <Document>
-    {/* We'll create multiple pages to split the 75-day plan */}
-    <Page size="A4" style={styles.page}>
-      <WellnessPDFContainer 
-        formData={formData} 
-        dietPlan={dietPlan} 
-        workoutPlan={workoutPlan} 
-        dayRange={[1, 5]} 
-      />
-    </Page>
-    
-    {/* Each subsequent page will have up to 5 days */}
-    {Array.from({ length: 14 }, (_, i) => (
-      <Page key={`page-${i+1}`} size="A4" style={styles.page}>
+const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
+  // Safely limit the number of days to prevent rendering issues
+  // Create a paginated approach with up to 5 days per page
+  return (
+    <Document>
+      {/* First page with header information */}
+      <Page size="A4" style={styles.page}>
         <WellnessPDFContainer 
           formData={formData} 
           dietPlan={dietPlan} 
-          workoutPlan={workoutPlan}
-          daysOnly={true}
-          dayRange={[(i+1)*5+1, (i+2)*5]}
+          workoutPlan={workoutPlan} 
+          dayRange={[1, 5]} 
         />
       </Page>
-    ))}
-  </Document>
-);
+      
+      {/* Create additional pages with 5 days per page */}
+      {Array.from({ length: 14 }, (_, i) => {
+        const startDay = (i+1)*5+1;
+        const endDay = Math.min((i+2)*5, 75);
+        
+        return (
+          <Page key={`page-${i+1}`} size="A4" style={styles.page}>
+            <WellnessPDFContainer 
+              formData={formData} 
+              dietPlan={dietPlan} 
+              workoutPlan={workoutPlan}
+              daysOnly={true}
+              dayRange={[startDay, endDay]}
+            />
+          </Page>
+        );
+      })}
+    </Document>
+  );
+};
 
 export default WellnessPDF;

@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
   },
   regionalNoteText: {
     fontSize: 11,
-    fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontFamily: 'Helvetica',
     fontStyle: 'italic',
     lineHeight: 1.4,
   },

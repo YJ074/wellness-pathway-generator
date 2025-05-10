@@ -40,7 +40,7 @@ const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSect
         const workoutDay = workoutPlan?.days.find(w => w.day === day.day);
         
         return (
-          <View key={`day-${day.day}`} style={styles.daySection}>
+          <View key={`day-${day.day}`} style={styles.daySection} wrap={false}>
             <Text style={styles.dayTitle}>Day {day.day}</Text>
             
             {/* Diet Plan Section */}

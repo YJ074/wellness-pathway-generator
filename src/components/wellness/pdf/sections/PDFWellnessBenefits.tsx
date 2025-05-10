@@ -12,23 +12,20 @@ const styles = StyleSheet.create({
   wellnessTitle: {
     fontSize: 12,
     marginBottom: 5,
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
     color: '#0066cc',
   },
   wellnessItem: {
     fontSize: 10,
     marginBottom: 3,
     lineHeight: 1.4,
-    fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontFamily: 'Helvetica',
   },
   herbalTitle: {
     fontSize: 11,
     marginTop: 4,
     marginBottom: 2,
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
   },
 });
 
@@ -68,12 +65,12 @@ const PDFWellnessBenefits = ({
       )}
       
       {herbalRecommendations && herbalRecommendations.length > 0 && (
-        <View>
+        <>
           <Text style={styles.herbalTitle}>Recommended Beverages:</Text>
           {herbalRecommendations.map((herb, index) => (
             <Text key={index} style={styles.wellnessItem}>• {herb}</Text>
           ))}
-        </View>
+        </>
       )}
     </View>
   );
