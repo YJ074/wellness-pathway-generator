@@ -8,6 +8,13 @@ import PDFWorkoutHeader from './sections/PDFWorkoutHeader';
 import PDFWorkoutWeekInfo from './sections/PDFWorkoutWeekInfo';
 import PDFRestDayContent from './sections/PDFRestDayContent';
 import PDFWorkoutContent from './sections/PDFWorkoutContent';
+import { 
+  getDifficultyLevel, 
+  getDailyFocusArea, 
+  getEstimatedCaloriesBurned,
+  getWeekInfoFromDay,
+  isRecoveryDay
+} from './utils/workoutPdfUtils';
 
 interface PDFWorkoutSectionProps {
   workoutDay?: WorkoutDay;
@@ -16,45 +23,24 @@ interface PDFWorkoutSectionProps {
 }
 
 const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectionProps) => {
-  // Calculate estimated workout calories burned
+  // Determine if it's a rest day
   const isRestDay = workoutDay?.isRestDay || false;
-  const isRecoveryDay = dayNumber % 7 === 0; // Every 7th day is a recovery day
   
-  const estimatedCaloriesBurned = isRestDay ? 100 : 
-                                formData.exerciseFrequency === '5+' ? 350 :
-                                formData.exerciseFrequency === '3-4' ? 280 : 200;
+  // Calculate estimated workout calories burned
+  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(
+    isRestDay, 
+    formData.exerciseFrequency || 'sedentary'
+  );
   
   // Determine fitness level based on exercise frequency
-  const getDifficultyLevel = () => {
-    if (formData.exerciseFrequency === '5+') return 'Advanced';
-    if (formData.exerciseFrequency === '3-4') return 'Intermediate';
-    return 'Beginner';
-  };
+  const difficultyLevel = getDifficultyLevel(formData.exerciseFrequency || 'sedentary');
   
-  const difficultyLevel = getDifficultyLevel();
+  // Get week information based on day number
+  const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(dayNumber);
   
-  // Calculate week number (1-indexed)
-  const weekNumber = Math.floor((dayNumber - 1) / 7) + 1;
-  
-  // Determine focus area through rotation
-  const getDailyFocusArea = () => {
-    const dayInWeek = dayNumber % 7;
-    
-    switch (dayInWeek) {
-      case 1: return "Core & Stability";
-      case 2: return "Mobility & Flexibility";
-      case 3: return "Strength & Power";
-      case 4: return "Yoga & Balance";
-      case 5: return "Functional Movement";
-      case 6: return formData.fitnessGoal === 'weight-loss' ? "HIIT & Cardio" : "Endurance";
-      case 0: return "Recovery & Regeneration"; // Day 7, 14, etc.
-      default: return "General Fitness";
-    }
-  };
-  
-  // Check if it's a deload week (every 4th week)
-  const isDeloadWeek = (weekNumber % 4 === 0);
-  const focusArea = workoutDay?.focusArea || getDailyFocusArea();
+  // Determine focus area through rotation or use the one from workout day
+  const focusArea = workoutDay?.focusArea || 
+    getDailyFocusArea(dayNumber, formData.fitnessGoal || 'maintenance');
   
   return (
     <View style={workoutPdfStyles.planSection}>
@@ -70,7 +56,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
       {workoutDay ? (
         workoutDay.isRestDay ? (
           <PDFRestDayContent 
-            isRecoveryDay={isRecoveryDay} 
+            isRecoveryDay={isRecoveryDay(dayNumber)} 
             estimatedCaloriesBurned={estimatedCaloriesBurned} 
           />
         ) : (

@@ -1,5 +1,6 @@
 
 import React from "react";
+import { getWeekInfoFromDay } from '../pdf/utils/workoutPdfUtils';
 
 interface WorkoutWeekInfoProps {
   day?: number;
@@ -9,8 +10,7 @@ interface WorkoutWeekInfoProps {
 const WorkoutWeekInfo = ({ day, focusArea }: WorkoutWeekInfoProps) => {
   if (!day) return null;
   
-  const weekNumber = Math.floor((day - 1) / 7) + 1;
-  const isDeloadWeek = (weekNumber % 4 === 0);
+  const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(day);
   const focus = focusArea || "General Fitness";
 
   return (

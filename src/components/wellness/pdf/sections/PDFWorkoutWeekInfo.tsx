@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
 import { workoutPdfStyles } from '../utils/workoutPdfStyles';
-import { WorkoutDay } from '@/types/workout';
 
 interface PDFWorkoutWeekInfoProps {
   weekNumber: number;
