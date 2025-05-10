@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
+import { prebioticFoods, probioticFoods } from '@/utils/diet/helpers/prebioticProbioticHelper';
 
 const styles = StyleSheet.create({
   mealItem: {
@@ -30,6 +31,16 @@ const styles = StyleSheet.create({
   localNamesHighlight: {
     fontFamily: 'Roboto',
     fontWeight: 700,
+  },
+  prebioticHighlight: {
+    fontFamily: 'Roboto',
+    fontWeight: 700,
+    color: '#228B22', // Forest green
+  },
+  probioticHighlight: {
+    fontFamily: 'Roboto',
+    fontWeight: 700,
+    color: '#1E90FF', // Dodger blue
   }
 });
 
@@ -48,7 +59,7 @@ const PDFMealItem = ({
   dailyCalories, 
   goalFactor 
 }: PDFMealItemProps) => {
-  // Enhanced function to highlight local names in parentheses, with a dash, or specific millet patterns
+  // Enhanced function to highlight local names, prebiotics, and probiotics
   const formatMealDescription = (text: string) => {
     // First, handle patterns with dash like "Rice Flakes - Poha" or "Broken Wheat - Daliya"
     const dashParts = text.split(/(\s-\s[^,\.]+)/g);
@@ -66,6 +77,40 @@ const PDFMealItem = ({
         // If this is a parenthetical expression (likely a local name)
         if (subPart.startsWith('(') && subPart.endsWith(')')) {
           return <Text key={`parent-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>;
+        }
+        
+        // Check for probiotic foods
+        let foundProbiotic = false;
+        for (const probiotic of probioticFoods) {
+          if (subPart.toLowerCase().includes(probiotic.toLowerCase())) {
+            foundProbiotic = true;
+            const regex = new RegExp(`(${probiotic})`, 'gi');
+            const parts = subPart.split(regex);
+            
+            return parts.map((probPart, probIndex) => {
+              if (probPart.toLowerCase() === probiotic.toLowerCase()) {
+                return <Text key={`prob-${dashIndex}-${parenthIndex}-${probIndex}`} style={styles.probioticHighlight}>{probPart}</Text>;
+              }
+              return <React.Fragment key={`text-prob-${dashIndex}-${parenthIndex}-${probIndex}`}>{probPart}</React.Fragment>;
+            });
+          }
+        }
+        
+        // Check for prebiotic foods if no probiotic was found
+        if (!foundProbiotic) {
+          for (const prebiotic of prebioticFoods) {
+            if (subPart.toLowerCase().includes(prebiotic.toLowerCase())) {
+              const regex = new RegExp(`(${prebiotic})`, 'gi');
+              const parts = subPart.split(regex);
+              
+              return parts.map((prePart, preIndex) => {
+                if (prePart.toLowerCase() === prebiotic.toLowerCase()) {
+                  return <Text key={`pre-${dashIndex}-${parenthIndex}-${preIndex}`} style={styles.prebioticHighlight}>{prePart}</Text>;
+                }
+                return <React.Fragment key={`text-pre-${dashIndex}-${parenthIndex}-${preIndex}`}>{prePart}</React.Fragment>;
+              });
+            }
+          }
         }
         
         // Check for specific millet patterns that might not be in parentheses or after dashes
@@ -104,6 +149,13 @@ const PDFMealItem = ({
         
         if (matches) {
           return <Text key={`millet-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{formattedText}</Text>;
+        }
+        
+        // Check for phrases indicating gut health benefits
+        if (formattedText.toLowerCase().includes('for gut health') || 
+            formattedText.toLowerCase().includes('prebiotic') ||
+            formattedText.toLowerCase().includes('probiotic')) {
+          return <Text key={`gut-${dashIndex}-${parenthIndex}`} style={styles.prebioticHighlight}>{formattedText}</Text>;
         }
         
         // Regular text

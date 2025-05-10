@@ -2,6 +2,7 @@
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getDryFruits } from '../data/dryFruits';
+import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 
 export const generateBreakfast = (
   dayIndex: number,
@@ -18,10 +19,13 @@ export const generateBreakfast = (
     const regionalBreakfast = regionalFoods.breakfast[dayIndex % regionalFoods.breakfast.length];
     
     // Add portion control for weight loss
-    if (isWeightLoss) {
-      return `${regionalBreakfast} (reduced portion)`;
-    }
-    return regionalBreakfast;
+    let breakfast = isWeightLoss ? `${regionalBreakfast} (reduced portion)` : regionalBreakfast;
+    
+    // Ensure inclusion of prebiotic/probiotic foods (but don't force it for regional specialties)
+    breakfast = enrichWithPrebiotics(breakfast, dayIndex);
+    breakfast = enrichWithProbiotics(breakfast, dayIndex);
+    
+    return breakfast;
   }
   
   let breakfastOptions = [
@@ -84,11 +88,29 @@ export const generateBreakfast = (
       eggBreakfasts = filterAllergies(eggBreakfasts, allergies);
     }
     if (eggBreakfasts.length && dayIndex % 4 === 0) {
-      return eggBreakfasts[dayIndex % eggBreakfasts.length];
+      let breakfast = eggBreakfasts[dayIndex % eggBreakfasts.length];
+      
+      // For egg breakfasts, we need to especially ensure probiotics as they naturally lack them
+      breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
+      
+      return breakfast;
     }
   }
+  
   if (allergies) {
     breakfastOptions = filterAllergies(breakfastOptions, allergies);
   }
-  return breakfastOptions[dayIndex % breakfastOptions.length] || "";
+  
+  // Get the breakfast option for today and ensure prebiotic/probiotic inclusion
+  // The pattern ensures at least 4 times a week (alternating between prebiotic-focused and probiotic-focused days)
+  let breakfast = breakfastOptions[dayIndex % breakfastOptions.length] || "";
+  
+  // Every even day, ensure probiotics; every odd day, ensure prebiotics
+  if (dayIndex % 2 === 0) {
+    breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
+  } else {
+    breakfast = enrichWithPrebiotics(breakfast, dayIndex, true);
+  }
+  
+  return breakfast;
 };

@@ -1,6 +1,7 @@
 
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
+import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 
 export const generateLunch = (
   dayIndex: number, 
@@ -18,12 +19,20 @@ export const generateLunch = (
   // Use regional lunch options every 5th day if available
   if (region && regionalFoods.mains.length > 0 && dayIndex % 5 === 0) {
     const regionalLunch = regionalFoods.mains[dayIndex % regionalFoods.mains.length];
+    let lunch = "";
     if (isWeightLoss) {
-      return `${regionalLunch} (reduced portion for weight management)`;
+      lunch = `${regionalLunch} (reduced portion for weight management)`;
     } else if (isProteinFocus) {
-      return `${regionalLunch} with extra protein portion`;
+      lunch = `${regionalLunch} with extra protein portion`;
+    } else {
+      lunch = regionalLunch;
     }
-    return regionalLunch;
+    
+    // For regional specialties, gently introduce pre/probiotics without forcing them
+    lunch = enrichWithPrebiotics(lunch, dayIndex);
+    lunch = enrichWithProbiotics(lunch, dayIndex);
+    
+    return lunch;
   }
   
   const protein = proteins[dayIndex % proteins.length];
@@ -71,12 +80,19 @@ export const generateLunch = (
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   if (isWeightLoss) {
-    main = `${grainWithLocalName} (1/2 cup or 1 roti), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), small bowl of curd (Dahi - 1/2 cup)`;
+    main = `${grainWithLocalName} (1/2 cup or 1 roti), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup)`;
   } else if (isProteinFocus) {
-    main = `${grainWithLocalName} (3/4 cup or 2 rotis), double portion of ${proteinWithLocalName} curry (1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), bowl of curd (Dahi - 1 cup)`;
+    main = `${grainWithLocalName} (3/4 cup or 2 rotis), double portion of ${proteinWithLocalName} curry (1 cup), ${veggie1} and ${veggie2} sabzi (1 cup)`;
   } else {
-    main = `${grainWithLocalName} (3/4 cup or 2 rotis), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), bowl of curd (Dahi - 1 cup)`;
+    main = `${grainWithLocalName} (3/4 cup or 2 rotis), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup)`;
   }
+  
+  // Add curd (probiotic) to every lunch - a staple in Indian diets
+  main += `, bowl of curd (Dahi - 1 cup)`;
+  
+  // For days not already featuring prebiotics, add some to the meal
+  main = enrichWithPrebiotics(main, dayIndex);
+  
   if (allergies) {
     // Remove or swap allergy terms inside lunch text (rough approach)
     const allergiesArr = allergies.split(',').map(x=>x.trim().toLowerCase());
