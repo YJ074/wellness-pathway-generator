@@ -31,23 +31,41 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
     <PDFDownloadLink
       document={<WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />}
       fileName={`${formData.name}-75-day-wellness-plan.pdf`}
-      onLoadError={handleError}
-      onLoadSuccess={() => setIsInitializing(false)}
     >
-      {({ loading, error }) => (
-        <Button 
-          variant="outline" 
-          disabled={loading || isInitializing}
-          onClick={() => {
-            if (error) {
-              handleError(error);
-            }
-          }}
-        >
-          <Download className="mr-2 h-4 w-4" />
-          {loading || isInitializing ? "Preparing PDF..." : "Download PDF"}
-        </Button>
-      )}
+      {({ loading, error, url, blob }) => {
+        // Handle initialization state
+        if (loading && isInitializing) {
+          return (
+            <Button variant="outline" disabled>
+              <Download className="mr-2 h-4 w-4" />
+              Preparing PDF...
+            </Button>
+          );
+        }
+        
+        // Handle error state
+        if (error) {
+          handleError(error);
+          return (
+            <Button variant="outline" disabled>
+              <Download className="mr-2 h-4 w-4" />
+              Failed to generate
+            </Button>
+          );
+        }
+        
+        // Handle success state (URL exists)
+        if (url && isInitializing) {
+          setIsInitializing(false);
+        }
+        
+        return (
+          <Button variant="outline" disabled={loading}>
+            <Download className="mr-2 h-4 w-4" />
+            {loading ? "Preparing PDF..." : "Download PDF"}
+          </Button>
+        );
+      }}
     </PDFDownloadLink>
   );
 };
