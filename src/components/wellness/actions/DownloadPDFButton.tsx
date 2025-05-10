@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Download } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 import WellnessPDF from "../WellnessPDF";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
 import { useToast } from "@/hooks/use-toast";
@@ -31,6 +31,7 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
     <PDFDownloadLink
       document={<WellnessPDF formData={formData} dietPlan={dietPlan} workoutPlan={workoutPlan} />}
       fileName={`${formData.name}-75-day-wellness-plan.pdf`}
+      className="inline-block"
     >
       {({ loading, error }) => {
         // Handle error state
@@ -50,8 +51,8 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
         if (loading) {
           return (
             <Button variant="outline" disabled>
-              <Download className="mr-2 h-4 w-4" />
-              Preparing PDF...
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Preparing PDF (75 days)...
             </Button>
           );
         }
@@ -64,7 +65,7 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
         return (
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            Download PDF
+            Download PDF (75 days)
           </Button>
         );
       }}

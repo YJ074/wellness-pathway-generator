@@ -35,7 +35,7 @@ interface PDFDietDaysSectionProps {
 const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSectionProps) => {
   return (
     <View style={styles.container}>
-      {dietPlan.days.slice(0, 5).map((day) => {
+      {dietPlan.days.map((day) => {
         // Find matching workout day
         const workoutDay = workoutPlan?.days.find(w => w.day === day.day);
         
