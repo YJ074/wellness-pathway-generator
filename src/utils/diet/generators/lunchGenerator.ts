@@ -5,7 +5,8 @@ import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebiotic
 import { 
   getLocalizedProteinName, 
   getLocalizedGrainName,
-  composeRegionalMeal
+  composeRegionalMeal,
+  getBreadPortionSize
 } from '../helpers/portionHelpers';
 
 export const generateLunch = (
@@ -46,15 +47,18 @@ export const generateLunch = (
   
   // Ensure local names for grains too with specific preparation method
   const grainWithLocalName = getLocalizedGrainName(grain);
-
+  
+  // Get roti count (as a number, not as "X rotis")
+  const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus);
+  
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   if (isWeightLoss) {
-    main = `${grainWithLocalName} (1 roti or ½ katori), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${grainWithLocalName} (${rotiCount} roti or ½ katori rice), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   } else if (isProteinFocus) {
-    main = `${grainWithLocalName} (2 rotis or ¾ katori), double portion of ${proteinWithLocalName} curry (1 katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), double portion of ${proteinWithLocalName} curry (1 katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   } else {
-    main = `${grainWithLocalName} (2 rotis or ¾ katori), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   }
   
   // Add curd (probiotic) to every lunch - a staple in Indian diets

@@ -19,11 +19,14 @@ export const isBigFruit = (fruitName: string): boolean => {
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
 export const formatMealDescription = (text: string) => {
   // Updated Indian household measurement patterns to include "nos" for count
+  // Also properly handling roti/chapati/phulka as numbers
   const measurementPatterns = [
-    /(\d+(?:\.\d+)?\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
-    /(\d+(?:\.\d+)?\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
-    /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
-    /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi
+    /(\d+(?:\.\d+)?\s*(?:katori|glass|bowl|mutthi|chamach|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
+    /(\d+(?:\.\d+)?\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
+    /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:katori|glass|bowl|mutthi|chamach|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
+    /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
+    /(\d+\s*(?:roti|rotis|chapati|chapatis|phulka|phulkas))/gi,
+    /(\(\d+\s*(?:roti|rotis|chapati|chapatis|phulka|phulkas)\))/gi
   ];
   
   // First, handle patterns with dash like "Rice Flakes - Poha" or "Broken Wheat - Daliya"
@@ -93,6 +96,25 @@ export const formatMealDescription = (text: string) => {
               return <React.Fragment key={`text-pre-${dashIndex}-${parenthIndex}-${preIndex}`}>{prePart}</React.Fragment>;
             });
           }
+        }
+      }
+      
+      // Check for roti/chapati/phulka numbers
+      const breadPatterns = [
+        /(\d+\s*(?:roti|rotis|chapati|chapatis|phulka|phulkas))/gi
+      ];
+      
+      for (const pattern of breadPatterns) {
+        if (pattern.test(subPart)) {
+          pattern.lastIndex = 0;
+          const parts = subPart.split(pattern);
+          
+          return parts.map((part, i) => {
+            if (i % 2 === 0) {
+              return <React.Fragment key={`text-bread-${dashIndex}-${parenthIndex}-${i}`}>{part}</React.Fragment>;
+            }
+            return <Text key={`bread-${dashIndex}-${parenthIndex}-${i}`} style={styles.indianMeasurementHighlight}>{part}</Text>;
+          });
         }
       }
       

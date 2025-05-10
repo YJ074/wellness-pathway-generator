@@ -4,7 +4,7 @@ import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { 
   getLocalizedProteinName, 
-  getPortionSize,
+  getBreadPortionSize,
   composeRegionalMeal,
   composeDinnerMeal
 } from '../helpers/portionHelpers';
@@ -57,16 +57,8 @@ export const generateDinner = (
   
   const veggiePortion = '1 katori'; // Same across all plans
   
-  const rotiPortion = getPortionSize(
-    isWeightLoss,
-    isProteinFocus,
-    'roti',
-    {
-      standard: '2 rotis',
-      weightLoss: '1 roti',
-      proteinFocus: '2 rotis'
-    }
-  );
+  // Get roti count (as a number, not a portion size)
+  const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus);
   
   const ricePortion = getPortionSize(
     isWeightLoss,
@@ -79,14 +71,14 @@ export const generateDinner = (
     }
   );
   
-  // Compose the main dinner meal using the new helper function
+  // Compose the main dinner meal using the helper function
   let main = composeDinnerMeal(
     proteinWithLocalName,
     veggie1,
     veggie2,
     curryPortion,
     veggiePortion,
-    rotiPortion,
+    rotiCount,
     ricePortion
   );
   

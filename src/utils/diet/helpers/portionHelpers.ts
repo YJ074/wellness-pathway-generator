@@ -53,6 +53,19 @@ export const getPortionSize = (
   return options.standard;
 };
 
+// Helper to get bread portion size (rotis/chapatis/phulkas use numbers, not containers)
+export const getBreadPortionSize = (
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  if (isWeightLoss) {
+    return "1";  // 1 roti for weight loss
+  } else if (isProteinFocus) {
+    return "2";  // 2 rotis for protein focus
+  }
+  return "2";    // 2 rotis standard
+};
+
 // Helper for creating standardized meal items with portion sizes
 export const createMealItem = (
   itemName: string,
@@ -108,8 +121,9 @@ export const composeDinnerMeal = (
   veggie2: string,
   curryPortion: string,
   veggiePortion: string,
-  rotiPortion: string,
+  rotiCount: string,
   ricePortion: string
 ): string => {
-  return `${protein} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiPortion}) or Bhura Chaval (${ricePortion} Brown Rice)`;
+  return `${protein} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Bhura Chaval (${ricePortion} Brown Rice)`;
 };
+
