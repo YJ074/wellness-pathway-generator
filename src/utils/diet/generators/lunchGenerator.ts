@@ -27,6 +27,7 @@ export const generateLunch = (
   }
   
   const protein = proteins[dayIndex % proteins.length];
+  // Make sure we use a grain in every meal for consistent carb balance
   const grain = grains[dayIndex % grains.length];
   const veggie1 = vegetables[dayIndex % vegetables.length];
   const veggie2 = vegetables[(dayIndex + 5) % vegetables.length];
@@ -43,13 +44,38 @@ export const generateLunch = (
     proteinWithLocalName = 'Rajma (Kidney Beans)';
   }
   
+  // Ensure local names for grains too
+  let grainWithLocalName = grain;
+  if (grain === 'Rice Flakes' && !grain.includes('(')) {
+    grainWithLocalName = 'Rice Flakes (Poha)';
+  } else if (grain === 'Broken Wheat' && !grain.includes('(')) {
+    grainWithLocalName = 'Broken Wheat (Daliya)';
+  } else if (grain.includes('Millet') && !grain.includes('(')) {
+    if (grain.includes('Foxtail')) {
+      grainWithLocalName = 'Foxtail Millet (Kangni)';
+    } else if (grain.includes('Pearl')) {
+      grainWithLocalName = 'Pearl Millet (Bajra)';
+    } else if (grain.includes('Finger')) {
+      grainWithLocalName = 'Finger Millet (Ragi)';
+    } else if (grain.includes('Little')) {
+      grainWithLocalName = 'Little Millet (Kutki)';
+    } else if (grain.includes('Barnyard')) {
+      grainWithLocalName = 'Barnyard Millet (Samvat)';
+    } else if (grain.includes('Kodo')) {
+      grainWithLocalName = 'Kodo Millet (Kodra)';
+    } else if (grain.includes('Proso')) {
+      grainWithLocalName = 'Proso Millet (Barri)';
+    }
+  }
+
+  // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   if (isWeightLoss) {
-    main = `${grain} (small portion, 1/2 cup), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), small bowl of curd (Dahi - 1/2 cup)`;
+    main = `${grainWithLocalName} (1/2 cup or 1 roti), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), small bowl of curd (Dahi - 1/2 cup)`;
   } else if (isProteinFocus) {
-    main = `${grain} (3/4 cup), double portion of ${proteinWithLocalName} curry (1 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (Dahi - 1 cup)`;
+    main = `${grainWithLocalName} (3/4 cup or 2 rotis), double portion of ${proteinWithLocalName} curry (1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), bowl of curd (Dahi - 1 cup)`;
   } else {
-    main = `${grain} (3/4 cup), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} stir-fry (1 cup), bowl of curd (Dahi - 1 cup)`;
+    main = `${grainWithLocalName} (3/4 cup or 2 rotis), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), bowl of curd (Dahi - 1 cup)`;
   }
   if (allergies) {
     // Remove or swap allergy terms inside lunch text (rough approach)

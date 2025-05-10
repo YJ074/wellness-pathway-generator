@@ -81,7 +81,9 @@ const PDFMealItem = ({
           /(Amaranth|Rajgira)/,
           /(Buckwheat|Kuttu)/,
           /(Rice Flakes|Poha)/,
-          /(Broken Wheat|Daliya|Dalia)/
+          /(Broken Wheat|Daliya|Dalia)/,
+          /(Brown Rice|Bhura Chaval)/,
+          /(White Rice|Safed Chaval)/
         ];
         
         // Check each pattern and add highlighting if found
