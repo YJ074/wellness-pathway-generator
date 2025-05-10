@@ -46,8 +46,8 @@ export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency
   if (exerciseFrequency === '5+') baseCalories = 350;
   else if (exerciseFrequency === '3-4') baseCalories = 280;
   
-  // Apply progression factor based on week number (5% increase per 2 weeks, max 50%)
-  const progressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * 0.05), 1.5);
+  // Apply progression factor based on week number (5% increase every 2 weeks, up to 80% more)
+  const progressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * 0.05), 1.8);
   return Math.round(baseCalories * progressionFactor);
 };
 

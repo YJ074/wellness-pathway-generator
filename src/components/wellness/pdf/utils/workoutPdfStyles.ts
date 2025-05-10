@@ -88,4 +88,12 @@ export const workoutPdfStyles = StyleSheet.create({
     color: '#4b5563',
     marginBottom: 5,
   },
+  recoveryNote: {
+    fontSize: 9,
+    fontStyle: 'italic',
+    color: '#4b5563',
+    marginLeft: 8,
+    marginTop: 3,
+    marginBottom: 6,
+  },
 });

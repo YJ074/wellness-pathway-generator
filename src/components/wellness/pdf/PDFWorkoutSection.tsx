@@ -10,7 +10,9 @@ import PDFRestDayContent from './sections/PDFRestDayContent';
 import PDFWorkoutContent from './sections/PDFWorkoutContent';
 import { 
   getWeekInfoFromDay,
-  isRecoveryDay
+  isRecoveryDay,
+  getEstimatedCaloriesBurned,
+  getDifficultyLevel
 } from './utils/workoutPdfUtils';
 
 interface PDFWorkoutSectionProps {
@@ -30,31 +32,14 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   const exerciseFrequency = formData.exerciseFrequency || 'sedentary';
   const fitnessGoal = formData.fitnessGoal || 'maintenance';
   
-  // Calculate estimated workout calories burned with progression
-  // Start with base calories and increase by 5% every 2 weeks (up to 50% more)
-  const baseCalories = isRestDay ? 100 : 
-                    (exerciseFrequency === '5+' ? 350 :
-                    exerciseFrequency === '3-4' ? 280 : 200);
-                    
-  const weekNumber = Math.floor((validDayNumber - 1) / 7) + 1;
-  const calorieProgressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * 0.05), 1.5);
-  const estimatedCaloriesBurned = Math.round(baseCalories * calorieProgressionFactor);
-  
-  // Determine fitness level based on week progression
-  let difficultyLevel = 'Beginner';
-  
-  // Progress difficulty level based on weeks completed
-  if (exerciseFrequency === '5+' || (exerciseFrequency === '3-4' && weekNumber > 4)) {
-    difficultyLevel = 'Advanced';
-  } else if (exerciseFrequency === '3-4' || (exerciseFrequency === '1-2' && weekNumber > 6)) {
-    difficultyLevel = 'Intermediate';
-  } else if (weekNumber > 8) {
-    // Even beginners progress after 8 weeks
-    difficultyLevel = 'Intermediate';
-  }
-  
   // Get week information based on day number
-  const { weekNumber: displayWeekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
+  const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
+  
+  // Calculate estimated workout calories burned with progression
+  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(isRestDay, exerciseFrequency, weekNumber);
+  
+  // Determine fitness level based on week progression using the utility function
+  const difficultyLevel = getDifficultyLevel(exerciseFrequency, weekNumber);
   
   // Determine focus area through rotation or use the one from workout day
   const focusArea = workoutDay?.focusArea || 
@@ -69,7 +54,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
       
       {/* Week and progression information */}
       <PDFWorkoutWeekInfo 
-        weekNumber={displayWeekNumber} 
+        weekNumber={weekNumber} 
         isDeloadWeek={isDeloadWeek} 
         focusArea={focusArea} 
       />

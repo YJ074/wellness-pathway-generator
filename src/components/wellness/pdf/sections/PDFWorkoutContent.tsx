@@ -57,6 +57,7 @@ const PDFWorkoutContent = ({ workoutDay, estimatedCaloriesBurned }: PDFWorkoutCo
       
       <Text style={workoutPdfStyles.calorieInfo}>
         Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
+        {workoutDay.day > 14 ? " (includes progressive intensity)" : ""}
       </Text>
     </View>
   );
