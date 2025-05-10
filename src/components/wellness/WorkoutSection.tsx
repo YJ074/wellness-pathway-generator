@@ -2,6 +2,7 @@
 import React from "react";
 import { Dumbbell } from "lucide-react";
 import { WorkoutDay } from "@/types/workout";
+import { Badge } from "@/components/ui/badge";
 
 interface WorkoutSectionProps {
   workoutDay?: WorkoutDay;
@@ -48,13 +49,66 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
   };
 
   const isRestDay = workoutDay?.isRestDay;
+  
+  // Calculate weekly progression
+  const calculateWeekAndFocus = (day?: number) => {
+    if (!day) return { week: 1, focus: "General Fitness" };
+    
+    const weekNumber = Math.floor((day - 1) / 7) + 1;
+    const isDeloadWeek = (weekNumber % 4 === 0);
+    
+    // Determine workout goal focus based on week pattern
+    const getWorkoutGoalFocus = () => {
+      // Each week emphasizes different fitness aspects in a cycle
+      const weekRotation = weekNumber % 3;
+      
+      if (weekRotation === 0) return 'Flexibility & Mobility';
+      if (weekRotation === 1) return 'Strength & Stability';
+      return 'Endurance & Balance';
+    };
+    
+    return { 
+      week: weekNumber,
+      isDeload: isDeloadWeek,
+      focus: isDeloadWeek ? "Recovery & Regeneration" : getWorkoutGoalFocus() 
+    };
+  };
+  
+  const weekInfo = calculateWeekAndFocus(workoutDay?.day);
+
+  // Get the difficulty level display name
+  const getDifficultyDisplay = () => {
+    if (fitnessLevel === 'advanced') return "Advanced";
+    if (fitnessLevel === 'intermediate') return "Intermediate";
+    return "Beginner";
+  };
+  
+  // Get appropriate badge color based on difficulty
+  const getDifficultyColor = () => {
+    if (fitnessLevel === 'advanced') return "text-white bg-red-500 hover:bg-red-600";
+    if (fitnessLevel === 'intermediate') return "text-white bg-amber-500 hover:bg-amber-600";
+    return "text-white bg-green-500 hover:bg-green-600";
+  };
 
   return (
     <div className="space-y-4 border-b pb-6">
-      <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
-        <Dumbbell className="w-5 h-5" />
-        {workoutDay?.isRestDay ? "Rest Day" : "Workout (Personalized)"}
-      </h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
+          <Dumbbell className="w-5 h-5" />
+          {workoutDay?.isRestDay ? "Rest Day" : "Workout (Personalized)"}
+        </h3>
+        
+        <Badge className={getDifficultyColor()}>
+          {getDifficultyDisplay()}
+        </Badge>
+      </div>
+      
+      {/* Week and Focus Information */}
+      {workoutDay?.day && (
+        <div className="text-sm text-muted-foreground italic">
+          Week {weekInfo.week} {weekInfo.isDeload ? " (Deload Week)" : ""} - Focus: {weekInfo.focus}
+        </div>
+      )}
       
       {isRestDay ? (
         <div className="pl-2">
@@ -77,7 +131,12 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
               ))}
             </ul>
             
-            <h4 className="font-medium mt-3">Main Exercises:</h4>
+            <div className="flex items-center gap-2 mt-3">
+              <h4 className="font-medium">Main Exercises:</h4>
+              <Badge variant="outline" className="text-xs">
+                {weekInfo.isDeload ? "Recovery Focus" : weekInfo.focus}
+              </Badge>
+            </div>
             <div className="space-y-2">
               {workoutDay.exercises.map((exercise, index) => (
                 <div key={index}>

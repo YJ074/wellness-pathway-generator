@@ -14,6 +14,8 @@ export type WorkoutDay = {
   warmup: string[];
   exercises: ExerciseType[];
   cooldown: string[];
+  focusArea?: string; // New field for weekly focus area
+  progression?: string; // New field for progression information
 };
 
 export type FitnessLevel = 'beginner' | 'intermediate' | 'advanced';
