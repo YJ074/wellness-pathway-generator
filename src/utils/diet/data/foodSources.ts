@@ -9,21 +9,27 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Curd', 'Buttermilk', 'Besan (Gram Flour)', 'Sattu',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
       'Channa Flour Roti', 'Greek Yogurt', 'Cottage Cheese', 
-      'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans'
+      'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans',
+      'Whey Protein', 'Protein-Enriched Milk', 'High-Protein Yogurt',
+      'Chhena', 'Milk Solids (Khoya)'
     ],
     'lacto-ovo-vegetarian': [
       'Paneer', 'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
       'Curd', 'Buttermilk', 'Besan (Gram Flour)', 'Egg Whites',
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
       'Channa Flour Roti', 'Greek Yogurt', 'Boiled Eggs', 'Egg Bhurji',
-      'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans'
+      'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans',
+      'Whey Protein', 'Protein-Enriched Milk', 'Egg Protein Powder',
+      'High-Protein Yogurt', 'Egg Curry'
     ],
     'pure-vegetarian': [
       'Paneer', 'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
       'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Sattu',
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
       'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Hemp Seeds', 
-      'Kala Chana', 'White Beans', 'Moth Beans'
+      'Kala Chana', 'White Beans', 'Moth Beans',
+      'Protein-Enriched Milk', 'High-Protein Yogurt', 'Soya Milk',
+      'Pea Protein', 'Chhena', 'Milk Solids (Khoya)'
     ],
     'vegan': [
       'Soya Chunks', 'Tofu', 'Tempeh', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
@@ -31,7 +37,9 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
       'Channa Flour Roti', 'Lentil Soup', 'Hemp Seeds', 'Chia Seeds',
       'Kala Chana', 'White Beans', 'Moth Beans', 'Quinoa',
-      'Seitan', 'Textured Vegetable Protein', 'Nutritional Yeast'
+      'Seitan', 'Textured Vegetable Protein', 'Nutritional Yeast',
+      'Pea Protein', 'Spirulina', 'Hemp Protein', 'Brown Rice Protein',
+      'Edamame', 'Soaked Almonds', 'Sunflower Seed Butter', 'Vegan Protein Shake'
     ],
     'pure-jain': [
       // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg, NO mushrooms, NO fermented
@@ -39,14 +47,18 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Moong Dal', 'Masoor Dal', 'Urad Dal', 'Chana Dal', 
       'Besan (Gram Flour)', 'Chickpeas', 'Rajma',
       'White Beans', 'Channa Flour Roti', 'Hemp Seeds', 'Peanuts',
-      'Dry Fruits (assorted and soaked)'
+      'Dry Fruits (assorted and soaked)', 'Milk Solids (Khoya)',
+      'Protein-Enriched Milk', 'High-Protein Yogurt', 'Almond Milk',
+      'Pea Protein (Pure Extract)', 'Sunflower Seeds', 'Pumpkin Seeds'
     ],
     'sattvic': [
       'Paneer', 'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
       'Mixed Sprouts', 'Buttermilk', 'Peanuts', 'Whole Moong',
       'Dried Fruits (in moderation)', 'Sprouted Grains', 'Cow Milk',
       'Fresh Yogurt', 'Ghee', 'Organic Honey', 'Fresh Cottage Cheese',
-      'Kheer', 'White Beans', 'Channa Flour Roti', 'Amaranth'
+      'Kheer', 'White Beans', 'Channa Flour Roti', 'Amaranth',
+      'Soaked and Peeled Almonds', 'Protein-Enriched Milk', 
+      'High-Protein Yogurt', 'Sattva Protein Shake', 'Organic Soy Milk'
     ],
     'non-vegetarian': [
       'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
@@ -54,7 +66,9 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Chana', 'Moong Dal', 'Toor Dal', 'Mixed Sprouts',
       'Lean Mutton', 'Farm-Raised Prawns', 'Rohu Fish',
       'Grilled Chicken Tikka', 'Egg Whites', 'Greek Yogurt',
-      'Tandoori Fish', 'Free-Range Eggs'
+      'Tandoori Fish', 'Free-Range Eggs', 'Whey Protein',
+      'Egg Protein', 'Chicken Breast', 'Tuna', 'Salmon',
+      'Protein-Enriched Milk', 'High-Protein Yogurt'
     ]
   };
   return filterAllergies(proteins[dietaryPreference] || proteins['lacto-vegetarian'], allergies);

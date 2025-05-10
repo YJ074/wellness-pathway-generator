@@ -6,7 +6,9 @@ import {
   getLocalizedProteinName, 
   getLocalizedGrainName,
   composeRegionalMeal,
-  getBreadPortionSize
+  getBreadPortionSize,
+  getVeganProteinAlternative,
+  getProteinPortion
 } from '../helpers/portionHelpers';
 
 export const generateLunch = (
@@ -36,14 +38,18 @@ export const generateLunch = (
     return lunch;
   }
   
-  const protein = proteins[dayIndex % proteins.length];
+  // Ensure we get at least 2 protein sources for each lunch to maximize protein intake
+  const protein1 = proteins[dayIndex % proteins.length];
+  const protein2 = proteins[(dayIndex + 7) % proteins.length]; // Use a different protein source
+  
   // Make sure we use a grain in every meal for consistent carb balance
   const grain = grains[dayIndex % grains.length];
   const veggie1 = vegetables[dayIndex % vegetables.length];
   const veggie2 = vegetables[(dayIndex + 5) % vegetables.length];
   
-  // Add local names to protein if it doesn't already have them
-  const proteinWithLocalName = getLocalizedProteinName(protein);
+  // Add local names to proteins if they don't already have them
+  const protein1WithLocalName = getLocalizedProteinName(protein1);
+  const protein2WithLocalName = getLocalizedProteinName(protein2);
   
   // Ensure local names for grains too with specific preparation method
   const grainWithLocalName = getLocalizedGrainName(grain);
@@ -54,11 +60,11 @@ export const generateLunch = (
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   if (isWeightLoss) {
-    main = `${grainWithLocalName} (${rotiCount} roti or ½ katori rice), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${grainWithLocalName} (${rotiCount} roti or ½ katori rice), ${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   } else if (isProteinFocus) {
-    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), double portion of ${proteinWithLocalName} curry (1 katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), double portion of ${protein1WithLocalName} and ${protein2WithLocalName} curry (1 katori - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   } else {
-    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), ${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   }
   
   // Add curd (probiotic) to every lunch - a staple in Indian diets

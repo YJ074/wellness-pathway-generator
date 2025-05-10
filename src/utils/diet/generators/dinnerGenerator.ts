@@ -7,7 +7,9 @@ import {
   getBreadPortionSize,
   composeRegionalMeal,
   composeDinnerMeal,
-  getPortionSize
+  getPortionSize,
+  getVeganProteinAlternative,
+  getProteinPortion
 } from '../helpers/portionHelpers';
 
 export const generateDinner = (
@@ -36,13 +38,16 @@ export const generateDinner = (
     return dinner;
   }
   
-  // Select ingredients for today's dinner
-  const protein = proteins[(dayIndex + 3) % proteins.length];
+  // Select ingredients for today's dinner - use 2 protein sources for better protein diversity
+  const protein1 = proteins[(dayIndex + 3) % proteins.length];
+  const protein2 = proteins[(dayIndex + 11) % proteins.length]; // Different protein than lunch
+  
   const veggie1 = vegetables[(dayIndex + 2) % vegetables.length];
   const veggie2 = vegetables[(dayIndex + 8) % vegetables.length];
   
-  // Add local names to protein if it doesn't already have them
-  const proteinWithLocalName = getLocalizedProteinName(protein);
+  // Add local names to proteins if they don't already have them
+  const protein1WithLocalName = getLocalizedProteinName(protein1);
+  const protein2WithLocalName = getLocalizedProteinName(protein2);
   
   // Define portion sizes based on dietary goals
   const curryPortion = getPortionSize(
@@ -72,16 +77,8 @@ export const generateDinner = (
     }
   );
   
-  // Compose the main dinner meal using the helper function
-  let main = composeDinnerMeal(
-    proteinWithLocalName,
-    veggie1,
-    veggie2,
-    curryPortion,
-    veggiePortion,
-    rotiCount,
-    ricePortion
-  );
+  // Build a protein-optimized dinner with both protein sources
+  let main = `${protein1WithLocalName} and ${protein2WithLocalName} combined curry (${curryPortion} - protein-optimized), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Bhura Chaval (${ricePortion} Brown Rice)`;
   
   // Always include buttermilk (probiotic) with dinner
   main += `, chaas (1 glass)`;

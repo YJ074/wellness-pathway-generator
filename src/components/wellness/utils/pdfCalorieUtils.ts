@@ -13,7 +13,13 @@ export const getEstimatedCalories = (mealType: string, baseCalories: number, goa
 };
 
 // Helper to estimate macros based on calories, goals, weight, and gender
-export const estimateMacros = (totalCalories: number, fitnessGoal: string, weightKg: number = 70, gender: string = 'female') => {
+export const estimateMacros = (
+  totalCalories: number, 
+  fitnessGoal: string, 
+  weightKg: number = 70, 
+  gender: string = 'female',
+  dietaryPreference?: string
+) => {
   // Calculate protein based on weight and gender
   // Female: 1g per kg, Male: 1.2-1.5g per kg based on goals
   let proteinPerKg = gender === 'female' ? 1.0 : 1.2; // Default starting values
@@ -27,8 +33,13 @@ export const estimateMacros = (totalCalories: number, fitnessGoal: string, weigh
     proteinPerKg = gender === 'female' ? 1.0 : 1.2; // Maintenance
   }
   
-  // Calculate protein in grams based on weight - cap at 100g to avoid unrealistic values without supplements
-  const proteinGrams = Math.min(Math.round(weightKg * proteinPerKg), 100);
+  // For vegan diets, slightly increase the protein recommendation to account for lower bioavailability
+  if (dietaryPreference === 'vegan') {
+    proteinPerKg += 0.1;
+  }
+  
+  // Calculate protein in grams based on weight - cap at 120g to avoid unrealistic values without supplements
+  const proteinGrams = Math.min(Math.round(weightKg * proteinPerKg), 120);
   
   // Calculate protein calories
   const proteinCalories = proteinGrams * 4; // 4 calories per gram of protein

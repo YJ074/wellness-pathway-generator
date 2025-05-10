@@ -20,6 +20,14 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
     fontFamily: 'Helvetica',
   },
+  proteinNote: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    color: '#555',
+    lineHeight: 1.3,
+    marginTop: 2,
+    fontFamily: 'Helvetica',
+  }
 });
 
 interface PDFNutritionSummaryProps {
@@ -33,6 +41,7 @@ interface PDFNutritionSummaryProps {
   weightKg?: number;
   fitnessGoal?: string;
   gender?: string;
+  dietaryPreference?: string;
 }
 
 const PDFNutritionSummary = ({ 
@@ -40,13 +49,30 @@ const PDFNutritionSummary = ({
   water, 
   macros,
   gender,
-  weightKg
+  weightKg,
+  dietaryPreference
 }: PDFNutritionSummaryProps) => {
   // Add protein calculation note if weight and gender are provided
   let proteinNote = '';
   if (gender && weightKg) {
     const proteinFactor = gender === 'female' ? '1' : '1.2-1.5'; 
     proteinNote = `(${proteinFactor}g per kg bodyweight)`;
+  }
+  
+  // Add specific protein source recommendations based on dietary preference
+  let proteinSources = '';
+  if (dietaryPreference) {
+    const proteinRecommendations: Record<string, string> = {
+      'vegan': 'Key protein sources: legumes, tofu, tempeh, seitan, nutritional yeast, plant protein powders',
+      'lacto-vegetarian': 'Key protein sources: dairy, paneer, legumes, beans, lentils, nuts, seeds',
+      'lacto-ovo-vegetarian': 'Key protein sources: eggs, dairy, legumes, beans, lentils, nuts, seeds',
+      'pure-vegetarian': 'Key protein sources: dairy, paneer, soy products, legumes, beans, lentils',
+      'sattvic': 'Key protein sources: dairy, legumes (especially mung), nuts, seeds, whole grains',
+      'pure-jain': 'Key protein sources: dairy, approved legumes, nuts, seeds (avoid fermented foods)',
+      'non-vegetarian': 'Key protein sources: eggs, lean poultry, fish, dairy, legumes, nuts'
+    };
+    
+    proteinSources = proteinRecommendations[dietaryPreference] || '';
   }
   
   return (
@@ -61,6 +87,7 @@ const PDFNutritionSummary = ({
       <Text style={styles.nutritionText}>
         Micronutrients: Calcium, Iron, Vitamins A, B-complex (B12), C, D, E, Zinc, Magnesium
       </Text>
+      {proteinSources && <Text style={styles.proteinNote}>{proteinSources}</Text>}
     </View>
   );
 };

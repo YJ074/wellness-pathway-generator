@@ -58,7 +58,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   const weightKg = formData.weight ? parseInt(formData.weight) : 70;
   
   // Pass weight to macro calculator
-  const macros = estimateMacros(dailyCalories, formData.fitnessGoal || 'maintenance', weightKg);
+  const macros = estimateMacros(dailyCalories, formData.fitnessGoal || 'maintenance', weightKg, formData.gender);
   
   return (
     <View style={styles.planSection}>
@@ -132,6 +132,9 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           water={day.water || 2.5}
           macros={macros}
+          weightKg={weightKg}
+          gender={formData.gender}
+          dietaryPreference={formData.dietaryPreference}
         />
       </View>
       
