@@ -46,7 +46,7 @@ export const generateBreakfast = (
     'Vegetable Dalia (1 cup) with almond milk (1/2 cup)',
     'Ragi Idli (3 pieces) with tomato sambar (1/2 cup)',
     'Bajra Khichdi (1 cup) with buttermilk (1 glass)',
-    'Jowar Dosa (2 pieces) with vegetable kurma (1/2 cup)',
+    'Jowar Roti (2 pieces) with vegetable kurma (1/2 cup)',
     'Amaranth Porridge (1 cup) with seasonal fruits',
     'Buckwheat Pancakes (2) with honey (1 tsp)',
     'Quinoa Upma (1 cup) with coconut chutney (2 tbsp)'

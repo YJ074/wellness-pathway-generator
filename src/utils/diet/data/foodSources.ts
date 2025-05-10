@@ -61,19 +61,19 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
 
 export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
   const allGrains = dietaryPreference === 'pure-jain' ? [
-      'Rice (Local Variety)', 'Broken Wheat', 'Jowar',
-      'Bajra', 'Whole Wheat Atta', 'Poha',
-      'Local Millet Varieties', 'Barley', 'Rice Flakes',
+      'Rice (Local Variety)', 'Roti', 'Jowar Roti',
+      'Bajra Roti', 'Multigrain Roti', 'Poha',
+      'Local Millet Varieties', 'Barley Roti', 'Rice Flakes',
       'White Rice', 'Red Rice', 'Barnyard Millet (Samvat)',
-      'Little Millet (Kutki)', 'Amaranth (Rajgira)',
-      'Buckwheat (Kuttu)', 'Quinoa'
+      'Little Millet (Kutki)', 'Amaranth (Rajgira) Roti',
+      'Buckwheat (Kuttu) Roti', 'Quinoa'
     ] : [
-      'Rice (Local Variety)', 'Broken Wheat', 'Ragi', 'Jowar',
-      'Bajra', 'Whole Wheat Atta', 'Poha', 'Local Millet Varieties',
-      'Suji (Semolina)', 'Barley', 'Mixed Millet Roti', 'Rice Flakes',
+      'Rice (Local Variety)', 'Roti', 'Ragi Roti', 'Jowar Roti',
+      'Bajra Roti', 'Multigrain Roti', 'Poha', 'Local Millet Rotis',
+      'Suji (Semolina) Roti', 'Barley Roti', 'Mixed Millet Roti', 'Rice Flakes',
       'Brown Rice', 'Black Rice', 'Red Rice', 'Wild Rice',
-      'Foxtail Millet (Kangni)', 'Little Millet (Kutki)',
-      'Amaranth (Rajgira)', 'Buckwheat (Kuttu)', 'Quinoa'
+      'Foxtail Millet (Kangni) Roti', 'Little Millet (Kutki) Roti',
+      'Amaranth (Rajgira) Roti', 'Buckwheat (Kuttu) Roti', 'Quinoa'
     ];
   return filterAllergies(allGrains, allergies);
 };
