@@ -48,18 +48,28 @@ const PDFMealItem = ({
   dailyCalories, 
   goalFactor 
 }: PDFMealItemProps) => {
-  // Function to highlight local names in parentheses
+  // Enhanced function to highlight local names in parentheses or with a dash
   const formatMealDescription = (text: string) => {
-    // Split by parts that may contain local names in parentheses
-    const parts = text.split(/(\([^)]+\))/g);
+    // First, handle patterns with dash like "Rice Flakes - Poha"
+    const dashParts = text.split(/(\s-\s[^,\.]+)/g);
     
-    return parts.map((part, index) => {
-      // If this part is a parenthetical expression (likely a local name)
-      if (part.startsWith('(') && part.endsWith(')')) {
-        return <Text key={index} style={styles.localNamesHighlight}>{part}</Text>;
+    return dashParts.map((part, dashIndex) => {
+      // If this part contains a dash with a local name
+      if (part.match(/\s-\s[^,\.]+/)) {
+        return <Text key={`dash-${dashIndex}`} style={styles.localNamesHighlight}>{part}</Text>;
       }
-      // Regular text
-      return <React.Fragment key={index}>{part}</React.Fragment>;
+      
+      // For regular text or parts without dashes, process parenthetical expressions
+      const parentheticalParts = part.split(/(\([^)]+\))/g);
+      
+      return parentheticalParts.map((subPart, parenthIndex) => {
+        // If this is a parenthetical expression (likely a local name)
+        if (subPart.startsWith('(') && subPart.endsWith(')')) {
+          return <Text key={`parent-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>;
+        }
+        // Regular text
+        return <React.Fragment key={`text-${dashIndex}-${parenthIndex}`}>{subPart}</React.Fragment>;
+      });
     });
   };
 
