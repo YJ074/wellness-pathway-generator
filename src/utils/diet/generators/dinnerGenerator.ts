@@ -20,7 +20,7 @@ export const generateDinner = (
     const regionalDinner = regionalFoods.mains[(dayIndex + 2) % regionalFoods.mains.length];
     let dinner = "";
     if (isWeightLoss) {
-      dinner = `${regionalDinner} (light portion for evening)`;
+      dinner = `${regionalDinner} (lighter portion for evening)`;
     } else if (isProteinFocus) {
       dinner = `${regionalDinner} with extra protein`;
     } else {
@@ -53,15 +53,15 @@ export const generateDinner = (
   // Include explicit carb portion in every dinner (rotis or rice)
   let main = "";
   if (isWeightLoss) {
-    main = `${proteinWithLocalName} curry (light, 3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), Wheat Roti (1 piece) or Brown Rice (Bhura Chaval - 1/3 cup)`;
+    main = `${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori), Roti (1 roti) or Bhura Chaval (¼ katori Brown Rice)`;
   } else if (isProteinFocus) {
-    main = `${proteinWithLocalName} curry (generous portion, 1 cup), ${veggie1} and ${veggie2} sabzi (1 cup), Wheat Roti (2 pieces) or Brown Rice (Bhura Chaval - 1/2 cup)`;
+    main = `${proteinWithLocalName} curry (1 katori), ${veggie1} and ${veggie2} sabzi (1 katori), Roti (2 rotis) or Bhura Chaval (½ katori Brown Rice)`;
   } else {
-    main = `${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup), Wheat Roti (2 pieces) or Brown Rice (Bhura Chaval - 1/2 cup)`;
+    main = `${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori), Roti (2 rotis) or Bhura Chaval (½ katori Brown Rice)`;
   }
   
   // Always include buttermilk (probiotic) with dinner
-  main += `, small bowl of buttermilk (Chaas - 1 cup)`;
+  main += `, chaas (1 glass)`;
   
   // For days that need additional prebiotics, add them to dinner
   if (dayIndex % 3 === 0) {

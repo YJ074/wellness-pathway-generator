@@ -21,7 +21,7 @@ export const generateLunch = (
     const regionalLunch = regionalFoods.mains[dayIndex % regionalFoods.mains.length];
     let lunch = "";
     if (isWeightLoss) {
-      lunch = `${regionalLunch} (reduced portion for weight management)`;
+      lunch = `${regionalLunch} (smaller portion)`;
     } else if (isProteinFocus) {
       lunch = `${regionalLunch} with extra protein portion`;
     } else {
@@ -56,39 +56,39 @@ export const generateLunch = (
   // Ensure local names for grains too with specific preparation method
   let grainWithLocalName = grain;
   if (grain.includes('Rice Flakes') && !grain.includes('(')) {
-    grainWithLocalName = 'Rice Flakes (Poha)';
+    grainWithLocalName = 'Poha (Rice Flakes)';
   } else if (grain.includes('Broken Wheat') && !grain.includes('(')) {
-    grainWithLocalName = 'Broken Wheat Porridge (Daliya)';
+    grainWithLocalName = 'Daliya (Broken Wheat Porridge)';
   } else if (grain.includes('Millet') && !grain.includes('(')) {
     if (grain.includes('Foxtail')) {
-      grainWithLocalName = 'Foxtail Millet Roti (Kangni Roti)';
+      grainWithLocalName = 'Kangni Roti (Foxtail Millet Roti)';
     } else if (grain.includes('Pearl')) {
-      grainWithLocalName = 'Pearl Millet Roti (Bajra Roti)';
+      grainWithLocalName = 'Bajra Roti (Pearl Millet Roti)';
     } else if (grain.includes('Finger')) {
-      grainWithLocalName = 'Finger Millet Roti (Ragi Roti)';
+      grainWithLocalName = 'Ragi Roti (Finger Millet Roti)';
     } else if (grain.includes('Little')) {
-      grainWithLocalName = 'Little Millet Roti (Kutki Roti)';
+      grainWithLocalName = 'Kutki Roti (Little Millet Roti)';
     } else if (grain.includes('Barnyard')) {
-      grainWithLocalName = 'Barnyard Millet Khichdi (Samvat Khichdi)';
+      grainWithLocalName = 'Samvat Khichdi (Barnyard Millet Khichdi)';
     } else if (grain.includes('Kodo')) {
-      grainWithLocalName = 'Kodo Millet Roti (Kodra Roti)';
+      grainWithLocalName = 'Kodra Roti (Kodo Millet Roti)';
     } else if (grain.includes('Proso')) {
-      grainWithLocalName = 'Proso Millet Upma (Barri Upma)';
+      grainWithLocalName = 'Barri Upma (Proso Millet Upma)';
     }
   }
 
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   if (isWeightLoss) {
-    main = `${grainWithLocalName} (1/2 cup or 1 roti), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup)`;
+    main = `${grainWithLocalName} (1 roti or ½ katori), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   } else if (isProteinFocus) {
-    main = `${grainWithLocalName} (3/4 cup or 2 rotis), double portion of ${proteinWithLocalName} curry (1 cup), ${veggie1} and ${veggie2} sabzi (1 cup)`;
+    main = `${grainWithLocalName} (2 rotis or ¾ katori), double portion of ${proteinWithLocalName} curry (1 katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   } else {
-    main = `${grainWithLocalName} (3/4 cup or 2 rotis), ${proteinWithLocalName} curry (3/4 cup), ${veggie1} and ${veggie2} sabzi (1 cup)`;
+    main = `${grainWithLocalName} (2 rotis or ¾ katori), ${proteinWithLocalName} curry (¾ katori), ${veggie1} and ${veggie2} sabzi (1 katori)`;
   }
   
   // Add curd (probiotic) to every lunch - a staple in Indian diets
-  main += `, bowl of curd (Dahi - 1 cup)`;
+  main += `, dahi (1 katori)`;
   
   // For days not already featuring prebiotics, add some to the meal
   main = enrichWithPrebiotics(main, dayIndex);

@@ -11,36 +11,37 @@ const styles = StyleSheet.create({
   mealLabel: {
     fontSize: 12,
     marginBottom: 5,
-    fontFamily: 'Roboto',
+    fontFamily: 'Helvetica',
     fontWeight: 700,
   },
   mealDescription: {
     fontSize: 11,
     marginBottom: 4,
     lineHeight: 1.4,
-    fontFamily: 'Roboto',
+    fontFamily: 'Helvetica',
     fontWeight: 400,
   },
   calorieInfo: {
     fontSize: 11,
     color: '#555',
     marginBottom: 4,
-    fontFamily: 'Roboto',
+    fontFamily: 'Helvetica',
     fontWeight: 400,
   },
   localNamesHighlight: {
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
   },
   prebioticHighlight: {
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
     color: '#228B22', // Forest green
   },
   probioticHighlight: {
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
     color: '#1E90FF', // Dodger blue
+  },
+  indianMeasurementHighlight: {
+    fontFamily: 'Helvetica-Bold',
+    color: '#8B4513', // SaddleBrown
   }
 });
 
@@ -59,8 +60,16 @@ const PDFMealItem = ({
   dailyCalories, 
   goalFactor 
 }: PDFMealItemProps) => {
-  // Enhanced function to highlight local names, prebiotics, and probiotics
+  // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
   const formatMealDescription = (text: string) => {
+    // Indian household measurement patterns
+    const measurementPatterns = [
+      /(\d+(?:\.\d+)?\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
+      /(\d+(?:\.\d+)?\s*(?:¼|½|¾)\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
+      /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
+      /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:¼|½|¾)\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi
+    ];
+    
     // First, handle patterns with dash like "Rice Flakes - Poha" or "Broken Wheat - Daliya"
     const dashParts = text.split(/(\s-\s[^,\.]+)/g);
     
@@ -74,6 +83,24 @@ const PDFMealItem = ({
       const parentheticalParts = part.split(/(\([^)]+\))/g);
       
       return parentheticalParts.map((subPart, parenthIndex) => {
+        // Check for Indian measurements first
+        let isMeasurement = false;
+        for (const pattern of measurementPatterns) {
+          if (pattern.test(subPart)) {
+            isMeasurement = true;
+            // Reset the pattern's lastIndex to avoid issues with global flag
+            pattern.lastIndex = 0;
+            const parts = subPart.split(pattern);
+            
+            return parts.map((part, i) => {
+              if (i % 2 === 0) {
+                return <React.Fragment key={`text-${dashIndex}-${parenthIndex}-${i}`}>{part}</React.Fragment>;
+              }
+              return <Text key={`measure-${dashIndex}-${parenthIndex}-${i}`} style={styles.indianMeasurementHighlight}>{part}</Text>;
+            });
+          }
+        }
+        
         // If this is a parenthetical expression (likely a local name)
         if (subPart.startsWith('(') && subPart.endsWith(')')) {
           return <Text key={`parent-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>;

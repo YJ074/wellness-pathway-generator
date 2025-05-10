@@ -20,7 +20,7 @@ export const generateBreakfast = (
     const regionalBreakfast = regionalFoods.breakfast[dayIndex % regionalFoods.breakfast.length];
     
     // Add portion control for weight loss
-    let breakfast = isWeightLoss ? `${regionalBreakfast} (reduced portion)` : regionalBreakfast;
+    let breakfast = isWeightLoss ? `${regionalBreakfast} (smaller portion)` : regionalBreakfast;
     
     // Ensure inclusion of prebiotic/probiotic foods (but don't force it for regional specialties)
     breakfast = enrichWithPrebiotics(breakfast, dayIndex);
@@ -30,34 +30,34 @@ export const generateBreakfast = (
   }
   
   let breakfastOptions = [
-    'Vegetable Poha (Rice Flakes - 1 cup) with curd (1/2 cup)',
-    'Oats Idli (3 pieces) with sambhar (1/2 cup)',
-    'Vegetable Upma (Semolina Porridge - 1 cup) with a side of sprouts (1/2 cup)',
-    'Besan Chilla (Gram Flour Pancakes - 2 pieces) with mint chutney (2 tbsp)',
-    'Multigrain Dosa (2 pieces) with coconut chutney (2 tbsp)',
-    'Masala Daliya (Broken Wheat Porridge - 1 cup) with vegetables',
-    'Ragi Dosa (Finger Millet Dosa - 2 pieces) with tomato chutney (2 tbsp)',
-    'Vegetable Uttapam (2 pieces) with sambar (1/2 cup)',
-    'Moong Dal Cheela (Split Green Gram Pancakes - 2 pieces) with curd (1/2 cup)',
+    'Vegetable Poha (1 katori) with dahi (1 small katori)',
+    'Oats Idli (3 idlis) with sambhar (1 katori)',
+    'Vegetable Upma (1 katori) with a side of sprouts (1 small katori)',
+    'Besan Chilla (2 chillas) with pudina chutney (2 chamach)',
+    'Multigrain Dosa (2 dosas) with nariyal chutney (2 chamach)',
+    'Masala Daliya (1 katori) with seasonal sabzi',
+    'Ragi Dosa (2 dosas) with tamatar chutney (2 chamach)',
+    'Vegetable Uttapam (2 uttapams) with sambar (1 katori)',
+    'Moong Dal Cheela (2 cheelas) with dahi (1 katori)',
     'Steamed Sprouts Dhokla (4 pieces)',
-    'Vegetable Daliya Khichdi (Broken Wheat Porridge - 1 cup)',
-    'Jowar Upma (Sorghum Porridge - 1 cup) with seasonal vegetables',
-    'Quinoa Poha (3/4 cup) with vegetables',
-    'Brown Rice Idli (3 pieces) with tomato chutney (2 tbsp)',
-    'Bajra Roti (Pearl Millet Flatbread - 2 pieces) with vegetable curry (1/2 cup)',
-    'Kodo Millet Upma (Kodra Upma - 1 cup) with coconut chutney (2 tbsp)',
-    'Sattu Paratha (Roasted Gram Flour Flatbread - 2 pieces) with curd (1/2 cup)',
-    'Sprouted Moong Chilla (2 pieces) with pudina chutney (2 tbsp)',
-    'Vegetable Dalia (Broken Wheat Porridge - Daliya - 1 cup) with almond milk (1/2 cup)',
-    'Ragi Idli (Finger Millet Idli - 3 pieces) with tomato sambar (1/2 cup)',
-    'Bajra Khichdi (Pearl Millet Porridge - 1 cup) with buttermilk (1 glass)',
-    'Jowar Roti (Sorghum Flatbread - 2 pieces) with vegetable kurma (1/2 cup)',
-    'Amaranth Porridge (Rajgira Porridge - 1 cup) with seasonal fruits',
-    'Buckwheat Pancakes (Kuttu Pancakes - 2) with honey (1 tsp)',
-    'Proso Millet Upma (Barri Upma - 1 cup) with coconut chutney (2 tbsp)',
-    'Foxtail Millet Upma (Kangni Upma - 1 cup) with vegetable curry (1/2 cup)',
-    'Little Millet Dosa (Kutki Dosa - 2 pieces) with sambar (1/2 cup)',
-    'Barnyard Millet Porridge (Samvat Porridge - 1 cup) with mixed fruits'
+    'Vegetable Daliya Khichdi (1 katori)',
+    'Jowar Upma (1 katori) with seasonal sabzi',
+    'Quinoa Poha (1 katori) with sabzi',
+    'Brown Rice Idli (3 idlis) with tamatar chutney (2 chamach)',
+    'Bajra Roti (2 rotis) with sabzi (1 katori)',
+    'Kodo Millet Upma (Kodra Upma - 1 katori) with nariyal chutney (2 chamach)',
+    'Sattu Paratha (2 parathas) with dahi (1 katori)',
+    'Sprouted Moong Chilla (2 chillas) with pudina chutney (2 chamach)',
+    'Vegetable Dalia (Daliya - 1 katori) with badam milk (1 glass)',
+    'Ragi Idli (3 idlis) with tamatar sambar (1 katori)',
+    'Bajra Khichdi (1 katori) with chaas (1 glass)',
+    'Jowar Roti (2 rotis) with sabzi (1 katori)',
+    'Rajgira Porridge (1 katori) with seasonal fruits',
+    'Kuttu Pancakes (2 pancakes) with shahad (1 chamach)',
+    'Proso Millet Upma (Barri Upma - 1 katori) with nariyal chutney (2 chamach)',
+    'Foxtail Millet Upma (Kangni Upma - 1 katori) with sabzi (1 katori)',
+    'Little Millet Dosa (Kutki Dosa - 2 dosas) with sambar (1 katori)',
+    'Barnyard Millet Porridge (Samvat Porridge - 1 katori) with mixed fruits'
   ];
   
   // Add fruit to breakfast 3-4 times a week (increased frequency since we're removing from lunch/dinner)
@@ -67,7 +67,7 @@ export const generateBreakfast = (
     const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
     const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
     breakfastOptions = breakfastOptions.map(breakfast => 
-      `${breakfast}, with ${seasonalFruit} (1 small piece) and ${dryFruits}`
+      `${breakfast}, with ${seasonalFruit} (1 medium size) and ${dryFruits}`
     );
   } else if (dayIndex % 2 === 0) {
     // On other even days, just add dry fruits without fresh fruit
@@ -77,22 +77,22 @@ export const generateBreakfast = (
   
   if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
     let eggBreakfasts = [
-      'Egg Bhurji (Scrambled Eggs - 2 eggs) with multigrain roti (1 piece)',
-      'Masala Omelette (2 eggs) with vegetable stuffing',
-      'Boiled Eggs (2) with vegetable sandwich (1)',
-      'Egg and Vegetable Wrap (1 whole wheat wrap)',
-      'Egg Akuri (Parsi Style Eggs - 2 eggs) with multigrain toast (1 slice)',
-      'Egg Poha (Rice Flakes with Eggs - 1 cup) with vegetables',
-      'Egg White Omelette (3 egg whites) with spinach and herbs',
-      'Egg Muffins (2) with vegetables',
-      'Egg Upma (Semolina with Eggs - 1 cup) with mixed vegetables'
+      'Anda Bhurji (2 ande) with multigrain roti (1 roti)',
+      'Masala Omelette (2 ande) with sabzi stuffing',
+      'Ubla Anda (2 ande) with sabzi sandwich (1)',
+      'Anda aur Sabzi Wrap (1 whole wheat wrap)',
+      'Anda Akuri (Parsi Style - 2 ande) with multigrain toast (1 slice)',
+      'Anda Poha (1 katori) with sabzi',
+      'Safed Anda Omelette (3 egg whites) with palak and herbs',
+      'Anda Muffins (2 pieces) with sabzi',
+      'Anda Upma (1 katori) with mixed sabzi'
     ];
     
     // Add fruit to egg breakfasts occasionally 
     if (dayIndex % 7 === 1 || dayIndex % 7 === 5) {  // Days 1 and 5 of the week
       const availableFruits = getFruitSources(undefined, allergies);
       const seasonalFruit = availableFruits[(dayIndex + 3) % availableFruits.length];
-      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} (1 small piece)`);
+      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} (1 medium size)`);
     } else if (dayIndex % 2 === 0) {
       // On other even days, add dry fruits
       const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);

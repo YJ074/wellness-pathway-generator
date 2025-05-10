@@ -22,27 +22,27 @@ export const generateMidMorningSnack = (
     const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
     
     // Simple fruit-based snack with minimal processing
-    return `${seasonalFruit} (1 medium piece)${dayIndex % 3 === 0 ? ' with a sprinkle of rock salt and black pepper' : ''}`;
+    return `${seasonalFruit} (1 medium size)${dayIndex % 3 === 0 ? ' with a sprinkle of kala namak and kali mirch' : ''}`;
   }
   
   let midMorningOptions = [
-    'Buttermilk (1 glass)',
-    'Roasted chana (1/4 cup)',
-    'Sprouts salad (1/2 cup)',
-    'Plain yogurt (1/2 cup)',
-    'Handful of mixed nuts (10-12 pieces)',
-    'Cucumber and carrot sticks (1 cup)',
-    'Fresh coconut pieces (1/4 cup)',
-    'Small bowl of makhana (fox nuts, 1/4 cup)',
-    'Roasted pumpkin seeds (2 tbsp)',
-    'Homemade lassi (1 small glass)',
-    'Coconut water (1 glass)',
+    'Chaas (1 glass)',
+    'Bhuna chana (¼ katori)',
+    'Ankurit anaj salad (½ katori)',
+    'Dahi (½ katori)',
+    'Mixed dry fruits (1 mutthi)',
+    'Kheera and gajar sticks (1 katori)',
+    'Nariyal pieces (¼ katori)',
+    'Makhana (fox nuts, ¼ katori)',
+    'Kaddu ke beej (2 chamach)',
+    'Homemade lassi (1 glass)',
+    'Nariyal pani (1 glass)',
     'Ragi malt (1 glass)',
-    'Beetroot juice (1 small glass)',
-    'Homemade vegetable soup (1 small cup)',
-    'Steamed sweet corn kernels (1/2 cup)',
+    'Chukandar juice (1 glass)',
+    'Homemade sabzi soup (1 katori)',
+    'Steam kiya hua makka (½ katori)',
     'Multigrain khakhra (2 pieces)',
-    'Vegetable cutlet (1 small piece, baked)'
+    'Sabzi cutlet (1 piece, baked)'
   ];
   
   // Add dry fruits to mid-morning snack on even-numbered days
@@ -89,34 +89,34 @@ export const generateEveningSnack = (
     
     // Create a more interesting fruit snack
     if (dayIndex % 3 === 0) {
-      return `${seasonalFruit} slices (1 small piece) with a sprinkle of chaat masala`;
+      return `${seasonalFruit} slices (1 medium size) with a sprinkle of chaat masala`;
     } else if (dayIndex % 3 === 1) {
-      return `${seasonalFruit} (1 small piece) with a small handful of mixed seeds (1 tbsp)`;
+      return `${seasonalFruit} (1 medium size) with mixed seeds (1 chamach)`;
     } else {
-      return `${seasonalFruit} (1 small piece)`;
+      return `${seasonalFruit} (1 medium size)`;
     }
   }
   
   let eveningSnackOptions = [
-    'Roasted makhana (1/4 cup)',
-    'Vegetable cutlet (2 small pieces, baked)',
+    'Roasted makhana (¼ katori)',
+    'Sabzi cutlet (2 pieces, baked)',
     'Multigrain dhokla (2 pieces)',
-    'Roasted chana (1/4 cup) with chopped onions and tomatoes',
-    'Masala puffed rice (1/2 cup)',
-    'Steamed corn kernels (1/2 cup) with lemon and black salt',
+    'Bhuna chana (¼ katori) with pyaaz and tamatar',
+    'Masala murmure (½ katori)',
+    'Steamed bhutta dana (½ katori) with nimbu and kala namak',
     'Paneer tikka (4-5 small pieces, grilled)',
-    'Peanut chaat (1/4 cup)',
-    'Roasted sweet potato (1 small)',
-    'Mixed vegetable soup (1 bowl)',
-    'Kala chana chaat (1/2 cup)',
-    'Sprouts bhel (3/4 cup)',
+    'Moongfali chaat (¼ katori)',
+    'Roasted shakarkandi (1 small)',
+    'Mixed sabzi soup (1 katori)',
+    'Kala chana chaat (½ katori)',
+    'Ankurit anaj bhel (¾ katori)',
     'Mini idlis with sambar (4 pieces)',
     'Moong dal cheela (1 piece)',
     'Baked mathri (2 pieces)',
     'Steamed muthia (2 pieces)',
-    'Roasted jowar puffs (1/2 cup)',
-    'Cucumber and mint raita (1 small bowl)',
-    'Spinach and oats tikki (2 small pieces)'
+    'Roasted jowar puffs (½ katori)',
+    'Kheera and pudina raita (1 katori)',
+    'Palak and oats tikki (2 small pieces)'
   ];
   
   if (allergies) {
