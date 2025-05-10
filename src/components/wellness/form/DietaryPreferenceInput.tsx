@@ -16,7 +16,8 @@ const dietaryDescriptions = {
   'pure-vegetarian': 'A diet that excludes all animal products except dairy.',
   'pure-jain': 'Strict Jain satvik diet. Excludes all root vegetables (potato, carrot, beetroot, radish, onion, garlic, ginger), sprouts, fruits (if not traditionally permitted), fermented foods, mushrooms, and absolutely all animal products. Focus on grains, pulses, gourds, leafy vegetables, and dairy.',
   'sattvic': 'A diet rooted in Ayurvedic and yogic traditions, emphasizing pure, natural, and minimally processed foods.',
-  'non-vegetarian': 'A diet that includes all food groups: meats, fish, eggs, and vegetarian options.'
+  'non-vegetarian': 'A diet that includes all food groups: meats, fish, eggs, and vegetarian options.',
+  'vegan': 'Strictly excludes all animal products and by-products including dairy, eggs, honey, and gelatin. Focus on plant-based foods, legumes, grains, nuts, and seeds.'
 };
 
 const DietaryPreferenceInput = ({ value, onChange }: DietaryPreferenceInputProps) => {
@@ -58,6 +59,7 @@ const DietaryPreferenceInput = ({ value, onChange }: DietaryPreferenceInputProps
           <SelectItem value="pure-jain">Pure Jain</SelectItem>
           <SelectItem value="sattvic">Sattvic</SelectItem>
           <SelectItem value="non-vegetarian">Non-Vegetarian</SelectItem>
+          <SelectItem value="vegan">Vegan</SelectItem>
         </SelectContent>
       </Select>
       <p className="text-sm text-muted-foreground mt-1">

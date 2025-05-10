@@ -22,7 +22,10 @@ const PlanDetailsCard = ({ formData }: PlanDetailsProps) => {
         <p><strong>Name:</strong> {formData.name}</p>
         <p><strong>Age:</strong> {formData.age} years</p>
         <p><strong>Weight:</strong> {formData.weight} kg</p>
-        <p><strong>Dietary Preference:</strong> {formData.dietaryPreference}</p>
+        <p><strong>Dietary Preference:</strong> {formData.dietaryPreference
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')}</p>
         <p><strong>Fitness Goal:</strong> {formData.fitnessGoal.replace('-', ' ')}</p>
       </CardContent>
     </Card>

@@ -5,7 +5,8 @@ export type DietaryPreference =
   | 'pure-vegetarian'
   | 'sattvic'
   | 'non-vegetarian'
-  | 'pure-jain';
+  | 'pure-jain'
+  | 'vegan';
 
 export type WellnessGoal = 
   | 'hair-fall-control'

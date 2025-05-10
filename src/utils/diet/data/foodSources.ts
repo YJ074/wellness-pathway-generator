@@ -25,6 +25,14 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Hemp Seeds', 
       'Kala Chana', 'White Beans', 'Moth Beans'
     ],
+    'vegan': [
+      'Soya Chunks', 'Tofu', 'Tempeh', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
+      'Rajma', 'Toor Dal', 'Masoor Dal', 'Urad Dal', 'Sattu',
+      'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
+      'Channa Flour Roti', 'Lentil Soup', 'Hemp Seeds', 'Chia Seeds',
+      'Kala Chana', 'White Beans', 'Moth Beans', 'Quinoa',
+      'Seitan', 'Textured Vegetable Protein', 'Nutritional Yeast'
+    ],
     'pure-jain': [
       // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg, NO mushrooms, NO fermented
       'Paneer (without animal rennet)', 'Curd', 'Buttermilk', 'Toor Dal', 
@@ -53,6 +61,7 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
 };
 
 export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
+  // Grains are mostly the same for all dietary preferences
   const allGrains = dietaryPreference === 'pure-jain' ? [
       'Rice (Local Variety)', 'Wheat Roti', 'Jowar Roti (Sorghum Flatbread)',
       'Bajra Roti (Pearl Millet Flatbread)', 'Multigrain Roti', 'Poha (Rice Flakes)',
@@ -123,22 +132,38 @@ export const getFruitSources = (dietaryPreference?: DietaryPreference, allergies
 };
 
 export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean, allergies?: string) => {
-  let baseSnacks = dietaryPreference === 'pure-jain'
-    ? [
-        'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha (Rice Flakes)',
-        'Dahi (plain curd)', 'Homemade Buttermilk', 'Soaked Dry Fruits',
-        'Lemon Water', 'Cucumber Slices', 'Makhana (Fox Nuts)',
-        'Dry Fruit Ladoo', 'Fruit Salad', 'Coconut Water'
-      ]
-    : [
-        'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
-        'Homemade Poha (Rice Flakes)', 'Boiled Sprouts', 'Seasonal Fruit',
-        'Buttermilk', 'Lemon Water', 'Homemade Chaas',
-        'Makhana (Fox Nuts)', 'Roasted Seeds Mix',
-        'Baked Vegetable Chips', 'Cucumber Raita',
-        'Multigrain Dhokla', 'Vegetable Cutlets',
-        'Ragi (Finger Millet) Cookies', 'Oats Chilla', 'Palak Patta Chaat',
-        'Homemade Trail Mix', 'Steamed Sweet Corn'
-      ];
+  let baseSnacks: string[];
+  
+  if (dietaryPreference === 'vegan') {
+    baseSnacks = [
+      'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
+      'Homemade Poha (Rice Flakes)', 'Boiled Sprouts', 'Seasonal Fruit',
+      'Lemon Water', 'Homemade Herbal Tea', 'Coconut Water',
+      'Makhana (Fox Nuts)', 'Roasted Seeds Mix',
+      'Baked Vegetable Chips', 'Vegetable Cutlets',
+      'Ragi (Finger Millet) Cookies', 'Oats Chilla', 'Palak Patta Chaat',
+      'Homemade Trail Mix', 'Steamed Sweet Corn',
+      'Almond Milk', 'Soy Yogurt', 'Coconut Yogurt'
+    ];
+  } else if (dietaryPreference === 'pure-jain') {
+    baseSnacks = [
+      'Roasted Chana', 'Roasted Peanuts', 'Homemade Poha (Rice Flakes)',
+      'Dahi (plain curd)', 'Homemade Buttermilk', 'Soaked Dry Fruits',
+      'Lemon Water', 'Cucumber Slices', 'Makhana (Fox Nuts)',
+      'Dry Fruit Ladoo', 'Fruit Salad', 'Coconut Water'
+    ];
+  } else {
+    baseSnacks = [
+      'Roasted Chana', 'Puffed Rice', 'Roasted Peanuts',
+      'Homemade Poha (Rice Flakes)', 'Boiled Sprouts', 'Seasonal Fruit',
+      'Buttermilk', 'Lemon Water', 'Homemade Chaas',
+      'Makhana (Fox Nuts)', 'Roasted Seeds Mix',
+      'Baked Vegetable Chips', 'Cucumber Raita',
+      'Multigrain Dhokla', 'Vegetable Cutlets',
+      'Ragi (Finger Millet) Cookies', 'Oats Chilla', 'Palak Patta Chaat',
+      'Homemade Trail Mix', 'Steamed Sweet Corn'
+    ];
+  }
+  
   return filterAllergies(baseSnacks, allergies);
 };

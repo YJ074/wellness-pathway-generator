@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
