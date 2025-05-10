@@ -1,107 +1,13 @@
 
 import React from 'react';
-import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { View, Text } from '@react-pdf/renderer';
 import { WorkoutDay } from '@/types/workout';
 import { FormData } from '../types';
-
-const styles = StyleSheet.create({
-  planSection: {
-    marginBottom: 15,
-    padding: 5,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: '#f9f9f9',
-    padding: 6,
-    borderRadius: 3,
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
-  subsectionTitle: {
-    fontSize: 12,
-    marginTop: 8,
-    marginBottom: 6,
-    paddingLeft: 4,
-    borderLeft: '2pt solid #e2e8f0',
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
-  restDayText: {
-    fontSize: 11,
-    marginBottom: 8,
-    lineHeight: 1.4,
-    paddingLeft: 5,
-    fontFamily: 'Helvetica',
-  },
-  exerciseItem: {
-    marginBottom: 8,
-    paddingLeft: 10,
-  },
-  bulletPoint: {
-    fontSize: 11,
-    marginBottom: 4,
-    lineHeight: 1.4,
-    fontFamily: 'Helvetica',
-  },
-  exerciseLabel: {
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
-  calorieInfo: {
-    fontSize: 11,
-    marginTop: 8,
-    padding: 5,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 3,
-    color: '#555',
-    fontFamily: 'Helvetica',
-  },
-  difficultyLabel: {
-    fontSize: 9,
-    marginLeft: 5,
-    padding: '2 5',
-    borderRadius: 3,
-    color: 'white',
-    fontFamily: 'Helvetica',
-  },
-  beginnerLabel: {
-    backgroundColor: '#22c55e', // green
-  },
-  intermediateLabel: {
-    backgroundColor: '#f59e0b', // amber
-  },
-  advancedLabel: {
-    backgroundColor: '#ef4444', // red
-  },
-  goalTag: {
-    fontSize: 9,
-    marginTop: 3,
-    marginLeft: 10,
-    padding: '1 4',
-    borderRadius: 2,
-    backgroundColor: '#e2e8f0',
-    color: '#334155',
-    fontFamily: 'Helvetica',
-  },
-  weekInfo: {
-    fontSize: 10,
-    marginTop: 4,
-    marginBottom: 4,
-    paddingLeft: 10,
-    color: '#64748b',
-    fontStyle: 'italic',
-    fontFamily: 'Helvetica',
-  },
-  recoveryNote: {
-    fontSize: 10,
-    marginTop: 5,
-    color: '#3b82f6',
-    fontStyle: 'italic',
-    fontFamily: 'Helvetica',
-  }
-});
+import { workoutPdfStyles } from './utils/workoutPdfStyles';
+import PDFWorkoutHeader from './sections/PDFWorkoutHeader';
+import PDFWorkoutWeekInfo from './sections/PDFWorkoutWeekInfo';
+import PDFRestDayContent from './sections/PDFRestDayContent';
+import PDFWorkoutContent from './sections/PDFWorkoutContent';
 
 interface PDFWorkoutSectionProps {
   workoutDay?: WorkoutDay;
@@ -148,91 +54,33 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   
   // Check if it's a deload week (every 4th week)
   const isDeloadWeek = (weekNumber % 4 === 0);
+  const focusArea = workoutDay?.focusArea || getDailyFocusArea();
   
   return (
-    <View style={styles.planSection}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.sectionTitle}>Workout Plan</Text>
-        
-        <View style={[
-          styles.difficultyLabel, 
-          difficultyLevel === 'Beginner' ? styles.beginnerLabel : 
-          difficultyLevel === 'Intermediate' ? styles.intermediateLabel : 
-          styles.advancedLabel
-        ]}>
-          <Text>{difficultyLevel}</Text>
-        </View>
-      </View>
+    <View style={workoutPdfStyles.planSection}>
+      <PDFWorkoutHeader difficultyLevel={difficultyLevel} />
       
       {/* Week and progression information */}
-      <View>
-        <Text style={styles.weekInfo}>
-          Week {weekNumber} {isDeloadWeek ? '(Deload Week)' : ''} - Focus: {workoutDay?.focusArea || getDailyFocusArea()}
-        </Text>
-      </View>
+      <PDFWorkoutWeekInfo 
+        weekNumber={weekNumber} 
+        isDeloadWeek={isDeloadWeek} 
+        focusArea={focusArea} 
+      />
       
       {workoutDay ? (
         workoutDay.isRestDay ? (
-          <View>
-            <Text style={styles.restDayText}>
-              {isRecoveryDay ? 
-                "Recovery Day - Focus on breathwork and gentle mobility. Practice deep breathing exercises (Pranayama) and light stretching to help your body recover." : 
-                "Rest Day - Focus on recovery with light stretching and mobility work. Practice Shavasana (corpse pose) and deep breathing for relaxation."
-              }
-            </Text>
-            
-            {isRecoveryDay && (
-              <Text style={styles.recoveryNote}>
-                Weekly recovery is essential for progress and injury prevention.
-              </Text>
-            )}
-            
-            <Text style={styles.calorieInfo}>
-              Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
-            </Text>
-          </View>
+          <PDFRestDayContent 
+            isRecoveryDay={isRecoveryDay} 
+            estimatedCaloriesBurned={estimatedCaloriesBurned} 
+          />
         ) : (
-          <View>
-            {/* Warm-up Section */}
-            <Text style={styles.subsectionTitle}>Warm-up (5 min)</Text>
-            {workoutDay.warmup.map((exercise, idx) => (
-              <View key={`wu-${dayNumber}-${idx}`} style={styles.exerciseItem}>
-                <Text style={styles.bulletPoint}>• {exercise}</Text>
-              </View>
-            ))}
-            
-            {/* Main Exercises Section with Goal Tag */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.subsectionTitle}>Main Workout (15-20 min)</Text>
-              <View style={styles.goalTag}>
-                <Text>{workoutDay.focusArea}</Text>
-              </View>
-            </View>
-            
-            {workoutDay.exercises.map((exercise, idx) => (
-              <View key={`ex-${dayNumber}-${idx}`} style={styles.exerciseItem}>
-                <Text style={styles.bulletPoint}>
-                  • {exercise.name} - {exercise.reps}
-                  {exercise.description ? ` (${exercise.description})` : ''}
-                </Text>
-              </View>
-            ))}
-            
-            {/* Cool-down Section */}
-            <Text style={styles.subsectionTitle}>Cool-down (5 min)</Text>
-            {workoutDay.cooldown.map((exercise, idx) => (
-              <View key={`cd-${dayNumber}-${idx}`} style={styles.exerciseItem}>
-                <Text style={styles.bulletPoint}>• {exercise}</Text>
-              </View>
-            ))}
-            
-            <Text style={styles.calorieInfo}>
-              Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
-            </Text>
-          </View>
+          <PDFWorkoutContent 
+            workoutDay={workoutDay} 
+            estimatedCaloriesBurned={estimatedCaloriesBurned} 
+          />
         )
       ) : (
-        <Text style={styles.restDayText}>
+        <Text style={workoutPdfStyles.restDayText}>
           No workout data available for this day.
         </Text>
       )}
