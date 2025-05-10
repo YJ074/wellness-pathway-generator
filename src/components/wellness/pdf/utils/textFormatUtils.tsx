@@ -3,18 +3,7 @@ import React, { ReactNode } from 'react';
 import { Text } from '@react-pdf/renderer';
 import { prebioticFoods, probioticFoods } from '@/utils/diet/helpers/prebioticProbioticHelper';
 import { styles } from '../styles/mealItemStyles';
-
-// Helper function to determine if a fruit is a "big fruit" that should be measured in bowls
-export const isBigFruit = (fruitName: string): boolean => {
-  const bigFruits = [
-    'watermelon', 'muskmelon', 'pineapple', 'papaya', 'jackfruit',
-    'cantaloupe', 'honeydew', 'tarbuja', 'kharbooja', 'papita', 'kathal'
-  ];
-  
-  return bigFruits.some(fruit => 
-    fruitName.toLowerCase().includes(fruit.toLowerCase())
-  );
-};
+import { isBigFruit, isKatoriFruit } from '@/utils/diet/helpers/portionHelpers';
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
 export const formatMealDescription = (text: string): ReactNode[] => {
@@ -190,3 +179,4 @@ export const formatMealDescription = (text: string): ReactNode[] => {
   
   return results;
 };
+

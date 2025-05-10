@@ -15,9 +15,27 @@ export const isBigFruit = (fruitName: string): boolean => {
   );
 };
 
+// Helper function to determine if a fruit should be measured in katoris (small numerous fruits)
+export const isKatoriFruit = (fruitName: string): boolean => {
+  const katoriFruits = [
+    'lychee', 'grapes', 'berries', 'strawberry', 'strawberries', 'blueberry', 
+    'blueberries', 'raspberry', 'raspberries', 'blackberry', 'blackberries', 
+    'mulberry', 'mulberries', 'jamun', 'cherries', 'cherry'
+  ];
+  
+  return katoriFruits.some(fruit => 
+    fruitName.toLowerCase().includes(fruit.toLowerCase())
+  );
+};
+
 // Helper to standardize fruit portion display
 export const getStandardFruitPortion = (fruitName: string): string => {
-  return isBigFruit(fruitName) ? "(1 bowl)" : "(1 nos)";
+  if (isBigFruit(fruitName)) {
+    return "(1 bowl)";
+  } else if (isKatoriFruit(fruitName)) {
+    return "(1 katori)";
+  }
+  return "(1 nos)";
 };
 
 // Helper to format protein names with local equivalents
