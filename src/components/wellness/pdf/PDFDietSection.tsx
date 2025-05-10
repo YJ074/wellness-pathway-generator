@@ -50,7 +50,12 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   
   // Calculate estimated calories for this day
   const dailyCalories = day.calories || 2000;
-  const macros = estimateMacros(dailyCalories, formData.fitnessGoal || 'maintenance');
+  
+  // Get weight in kg for protein calculation
+  const weightKg = formData.weight ? parseInt(formData.weight) : 70;
+  
+  // Pass weight to macro calculator
+  const macros = estimateMacros(dailyCalories, formData.fitnessGoal || 'maintenance', weightKg);
   
   return (
     <View style={styles.planSection}>

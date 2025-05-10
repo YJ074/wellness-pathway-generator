@@ -32,6 +32,8 @@ interface PDFNutritionSummaryProps {
     carbs: number;
     fat: number;
   };
+  weightKg?: number;
+  fitnessGoal?: string;
 }
 
 const PDFNutritionSummary = ({ 
