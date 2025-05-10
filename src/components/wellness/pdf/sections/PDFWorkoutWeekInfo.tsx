@@ -13,7 +13,7 @@ const PDFWorkoutWeekInfo = ({ weekNumber, isDeloadWeek, focusArea }: PDFWorkoutW
   return (
     <View style={workoutPdfStyles.weekInfoContainer}>
       <Text style={workoutPdfStyles.weekInfo}>
-        Week {weekNumber} {isDeloadWeek ? '(Deload Week)' : ''} - Focus: {focusArea}
+        Week {weekNumber} {isDeloadWeek ? '(Deload Week)' : ''} - Focus: {focusArea || 'General Fitness'}
       </Text>
     </View>
   );

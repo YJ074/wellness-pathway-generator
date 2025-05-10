@@ -30,6 +30,11 @@ export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency
 };
 
 export const getWeekInfoFromDay = (dayNumber: number) => {
+  // Handle undefined or invalid day numbers
+  if (!dayNumber || dayNumber < 1) {
+    return { weekNumber: 1, isDeloadWeek: false };
+  }
+  
   // Calculate week number (1-indexed)
   const weekNumber = Math.floor((dayNumber - 1) / 7) + 1;
   
@@ -43,5 +48,8 @@ export const getWeekInfoFromDay = (dayNumber: number) => {
 };
 
 export const isRecoveryDay = (dayNumber: number): boolean => {
+  // Handle undefined or invalid day numbers
+  if (!dayNumber || dayNumber < 1) return false;
+  
   return dayNumber % 7 === 0; // Every 7th day is a recovery day
 };
