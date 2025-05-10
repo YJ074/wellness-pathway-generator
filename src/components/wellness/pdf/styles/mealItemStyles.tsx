@@ -30,11 +30,10 @@ export const styles = StyleSheet.create({
   healthBenefit: {
     fontSize: 10,
     color: '#16a34a',
-    marginBottom: 4,
     fontFamily: 'Helvetica',
     marginTop: 2, // Added to create spacing from meal description
     paddingLeft: 5, // Added to indent slightly
-    marginBottom: 6, // Increased bottom margin for better separation
+    marginBottom: 6, // Keeping only one marginBottom property
   },
   // Highlight styles for food descriptions with improved contrast and spacing
   localNamesHighlight: {
