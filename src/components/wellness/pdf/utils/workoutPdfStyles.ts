@@ -82,11 +82,14 @@ export const workoutPdfStyles = StyleSheet.create({
     color: '#334155',
     fontFamily: 'Helvetica',
   },
+  weekInfoContainer: {
+    marginBottom: 6,
+    marginTop: 4,
+    borderLeft: '2pt solid #64748b',
+    paddingLeft: 6,
+  },
   weekInfo: {
     fontSize: 10,
-    marginTop: 4,
-    marginBottom: 4,
-    paddingLeft: 10,
     color: '#64748b',
     fontStyle: 'italic',
     fontFamily: 'Helvetica',

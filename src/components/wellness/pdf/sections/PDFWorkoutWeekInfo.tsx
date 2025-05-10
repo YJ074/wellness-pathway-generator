@@ -11,7 +11,7 @@ interface PDFWorkoutWeekInfoProps {
 
 const PDFWorkoutWeekInfo = ({ weekNumber, isDeloadWeek, focusArea }: PDFWorkoutWeekInfoProps) => {
   return (
-    <View>
+    <View style={workoutPdfStyles.weekInfoContainer}>
       <Text style={workoutPdfStyles.weekInfo}>
         Week {weekNumber} {isDeloadWeek ? '(Deload Week)' : ''} - Focus: {focusArea}
       </Text>

@@ -14,7 +14,7 @@ const WorkoutWeekInfo = ({ day, focusArea }: WorkoutWeekInfoProps) => {
   const focus = focusArea || "General Fitness";
 
   return (
-    <div className="text-sm text-muted-foreground italic">
+    <div className="text-sm text-muted-foreground italic border-l-2 border-l-muted pl-2 mt-1">
       Week {weekNumber} {isDeloadWeek ? " (Deload Week)" : ""} - Focus: {focus}
     </div>
   );
