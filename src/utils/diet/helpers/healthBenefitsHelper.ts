@@ -128,6 +128,6 @@ export const getHealthBenefit = (mealContent: string): string => {
     return 'Balanced nutrition for the evening';
   }
   
-  // General fallback
+  // General fallback - changing color from green to normal text
   return 'Balanced nutrition for overall health';
 };

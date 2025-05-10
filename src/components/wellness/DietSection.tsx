@@ -58,8 +58,8 @@ const DietSection = ({ diet }: DietSectionProps) => {
       {/* Regional Note */}
       {hasRegionalNote && (
         <div className="p-3 bg-amber-50 rounded-lg border border-amber-100">
-          <p className="text-sm text-amber-800 flex items-center">
-            <MapPin className="h-4 w-4 mr-2 text-amber-600 flex-shrink-0" />
+          <p className="text-sm text-amber-800 flex items-start">
+            <MapPin className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0 text-amber-600" />
             <span className="italic">{diet.regionalNote}</span>
           </p>
         </div>

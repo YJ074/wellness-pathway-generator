@@ -34,7 +34,7 @@ const WorkoutContent = ({ workoutDay, fitnessLevel, getWorkoutDetails }: Workout
         </div>
         <div className="space-y-2">
           {workoutDay.exercises.map((exercise, index) => (
-            <div key={index}>
+            <div key={index} className="mb-2">
               <p><strong>{exercise.name}:</strong> {exercise.reps}</p>
               <p className="text-sm text-muted-foreground">{exercise.description}</p>
             </div>
