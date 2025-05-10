@@ -6,6 +6,7 @@ import { Download, Loader2 } from "lucide-react";
 import WellnessPDF from "../WellnessPDF";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
 import { useToast } from "@/hooks/use-toast";
+import { DietaryPreference } from "@/utils/diet/types";
 
 interface DownloadPDFButtonProps {
   formData: FormData;
@@ -18,10 +19,13 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   const [isGenerating, setIsGenerating] = useState(true);
   const [hasErrored, setHasErrored] = useState(false);
 
-  const safeFormData = {
+  // Create a properly typed version of formData
+  // We ensure dietaryPreference is correctly typed as the union type expected by FormData
+  const safeFormData: FormData = {
     ...formData,
     exerciseFrequency: formData.exerciseFrequency || 'sedentary',
     fitnessGoal: formData.fitnessGoal || 'maintenance',
+    dietaryPreference: formData.dietaryPreference as DietaryPreference
   };
 
   // Show a toast message when PDF generation fails
