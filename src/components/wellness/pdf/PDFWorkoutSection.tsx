@@ -23,24 +23,34 @@ interface PDFWorkoutSectionProps {
 }
 
 const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectionProps) => {
+  // Ensure the dayNumber is a valid number
+  const validDayNumber = dayNumber > 0 ? dayNumber : 1;
+  
   // Determine if it's a rest day
-  const isRestDay = workoutDay?.isRestDay || false;
+  const isRestDay = workoutDay?.isRestDay ?? false;
+  
+  // Get exercise frequency with fallback
+  const exerciseFrequency = formData.exerciseFrequency || 'sedentary';
+  const fitnessGoal = formData.fitnessGoal || 'maintenance';
   
   // Calculate estimated workout calories burned
   const estimatedCaloriesBurned = getEstimatedCaloriesBurned(
     isRestDay, 
-    formData.exerciseFrequency || 'sedentary'
+    exerciseFrequency
   );
   
   // Determine fitness level based on exercise frequency
-  const difficultyLevel = getDifficultyLevel(formData.exerciseFrequency || 'sedentary');
+  const difficultyLevel = getDifficultyLevel(exerciseFrequency);
   
   // Get week information based on day number
-  const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(dayNumber);
+  const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
   
   // Determine focus area through rotation or use the one from workout day
   const focusArea = workoutDay?.focusArea || 
-    getDailyFocusArea(dayNumber, formData.fitnessGoal || 'maintenance');
+    getDailyFocusArea(validDayNumber, fitnessGoal);
+  
+  // Check if it's a recovery day
+  const isRecoveryDayFlag = isRecoveryDay(validDayNumber);
   
   return (
     <View style={workoutPdfStyles.planSection}>
@@ -56,7 +66,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
       {workoutDay ? (
         workoutDay.isRestDay ? (
           <PDFRestDayContent 
-            isRecoveryDay={isRecoveryDay(dayNumber)} 
+            isRecoveryDay={isRecoveryDayFlag} 
             estimatedCaloriesBurned={estimatedCaloriesBurned} 
           />
         ) : (

@@ -18,6 +18,12 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   const [isGenerating, setIsGenerating] = useState(true);
   const [hasErrored, setHasErrored] = useState(false);
 
+  const safeFormData = {
+    ...formData,
+    exerciseFrequency: formData.exerciseFrequency || 'sedentary',
+    fitnessGoal: formData.fitnessGoal || 'maintenance',
+  };
+
   // Show a toast message when PDF generation fails
   const handleGenerationError = () => {
     console.error("PDF generation failed");
@@ -48,12 +54,12 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
       <PDFDownloadLink
         document={
           <WellnessPDF 
-            formData={formData} 
+            formData={safeFormData} 
             dietPlan={dietPlan} 
             workoutPlan={workoutPlan} 
           />
         }
-        fileName={`${formData.name}-75-day-wellness-plan.pdf`}
+        fileName={`${formData.name || 'wellness'}-75-day-wellness-plan.pdf`}
         className="inline-block"
       >
         {({ loading, error }) => {

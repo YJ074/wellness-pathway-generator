@@ -8,14 +8,15 @@ interface WorkoutWeekInfoProps {
 }
 
 const WorkoutWeekInfo = ({ day, focusArea }: WorkoutWeekInfoProps) => {
-  if (!day) return null;
+  // Early return if no day is provided
+  if (!day || day < 1) return null;
   
   const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(day);
-  const focus = focusArea || "General Fitness";
+  const displayFocusArea = focusArea ?? "General Fitness";
 
   return (
     <div className="text-sm text-muted-foreground italic border-l-2 border-l-muted pl-2 mt-1">
-      Week {weekNumber} {isDeloadWeek ? " (Deload Week)" : ""} - Focus: {focus}
+      Week {weekNumber} {isDeloadWeek ? " (Deload Week)" : ""} - Focus: {displayFocusArea}
     </div>
   );
 };

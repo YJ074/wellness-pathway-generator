@@ -8,6 +8,9 @@ export const getDifficultyLevel = (exerciseFrequency: string): string => {
 };
 
 export const getDailyFocusArea = (dayNumber: number, fitnessGoal: string): string => {
+  // Ensure dayNumber is valid
+  if (!dayNumber || dayNumber < 1) return "General Fitness";
+  
   const dayInWeek = dayNumber % 7;
   
   switch (dayInWeek) {
