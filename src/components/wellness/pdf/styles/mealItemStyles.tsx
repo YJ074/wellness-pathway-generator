@@ -31,10 +31,9 @@ export const styles = StyleSheet.create({
     fontSize: 10,
     color: '#16a34a',
     marginBottom: 4,
-    fontStyle: 'italic',
-    fontFamily: 'Helvetica-Oblique',
+    fontFamily: 'Helvetica',
   },
-  // Add missing highlight styles for food descriptions
+  // Highlight styles for food descriptions
   localNamesHighlight: {
     color: '#6366f1', // indigo color for local names
     fontFamily: 'Helvetica-Bold',

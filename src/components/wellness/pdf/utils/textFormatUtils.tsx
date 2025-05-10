@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Text } from '@react-pdf/renderer';
 import { prebioticFoods, probioticFoods } from '@/utils/diet/helpers/prebioticProbioticHelper';
 import { styles } from '../styles/mealItemStyles';
@@ -17,7 +17,7 @@ export const isBigFruit = (fruitName: string): boolean => {
 };
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
-export const formatMealDescription = (text: string) => {
+export const formatMealDescription = (text: string): ReactNode[] => {
   // Updated Indian household measurement patterns to include "nos" for count and "handful" for nuts
   const measurementPatterns = [
     /(\d+(?:\.\d+)?\s*(?:katori|glass|bowl|mutthi|chamach|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
@@ -26,25 +26,28 @@ export const formatMealDescription = (text: string) => {
     /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
     /(\d+\s*(?:roti|rotis|chapati|chapatis|phulka|phulkas|dhokla|dhoklas))/gi,
     /(\(\d+\s*(?:roti|rotis|chapati|chapatis|phulka|phulkas|dhokla|dhoklas)\))/gi,
-    /(\(?(?:small|medium)?\s*handful\)?)/gi,  // New pattern for handful measurements
-    /(\((?:small|medium)?\s*handful\))/gi     // New pattern for parenthetical handful
+    /(\(?(?:small|medium)?\s*handful\)?)/gi,
+    /(\((?:small|medium)?\s*handful\))/gi
   ];
   
   // First, handle patterns with dash like "Rice Flakes - Poha" or "Broken Wheat - Daliya"
   const dashParts = text.split(/(\s-\s[^,\.]+)/g);
+  const results: ReactNode[] = [];
   
-  return dashParts.map((part, dashIndex) => {
+  dashParts.forEach((part, dashIndex) => {
     // If this part contains a dash with a local name
     if (part.match(/\s-\s[^,\.]+/)) {
-      return <Text key={`dash-${dashIndex}`} style={styles.localNamesHighlight}>{part}</Text>;
+      results.push(<Text key={`dash-${dashIndex}`} style={styles.localNamesHighlight}>{part}</Text>);
+      return;
     }
     
     // For regular text or parts without dashes, process parenthetical expressions
     const parentheticalParts = part.split(/(\([^)]+\))/g);
     
-    return parentheticalParts.map((subPart, parenthIndex) => {
+    parentheticalParts.forEach((subPart, parenthIndex) => {
       // Check for Indian measurements first
       let isMeasurement = false;
+      
       for (const pattern of measurementPatterns) {
         if (pattern.test(subPart)) {
           isMeasurement = true;
@@ -52,18 +55,23 @@ export const formatMealDescription = (text: string) => {
           pattern.lastIndex = 0;
           const parts = subPart.split(pattern);
           
-          return parts.map((part, i) => {
+          parts.forEach((measurePart, i) => {
             if (i % 2 === 0) {
-              return <React.Fragment key={`text-${dashIndex}-${parenthIndex}-${i}`}>{part}</React.Fragment>;
+              if (measurePart) {
+                results.push(measurePart);
+              }
+            } else {
+              results.push(<Text key={`measure-${dashIndex}-${parenthIndex}-${i}`} style={styles.indianMeasurementHighlight}>{measurePart}</Text>);
             }
-            return <Text key={`measure-${dashIndex}-${parenthIndex}-${i}`} style={styles.indianMeasurementHighlight}>{part}</Text>;
           });
+          return;
         }
       }
       
       // If this is a parenthetical expression (likely a local name)
       if (subPart.startsWith('(') && subPart.endsWith(')')) {
-        return <Text key={`parent-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>;
+        results.push(<Text key={`parent-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>);
+        return;
       }
       
       // Check for probiotic foods
@@ -74,12 +82,14 @@ export const formatMealDescription = (text: string) => {
           const regex = new RegExp(`(${probiotic})`, 'gi');
           const parts = subPart.split(regex);
           
-          return parts.map((probPart, probIndex) => {
+          parts.forEach((probPart, probIndex) => {
             if (probPart.toLowerCase() === probiotic.toLowerCase()) {
-              return <Text key={`prob-${dashIndex}-${parenthIndex}-${probIndex}`} style={styles.probioticHighlight}>{probPart}</Text>;
+              results.push(<Text key={`prob-${dashIndex}-${parenthIndex}-${probIndex}`} style={styles.probioticHighlight}>{probPart}</Text>);
+            } else if (probPart) {
+              results.push(probPart);
             }
-            return <React.Fragment key={`text-prob-${dashIndex}-${parenthIndex}-${probIndex}`}>{probPart}</React.Fragment>;
           });
+          return;
         }
       }
       
@@ -90,12 +100,14 @@ export const formatMealDescription = (text: string) => {
             const regex = new RegExp(`(${prebiotic})`, 'gi');
             const parts = subPart.split(regex);
             
-            return parts.map((prePart, preIndex) => {
+            parts.forEach((prePart, preIndex) => {
               if (prePart.toLowerCase() === prebiotic.toLowerCase()) {
-                return <Text key={`pre-${dashIndex}-${parenthIndex}-${preIndex}`} style={styles.prebioticHighlight}>{prePart}</Text>;
+                results.push(<Text key={`pre-${dashIndex}-${parenthIndex}-${preIndex}`} style={styles.prebioticHighlight}>{prePart}</Text>);
+              } else if (prePart) {
+                results.push(prePart);
               }
-              return <React.Fragment key={`text-pre-${dashIndex}-${parenthIndex}-${preIndex}`}>{prePart}</React.Fragment>;
             });
+            return;
           }
         }
       }
@@ -110,16 +122,20 @@ export const formatMealDescription = (text: string) => {
           pattern.lastIndex = 0;
           const parts = subPart.split(pattern);
           
-          return parts.map((part, i) => {
+          parts.forEach((part, i) => {
             if (i % 2 === 0) {
-              return <React.Fragment key={`text-bread-${dashIndex}-${parenthIndex}-${i}`}>{part}</React.Fragment>;
+              if (part) {
+                results.push(part);
+              }
+            } else {
+              results.push(<Text key={`bread-${dashIndex}-${parenthIndex}-${i}`} style={styles.indianMeasurementHighlight}>{part}</Text>);
             }
-            return <Text key={`bread-${dashIndex}-${parenthIndex}-${i}`} style={styles.indianMeasurementHighlight}>{part}</Text>;
           });
+          return;
         }
       }
       
-      // Check for specific millet patterns that might not be in parentheses or after dashes
+      // Check for specific millet patterns
       const milletPatterns = [
         /(Foxtail Millet|Kangni)/, 
         /(Pearl Millet|Bajra)/, 
@@ -143,29 +159,34 @@ export const formatMealDescription = (text: string) => {
       ];
       
       // Check each pattern and add highlighting if found
-      let formattedText = subPart;
       let matches = false;
       
       for (const pattern of milletPatterns) {
-        if (pattern.test(formattedText)) {
+        if (pattern.test(subPart)) {
           matches = true;
           break;
         }
       }
       
       if (matches) {
-        return <Text key={`millet-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{formattedText}</Text>;
+        results.push(<Text key={`millet-${dashIndex}-${parenthIndex}`} style={styles.localNamesHighlight}>{subPart}</Text>);
+        return;
       }
       
-      // Check for phrases indicating gut health benefits
-      if (formattedText.toLowerCase().includes('for gut health') || 
-          formattedText.toLowerCase().includes('prebiotic') ||
-          formattedText.toLowerCase().includes('probiotic')) {
-        return <Text key={`gut-${dashIndex}-${parenthIndex}`} style={styles.prebioticHighlight}>{formattedText}</Text>;
+      // Check for gut health phrases
+      if (subPart.toLowerCase().includes('for gut health') || 
+          subPart.toLowerCase().includes('prebiotic') ||
+          subPart.toLowerCase().includes('probiotic')) {
+        results.push(<Text key={`gut-${dashIndex}-${parenthIndex}`} style={styles.prebioticHighlight}>{subPart}</Text>);
+        return;
       }
       
       // Regular text
-      return <React.Fragment key={`text-${dashIndex}-${parenthIndex}`}>{formattedText}</React.Fragment>;
+      if (subPart) {
+        results.push(subPart);
+      }
     });
   });
+  
+  return results;
 };

@@ -33,7 +33,10 @@ const PDFMealItem = ({
   return (
     <View style={styles.mealItem}>
       <Text style={styles.mealLabel}>• {label}</Text>
-      <Text style={styles.mealDescription}>{formatMealDescription(mealDescription)}</Text>
+      
+      <Text style={styles.mealDescription}>
+        {formatMealDescription(mealDescription)}
+      </Text>
       
       {healthBenefit && (
         <Text style={styles.healthBenefit}>

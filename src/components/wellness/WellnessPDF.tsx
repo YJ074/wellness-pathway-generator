@@ -4,14 +4,13 @@ import { Document, Page, StyleSheet, Font } from '@react-pdf/renderer';
 import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
 
-// Register standard PDF fonts that don't need external files
-// Fixing the font registration to use only standard PDF fonts
+// Register only standard PDF fonts that are guaranteed to work
+// Only using Helvetica and Helvetica-Bold which are built into PDF format
 Font.register({
   family: 'Helvetica',
   fonts: [
     { src: 'Helvetica' },
     { src: 'Helvetica-Bold', fontWeight: 'bold' }
-    // Removed Helvetica-Oblique since it's causing issues
   ]
 });
 
@@ -31,11 +30,9 @@ interface WellnessPDFProps {
 }
 
 const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
-  // Create a paginated approach with up to 2 days per page (reduced from 3)
-  // This gives more space for the nutrition summary and nuts content we've added
+  // Create a paginated approach with up to 2 days per page
   const totalDays = dietPlan.days.length;
-  const daysPerPage = 2; // Reduced from 3 to 2 days per page
-  const totalPages = Math.ceil(totalDays / daysPerPage);
+  const daysPerPage = 2; // Reduced from 3 to 2 days per page for better spacing
   
   return (
     <Document>

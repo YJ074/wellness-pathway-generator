@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Download, Loader2 } from "lucide-react";
@@ -18,6 +18,8 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(true);
   const [hasErrored, setHasErrored] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [renderKey, setRenderKey] = useState(0);
 
   // Create a properly typed version of formData
   // We ensure dietaryPreference is correctly typed as the union type expected by FormData
@@ -27,6 +29,21 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
     fitnessGoal: formData.fitnessGoal || 'maintenance',
     dietaryPreference: formData.dietaryPreference as DietaryPreference
   };
+
+  // Add automatic retry mechanism
+  useEffect(() => {
+    if (hasErrored && retryCount < 2) {
+      const timer = setTimeout(() => {
+        console.log("Retrying PDF generation, attempt:", retryCount + 1);
+        setHasErrored(false);
+        setIsGenerating(true);
+        setRetryCount(prev => prev + 1);
+        setRenderKey(prev => prev + 1);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [hasErrored, retryCount]);
 
   // Show a toast message when PDF generation fails
   const handleGenerationError = () => {
@@ -54,53 +71,59 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   };
 
   return (
-    <div className="relative">
-      <PDFDownloadLink
-        document={
-          <WellnessPDF 
-            formData={safeFormData} 
-            dietPlan={dietPlan} 
-            workoutPlan={workoutPlan} 
-          />
-        }
-        fileName={`${formData.name || 'wellness'}-75-day-wellness-plan.pdf`}
-        className="inline-block"
-      >
-        {({ loading, error }) => {
-          // Handle error state
-          if (error) {
-            console.error("PDF error:", error);
-            setTimeout(() => handleGenerationError(), 0);
+    <div className="relative" key={renderKey}>
+      {isGenerating && !hasErrored && (
+        <Button variant="outline" disabled>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Preparing PDF...
+        </Button>
+      )}
+      
+      {hasErrored && (
+        <Button variant="outline" disabled>
+          <Download className="mr-2 h-4 w-4" />
+          Failed to generate
+        </Button>
+      )}
+      
+      {!hasErrored && (
+        <PDFDownloadLink
+          document={
+            <WellnessPDF 
+              formData={safeFormData} 
+              dietPlan={dietPlan} 
+              workoutPlan={workoutPlan} 
+            />
+          }
+          fileName={`${formData.name || 'wellness'}-75-day-wellness-plan.pdf`}
+          className={isGenerating ? "hidden" : "inline-block"}
+        >
+          {({ loading, error }) => {
+            // Handle error state
+            if (error) {
+              console.error("PDF error:", error);
+              setTimeout(() => handleGenerationError(), 0);
+              
+              return null;
+            }
+
+            // Handle loading state
+            if (loading) {
+              return null;
+            }
+            
+            // Success state - PDF is ready for download
+            setTimeout(() => handleGenerationSuccess(), 0);
             
             return (
-              <Button variant="outline" disabled>
+              <Button variant="outline">
                 <Download className="mr-2 h-4 w-4" />
-                Failed to generate
+                Download PDF (75 days)
               </Button>
             );
-          }
-
-          // Handle loading state
-          if (loading) {
-            return (
-              <Button variant="outline" disabled>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Preparing PDF (75 days)...
-              </Button>
-            );
-          }
-          
-          // Success state - PDF is ready for download
-          setTimeout(() => handleGenerationSuccess(), 0);
-          
-          return (
-            <Button variant="outline">
-              <Download className="mr-2 h-4 w-4" />
-              Download PDF (75 days)
-            </Button>
-          );
-        }}
-      </PDFDownloadLink>
+          }}
+        </PDFDownloadLink>
+      )}
     </div>
   );
 };
