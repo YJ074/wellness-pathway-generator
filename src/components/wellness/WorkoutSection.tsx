@@ -14,33 +14,30 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
   const getWorkoutDetails = () => {
     const workoutData = {
       beginner: {
-        rounds: 1,
-        dand: '5 reps',
-        baithak: '10 reps',
-        surya: '3 rounds',
-        bhujangasana: '20 sec hold',
+        rounds: 2,
+        dand: 'Not included - focus on form first',
+        baithak: '8 reps',
+        surya: '2 rounds',
+        plank: '20 sec hold',
         utkatasana: '20 sec hold',
-        armCircles: '8 forward + 8 backward',
         duration: '~15 min'
       },
       intermediate: {
         rounds: 2,
-        dand: '8 reps',
-        baithak: '15 reps',
-        surya: '5 rounds',
-        bhujangasana: '30 sec hold',
+        dand: '15 reps',
+        baithak: '12 reps',
+        surya: '4 rounds',
+        plank: '30 sec hold',
         utkatasana: '30 sec hold',
-        armCircles: '10 forward + 10 backward',
         duration: '~20 min'
       },
       advanced: {
         rounds: 3,
-        dand: '12 reps',
-        baithak: '20 reps',
-        surya: '7 rounds',
-        bhujangasana: '45 sec hold',
-        utkatasana: '45 sec hold',
-        armCircles: '12 forward + 12 backward',
+        dand: '12 plyometric reps',
+        baithak: 'Jump squats x15',
+        surya: '6 rounds (dynamic flow)',
+        plank: '45 sec dynamic plank',
+        utkatasana: '45 sec with pulses',
         duration: '~25 min'
       }
     };
@@ -49,6 +46,7 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
   };
 
   const isRestDay = workoutDay?.isRestDay;
+  const isRecoveryDay = workoutDay?.day && workoutDay.day % 7 === 0;
   
   // Calculate weekly progression
   const calculateWeekAndFocus = (day?: number) => {
@@ -57,20 +55,10 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
     const weekNumber = Math.floor((day - 1) / 7) + 1;
     const isDeloadWeek = (weekNumber % 4 === 0);
     
-    // Determine workout goal focus based on week pattern
-    const getWorkoutGoalFocus = () => {
-      // Each week emphasizes different fitness aspects in a cycle
-      const weekRotation = weekNumber % 3;
-      
-      if (weekRotation === 0) return 'Flexibility & Mobility';
-      if (weekRotation === 1) return 'Strength & Stability';
-      return 'Endurance & Balance';
-    };
-    
     return { 
       week: weekNumber,
       isDeload: isDeloadWeek,
-      focus: isDeloadWeek ? "Recovery & Regeneration" : getWorkoutGoalFocus() 
+      focus: workoutDay?.focusArea || "General Fitness" 
     };
   };
   
@@ -95,7 +83,7 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
           <Dumbbell className="w-5 h-5" />
-          {workoutDay?.isRestDay ? "Rest Day" : "Workout (Personalized)"}
+          {isRestDay ? (isRecoveryDay ? "Recovery Day" : "Rest Day") : "Workout (Personalized)"}
         </h3>
         
         <Badge className={getDifficultyColor()}>
@@ -112,15 +100,33 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
       
       {isRestDay ? (
         <div className="pl-2">
-          <p className="text-md">
-            Recovery day - Focus on light stretching, walking, and proper hydration. 
-            Rest is essential for muscle recovery and growth.
-          </p>
+          {isRecoveryDay ? (
+            <>
+              <p className="text-md text-blue-700">
+                Recovery day - Focus on breathwork and gentle mobility exercises.
+              </p>
+              <ul className="mt-2 list-disc pl-5 text-sm">
+                <li>Deep breathing exercises (5 minutes)</li>
+                <li>Light walking (10-15 minutes)</li>
+                <li>Gentle stretching for major muscle groups</li>
+                <li>Foam rolling or self-massage if available</li>
+              </ul>
+              <p className="mt-2 text-sm italic text-blue-600">
+                Weekly recovery is essential for progress and injury prevention.
+              </p>
+            </>
+          ) : (
+            <p className="text-md">
+              Rest day - Focus on light stretching, walking, and proper hydration. 
+              Rest is essential for muscle recovery and growth.
+            </p>
+          )}
         </div>
       ) : workoutDay ? (
         <div className="space-y-3 pl-2">
           <p className="text-sm text-muted-foreground">
-            {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
+            {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: 
+            {workoutDay.progression && ` ${workoutDay.progression}`}
           </p>
           
           <div className="space-y-2">
@@ -134,7 +140,7 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
             <div className="flex items-center gap-2 mt-3">
               <h4 className="font-medium">Main Exercises:</h4>
               <Badge variant="outline" className="text-xs">
-                {weekInfo.isDeload ? "Recovery Focus" : weekInfo.focus}
+                {workoutDay.focusArea}
               </Badge>
             </div>
             <div className="space-y-2">
@@ -142,6 +148,14 @@ const WorkoutSection = ({ workoutDay, fitnessLevel }: WorkoutSectionProps) => {
                 <div key={index}>
                   <p><strong>{exercise.name}:</strong> {exercise.reps}</p>
                   <p className="text-sm text-muted-foreground">{exercise.description}</p>
+                  {exercise.tutorialUrl && (
+                    <a href={exercise.tutorialUrl} 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       className="text-xs text-blue-600 hover:underline flex items-center gap-1 mt-1">
+                      <span>▶️</span> Watch tutorial
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -178,27 +192,26 @@ const FallbackWorkout = ({ dayNumber, fitnessLevel, getWorkoutDetails }: Fallbac
   return (
     <div className="space-y-3 pl-2">
       <p className="text-sm text-muted-foreground">
-        {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo or add a light plyometric variation'}
+        {fitnessLevel === 'beginner' ? 'Beginner level' : fitnessLevel === 'intermediate' ? 'Intermediate level' : 'Advanced level'}: {getWorkoutDetails().rounds} round{getWorkoutDetails().rounds > 1 ? 's' : ''}, {fitnessLevel === 'beginner' ? 'moving slowly, focus on form' : fitnessLevel === 'intermediate' ? 'moderate pace' : 'controlled tempo with dynamic variations'}
       </p>
       
       <div className="space-y-2">
-        <p><strong>Dand (Hindu Push-up):</strong> {getWorkoutDetails().dand} <br />
-        <em className="text-sm text-muted-foreground">Tip: Keep elbows close, core tight.</em></p>
+        <p><strong>Surya Namaskar:</strong> {getWorkoutDetails().surya} <br />
+        <em className="text-sm text-muted-foreground">Tip: Flow smoothly, synchronize breath with movement.</em></p>
         
-        <p><strong>Baithak (Deep Squat):</strong> {getWorkoutDetails().baithak} <br />
+        {fitnessLevel !== 'beginner' && (
+          <p><strong>Hindu Push-ups (Dand):</strong> {getWorkoutDetails().dand} <br />
+          <em className="text-sm text-muted-foreground">Tip: Keep elbows close, core tight.</em></p>
+        )}
+        
+        <p><strong>Baithak (Indian Squat):</strong> {getWorkoutDetails().baithak} <br />
         <em className="text-sm text-muted-foreground">Tip: Heels flat, chest upright.</em></p>
         
-        <p><strong>Surya Namaskar:</strong> {getWorkoutDetails().surya} <br />
-        <em className="text-sm text-muted-foreground">Tip: Flow smoothly, synchronize breath.</em></p>
-        
-        <p><strong>Bhujangasana (Cobra):</strong> {getWorkoutDetails().bhujangasana} <br />
-        <em className="text-sm text-muted-foreground">Tip: Lift chest, relax shoulders.</em></p>
+        <p><strong>Plank Hold:</strong> {getWorkoutDetails().plank} <br />
+        <em className="text-sm text-muted-foreground">Tip: Maintain straight body line, engage core.</em></p>
         
         <p><strong>Utkatasana (Chair Pose):</strong> {getWorkoutDetails().utkatasana} <br />
-        <em className="text-sm text-muted-foreground">Tip: Sit back, weight in heels.</em></p>
-        
-        <p><strong>Arm Circles:</strong> {getWorkoutDetails().armCircles} <br />
-        <em className="text-sm text-muted-foreground">Tip: Small controlled circles.</em></p>
+        <em className="text-sm text-muted-foreground">Tip: Sit back, weight in heels, arms extended.</em></p>
       </div>
       
       <p className="mt-3 font-medium">

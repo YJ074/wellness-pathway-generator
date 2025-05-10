@@ -93,6 +93,13 @@ const styles = StyleSheet.create({
     color: '#64748b',
     fontStyle: 'italic',
     fontFamily: 'Helvetica',
+  },
+  recoveryNote: {
+    fontSize: 10,
+    marginTop: 5,
+    color: '#3b82f6',
+    fontStyle: 'italic',
+    fontFamily: 'Helvetica',
   }
 });
 
@@ -105,6 +112,8 @@ interface PDFWorkoutSectionProps {
 const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectionProps) => {
   // Calculate estimated workout calories burned
   const isRestDay = workoutDay?.isRestDay || false;
+  const isRecoveryDay = dayNumber % 7 === 0; // Every 7th day is a recovery day
+  
   const estimatedCaloriesBurned = isRestDay ? 100 : 
                                 formData.exerciseFrequency === '5+' ? 350 :
                                 formData.exerciseFrequency === '3-4' ? 280 : 200;
@@ -121,30 +130,21 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   // Calculate week number (1-indexed)
   const weekNumber = Math.floor((dayNumber - 1) / 7) + 1;
   
-  // Determine workout goal focus based on fitness goal and week pattern
-  const getWorkoutGoalFocus = () => {
-    // Each week emphasizes different fitness aspects in a cycle
-    const weekRotation = weekNumber % 3;
+  // Determine focus area through rotation
+  const getDailyFocusArea = () => {
+    const dayInWeek = dayNumber % 7;
     
-    if (formData.fitnessGoal === 'weight-loss') {
-      if (weekRotation === 0) return 'Endurance';
-      if (weekRotation === 1) return 'HIIT';
-      return 'Strength';
+    switch (dayInWeek) {
+      case 1: return "Core & Stability";
+      case 2: return "Mobility & Flexibility";
+      case 3: return "Strength & Power";
+      case 4: return "Yoga & Balance";
+      case 5: return "Functional Movement";
+      case 6: return formData.fitnessGoal === 'weight-loss' ? "HIIT & Cardio" : "Endurance";
+      case 0: return "Recovery & Regeneration"; // Day 7, 14, etc.
+      default: return "General Fitness";
     }
-    
-    if (formData.fitnessGoal === 'muscle-gain') {
-      if (weekRotation === 0) return 'Strength';
-      if (weekRotation === 1) return 'Hypertrophy';
-      return 'Recovery';
-    }
-    
-    // Default/maintenance goal
-    if (weekRotation === 0) return 'Flexibility';
-    if (weekRotation === 1) return 'Strength';
-    return 'Balance';
   };
-
-  const workoutGoal = getWorkoutGoalFocus();
   
   // Check if it's a deload week (every 4th week)
   const isDeloadWeek = (weekNumber % 4 === 0);
@@ -167,7 +167,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
       {/* Week and progression information */}
       <View>
         <Text style={styles.weekInfo}>
-          Week {weekNumber} {isDeloadWeek ? '(Deload Week)' : `- Focus: ${workoutGoal}`}
+          Week {weekNumber} {isDeloadWeek ? '(Deload Week)' : ''} - Focus: {workoutDay?.focusArea || getDailyFocusArea()}
         </Text>
       </View>
       
@@ -175,9 +175,18 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
         workoutDay.isRestDay ? (
           <View>
             <Text style={styles.restDayText}>
-              Rest Day - Focus on recovery with light stretching and mobility work. 
-              Practice Shavasana (corpse pose) and deep breathing for relaxation.
+              {isRecoveryDay ? 
+                "Recovery Day - Focus on breathwork and gentle mobility. Practice deep breathing exercises (Pranayama) and light stretching to help your body recover." : 
+                "Rest Day - Focus on recovery with light stretching and mobility work. Practice Shavasana (corpse pose) and deep breathing for relaxation."
+              }
             </Text>
+            
+            {isRecoveryDay && (
+              <Text style={styles.recoveryNote}>
+                Weekly recovery is essential for progress and injury prevention.
+              </Text>
+            )}
+            
             <Text style={styles.calorieInfo}>
               Estimated Calories Burned: ~{estimatedCaloriesBurned} kcal
             </Text>
@@ -196,7 +205,7 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.subsectionTitle}>Main Workout (15-20 min)</Text>
               <View style={styles.goalTag}>
-                <Text>{workoutGoal}</Text>
+                <Text>{workoutDay.focusArea}</Text>
               </View>
             </View>
             
