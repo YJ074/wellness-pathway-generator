@@ -14,16 +14,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     color: '#334155',
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica',
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 20,
     textAlign: 'center',
     color: '#64748b',
-    fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontFamily: 'Helvetica',
+    fontWeight: 'normal',
   },
 });
 

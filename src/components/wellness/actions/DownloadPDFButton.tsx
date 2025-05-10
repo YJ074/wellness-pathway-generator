@@ -48,17 +48,18 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
 
         // Handle initialization and loading state
         if (loading || isInitializing) {
+          // If we've been in initializing state for too long, consider it an error
+          if (isInitializing) {
+            // Clear initializing state after a short delay
+            setTimeout(() => setIsInitializing(false), 3000);
+          }
+          
           return (
             <Button variant="outline" disabled>
               <Download className="mr-2 h-4 w-4" />
               Preparing PDF...
             </Button>
           );
-        }
-
-        // If we get here, PDF is ready - make sure we're not in initializing state
-        if (isInitializing) {
-          setTimeout(() => setIsInitializing(false), 0);
         }
         
         // Handle success state

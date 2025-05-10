@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 6,
     borderRadius: 3,
-    fontFamily: 'Roboto',
-    fontWeight: 700,
+    fontFamily: 'Helvetica',
+    fontWeight: 'bold',
   },
 });
 
