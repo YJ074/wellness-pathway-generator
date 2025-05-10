@@ -3,6 +3,18 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 
+// Helper function to determine if a fruit is a "big fruit" that should be measured in bowls
+const isBigFruit = (fruitName: string): boolean => {
+  const bigFruits = [
+    'watermelon', 'muskmelon', 'pineapple', 'papaya', 'jackfruit',
+    'cantaloupe', 'honeydew', 'tarbuja', 'kharbooja', 'papita', 'kathal'
+  ];
+  
+  return bigFruits.some(fruit => 
+    fruitName.toLowerCase().includes(fruit.toLowerCase())
+  );
+};
+
 export const generateDinner = (
   dayIndex: number, 
   proteins: string[], 

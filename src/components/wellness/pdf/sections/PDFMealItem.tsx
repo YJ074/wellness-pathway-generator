@@ -62,12 +62,12 @@ const PDFMealItem = ({
 }: PDFMealItemProps) => {
   // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
   const formatMealDescription = (text: string) => {
-    // Indian household measurement patterns
+    // Updated Indian household measurement patterns to include "nos" for count
     const measurementPatterns = [
-      /(\d+(?:\.\d+)?\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
-      /(\d+(?:\.\d+)?\s*(?:¼|½|¾)\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
-      /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
-      /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:¼|½|¾)\s*(?:katori|glass|mutthi|chamach|roti|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi
+      /(\d+(?:\.\d+)?\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
+      /(\d+(?:\.\d+)?\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?)/gi,
+      /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi,
+      /(\((?:\d+(?:\.\d+)?|one|two|three|four|five|six)\s*(?:¼|½|¾)\s*(?:katori|glass|bowl|mutthi|chamach|roti|nos|piece|pieces|idlis|dosas|chillas|small|medium|large|tbsp|tsp|cup)s?\))/gi
     ];
     
     // First, handle patterns with dash like "Rice Flakes - Poha" or "Broken Wheat - Daliya"

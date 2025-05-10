@@ -66,8 +66,12 @@ export const generateBreakfast = (
     const availableFruits = getFruitSources(undefined, allergies);
     const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
     const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
+    
+    // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
+    const fruitPortion = isBigFruit(seasonalFruit) ? "(1 bowl)" : "(1 nos)";
+    
     breakfastOptions = breakfastOptions.map(breakfast => 
-      `${breakfast}, with ${seasonalFruit} (1 medium size) and ${dryFruits}`
+      `${breakfast}, with ${seasonalFruit} ${fruitPortion} and ${dryFruits}`
     );
   } else if (dayIndex % 2 === 0) {
     // On other even days, just add dry fruits without fresh fruit
@@ -92,7 +96,11 @@ export const generateBreakfast = (
     if (dayIndex % 7 === 1 || dayIndex % 7 === 5) {  // Days 1 and 5 of the week
       const availableFruits = getFruitSources(undefined, allergies);
       const seasonalFruit = availableFruits[(dayIndex + 3) % availableFruits.length];
-      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} (1 medium size)`);
+      
+      // Standardized fruit portion: "1 nos" for individual fruits, "1 bowl" for larger fruits
+      const fruitPortion = isBigFruit(seasonalFruit) ? "(1 bowl)" : "(1 nos)";
+      
+      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} ${fruitPortion}`);
     } else if (dayIndex % 2 === 0) {
       // On other even days, add dry fruits
       const dryFruits = getDryFruits(isWeightLoss, true, dayIndex);
@@ -127,4 +135,16 @@ export const generateBreakfast = (
   }
   
   return breakfast;
+};
+
+// Helper function to determine if a fruit is a "big fruit" that should be measured in bowls
+const isBigFruit = (fruitName: string): boolean => {
+  const bigFruits = [
+    'watermelon', 'muskmelon', 'pineapple', 'papaya', 'jackfruit',
+    'cantaloupe', 'honeydew', 'tarbuja', 'kharbooja', 'papita', 'kathal'
+  ];
+  
+  return bigFruits.some(fruit => 
+    fruitName.toLowerCase().includes(fruit.toLowerCase())
+  );
 };
