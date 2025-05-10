@@ -65,11 +65,18 @@ export const generateBreakfast = (
     'Barnyard Millet Porridge (Samvat Porridge - 1 katori) with mixed fruits'
   ];
   
+  // Use a prime number offset to avoid repetition every 2 days
+  // This creates a more varied pattern across the 75-day plan
+  const variedDayIndex = (dayIndex * 5 + 3) % breakfastOptions.length;
+  
   // Add fruit to breakfast 3-4 times a week (increased frequency since we're removing from lunch/dinner)
   if (dayIndex % 7 === 0 || dayIndex % 7 === 2 || dayIndex % 7 === 4 || dayIndex % 7 === 6) {
     // Include fruit with breakfast on days 0, 2, 4, and 6 of each week (4 days)
     const availableFruits = getFruitSources(undefined, allergies);
-    const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
+    
+    // Use a different index calculation for fruits to avoid repetition
+    const fruitIndex = (dayIndex * 3 + 7) % availableFruits.length;
+    const seasonalFruit = availableFruits[fruitIndex];
     
     // Standardized fruit portion using our helper
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
@@ -101,7 +108,10 @@ export const generateBreakfast = (
     // Add fruit occasionally to egg breakfasts
     if (dayIndex % 7 === 1 || dayIndex % 7 === 5) {  // Days 1 and 5 of the week
       const availableFruits = getFruitSources(undefined, allergies);
-      const seasonalFruit = availableFruits[(dayIndex + 3) % availableFruits.length];
+      
+      // Use a different index calculation for fruits to avoid repetition
+      const fruitIndex = (dayIndex * 4 + 11) % availableFruits.length;
+      const seasonalFruit = availableFruits[fruitIndex];
       
       // Standardized fruit portion
       const fruitPortion = getStandardFruitPortion(seasonalFruit);
@@ -117,8 +127,12 @@ export const generateBreakfast = (
     if (allergies) {
       eggBreakfasts = filterAllergies(eggBreakfasts, allergies);
     }
+    
+    // Use a varied index for egg breakfasts, but only on certain days
     if (eggBreakfasts.length && dayIndex % 4 === 0) {
-      let breakfast = eggBreakfasts[dayIndex % eggBreakfasts.length];
+      // Use a prime number offset to ensure better variety
+      const variedEggIndex = (dayIndex * 3 + 5) % eggBreakfasts.length;
+      let breakfast = eggBreakfasts[variedEggIndex];
       
       // For egg breakfasts, we need to especially ensure probiotics as they naturally lack them
       breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
@@ -131,8 +145,8 @@ export const generateBreakfast = (
     breakfastOptions = filterAllergies(breakfastOptions, allergies);
   }
   
-  // Get the breakfast option for today and ensure prebiotic/probiotic inclusion
-  let breakfast = breakfastOptions[dayIndex % breakfastOptions.length] || "";
+  // Get the breakfast option for today using our varied index
+  let breakfast = breakfastOptions[variedDayIndex] || "";
   
   // Every even day, ensure probiotics; every odd day, ensure prebiotics
   if (dayIndex % 2 === 0) {

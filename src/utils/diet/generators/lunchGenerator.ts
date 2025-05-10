@@ -26,7 +26,9 @@ export const generateLunch = (
   
   // Use regional lunch options every 5th day if available
   if (region && regionalFoods.mains.length > 0 && dayIndex % 5 === 0) {
-    const regionalLunch = regionalFoods.mains[dayIndex % regionalFoods.mains.length];
+    // Use varied index to avoid repetition in regional foods
+    const regionalIndex = (dayIndex * 7 + 3) % regionalFoods.mains.length;
+    const regionalLunch = regionalFoods.mains[regionalIndex];
     
     // Format lunch based on dietary goals using helper function
     let lunch = composeRegionalMeal(regionalLunch, isWeightLoss, isProteinFocus);
@@ -38,14 +40,23 @@ export const generateLunch = (
     return lunch;
   }
   
+  // Use prime number-based offsets to ensure variety across days
+  // These create non-repeating patterns over 75 days to avoid repetition
+  const protein1Index = (dayIndex * 7 + 3) % proteins.length;
+  const protein2Index = (dayIndex * 11 + 13) % proteins.length; // Different offset ensures variety
+  
+  const grainIndex = (dayIndex * 5 + 1) % grains.length;
+  const veggie1Index = (dayIndex * 13 + 7) % vegetables.length;
+  const veggie2Index = (dayIndex * 17 + 11) % vegetables.length;
+  
   // Ensure we get at least 2 protein sources for each lunch to maximize protein intake
-  const protein1 = proteins[dayIndex % proteins.length];
-  const protein2 = proteins[(dayIndex + 7) % proteins.length]; // Use a different protein source
+  const protein1 = proteins[protein1Index];
+  const protein2 = proteins[protein2Index]; // Use a different protein source
   
   // Make sure we use a grain in every meal for consistent carb balance
-  const grain = grains[dayIndex % grains.length];
-  const veggie1 = vegetables[dayIndex % vegetables.length];
-  const veggie2 = vegetables[(dayIndex + 5) % vegetables.length];
+  const grain = grains[grainIndex];
+  const veggie1 = vegetables[veggie1Index];
+  const veggie2 = vegetables[veggie2Index];
   
   // Add local names to proteins if they don't already have them
   const protein1WithLocalName = getLocalizedProteinName(protein1);

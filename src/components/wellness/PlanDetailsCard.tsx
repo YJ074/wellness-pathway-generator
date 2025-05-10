@@ -36,18 +36,24 @@ const PlanDetailsCard = ({ formData }: PlanDetailsProps) => {
     return proteinNotes[preference] || '';
   };
 
+  // Get variety note to explain how foods are varied
+  const getVarietyNote = () => {
+    return 'Foods varied using prime number patterns to avoid repetition';
+  };
+
   return (
     <Card className="bg-blue-50">
       <CardHeader>
         <CardTitle>Plan Details</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-2">
         <p><strong>Name:</strong> {formData.name}</p>
         <p><strong>Age:</strong> {formData.age} years</p>
         <p><strong>Weight:</strong> {formData.weight} kg</p>
         <p><strong>Dietary Preference:</strong> {formatPreference(formData.dietaryPreference)}</p>
         <p><strong>Fitness Goal:</strong> {formData.fitnessGoal.replace('-', ' ')}</p>
         <p className="mt-2 text-sm italic text-blue-700">{getProteinNote(formData.dietaryPreference)}</p>
+        <p className="text-sm italic text-green-700">{getVarietyNote()}</p>
       </CardContent>
     </Card>
   );

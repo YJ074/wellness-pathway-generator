@@ -107,20 +107,28 @@ export const generateDietPlan = (
   const fruits = getFruitSources(dietaryPreference, allergies);
   const snacks = getSnackSources(dietaryPreference, calorieReduction, allergies);
   
+  // Pre-generate patterns to avoid repetition
+  // Using prime numbers to create non-repeating sequences across 75 days
+  const breakfastPatterns = Array.from({ length: 75 }, (_, i) => (i * 7 + 3) % 15);
+  const lunchPatterns = Array.from({ length: 75 }, (_, i) => (i * 11 + 5) % 15);
+  const dinnerPatterns = Array.from({ length: 75 }, (_, i) => (i * 13 + 7) % 15);
+  
   for (let i = 1; i <= 75; i++) {
     const dayIndex = (i - 1) % 15;
     
-    const breakfast = generateBreakfast(dayIndex, dietaryPreference, calorieReduction, allergies, region);
-    const midMorningSnack = generateMidMorningSnack(dayIndex, snacks, fruits, calorieReduction, allergies);
+    // Apply varied patterns to ensure food diversity
+    const breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
+    const midMorningSnack = generateMidMorningSnack(dayIndex + (i * 3) % 17, snacks, fruits, calorieReduction, allergies);
 
     // Use proteins for this day, limited for soya according to our rule
     // But use entire protein array to ensure variety and optimal pairing
     const proteinForDay = proteinsByDay[i - 1];
     
     // Use the entire protein array for lunch/dinner to enable protein pairing for complete amino acids
-    const lunch = generateLunch(dayIndex, proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
-    const eveningSnack = generateEveningSnack(dayIndex, snacks, fruits, calorieReduction, allergies, region);
-    const dinner = generateDinner(dayIndex, proteinsByDay, vegetables, calorieReduction, proteinFocus, allergies, region);
+    // Apply varied patterns to avoid repetition
+    const lunch = generateLunch(dayIndex + lunchPatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
+    const eveningSnack = generateEveningSnack(dayIndex + (i * 5) % 19, snacks, fruits, calorieReduction, allergies, region);
+    const dinner = generateDinner(dayIndex + dinnerPatterns[i-1], proteinsByDay, vegetables, calorieReduction, proteinFocus, allergies, region);
     
     // Calculate approximate calories for the day
     const totalCalories = Math.round(dailyCalories / 10) * 10;

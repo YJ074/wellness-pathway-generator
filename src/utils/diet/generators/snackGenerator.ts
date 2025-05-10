@@ -22,8 +22,12 @@ export const generateMidMorningSnack = (
   if (includeFruit) {
     // Get available fruits based on allergies
     const availableFruits = getFruitSources(undefined, allergies);
-    // Select a seasonal/local fruit based on the day
-    const seasonalFruit = availableFruits[dayIndex % availableFruits.length];
+    
+    // Use a prime-based offset to vary fruit selection and avoid repetition
+    const fruitIndex = (dayIndex * 7 + 11) % availableFruits.length;
+    
+    // Select a seasonal/local fruit based on the varied day index
+    const seasonalFruit = availableFruits[fruitIndex];
     
     // Standardized fruit portion using our helper
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
@@ -61,7 +65,10 @@ export const generateMidMorningSnack = (
   if (allergies) {
     midMorningOptions = filterAllergies(midMorningOptions, allergies);
   }
-  return midMorningOptions[dayIndex % midMorningOptions.length] || "";
+  
+  // Use prime number offset for better variety across days
+  const variedIndex = (dayIndex * 13 + 7) % midMorningOptions.length;
+  return midMorningOptions[variedIndex] || "";
 };
 
 export const generateEveningSnack = (
@@ -77,7 +84,9 @@ export const generateEveningSnack = (
   
   // Use regional snack options every 4th day if available
   if (region && regionalFoods.snacks.length > 0 && dayIndex % 4 === 0) {
-    const regionalSnack = regionalFoods.snacks[dayIndex % regionalFoods.snacks.length];
+    // Use a varied index to avoid repetition
+    const regionalIndex = (dayIndex * 3 + 5) % regionalFoods.snacks.length;
+    const regionalSnack = regionalFoods.snacks[regionalIndex];
     
     // Use the helper function for consistent formatting
     return composeRegionalMeal(regionalSnack, isWeightLoss, false);
@@ -90,8 +99,12 @@ export const generateEveningSnack = (
   if (includeFruit) {
     // Get available fruits based on allergies
     const availableFruits = getFruitSources(undefined, allergies);
-    // Select a seasonal/local fruit based on the day
-    const seasonalFruit = availableFruits[(dayIndex + 2) % availableFruits.length];
+    
+    // Use a different prime-based offset to ensure variety
+    const fruitIndex = (dayIndex * 11 + 17) % availableFruits.length;
+    
+    // Select a seasonal/local fruit based on the varied day index
+    const seasonalFruit = availableFruits[fruitIndex];
     
     // Standardized fruit portion using our helper
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
@@ -132,7 +145,9 @@ export const generateEveningSnack = (
     eveningSnackOptions = filterAllergies(eveningSnackOptions, allergies);
   }
   
-  return eveningSnackOptions[(dayIndex + 3) % eveningSnackOptions.length] || "";
+  // Use a different prime-based calculation for evening snacks
+  const variedEveningIndex = (dayIndex * 17 + 13) % eveningSnackOptions.length;
+  return eveningSnackOptions[variedEveningIndex] || "";
 };
 
 export const generateSnacks = (
@@ -143,8 +158,13 @@ export const generateSnacks = (
   allergies?: string
 ) => {
   // Not directly used in generation pipeline above, but add allergies param for legacy compat
-  let snack = snacks[dayIndex % snacks.length];
-  let fruit = fruits[dayIndex % fruits.length];
+  
+  // Use prime number offsets to ensure variety
+  const snackIndex = (dayIndex * 11 + 3) % snacks.length;
+  const fruitIndex = (dayIndex * 13 + 7) % fruits.length;
+  
+  let snack = snacks[snackIndex];
+  let fruit = fruits[fruitIndex];
   
   // Standardized fruit portion using our helper
   const fruitPortion = getStandardFruitPortion(fruit);

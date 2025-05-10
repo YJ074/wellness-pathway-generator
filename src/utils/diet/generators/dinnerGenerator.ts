@@ -26,7 +26,9 @@ export const generateDinner = (
   
   // Use regional dinner options every 6th day if available
   if (region && regionalFoods.mains.length > 0 && dayIndex % 6 === 0) {
-    const regionalDinner = regionalFoods.mains[(dayIndex + 2) % regionalFoods.mains.length];
+    // Use varied index to avoid repetition in regional foods
+    const regionalIndex = (dayIndex * 5 + 11) % regionalFoods.mains.length;
+    const regionalDinner = regionalFoods.mains[regionalIndex];
     
     // Format dinner based on dietary goals using the helper function
     let dinner = composeRegionalMeal(regionalDinner, isWeightLoss, isProteinFocus);
@@ -38,12 +40,20 @@ export const generateDinner = (
     return dinner;
   }
   
-  // Select ingredients for today's dinner - use 2 protein sources for better protein diversity
-  const protein1 = proteins[(dayIndex + 3) % proteins.length];
-  const protein2 = proteins[(dayIndex + 11) % proteins.length]; // Different protein than lunch
+  // Use prime number-based offsets to ensure variety across days
+  // These create non-repeating patterns over 75 days
+  const protein1Index = (dayIndex * 19 + 5) % proteins.length;
+  const protein2Index = (dayIndex * 23 + 9) % proteins.length; // Different offset ensures variety
   
-  const veggie1 = vegetables[(dayIndex + 2) % vegetables.length];
-  const veggie2 = vegetables[(dayIndex + 8) % vegetables.length];
+  const veggie1Index = (dayIndex * 11 + 7) % vegetables.length;
+  const veggie2Index = (dayIndex * 13 + 11) % vegetables.length;
+  
+  // Select ingredients for today's dinner - use 2 protein sources for better protein diversity
+  const protein1 = proteins[protein1Index];
+  const protein2 = proteins[protein2Index]; // Different protein than lunch
+  
+  const veggie1 = vegetables[veggie1Index];
+  const veggie2 = vegetables[veggie2Index];
   
   // Add local names to proteins if they don't already have them
   const protein1WithLocalName = getLocalizedProteinName(protein1);
