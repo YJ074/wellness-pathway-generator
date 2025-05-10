@@ -34,13 +34,13 @@ export const generateMidMorningSnack = (
   
   let midMorningOptions = [
     'Chaas (1 glass)',
-    'Bhuna chana (¼ katori)',
+    'Bhuna chana (1 handful)',
     'Ankurit anaj salad (½ katori)',
     'Dahi (½ katori)',
-    'Mixed dry fruits (1 mutthi)',
+    'Mixed dry fruits (1 handful)',
     'Kheera and gajar sticks (1 katori)',
     'Nariyal pieces (¼ katori)',
-    'Makhana (fox nuts, ¼ katori)',
+    'Makhana (fox nuts, 1 handful)',
     'Kaddu ke beej (2 chamach)',
     'Homemade lassi (1 glass)',
     'Nariyal pani (1 glass)',
@@ -107,14 +107,14 @@ export const generateEveningSnack = (
   }
   
   let eveningSnackOptions = [
-    'Roasted makhana (¼ katori)',
+    'Roasted makhana (1 handful)',
     'Sabzi cutlet (2 pieces, baked)',
     'Multigrain dhokla (2 dhokla)',
-    'Bhuna chana (¼ katori) with pyaaz and tamatar',
+    'Bhuna chana (1 handful) with pyaaz and tamatar',
     'Masala murmure (½ katori)',
     'Steamed bhutta dana (½ katori) with nimbu and kala namak',
     'Paneer tikka (4-5 small pieces, grilled)',
-    'Moongfali chaat (¼ katori)',
+    'Moongfali chaat (1 handful)',
     'Roasted shakarkandi (1 small)',
     'Mixed sabzi soup (1 katori)',
     'Kala chana chaat (½ katori)',

@@ -1,10 +1,10 @@
 
 export const getDryFruits = (isWeightLoss: boolean, fromProteinFoods = false, dayIndex = 0): string => {
   const dryFruitOptions = [
-    'mixed dry fruits (5-6 nos)',
-    'badaam (5 nos)',
-    'kaju (5 nos)',
-    'akhrot (2 nos)',
+    'mixed dry fruits (1 handful)',
+    'badaam (1 handful)',
+    'kaju (1 handful)',
+    'akhrot (1 handful)',
     'kismis (1 chamach)',
     'chironji (1 chamach)',
     'til seeds (1 chamach)',
@@ -16,8 +16,8 @@ export const getDryFruits = (isWeightLoss: boolean, fromProteinFoods = false, da
   // For protein focus meals, use the higher-protein options
   if (fromProteinFoods) {
     const proteinDryFruits = [
-      'badaam (5 nos)',
-      'akhrot (2 nos)',
+      'badaam (1 handful)',
+      'akhrot (1 handful)',
       'pumpkin seeds (1 chamach)',
       'til seeds (1 chamach)',
       'flax seeds (1 chamach)'
@@ -28,9 +28,9 @@ export const getDryFruits = (isWeightLoss: boolean, fromProteinFoods = false, da
   // If weight loss is a goal, use smaller portions or restrict to certain types
   if (isWeightLoss) {
     const lightDryFruits = [
-      'badaam (4 nos)',
+      'badaam (small handful)',
       'kismis (1 chamach)',
-      'akhrot (1 nos)',
+      'akhrot (small handful)',
       'til seeds (½ chamach)',
       'pumpkin seeds (½ chamach)',
       'flax seeds (½ chamach)',
