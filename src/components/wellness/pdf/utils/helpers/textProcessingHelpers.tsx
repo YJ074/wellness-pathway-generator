@@ -1,4 +1,3 @@
-
 import React, { ReactNode } from 'react';
 import { Text } from '@react-pdf/renderer';
 import { styles } from '../../styles/mealItemStyles';
@@ -60,67 +59,76 @@ export const processMeasurements = (segments: (string | ReactNode)[]): (string |
       b.source.length - a.source.length
     );
     
-    segments.forEach((segment, segmentIndex) => {
+    // Keep track of already processed text positions to prevent duplicates
+    const processedRanges: {start: number, end: number}[] = [];
+    
+    // Process each segment
+    for (const segment of segments) {
       // Skip non-string segments
       if (typeof segment !== 'string') {
         result.push(segment);
-        return;
+        continue;
       }
       
+      const text = segment;
       let lastIndex = 0;
-      let processed = false;
       const parts: (string | ReactNode)[] = [];
+      let processed = false;
       
-      // Process the segment with each measurement pattern
+      // Process with each measurement pattern
       for (const pattern of sortedMeasurementPatterns) {
         // Create a new regex for this iteration
         const safePattern = new RegExp(pattern.source, "gi");
-        
-        // Check if this pattern exists in the segment
-        if (!safePattern.test(segment)) continue;
+        let match;
         
         // Reset regex lastIndex
         safePattern.lastIndex = 0;
-        let matchFound = false;
-        let matchIndex;
         
-        // Find all matches for this pattern
-        while ((matchIndex = safePattern.exec(segment)) !== null) {
-          matchFound = true;
+        while ((match = safePattern.exec(text)) !== null) {
+          const matchStart = match.index;
+          const matchEnd = match.index + match[0].length;
           
-          // Add text before match if not already processed
-          if (matchIndex.index > lastIndex) {
-            parts.push(segment.substring(lastIndex, matchIndex.index));
+          // Check if this match overlaps with any previously processed range
+          const overlaps = processedRanges.some(
+            range => (matchStart >= range.start && matchStart < range.end) || 
+                     (matchEnd > range.start && matchEnd <= range.end)
+          );
+          
+          if (overlaps) continue; // Skip overlapping matches
+          
+          processed = true;
+          
+          // Add text before match
+          if (matchStart > lastIndex) {
+            parts.push(text.substring(lastIndex, matchStart));
           }
           
           // Add highlighted measurement
           parts.push(
-            <Text key={`measure-${segmentIndex}-${matchIndex.index}`} style={styles.indianMeasurementHighlight}>
-              {matchIndex[0]}
+            <Text style={styles.indianMeasurementHighlight}>
+              {match[0]}
             </Text>
           );
           
-          lastIndex = matchIndex.index + matchIndex[0].length;
-        }
-        
-        if (matchFound) {
-          processed = true;
+          // Record this processed range
+          processedRanges.push({start: matchStart, end: matchEnd});
+          lastIndex = matchEnd;
         }
       }
       
-      // Add any remaining unprocessed text
-      if (lastIndex < segment.length) {
-        parts.push(segment.substring(lastIndex));
+      // Add remaining text
+      if (lastIndex < text.length) {
+        parts.push(text.substring(lastIndex));
       }
       
-      // Add all parts to result
+      // If processing happened, add all parts
       if (processed && parts.length > 0) {
-        parts.forEach(part => result.push(part));
+        result.push(...parts);
       } else {
-        // If no processing was done, add the original segment
-        result.push(segment);
+        // Otherwise add original segment
+        result.push(text);
       }
-    });
+    }
     
     return result;
   } catch (error) {
@@ -135,7 +143,10 @@ export const processLocalNames = (segments: (string | ReactNode)[]): (string | R
   try {
     const result: (string | ReactNode)[] = [];
     
-    segments.forEach((segment, segmentIndex) => {
+    // Keep track of already processed text positions to prevent duplicates
+    const processedLocalNames = new Set<string>();
+    
+    segments.forEach(segment => {
       // Skip already processed nodes
       if (typeof segment !== 'string') {
         result.push(segment);
@@ -144,43 +155,53 @@ export const processLocalNames = (segments: (string | ReactNode)[]): (string | R
       
       // Create a new regex for this iteration
       const safeLocalNameRegex = new RegExp(localNameRegex.source, "g");
+      let match;
       
-      // Check if this pattern exists in the text
-      if (!safeLocalNameRegex.test(segment)) {
-        result.push(segment);
-        return;
-      }
+      let text = segment;
+      let lastIndex = 0;
+      const parts: (string | ReactNode)[] = [];
+      let processed = false;
       
       // Reset regex lastIndex
       safeLocalNameRegex.lastIndex = 0;
       
-      let lastIndex = 0;
-      const parts: (string | ReactNode)[] = [];
-      let matchIndex;
-      
-      while ((matchIndex = safeLocalNameRegex.exec(segment)) !== null) {
+      while ((match = safeLocalNameRegex.exec(text)) !== null) {
+        const localName = match[0];
+        
+        // Skip if we've already processed this exact local name in this segment
+        if (processedLocalNames.has(localName)) continue;
+        
+        processed = true;
+        
         // Add text before match
-        if (matchIndex.index > lastIndex) {
-          parts.push(segment.substring(lastIndex, matchIndex.index));
+        if (match.index > lastIndex) {
+          parts.push(text.substring(lastIndex, match.index));
         }
         
         // Add highlighted local name
         parts.push(
-          <Text key={`local-${segmentIndex}-${matchIndex.index}`} style={styles.localNamesHighlight}>
-            {matchIndex[0]}
+          <Text style={styles.localNamesHighlight}>
+            {localName}
           </Text>
         );
         
-        lastIndex = matchIndex.index + matchIndex[0].length;
+        // Record this processed local name
+        processedLocalNames.add(localName);
+        lastIndex = match.index + localName.length;
       }
       
       // Add remaining text
-      if (lastIndex < segment.length) {
-        parts.push(segment.substring(lastIndex));
+      if (lastIndex < text.length) {
+        parts.push(text.substring(lastIndex));
       }
       
-      // Add all parts to result
-      parts.forEach(part => result.push(part));
+      // If processing happened, add all parts
+      if (processed && parts.length > 0) {
+        result.push(...parts);
+      } else {
+        // Otherwise add original segment
+        result.push(text);
+      }
     });
     
     return result;
