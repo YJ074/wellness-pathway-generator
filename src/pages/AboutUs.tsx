@@ -50,9 +50,7 @@ const AboutUs = () => {
                 <p className="mb-4">
                   Arogyam75 was born from a simple observation: while modern medicine has made remarkable advances, many Indians are losing touch with the rich wellness traditions that kept generations healthy for thousands of years.
                 </p>
-                <p className="mb-4">
-                  Our founder, Dr. Ananya Sharma, noticed a concerning trend in her medical practice—patients were increasingly suffering from lifestyle diseases that could be prevented through proper nutrition and exercise, yet they struggled to find guidance that honored both scientific evidence and cultural context.
-                </p>
+                <p className="mb-4">Our founder, Dr. Pragati Apte, noticed a concerning trend in her medical practice—patients were increasingly suffering from lifestyle diseases that could be prevented through proper nutrition and exercise, yet they struggled to find guidance that honored both scientific evidence and cultural context.</p>
                 
               </CardContent>
             </Card>
