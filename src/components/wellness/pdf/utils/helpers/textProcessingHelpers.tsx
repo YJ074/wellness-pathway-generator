@@ -7,189 +7,185 @@ import { dashPattern, measurementPatterns, localNameRegex } from '../constants/t
 // Process text with dash patterns (like "Rice Flakes - Poha")
 // Fixed to prevent word repetition
 export const processDashPatterns = (text: string): ReactNode[] => {
-  const results: ReactNode[] = [];
-  let lastIndex = 0;
-  let match;
-  
-  // Use a new regex that won't create an infinite loop
-  const safePattern = new RegExp(dashPattern.source, "g");
-  
-  while ((match = safePattern.exec(text)) !== null) {
-    // Add text before the match
-    if (match.index > lastIndex) {
-      results.push(text.substring(lastIndex, match.index));
+  try {
+    const results: ReactNode[] = [];
+    let lastIndex = 0;
+    
+    // Use a safe regex pattern with global flag
+    const safePattern = new RegExp(dashPattern.source, "g");
+    let match;
+    
+    while ((match = safePattern.exec(text)) !== null) {
+      // Add text before the match
+      if (match.index > lastIndex) {
+        results.push(text.substring(lastIndex, match.index));
+      }
+      
+      // Add the base word
+      results.push(match[1]);
+      
+      // Add dash character
+      results.push(" - ");
+      
+      // Add the local name with highlighting
+      results.push(
+        <Text style={styles.localNamesHighlight}>
+          {match[2]}
+        </Text>
+      );
+      
+      lastIndex = match.index + match[0].length;
     }
     
-    // Add the base word
-    results.push(match[1]);
+    // Add any remaining text
+    if (lastIndex < text.length) {
+      results.push(text.substring(lastIndex));
+    }
     
-    // Add the local name with highlighting
-    results.push(
-      <Text key={`dash-${match.index}`} style={styles.localNamesHighlight}>
-        {match[2]}
-      </Text>
-    );
-    
-    lastIndex = match.index + match[0].length;
+    return results;
+  } catch (error) {
+    console.error("Error processing dash patterns:", error);
+    return [text];
   }
-  
-  // Add any remaining text
-  if (lastIndex < text.length) {
-    results.push(text.substring(lastIndex));
-  }
-  
-  return results;
 };
 
 // Process measurements in text
 // Fixed to prevent word repetition
 export const processMeasurements = (segments: (string | ReactNode)[]): (string | ReactNode)[] => {
-  const result: (string | ReactNode)[] = [];
-  let segmentId = 0;
-  
-  // Sort measurement patterns by length descending to match longer terms first
-  const sortedMeasurementPatterns = [...measurementPatterns].sort((a, b) => 
-    b.source.length - a.source.length
-  );
-  
-  for (const segment of segments) {
-    // Skip non-string segments
-    if (typeof segment !== 'string') {
-      result.push(segment);
-      continue;
-    }
+  try {
+    const result: (string | ReactNode)[] = [];
     
-    let text = segment;
-    let processedText = false;
+    // Sort measurement patterns by length descending to match longer terms first
+    const sortedMeasurementPatterns = [...measurementPatterns].sort((a, b) => 
+      b.source.length - a.source.length
+    );
     
-    for (const pattern of sortedMeasurementPatterns) {
-      // Create a new regex for this iteration to reset lastIndex
-      const safePattern = new RegExp(pattern.source, "gi");
+    segments.forEach((segment, segmentIndex) => {
+      // Skip non-string segments
+      if (typeof segment !== 'string') {
+        result.push(segment);
+        return;
+      }
       
-      // Check if this pattern exists in the text
-      if (!safePattern.test(text)) continue;
-      
-      // Reset regex lastIndex
-      safePattern.lastIndex = 0;
-      
-      // Process this measurement pattern
-      const parts: (string | ReactNode)[] = [];
       let lastIndex = 0;
-      let match;
+      let processed = false;
+      const parts: (string | ReactNode)[] = [];
       
-      while ((match = safePattern.exec(text)) !== null) {
-        // Add text before match
-        if (match.index > lastIndex) {
-          parts.push(text.substring(lastIndex, match.index));
+      // Process the segment with each measurement pattern
+      for (const pattern of sortedMeasurementPatterns) {
+        // Create a new regex for this iteration
+        const safePattern = new RegExp(pattern.source, "gi");
+        
+        // Check if this pattern exists in the segment
+        if (!safePattern.test(segment)) continue;
+        
+        // Reset regex lastIndex
+        safePattern.lastIndex = 0;
+        let matchFound = false;
+        let matchIndex;
+        
+        // Find all matches for this pattern
+        while ((matchIndex = safePattern.exec(segment)) !== null) {
+          matchFound = true;
+          
+          // Add text before match if not already processed
+          if (matchIndex.index > lastIndex) {
+            parts.push(segment.substring(lastIndex, matchIndex.index));
+          }
+          
+          // Add highlighted measurement
+          parts.push(
+            <Text key={`measure-${segmentIndex}-${matchIndex.index}`} style={styles.indianMeasurementHighlight}>
+              {matchIndex[0]}
+            </Text>
+          );
+          
+          lastIndex = matchIndex.index + matchIndex[0].length;
         }
         
-        // Add highlighted measurement
-        parts.push(
-          <Text key={`measure-${segmentId++}`} style={styles.indianMeasurementHighlight}>
-            {match[0]}
-          </Text>
-        );
-        
-        lastIndex = match.index + match[0].length;
-      }
-      
-      // Add remaining text after final match
-      if (lastIndex < text.length) {
-        parts.push(text.substring(lastIndex));
-      }
-      
-      // Rebuild the text for the next pattern
-      text = '';
-      for (const part of parts) {
-        if (typeof part === 'string') {
-          text += part;
-        } else {
-          result.push(part);
-          processedText = true;
+        if (matchFound) {
+          processed = true;
         }
       }
-    }
+      
+      // Add any remaining unprocessed text
+      if (lastIndex < segment.length) {
+        parts.push(segment.substring(lastIndex));
+      }
+      
+      // Add all parts to result
+      if (processed && parts.length > 0) {
+        parts.forEach(part => result.push(part));
+      } else {
+        // If no processing was done, add the original segment
+        result.push(segment);
+      }
+    });
     
-    // Add any remaining text
-    if (text) {
-      result.push(text);
-    } else if (!processedText) {
-      result.push(segment);
-    }
+    return result;
+  } catch (error) {
+    console.error("Error processing measurements:", error);
+    return segments;
   }
-  
-  return result;
 };
 
 // Process local names in parentheses
 // Fixed to prevent word repetition
 export const processLocalNames = (segments: (string | ReactNode)[]): (string | ReactNode)[] => {
-  const result: (string | ReactNode)[] = [];
-  let segmentId = 0;
-  
-  for (const segment of segments) {
-    // Skip already processed nodes
-    if (typeof segment !== 'string') {
-      result.push(segment);
-      continue;
-    }
+  try {
+    const result: (string | ReactNode)[] = [];
     
-    // Create a new regex for this iteration to reset lastIndex
-    const safeLocalNameRegex = new RegExp(localNameRegex.source, "g");
-    
-    // Check if this pattern exists in the text
-    if (!safeLocalNameRegex.test(segment)) {
-      result.push(segment);
-      continue;
-    }
-    
-    // Reset regex lastIndex
-    safeLocalNameRegex.lastIndex = 0;
-    
-    // Split text at local name instances and process each part
-    let lastIndex = 0;
-    const parts: (string | ReactNode)[] = [];
-    let match;
-    
-    while ((match = safeLocalNameRegex.exec(segment)) !== null) {
-      // Skip if this is part of a measurement we already processed
-      const isMeasurement = measurementPatterns.some(pattern => 
-        new RegExp(pattern.source, "i").test(match[0])
-      );
+    segments.forEach((segment, segmentIndex) => {
+      // Skip already processed nodes
+      if (typeof segment !== 'string') {
+        result.push(segment);
+        return;
+      }
       
-      if (!isMeasurement) {
+      // Create a new regex for this iteration
+      const safeLocalNameRegex = new RegExp(localNameRegex.source, "g");
+      
+      // Check if this pattern exists in the text
+      if (!safeLocalNameRegex.test(segment)) {
+        result.push(segment);
+        return;
+      }
+      
+      // Reset regex lastIndex
+      safeLocalNameRegex.lastIndex = 0;
+      
+      let lastIndex = 0;
+      const parts: (string | ReactNode)[] = [];
+      let matchIndex;
+      
+      while ((matchIndex = safeLocalNameRegex.exec(segment)) !== null) {
         // Add text before match
-        if (match.index > lastIndex) {
-          parts.push(segment.substring(lastIndex, match.index));
+        if (matchIndex.index > lastIndex) {
+          parts.push(segment.substring(lastIndex, matchIndex.index));
         }
         
         // Add highlighted local name
         parts.push(
-          <Text key={`local-${segmentId++}`} style={styles.localNamesHighlight}>
-            {match[0]}
+          <Text key={`local-${segmentIndex}-${matchIndex.index}`} style={styles.localNamesHighlight}>
+            {matchIndex[0]}
           </Text>
         );
         
-        lastIndex = match.index + match[0].length;
-      } else {
-        // Add text up to the end of this measurement
-        if (match.index + match[0].length > lastIndex) {
-          parts.push(segment.substring(lastIndex, match.index + match[0].length));
-          lastIndex = match.index + match[0].length;
-        }
+        lastIndex = matchIndex.index + matchIndex[0].length;
       }
-    }
-    
-    // Add remaining text
-    if (lastIndex < segment.length) {
-      parts.push(segment.substring(lastIndex));
-    }
-    
-    // Add all parts to the result array
-    parts.forEach(part => {
-      result.push(part);
+      
+      // Add remaining text
+      if (lastIndex < segment.length) {
+        parts.push(segment.substring(lastIndex));
+      }
+      
+      // Add all parts to result
+      parts.forEach(part => result.push(part));
     });
+    
+    return result;
+  } catch (error) {
+    console.error("Error processing local names:", error);
+    return segments;
   }
-  
-  return result;
 };

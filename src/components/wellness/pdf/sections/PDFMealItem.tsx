@@ -38,11 +38,12 @@ const PDFMealItem = ({
       <Text style={styles.mealLabel}>• {label}</Text>
       
       <View style={styles.descriptionContainer}>
-        {formattedDescription.map((segment, index) => 
-          typeof segment === 'string' ? 
-            <Text key={`text-${index}`} style={styles.mealDescription}>{segment}</Text> : 
-            React.cloneElement(segment as React.ReactElement, { key: `segment-${index}` })
-        )}
+        {formattedDescription.map((segment, index) => {
+          if (typeof segment === 'string') {
+            return <Text key={`text-${index}`} style={styles.mealDescription}>{segment}</Text>;
+          }
+          return React.cloneElement(segment as React.ReactElement, { key: `segment-${index}` });
+        })}
       </View>
       
       {healthBenefit && (

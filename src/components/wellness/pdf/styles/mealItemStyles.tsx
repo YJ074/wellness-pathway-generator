@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: 6,
+    alignItems: 'baseline',
   },
   mealDescription: {
     fontSize: 11,
