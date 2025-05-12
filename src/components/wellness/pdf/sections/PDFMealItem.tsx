@@ -42,9 +42,11 @@ const PDFMealItem = ({
       </Text>
       
       {healthBenefit && (
-        <Text style={styles.healthBenefit}>
-          ♥ {healthBenefit}
-        </Text>
+        <View>
+          <Text style={styles.healthBenefit}>
+            ♥ {healthBenefit}
+          </Text>
+        </View>
       )}
       
       <Text style={styles.calorieInfo}>

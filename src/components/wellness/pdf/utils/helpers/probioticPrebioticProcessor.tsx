@@ -4,7 +4,7 @@ import { Text } from '@react-pdf/renderer';
 import { prebioticFoods, probioticFoods } from '@/utils/diet/helpers/prebioticProbioticHelper';
 import { styles } from '../../styles/mealItemStyles';
 
-// Process probiotic foods
+// Process probiotic foods with improved handling to prevent text overlapping
 export const processProbioticFoods = (segments: (string | ReactNode)[]): (string | ReactNode)[] => {
   const probioticSegments: (string | ReactNode)[] = [];
   let segmentId = 0;
@@ -23,25 +23,35 @@ export const processProbioticFoods = (segments: (string | ReactNode)[]): (string
     }
     
     let processed = false;
+    let tmpSegment = segment;
     
     for (const probiotic of probioticFoods) {
-      const regex = new RegExp(`(${probiotic})`, 'i');
-      if (regex.test(segment)) {
-        const parts = segment.split(regex);
+      const regex = new RegExp(`\\b(${probiotic})\\b`, 'i'); // Use word boundaries for more precise matching
+      
+      if (regex.test(tmpSegment)) {
+        const parts = tmpSegment.split(regex);
+        const newSegments = [];
         
         for (let i = 0; i < parts.length; i++) {
-          if (parts[i].toLowerCase() === probiotic.toLowerCase()) {
-            probioticSegments.push(
+          if (parts[i]) {
+            newSegments.push(parts[i]);
+          }
+          
+          if (i < parts.length - 1) {
+            newSegments.push(
               <Text 
                 key={`prob-${segmentId++}`} 
                 style={styles.probioticHighlight}
               >
-                {parts[i]}
+                {tmpSegment.match(regex)?.[0] || probiotic}
               </Text>
             );
-          } else if (parts[i]) {
-            probioticSegments.push(parts[i]);
           }
+        }
+        
+        // Replace the current segment with processed parts
+        for (const newSeg of newSegments) {
+          probioticSegments.push(newSeg);
         }
         
         processed = true;
@@ -50,14 +60,14 @@ export const processProbioticFoods = (segments: (string | ReactNode)[]): (string
     }
     
     if (!processed) {
-      probioticSegments.push(segment);
+      probioticSegments.push(tmpSegment);
     }
   }
   
   return probioticSegments;
 };
 
-// Process prebiotic foods
+// Process prebiotic foods with improved handling to prevent text overlapping
 export const processPrebioticFoods = (segments: (string | ReactNode)[]): (string | ReactNode)[] => {
   const prebioticSegments: (string | ReactNode)[] = [];
   let segmentId = 0;
@@ -76,25 +86,35 @@ export const processPrebioticFoods = (segments: (string | ReactNode)[]): (string
     }
     
     let processed = false;
+    let tmpSegment = segment;
     
     for (const prebiotic of prebioticFoods) {
-      const regex = new RegExp(`(${prebiotic})`, 'i');
-      if (regex.test(segment)) {
-        const parts = segment.split(regex);
+      const regex = new RegExp(`\\b(${prebiotic})\\b`, 'i'); // Use word boundaries for more precise matching
+      
+      if (regex.test(tmpSegment)) {
+        const parts = tmpSegment.split(regex);
+        const newSegments = [];
         
         for (let i = 0; i < parts.length; i++) {
-          if (parts[i].toLowerCase() === prebiotic.toLowerCase()) {
-            prebioticSegments.push(
+          if (parts[i]) {
+            newSegments.push(parts[i]);
+          }
+          
+          if (i < parts.length - 1) {
+            newSegments.push(
               <Text 
                 key={`pre-${segmentId++}`} 
                 style={styles.prebioticHighlight}
               >
-                {parts[i]}
+                {tmpSegment.match(regex)?.[0] || prebiotic}
               </Text>
             );
-          } else if (parts[i]) {
-            prebioticSegments.push(parts[i]);
           }
+        }
+        
+        // Replace the current segment with processed parts
+        for (const newSeg of newSegments) {
+          prebioticSegments.push(newSeg);
         }
         
         processed = true;
@@ -103,7 +123,7 @@ export const processPrebioticFoods = (segments: (string | ReactNode)[]): (string
     }
     
     if (!processed) {
-      prebioticSegments.push(segment);
+      prebioticSegments.push(tmpSegment);
     }
   }
   

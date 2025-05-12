@@ -31,36 +31,32 @@ export const styles = StyleSheet.create({
     fontSize: 10,
     color: '#16a34a',
     fontFamily: 'Helvetica',
-    marginTop: 2, // Added to create spacing from meal description
-    paddingLeft: 5, // Added to indent slightly
-    marginBottom: 6, // Keeping only one marginBottom property
+    marginTop: 2,
+    paddingLeft: 5,
+    marginBottom: 6,
   },
-  // Highlight styles for food descriptions with improved contrast and spacing
+  // Improved highlight styles for better text rendering without overlapping
   localNamesHighlight: {
-    color: '#6366f1', // indigo color for local names
+    color: '#6366f1',
     fontFamily: 'Helvetica-Bold',
-    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0, 
     margin: 0,
   },
   indianMeasurementHighlight: {
-    color: '#d97706', // amber color for Indian measurements
+    color: '#d97706',
     fontFamily: 'Helvetica-Bold',
-    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0,
     margin: 0,
   },
   probioticHighlight: {
-    color: '#4f46e5', // indigo for probiotic foods
+    color: '#4f46e5',
     fontFamily: 'Helvetica-Bold',
-    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0,
     margin: 0,
   },
   prebioticHighlight: {
-    color: '#059669', // emerald for prebiotic foods
+    color: '#059669',
     fontFamily: 'Helvetica-Bold',
-    // Remove display: 'inline' as it's not supported in react-pdf/renderer
     padding: 0,
     margin: 0,
   }
