@@ -6,7 +6,7 @@ import { processLocalNames } from './helpers/textProcessingHelpers';
 import { processProbioticFoods, processPrebioticFoods } from './helpers/probioticPrebioticProcessor';
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
-// Refactored to prevent text overlapping
+// Fixed to prevent word repetition and overlapping
 export const formatMealDescription = (text: string): ReactNode[] => {
   // Process the text in sequence to avoid overlapping highlights
   
@@ -25,6 +25,5 @@ export const formatMealDescription = (text: string): ReactNode[] => {
   // Step 5: Process prebiotic foods
   const prebioticsProcessed = processPrebioticFoods(probioticsProcessed);
   
-  // Return the final processed segments
   return prebioticsProcessed;
 };
