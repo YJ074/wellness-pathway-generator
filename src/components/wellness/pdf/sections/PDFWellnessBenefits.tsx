@@ -33,6 +33,7 @@ interface PDFWellnessBenefitsProps {
   hairNutrients?: string;
   skinNutrients?: string;
   fatLossNotes?: string;
+  pcosFriendlyNotes?: string;
   herbalRecommendations?: string[];
 }
 
@@ -40,10 +41,11 @@ const PDFWellnessBenefits = ({
   hairNutrients, 
   skinNutrients, 
   fatLossNotes, 
+  pcosFriendlyNotes,
   herbalRecommendations 
 }: PDFWellnessBenefitsProps) => {
   // Check if we have any wellness benefits to display
-  const hasWellnessBenefits = hairNutrients || skinNutrients || fatLossNotes || 
+  const hasWellnessBenefits = hairNutrients || skinNutrients || fatLossNotes || pcosFriendlyNotes || 
                              (herbalRecommendations && herbalRecommendations.length > 0);
                              
   if (!hasWellnessBenefits) return null;
@@ -62,6 +64,10 @@ const PDFWellnessBenefits = ({
       
       {fatLossNotes && (
         <Text style={styles.wellnessItem}>• Weight Management: {fatLossNotes}</Text>
+      )}
+      
+      {pcosFriendlyNotes && (
+        <Text style={styles.wellnessItem}>• PCOS/PCOD Support: {pcosFriendlyNotes}</Text>
       )}
       
       {herbalRecommendations && herbalRecommendations.length > 0 && (

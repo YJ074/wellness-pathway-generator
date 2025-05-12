@@ -39,6 +39,7 @@ export interface DietPlan {
     hairNutrients?: string;
     skinNutrients?: string;
     fatLossNotes?: string;
+    pcosFriendlyNotes?: string; // Added this property
     herbalRecommendations?: string[];
     regionalNote?: string; // New field for regional cultural notes
   }>;
