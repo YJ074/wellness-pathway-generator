@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -6,10 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 const AboutUs = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+  return <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <Link to="/" className="inline-block mb-6">
           <Button variant="ghost" className="gap-2">
@@ -18,17 +15,16 @@ const AboutUs = () => {
           </Button>
         </Link>
 
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-10 text-center"
-        >
-          <img 
-            src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" 
-            alt="Arogyam75 Logo" 
-            className="h-28 w-auto mx-auto mb-4" 
-          />
+        <motion.div initial={{
+        opacity: 0,
+        y: -20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="mb-10 text-center">
+          <img src="/lovable-uploads/55244ed4-16fb-43f1-bcc6-6ba6169d042e.png" alt="Arogyam75 Logo" className="h-28 w-auto mx-auto mb-4" />
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
             About Arogyam75
           </h1>
@@ -38,11 +34,16 @@ const AboutUs = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          x: -30
+        }} animate={{
+          opacity: 1,
+          x: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.1
+        }}>
             <Card>
               <CardContent className="pt-6">
                 <h2 className="text-2xl font-bold mb-4 text-blue-700">Our Story</h2>
@@ -59,11 +60,16 @@ const AboutUs = () => {
             </Card>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          x: 30
+        }} animate={{
+          opacity: 1,
+          x: 0
+        }} transition={{
+          duration: 0.6,
+          delay: 0.2
+        }}>
             <Card>
               <CardContent className="pt-6">
                 <h2 className="text-2xl font-bold mb-4 text-blue-700">Our Mission</h2>
@@ -81,12 +87,16 @@ const AboutUs = () => {
           </motion.div>
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-12"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 30
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.6,
+        delay: 0.3
+      }} className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">Our Core Values</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="bg-blue-50">
@@ -118,85 +128,8 @@ const AboutUs = () => {
           </div>
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">Our Team</h2>
-          <p className="text-center mb-8 max-w-3xl mx-auto text-gray-600">
-            Arogyam75 brings together experts from diverse fields, united by a passion for integrating traditional wellness wisdom with modern scientific understanding.
-          </p>
-          
-          <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
-            {[
-              {
-                name: "Dr. Ananya Sharma",
-                role: "Founder & Medical Director",
-                bio: "Integrative medicine specialist with 15 years of clinical experience",
-                avatar: "A"
-              },
-              {
-                name: "Vikram Mehta",
-                role: "Chief Nutrition Scientist",
-                bio: "PhD in Nutritional Biochemistry with research focus on Indian diets",
-                avatar: "V"
-              },
-              {
-                name: "Priya Nair",
-                role: "Head of Ayurvedic Practices",
-                bio: "Certified Ayurvedic practitioner with modern clinical training",
-                avatar: "P"
-              },
-              {
-                name: "Rajesh Kumar",
-                role: "Fitness Methodology Lead",
-                bio: "Sports science researcher specializing in exercise adaptation",
-                avatar: "R"
-              },
-              {
-                name: "Meena Agarwal",
-                role: "Regional Cuisine Expert",
-                bio: "Culinary anthropologist documenting traditional food preparations",
-                avatar: "M"
-              },
-              {
-                name: "Arjun Singh",
-                role: "Technology Director",
-                bio: "AI specialist focused on personalization algorithms",
-                avatar: "A"
-              },
-              {
-                name: "Dr. Sanjay Patel",
-                role: "Research Coordinator",
-                bio: "Epidemiologist studying lifestyle interventions across demographics",
-                avatar: "S"
-              },
-              {
-                name: "Lakshmi Venkatesh",
-                role: "Community Engagement",
-                bio: "Public health educator with expertise in behavior change",
-                avatar: "L"
-              }
-            ].map((member, index) => (
-              <Card key={index}>
-                <CardContent className="pt-6 text-center">
-                  <Avatar className="h-20 w-20 mb-4 mx-auto">
-                    <AvatarFallback className="bg-blue-600 text-xl text-white">
-                      {member.avatar}
-                    </AvatarFallback>
-                  </Avatar>
-                  <h3 className="font-semibold text-lg">{member.name}</h3>
-                  <p className="text-sm text-blue-600 mb-2">{member.role}</p>
-                  <p className="text-sm text-gray-600">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </motion.div>
+        
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default AboutUs;
