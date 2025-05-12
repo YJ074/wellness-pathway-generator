@@ -53,9 +53,7 @@ const AboutUs = () => {
                 <p className="mb-4">
                   Our founder, Dr. Ananya Sharma, noticed a concerning trend in her medical practice—patients were increasingly suffering from lifestyle diseases that could be prevented through proper nutrition and exercise, yet they struggled to find guidance that honored both scientific evidence and cultural context.
                 </p>
-                <p>
-                  In 2022, she assembled a team of nutritionists, fitness experts, Ayurvedic practitioners, and technology specialists to create a solution. After 18 months of research and development, Arogyam75 emerged as a comprehensive wellness program that bridges ancient wisdom and modern science.
-                </p>
+                
               </CardContent>
             </Card>
           </motion.div>
