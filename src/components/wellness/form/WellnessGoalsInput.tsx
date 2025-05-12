@@ -15,7 +15,8 @@ const goalDescriptions: Record<WellnessGoal, string> = {
   'glowing-skin': 'Foods high in antioxidants, vitamins A, C, E and omega-3 fatty acids.',
   'fat-loss': 'Calorie-controlled diet with high protein and fiber to promote fat burning.',
   'inch-loss': 'Foods that reduce water retention and bloating while supporting metabolism.',
-  'general-wellness': 'Balanced nutrition for overall health improvement.'
+  'general-wellness': 'Balanced nutrition for overall health improvement.',
+  'pcos-pcod-friendly': 'Low glycemic, anti-inflammatory foods with balanced protein to help manage hormones and insulin resistance.'
 };
 
 const WellnessGoalsInput = ({ selectedGoals, onChange }: WellnessGoalsInputProps) => {

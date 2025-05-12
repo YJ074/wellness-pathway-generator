@@ -20,6 +20,7 @@ import {
   generateHairNutrients,
   generateSkinNutrients,
   generateFatLossNotes,
+  generatePCOSFriendlyNotes,
   generateHerbalRecommendations
 } from '../wellness/wellnessRecommendations';
 import { generateRegionalNote } from '../regional/regionalRecommendations';
@@ -101,6 +102,10 @@ export function generateDays(
       
     const fatLossNotes = (wellnessGoals.includes('fat-loss') || wellnessGoals.includes('inch-loss')) ? 
       generateFatLossNotes(`${breakfast} ${lunch} ${dinner}`, totalCalories) : undefined;
+    
+    // Generate PCOS/PCOD friendly notes if that goal is selected
+    const pcosFriendlyNotes = wellnessGoals.includes('pcos-pcod-friendly') ?
+      generatePCOSFriendlyNotes(`${breakfast} ${lunch} ${dinner}`) : undefined;
       
     const herbalRecommendations = generateHerbalRecommendations(dayIndex, wellnessGoals);
     
@@ -122,6 +127,7 @@ export function generateDays(
       hairNutrients,
       skinNutrients,
       fatLossNotes,
+      pcosFriendlyNotes,
       herbalRecommendations,
       regionalNote
     });

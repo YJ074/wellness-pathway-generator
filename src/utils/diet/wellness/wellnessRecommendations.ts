@@ -1,4 +1,3 @@
-
 import { WellnessGoal } from '../types';
 
 // Generate hair nutrients information based on the meal
@@ -68,6 +67,29 @@ export const generateFatLossNotes = (meal: string, calories: number): string => 
   return `${fatLossOptions[seedValue % fatLossOptions.length]}. Portion controlled at ${calories} calories.`;
 };
 
+// Generate PCOS/PCOD friendly notes based on the meal
+export const generatePCOSFriendlyNotes = (meal: string): string => {
+  const pcosFriendlyOptions = [
+    "Low glycemic index foods help manage insulin resistance",
+    "Anti-inflammatory ingredients to reduce hormonal inflammation",
+    "Rich in chromium and magnesium to improve insulin sensitivity",
+    "Contains cinnamon which may help regulate blood sugar",
+    "High fiber content helps slow sugar absorption",
+    "Good source of omega-3 fatty acids to reduce inflammation",
+    "Contains inositol-rich foods that may improve ovarian function",
+    "Rich in antioxidants to reduce oxidative stress",
+    "Balanced protein-carb ratio to stabilize blood sugar levels",
+    "Contains zinc which supports hormone balance and ovulation",
+    "Rich in B-vitamins essential for hormone metabolism",
+    "Contains foods that support healthy liver function for hormone processing",
+    "Low in refined carbohydrates to prevent blood sugar spikes"
+  ];
+  
+  // Seed based on meal content to get consistent but different results
+  const seedValue = Array.from(meal).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return pcosFriendlyOptions[seedValue % pcosFriendlyOptions.length];
+};
+
 // Generate herbal recommendations
 export const generateHerbalRecommendations = (dayIndex: number, wellnessGoals: WellnessGoal[]): string[] => {
   const recommendations: string[] = [];
@@ -130,6 +152,24 @@ export const generateHerbalRecommendations = (dayIndex: number, wellnessGoals: W
       "Dandelion root tea for detoxification"
     ];
     recommendations.push(weightOptions[dayIndex % weightOptions.length]);
+  }
+  
+  // Add PCOS/PCOD specific herbal recommendations
+  if (wellnessGoals.includes('pcos-pcod-friendly')) {
+    const pcosOptions = [
+      "Cinnamon tea before breakfast to improve insulin sensitivity",
+      "Spearmint tea twice daily to reduce androgen levels",
+      "Fenugreek seed water in the morning on empty stomach",
+      "Holy basil (Tulsi) tea to reduce stress and inflammation",
+      "Aloe vera juice in the morning to regulate hormones",
+      "Licorice root tea in the afternoon (not for those with hypertension)",
+      "Chamomile tea after dinner to reduce stress",
+      "Ashwagandha tea in the evening to balance hormones",
+      "Amla juice mixed with water before breakfast",
+      "Triphala water before bedtime to improve gut health",
+      "Gymnema sylvestre tea after meals to help manage sugar cravings"
+    ];
+    recommendations.push(pcosOptions[dayIndex % pcosOptions.length]);
   }
   
   // Return unique recommendations

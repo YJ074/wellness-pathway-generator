@@ -41,6 +41,7 @@ interface PDFDietSectionProps {
     hairNutrients?: string;
     skinNutrients?: string;
     fatLossNotes?: string;
+    pcosFriendlyNotes?: string;
     herbalRecommendations?: string[];
     regionalNote?: string;
   };
@@ -152,6 +153,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         hairNutrients={day.hairNutrients}
         skinNutrients={day.skinNutrients}
         fatLossNotes={day.fatLossNotes}
+        pcosFriendlyNotes={day.pcosFriendlyNotes}
         herbalRecommendations={day.herbalRecommendations}
       />
     </View>

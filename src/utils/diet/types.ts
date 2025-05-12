@@ -13,6 +13,7 @@ export type WellnessGoal =
   | 'glowing-skin'
   | 'fat-loss'
   | 'inch-loss'
+  | 'pcos-pcod-friendly'
   | 'general-wellness';
 
 export interface DietPlan {
