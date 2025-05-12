@@ -6,168 +6,188 @@ import { styles } from '../../styles/mealItemStyles';
 
 // Fixed process probiotic foods to prevent overlapping and repetition
 export const processProbioticFoods = (segments: (string | ReactNode)[]): (string | ReactNode)[] => {
-  const probioticSegments: (string | ReactNode)[] = [];
+  const result: (string | ReactNode)[] = [];
   let segmentId = 0;
   
   for (const segment of segments) {
+    // If it's not a string (already processed), just add it directly
     if (typeof segment !== 'string') {
-      probioticSegments.push(segment);
+      result.push(segment);
       continue;
     }
     
     // Skip processing if this is a health benefit note
     if (segment.startsWith('Contains probiotics for gut health') || 
         segment.startsWith('♥ Contains probiotics')) {
-      probioticSegments.push(segment);
+      result.push(segment);
       continue;
     }
     
-    let remainingText = segment;
-    let foundProbiotics = false;
+    const parts: (string | ReactNode)[] = [];
+    let lastIndex = 0;
+    let text = segment;
     
-    for (const probiotic of probioticFoods) {
-      // Use word boundaries for more precise matching
+    // Create a copy of probioticFoods and sort by length descending to match longer terms first
+    const sortedProbiotics = [...probioticFoods].sort((a, b) => b.length - a.length);
+    
+    for (const probiotic of sortedProbiotics) {
+      // Use word boundary for more precise matching
       const regex = new RegExp(`\\b(${probiotic})\\b`, 'gi');
-      
-      // Check if this probiotic exists in the text
-      if (!regex.test(remainingText)) continue;
-      
-      // Reset regex since test() advances the lastIndex
-      regex.lastIndex = 0;
-      
-      // Split text at probiotic instances and process each part
-      const parts = [];
-      let lastIndex = 0;
       let match;
       
-      while ((match = regex.exec(remainingText)) !== null) {
+      // Reset regex
+      regex.lastIndex = 0;
+      
+      // Create a temporary working copy for this probiotic
+      let workingText = text;
+      const tempParts: (string | ReactNode)[] = [];
+      let tempLastIndex = 0;
+      let foundMatch = false;
+      
+      while ((match = regex.exec(workingText)) !== null) {
+        foundMatch = true;
+        
         // Add text before match
-        if (match.index > lastIndex) {
-          parts.push(remainingText.substring(lastIndex, match.index));
+        if (match.index > tempLastIndex) {
+          tempParts.push(workingText.substring(tempLastIndex, match.index));
         }
         
         // Add highlighted probiotic
-        parts.push(
+        tempParts.push(
           <Text key={`prob-${segmentId++}`} style={styles.probioticHighlight}>
             {match[0]}
           </Text>
         );
         
-        lastIndex = match.index + match[0].length;
+        tempLastIndex = match.index + match[0].length;
       }
       
-      // Add remaining text after final match
-      if (lastIndex < remainingText.length) {
-        parts.push(remainingText.substring(lastIndex));
+      // Add remaining text
+      if (tempLastIndex < workingText.length) {
+        tempParts.push(workingText.substring(tempLastIndex));
       }
       
-      // Replace original text with processed parts
-      if (parts.length > 0) {
-        remainingText = '';
-        parts.forEach(part => {
+      // If we found matches, update our working text for the next probiotic
+      if (foundMatch) {
+        text = ''; // Clear the text as we'll rebuild it
+        
+        // Rebuild the text from parts for the next iteration
+        for (const part of tempParts) {
           if (typeof part === 'string') {
-            remainingText += part;
+            text += part;
           } else {
-            probioticSegments.push(part);
+            parts.push(part);
           }
-        });
-        foundProbiotics = true;
+        }
       }
     }
     
-    // Add remaining text if there's any
-    if (remainingText || !foundProbiotics) {
-      if (typeof segment === 'string' && !foundProbiotics) {
-        probioticSegments.push(segment);
-      } else if (remainingText) {
-        probioticSegments.push(remainingText);
+    // Add any remaining text
+    if (text) {
+      result.push(text);
+    }
+    
+    // Add any highlighted parts
+    for (const part of parts) {
+      if (typeof part !== 'string') {
+        result.push(part);
       }
     }
   }
   
-  return probioticSegments;
+  return result;
 };
 
 // Fixed process prebiotic foods to prevent overlapping and repetition
 export const processPrebioticFoods = (segments: (string | ReactNode)[]): (string | ReactNode)[] => {
-  const prebioticSegments: (string | ReactNode)[] = [];
+  const result: (string | ReactNode)[] = [];
   let segmentId = 0;
   
   for (const segment of segments) {
+    // If it's not a string (already processed), just add it directly
     if (typeof segment !== 'string') {
-      prebioticSegments.push(segment);
+      result.push(segment);
       continue;
     }
     
     // Skip processing if this is a health benefit note
-    if (segment.startsWith('Contains probiotics for gut health') || 
+    if (segment.startsWith('Contains prebiotic') || 
         segment.startsWith('♥ Contains')) {
-      prebioticSegments.push(segment);
+      result.push(segment);
       continue;
     }
     
-    let remainingText = segment;
-    let foundPrebiotics = false;
+    const parts: (string | ReactNode)[] = [];
+    let lastIndex = 0;
+    let text = segment;
     
-    for (const prebiotic of prebioticFoods) {
-      // Use word boundaries for precise matching
+    // Create a copy of prebioticFoods and sort by length descending to match longer terms first
+    const sortedPrebiotics = [...prebioticFoods].sort((a, b) => b.length - a.length);
+    
+    for (const prebiotic of sortedPrebiotics) {
+      // Use word boundary for more precise matching
       const regex = new RegExp(`\\b(${prebiotic})\\b`, 'gi');
-      
-      // Check if this prebiotic exists in the text
-      if (!regex.test(remainingText)) continue;
-      
-      // Reset regex since test() advances the lastIndex
-      regex.lastIndex = 0;
-      
-      // Split text at prebiotic instances and process each part
-      const parts = [];
-      let lastIndex = 0;
       let match;
       
-      while ((match = regex.exec(remainingText)) !== null) {
+      // Reset regex
+      regex.lastIndex = 0;
+      
+      // Create a temporary working copy for this prebiotic
+      let workingText = text;
+      const tempParts: (string | ReactNode)[] = [];
+      let tempLastIndex = 0;
+      let foundMatch = false;
+      
+      while ((match = regex.exec(workingText)) !== null) {
+        foundMatch = true;
+        
         // Add text before match
-        if (match.index > lastIndex) {
-          parts.push(remainingText.substring(lastIndex, match.index));
+        if (match.index > tempLastIndex) {
+          tempParts.push(workingText.substring(tempLastIndex, match.index));
         }
         
         // Add highlighted prebiotic
-        parts.push(
+        tempParts.push(
           <Text key={`pre-${segmentId++}`} style={styles.prebioticHighlight}>
             {match[0]}
           </Text>
         );
         
-        lastIndex = match.index + match[0].length;
+        tempLastIndex = match.index + match[0].length;
       }
       
-      // Add remaining text after final match
-      if (lastIndex < remainingText.length) {
-        parts.push(remainingText.substring(lastIndex));
+      // Add remaining text
+      if (tempLastIndex < workingText.length) {
+        tempParts.push(workingText.substring(tempLastIndex));
       }
       
-      // Replace original text with processed parts
-      if (parts.length > 0) {
-        remainingText = '';
-        parts.forEach(part => {
+      // If we found matches, update our working text for the next prebiotic
+      if (foundMatch) {
+        text = ''; // Clear the text as we'll rebuild it
+        
+        // Rebuild the text from parts for the next iteration
+        for (const part of tempParts) {
           if (typeof part === 'string') {
-            remainingText += part;
+            text += part;
           } else {
-            prebioticSegments.push(part);
+            parts.push(part);
           }
-        });
-        foundPrebiotics = true;
+        }
       }
     }
     
-    // Add remaining text if there's any
-    if (remainingText || !foundPrebiotics) {
-      if (typeof segment === 'string' && !foundPrebiotics) {
-        prebioticSegments.push(segment);
-      } else if (remainingText) {
-        prebioticSegments.push(remainingText);
+    // Add any remaining text
+    if (text) {
+      result.push(text);
+    }
+    
+    // Add any highlighted parts
+    for (const part of parts) {
+      if (typeof part !== 'string') {
+        result.push(part);
       }
     }
   }
   
-  return prebioticSegments;
+  return result;
 };

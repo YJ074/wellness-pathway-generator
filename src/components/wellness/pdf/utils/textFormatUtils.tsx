@@ -9,20 +9,21 @@ import { processProbioticFoods, processPrebioticFoods } from './helpers/probioti
 // Fixed to prevent word repetition and overlapping
 export const formatMealDescription = (text: string): ReactNode[] => {
   // Process the text in sequence to avoid overlapping highlights
+  // Each step takes the output of the previous step
   
   // Step 1: Process dash patterns (like "Rice Flakes - Poha")
   const dashProcessedText = processDashPatterns(text);
   
-  // Step 2: Process measurement patterns
+  // Step 2: Process measurement patterns (like "2 katori", "1 bowl", etc)
   const measurementsProcessed = processMeasurements(dashProcessedText);
   
   // Step 3: Process parenthetical expressions (local names)
   const localNamesProcessed = processLocalNames(measurementsProcessed);
   
-  // Step 4: Process probiotic foods
+  // Step 4: Process probiotic foods (like "Yogurt", "Curd", etc)
   const probioticsProcessed = processProbioticFoods(localNamesProcessed);
   
-  // Step 5: Process prebiotic foods
+  // Step 5: Process prebiotic foods (like "Garlic", "Onions", etc)
   const prebioticsProcessed = processPrebioticFoods(probioticsProcessed);
   
   return prebioticsProcessed;

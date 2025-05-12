@@ -37,10 +37,12 @@ const PDFMealItem = ({
     <View style={styles.mealItem} wrap={false}>
       <Text style={styles.mealLabel}>• {label}</Text>
       
-      <View>
-        <Text style={styles.mealDescription}>
-          {formattedDescription}
-        </Text>
+      <View style={styles.descriptionContainer}>
+        {formattedDescription.map((segment, index) => 
+          typeof segment === 'string' ? 
+            <Text key={`text-${index}`} style={styles.mealDescription}>{segment}</Text> : 
+            React.cloneElement(segment as React.ReactElement, { key: `segment-${index}` })
+        )}
       </View>
       
       {healthBenefit && (
