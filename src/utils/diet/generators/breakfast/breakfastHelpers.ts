@@ -2,10 +2,10 @@
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { getFruitSources } from '../../data/foodSources';
 import { getStandardFruitPortion, getDailyNutsMixture } from '../../helpers/portionHelpers';
-import { addWithoutDuplication } from '../../helpers/deduplicationHelper';
+import { addWithoutDuplication } from '../../helpers/deduplication';
 
 // Enhanced helper to prevent duplicate additions to breakfast descriptions
-// Now leverages the centralized deduplication module
+// Now leverages the centralized deduplication module with strict matching
 export const preventDuplicateAdditions = (breakfast: string, addition: string): string => {
   return addWithoutDuplication(breakfast, addition);
 };
@@ -26,6 +26,10 @@ export const addFruitsToBreakfast = (
   const fruitPortion = getStandardFruitPortion(seasonalFruit);
   
   return breakfastOptions.map(breakfast => {
+    // Check first if the breakfast already contains this fruit (case-insensitive)
+    if (breakfast.toLowerCase().includes(seasonalFruit.toLowerCase())) {
+      return breakfast;
+    }
     // Use our enhanced duplicate prevention function
     return preventDuplicateAdditions(breakfast, `with ${seasonalFruit} ${fruitPortion}`);
   });
@@ -38,6 +42,10 @@ export const addNutsToBreakfast = (
 ): string[] => {
   const dailyNuts = getDailyNutsMixture(dayIndex);
   return breakfastOptions.map(breakfast => {
+    // Check first if the breakfast already contains these nuts
+    if (breakfast.toLowerCase().includes(dailyNuts.toLowerCase())) {
+      return breakfast;
+    }
     // Only add nuts if they're not already included (using our enhanced function)
     return preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
   });

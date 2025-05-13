@@ -11,13 +11,15 @@ export type DuplicateDetectionOptions = {
   checkConnectors?: boolean;
   handlePortionVariations?: boolean;
   checkSynonyms?: boolean;
+  strictMatching?: boolean; // Added strict matching option
 };
 
 export const DEFAULT_OPTIONS: DuplicateDetectionOptions = {
   caseSensitive: false,
   checkConnectors: true,
   handlePortionVariations: true,
-  checkSynonyms: true
+  checkSynonyms: true,
+  strictMatching: false
 };
 
 /**
@@ -42,7 +44,7 @@ export const hasFoodItem = (
   foodItem: string,
   options: DuplicateDetectionOptions = DEFAULT_OPTIONS
 ): boolean => {
-  const { caseSensitive, checkConnectors, handlePortionVariations, checkSynonyms } = { ...DEFAULT_OPTIONS, ...options };
+  const { caseSensitive, checkConnectors, handlePortionVariations, checkSynonyms, strictMatching } = { ...DEFAULT_OPTIONS, ...options };
   
   // Normalize text based on case sensitivity option
   const processedMeal = caseSensitive ? mealDescription : mealDescription.toLowerCase();
@@ -55,6 +57,14 @@ export const hasFoodItem = (
   
   // Extract just the food name without portions or descriptors
   const foodName = extractBaseFoodName(processedFood);
+  
+  // With strict matching, we use word boundaries to prevent partial matches
+  if (strictMatching) {
+    const strictRegex = new RegExp(`\\b${foodName}\\b`, 'i');
+    if (strictRegex.test(processedMeal)) {
+      return true;
+    }
+  }
   
   // Check for food name with different connectors
   if (checkConnectors) {

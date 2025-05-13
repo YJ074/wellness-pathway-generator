@@ -54,7 +54,11 @@ export const addWithoutDuplication = (
 export const removeDuplicateFoodItems = (mealDescription: string): string => {
   // Start with basic whitespace normalization
   let normalizedMeal = normalizeWhitespaceAndPunctuation(mealDescription);
-    
+  
+  // Specific fix for repeated item sequences with portions
+  const repeatedItemsPattern = /([A-Za-z]+ +\([^)]+\)),( *\1)+/g;
+  normalizedMeal = normalizedMeal.replace(repeatedItemsPattern, '$1');
+  
   // Process each food item and remove duplicates
   for (const food of COMMON_FOODS) {
     const lowerFood = food.toLowerCase();
@@ -84,6 +88,10 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
     const standalonePattern = new RegExp(`(${food}\\s+\\([^)]+\\)[^,]*),\\s*${food}\\s+\\([^)]+\\)`, 'gi');
     normalizedMeal = normalizedMeal.replace(standalonePattern, '$1');
     
+    // NEW: Handle direct repetitions like "Chickoo (1 nos), Chickoo (1 nos)"
+    const directRepetition = new RegExp(`${food}\\s+\\([^)]+\\)(?:,\\s*|\\s+)${food}\\s+\\([^)]+\\)`, 'gi');
+    normalizedMeal = normalizedMeal.replace(directRepetition, `${food} ([^)]+)`);
+    
     // Handle duplicates across synonyms
     // First get potential synonyms for this food
     const synonyms = FOOD_SYNONYMS[food.toLowerCase()] || [];
@@ -105,6 +113,11 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
       return match.replace(new RegExp(`(,|\\s+and|\\s+with)\\s*\\b${food}\\b`, 'gi'), '');
     });
   });
+  
+  // NEW: Special handling for exact duplications of the same item with same portion
+  // This catches cases like "chia seeds (1 tsp), chia seeds (1 tsp)"
+  const exactDuplicatePattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)),\s+\1/gi;
+  normalizedMeal = normalizedMeal.replace(exactDuplicatePattern, '$1');
   
   // Cleanup formatting after deduplication
   return cleanupDuplicationFormatting(normalizedMeal);

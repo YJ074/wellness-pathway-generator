@@ -4,7 +4,7 @@ import { View, Text } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
 import { formatMealDescription } from '../utils/textFormatUtils';
 import { styles } from '../styles/mealItemStyles';
-import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplication';
+import { removeDuplicateFoodItems } from '../../../../utils/diet/helpers/deduplication';
 
 interface PDFMealItemProps {
   label: string;
@@ -31,9 +31,8 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Apply our comprehensive normalization to ensure no duplicates
-  // This now uses our enhanced deduplication module with synonym checking
-  mealDescription = normalizeMealForPDF(mealDescription);
+  // Apply thorough deduplication to the meal description
+  mealDescription = removeDuplicateFoodItems(mealDescription);
   
   // Format the meal description to highlight special terms
   const formattedDescription = formatMealDescription(mealDescription);
