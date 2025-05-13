@@ -35,8 +35,13 @@ const useToast = () => {
         ...styling
       })
     },
-    // For compatibility with any code expecting a toast array
-    toasts: [] as ToastProps[],
+    // For compatibility with any code expecting a toast array with title, description, and action properties
+    toasts: [] as Array<ToastProps & {
+      id: string;
+      title?: React.ReactNode;
+      description?: React.ReactNode;
+      action?: React.ReactNode;
+    }>,
   }
 }
 

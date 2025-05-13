@@ -7,6 +7,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
+  type ToastProps,
 } from "@/components/ui/toast"
 
 export function Toaster() {
@@ -15,15 +16,22 @@ export function Toaster() {
   return (
     <ToastProvider>
       {toasts.map(function ({ id, ...props }) {
+        // Cast props to ToastProps to access expected properties
+        const { title, description, action } = props as unknown as {
+          title?: React.ReactNode
+          description?: React.ReactNode
+          action?: React.ReactNode
+        }
+        
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
-              {props.title && <ToastTitle>{props.title}</ToastTitle>}
-              {props.description && (
-                <ToastDescription>{props.description}</ToastDescription>
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && (
+                <ToastDescription>{description}</ToastDescription>
               )}
             </div>
-            {props.action}
+            {action}
             <ToastClose />
           </Toast>
         )
