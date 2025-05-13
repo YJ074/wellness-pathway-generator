@@ -1,23 +1,25 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { sendPlanViaEmail } from "@/utils/sharing";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
+
 interface EmailShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
   workoutPlan?: WorkoutPlan; // Added workoutPlan as optional prop
 }
+
 const EmailShareButton = ({
   formData,
   dietPlan,
   workoutPlan
 }: EmailShareButtonProps) => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [isEmailSending, setIsEmailSending] = useState(false);
+  
   const handleSendEmail = async () => {
     if (!formData.email) {
       toast({
@@ -27,6 +29,7 @@ const EmailShareButton = ({
       });
       return;
     }
+    
     setIsEmailSending(true);
     try {
       await sendPlanViaEmail(formData, dietPlan);
@@ -45,6 +48,19 @@ const EmailShareButton = ({
       setIsEmailSending(false);
     }
   };
-  return;
+  
+  return (
+    <Button onClick={handleSendEmail} variant="outline" disabled={isEmailSending}>
+      {isEmailSending ? (
+        <>Sending...</>
+      ) : (
+        <>
+          <Mail className="mr-2 h-4 w-4" />
+          Email
+        </>
+      )}
+    </Button>
+  );
 };
+
 export default EmailShareButton;

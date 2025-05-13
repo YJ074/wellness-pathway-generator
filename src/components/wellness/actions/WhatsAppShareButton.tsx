@@ -1,23 +1,25 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { sendPlanViaWhatsApp } from "@/utils/sharing";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
+
 interface WhatsAppShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
   workoutPlan?: WorkoutPlan; // Added workoutPlan as optional prop
 }
+
 const WhatsAppShareButton = ({
   formData,
   dietPlan,
   workoutPlan
 }: WhatsAppShareButtonProps) => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
+  
   const handleSendWhatsApp = async () => {
     if (!formData.mobileNumber || !formData.mobileNumber.startsWith("+91")) {
       toast({
@@ -27,6 +29,7 @@ const WhatsAppShareButton = ({
       });
       return;
     }
+    
     setIsWhatsAppSending(true);
     try {
       await sendPlanViaWhatsApp(formData, dietPlan);
@@ -45,6 +48,19 @@ const WhatsAppShareButton = ({
       setIsWhatsAppSending(false);
     }
   };
-  return;
+  
+  return (
+    <Button onClick={handleSendWhatsApp} variant="outline" disabled={isWhatsAppSending}>
+      {isWhatsAppSending ? (
+        <>Connecting...</>
+      ) : (
+        <>
+          <Share className="mr-2 h-4 w-4" />
+          WhatsApp
+        </>
+      )}
+    </Button>
+  );
 };
+
 export default WhatsAppShareButton;
