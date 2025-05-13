@@ -1,8 +1,7 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Copyright } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -143,8 +142,20 @@ const AboutUs = () => {
             </Card>
           </div>
         </motion.div>
-
         
+        <footer className="mt-8 md:mt-16 pb-4 text-center text-sm text-gray-500">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4">
+            <div className="flex items-center">
+              <Copyright className="h-3 w-3 mr-1" />
+              <span>{new Date().getFullYear()} Arogyam75. All rights reserved.</span>
+            </div>
+            <div>
+              <a href="mailto:support@arogyam75.com" className="text-blue-600 hover:underline">
+                support@arogyam75.com
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

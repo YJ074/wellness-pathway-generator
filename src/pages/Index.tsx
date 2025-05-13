@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import WellnessForm from "@/components/WellnessForm";
@@ -6,7 +5,7 @@ import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Info, BookOpen } from "lucide-react";
+import { Info, BookOpen, Copyright } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
@@ -82,6 +81,20 @@ const Index = () => {
             <WellnessForm />
           </div>
         </motion.div>
+        
+        <footer className="mt-8 md:mt-16 pb-4 text-center text-sm text-gray-500">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4">
+            <div className="flex items-center">
+              <Copyright className="h-3 w-3 mr-1" />
+              <span>{new Date().getFullYear()} Arogyam75. All rights reserved.</span>
+            </div>
+            <div>
+              <a href="mailto:support@arogyyam75.com" className="text-blue-600 hover:underline">
+                support@arogyyam75.com
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );
