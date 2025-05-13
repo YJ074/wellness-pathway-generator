@@ -31,7 +31,8 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Apply our advanced normalization to ensure no duplicates
+  // Apply our comprehensive normalization to ensure no duplicates
+  // This now uses our enhanced deduplication module with synonym checking
   mealDescription = normalizeMealForPDF(mealDescription);
   
   // Format the meal description to highlight special terms

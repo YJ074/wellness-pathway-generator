@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { Text } from '@react-pdf/renderer';
 import { styles } from '../../../styles/mealItemStyles';
 import { dashPattern } from '../../constants/textPatterns';
-import { removeDuplicateFoodItems } from '../../../../../../utils/diet/helpers/deduplicationHelper';
+import { normalizeMealForPDF } from '../../../../../../utils/diet/helpers/deduplicationHelper';
 
 // Process text with dash patterns (like "Rice Flakes - Poha")
 export const processDashPatterns = (text: string): ReactNode[] => {
@@ -21,8 +21,11 @@ export const processDashPatterns = (text: string): ReactNode[] => {
       return Array.isArray(text) ? text : [text];
     }
     
-    // First, deduplicate the text to remove any repetitions
-    const cleanedText = removeDuplicateFoodItems(text);
+    // First, comprehensive normalization using our enhanced module
+    const cleanedText = normalizeMealForPDF(text);
+    
+    // Reset regex lastIndex
+    safePattern.lastIndex = 0;
     
     // Now process the dash patterns
     while ((match = safePattern.exec(cleanedText)) !== null) {
