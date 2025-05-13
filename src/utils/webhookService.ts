@@ -9,9 +9,34 @@ import React from 'react';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import { toast } from '@/hooks/use-toast';
 
-// Make.com webhook URL - you should replace this with your actual Make.com webhook URL
-// This should be a URL provided by Make.com when you create a webhook there
-const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/YOUR_WEBHOOK_ID';
+// Default Make.com webhook URL - replace with your actual Make.com webhook URL in your environment
+let MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/YOUR_WEBHOOK_ID';
+
+/**
+ * Sets the Make.com webhook URL
+ * @param url The Make.com webhook URL
+ */
+export const setMakeWebhookUrl = (url: string): void => {
+  if (url && url.trim() !== '') {
+    MAKE_WEBHOOK_URL = url;
+    // Store in localStorage for persistence
+    localStorage.setItem('makeWebhookUrl', url);
+    console.log('Make.com webhook URL set:', url);
+  }
+};
+
+/**
+ * Gets the current Make.com webhook URL
+ * @returns The current Make.com webhook URL
+ */
+export const getMakeWebhookUrl = (): string => {
+  // Try to get from localStorage first
+  const storedUrl = localStorage.getItem('makeWebhookUrl');
+  if (storedUrl) {
+    MAKE_WEBHOOK_URL = storedUrl;
+  }
+  return MAKE_WEBHOOK_URL;
+};
 
 /**
  * Sends wellness plan data to a Make.com webhook endpoint
@@ -26,6 +51,20 @@ export const sendPlanToMakeWebhook = async (
 ): Promise<boolean> => {
   try {
     console.log("Preparing to send wellness plan data to Make.com webhook");
+    
+    // Get the current webhook URL
+    const webhookUrl = getMakeWebhookUrl();
+    
+    // Check if webhook URL is set
+    if (webhookUrl === 'https://hook.eu1.make.com/YOUR_WEBHOOK_ID') {
+      console.warn("Make.com webhook URL is not set. Please configure it first.");
+      toast({
+        title: "Webhook Not Configured",
+        description: "Make.com webhook URL is not set. Your data will not be sent to Make.com.",
+        variant: "destructive",
+      });
+      return false;
+    }
     
     // Prepare webhook payload with wellness plan data
     const webhookData = {
@@ -80,7 +119,7 @@ export const sendPlanToMakeWebhook = async (
     console.log("Sending wellness plan data to Make.com webhook");
     
     // Send the webhook payload to Make.com
-    const response = await fetch(MAKE_WEBHOOK_URL, {
+    const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -92,16 +131,25 @@ export const sendPlanToMakeWebhook = async (
       console.error("Make.com webhook API error:", await response.text());
       toast({
         title: "Webhook Error",
-        description: "Could not send your data to our systems. We'll still provide your plan here.",
+        description: "Could not send your data to Make.com. Please check your webhook URL.",
         variant: "destructive",
       });
       return false;
     }
     
     console.log("Wellness plan sent successfully to Make.com");
+    toast({
+      title: "Success",
+      description: "Your wellness plan has been sent to Make.com successfully.",
+    });
     return true;
   } catch (error) {
     console.error("Error sending webhook to Make.com:", error);
+    toast({
+      title: "Error",
+      description: "An unexpected error occurred when sending to Make.com.",
+      variant: "destructive",
+    });
     return false;
   }
 };
