@@ -30,7 +30,7 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Format the meal description to highlight special terms - ensures proper word wrapping
+  // Format the meal description to highlight special terms and deduplicate repeated portions
   const formattedDescription = formatMealDescription(mealDescription);
   
   return (

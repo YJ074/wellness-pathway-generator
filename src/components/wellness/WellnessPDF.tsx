@@ -10,7 +10,10 @@ Font.register({
   family: 'Helvetica',
   fonts: [
     { src: 'Helvetica' },
-    { src: 'Helvetica-Bold', fontWeight: 'bold' }
+    { 
+      src: 'Helvetica-Bold',
+      fontWeight: 'bold'
+    }
   ]
 });
 
@@ -19,7 +22,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 30,
     fontFamily: 'Helvetica',
-    lineHeight: 1.4,
+    lineHeight: 1.5,
   },
 });
 
