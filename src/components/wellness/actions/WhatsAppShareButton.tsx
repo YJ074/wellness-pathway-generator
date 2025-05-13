@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { sendPlanViaWhatsApp } from "@/utils/sharing";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
 
@@ -13,7 +13,6 @@ interface WhatsAppShareButtonProps {
 }
 
 const WhatsAppShareButton = ({ formData, dietPlan, workoutPlan }: WhatsAppShareButtonProps) => {
-  const { toast } = useToast();
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
 
   const handleSendWhatsApp = async () => {

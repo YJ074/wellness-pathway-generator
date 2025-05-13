@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { sendPlanViaEmail } from "@/utils/sharing";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
 
@@ -13,7 +13,6 @@ interface EmailShareButtonProps {
 }
 
 const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonProps) => {
-  const { toast } = useToast();
   const [isEmailSending, setIsEmailSending] = useState(false);
 
   const handleSendEmail = async () => {

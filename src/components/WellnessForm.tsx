@@ -1,6 +1,6 @@
 
 import React, { useState, useCallback } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
 import { generateWorkoutPlan } from '@/utils/workoutGenerator';
 import WellnessFormView from './wellness/WellnessFormView';
@@ -11,7 +11,6 @@ import { shareWellnessPlan } from '@/utils/sharing';
 import { sendPlanToMakeWebhook } from '@/utils/webhookService';
 
 const WellnessForm = () => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -123,7 +122,7 @@ const WellnessForm = () => {
         setIsGenerating(false);
       }
     }, 100); // Small delay to allow UI to update
-  }, [formData, toast]);
+  }, [formData]);
 
   const handleReset = useCallback(() => {
     setDietPlan(null);

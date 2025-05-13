@@ -5,9 +5,8 @@ import {
 } from "@/components/ui/toast"
 
 import {
-  toast as toastOriginal,
+  toast as sonnerToast,
   Toaster,
-  type Toast as SonnerToast,
 } from "sonner"
 
 // Define the structure for our custom toast function
@@ -29,7 +28,7 @@ const useToast = () => {
       const styling = variant === "destructive" ? { style: { backgroundColor: "var(--destructive)", color: "var(--destructive-foreground)" } } : {}
       
       // Call the sonner toast with our configuration
-      return toastOriginal(title, {
+      return sonnerToast(title, {
         description,
         action,
         duration,
@@ -41,5 +40,20 @@ const useToast = () => {
   }
 }
 
-// Export both the hook and the direct toast function
-export { useToast, toastOriginal as toast }
+// Define a standalone toast function with the same signature
+const toast = (options: ToastOptions) => {
+  const { title, description, action, variant, duration } = options
+  
+  // Determine styling based on variant
+  const styling = variant === "destructive" ? { style: { backgroundColor: "var(--destructive)", color: "var(--destructive-foreground)" } } : {}
+  
+  // Call the sonner toast with our configuration
+  return sonnerToast(title, {
+    description,
+    action,
+    duration,
+    ...styling
+  })
+}
+
+export { useToast, toast }
