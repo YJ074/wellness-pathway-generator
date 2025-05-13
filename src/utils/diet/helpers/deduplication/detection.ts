@@ -32,6 +32,33 @@ export const extractBaseFoodName = (foodItem: string): string => {
 };
 
 /**
+ * Detects duplications in a meal description
+ * @param mealDescription The meal description to analyze
+ * @returns An array of detected duplications
+ */
+export const detectFoodDuplications = (mealDescription: string): string[] => {
+  if (!mealDescription) return [];
+  
+  const words = mealDescription.toLowerCase().split(/\s+/);
+  const foodItems: string[] = [];
+  const duplications: string[] = [];
+  
+  // Simple detection algorithm looking for repeated food items
+  words.forEach(word => {
+    const normalizedWord = word.replace(/[^a-z]/g, '');
+    if (normalizedWord.length > 3) { // Only consider words of significant length
+      if (foodItems.includes(normalizedWord) && !duplications.includes(normalizedWord)) {
+        duplications.push(normalizedWord);
+      } else {
+        foodItems.push(normalizedWord);
+      }
+    }
+  });
+  
+  return duplications;
+};
+
+/**
  * Checks if a food item already exists in a meal description
  * Handles variations with different connectors (with, and)
  * @param mealDescription The full meal description

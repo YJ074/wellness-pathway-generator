@@ -1,4 +1,3 @@
-
 /**
  * Text formatting utilities for meal descriptions
  * Provides functions to clean and standardize text formatting
@@ -50,6 +49,34 @@ export const formatAddition = (mealDescription: string, addition: string): strin
   } else {
     return `${mealDescription}, ${addition}`;
   }
+};
+
+/**
+ * Formats a meal description to remove detected duplications
+ * @param mealDescription The original meal description
+ * @param duplications Array of detected duplications to handle
+ * @returns A formatted meal description with duplications addressed
+ */
+export const formatMealWithDeduplication = (mealDescription: string, duplications: string[]): string => {
+  let result = mealDescription;
+  
+  // Process each detected duplication
+  duplications.forEach(dup => {
+    // Create a regex that looks for repeated instances with word boundaries
+    const dupRegex = new RegExp(`\\b${dup}\\b.*\\b${dup}\\b`, 'gi');
+    
+    // Replace with a single instance
+    result = result.replace(dupRegex, (match) => {
+      // Keep only the first instance plus whatever follows after the second
+      const parts = match.split(new RegExp(`\\b${dup}\\b`, 'i'));
+      if (parts.length >= 3) {
+        return `${parts[0]}${dup}${parts[parts.length-1]}`;
+      }
+      return match;
+    });
+  });
+  
+  return cleanupDuplicationFormatting(result);
 };
 
 /**
