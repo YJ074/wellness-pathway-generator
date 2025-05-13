@@ -8,6 +8,7 @@ import WellnessResults from './wellness/WellnessResults';
 import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
 import { WellnessGoal } from '@/utils/diet/types';
 import { shareWellnessPlan } from '@/utils/sharing';
+import { sendPlanToMakeWebhook } from '@/utils/webhookService';
 
 const WellnessForm = () => {
   const { toast } = useToast();
@@ -90,7 +91,17 @@ const WellnessForm = () => {
         setDietPlan(generatedDietPlan);
         setWorkoutPlan(generatedWorkoutPlan);
 
-        // Silently trigger the webhook with the generated plan
+        // Send the wellness plan to Make.com webhook
+        sendPlanToMakeWebhook(formData, generatedDietPlan, generatedWorkoutPlan || undefined)
+          .then(success => {
+            if (success) {
+              console.log("Successfully sent wellness plan to Make.com");
+            } else {
+              console.error("Failed to send wellness plan to Make.com");
+            }
+          });
+
+        // Silently trigger the webhook with the generated plan (legacy)
         shareWellnessPlan(
           formData, 
           generatedDietPlan, 
