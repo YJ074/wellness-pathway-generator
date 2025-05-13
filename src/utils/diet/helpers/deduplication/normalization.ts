@@ -1,3 +1,4 @@
+
 /**
  * Meal description normalization module
  * Provides functions to remove duplicates and normalize meal descriptions
@@ -23,7 +24,15 @@ const COMMON_FOODS = [
   "millet", "rice", "quinoa", "barley", "corn", 
   // Add more common items
   "paneer", "cottage cheese", "tofu", "tempeh", "chickpeas", "chana",
-  "beans", "lentils", "dal", "egg", "anda", "milk", "doodh"
+  "beans", "lentils", "dal", "egg", "anda", "milk", "doodh",
+  // Additional specific seeds commonly duplicated
+  "pumpkin seeds", "melon seeds", "hemp seeds", "poppy seeds",
+  // More specific nuts that get duplicated
+  "pistachios", "brazil nuts", "hazelnuts", "pine nuts", "macadamia nuts",
+  // Common grains
+  "wheat", "brown rice", "wild rice", "jasmine rice", "basmati rice",
+  // Common superfoods
+  "spirulina", "moringa", "wheatgrass", "chlorella"
 ];
 
 /**
@@ -93,7 +102,7 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
     
     // Handle direct repetitions like "Chickoo (1 nos), Chickoo (1 nos)"
     const directRepetition = new RegExp(`${food}\\s+\\([^)]+\\)(?:,\\s*|\\s+)${food}\\s+\\([^)]+\\)`, 'gi');
-    normalizedMeal = normalizedMeal.replace(directRepetition, `${food} ([^)]+)`);
+    normalizedMeal = normalizedMeal.replace(directRepetition, `${food} (portion)`);
     
     // NEW: Super aggressive pattern to catch any repetition of the food with the same portion
     // This will find "with X (portion)" anywhere and remove duplicates
@@ -137,6 +146,14 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
   // This should catch the pattern seen in the screenshot
   const complexSequencePattern = /([A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)[^,]*,[^,]*[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)[^,]*),\s+\1/g;
   normalizedMeal = normalizedMeal.replace(complexSequencePattern, '$1');
+  
+  // NEW: Pattern for catching "X seeds (portion), X seeds (portion)" regardless of what X is
+  const seedsDuplicatePattern = /(\b[A-Za-z]+\s+seeds\s+\([^)]+\)),\s+\1/gi;
+  normalizedMeal = normalizedMeal.replace(seedsDuplicatePattern, '$1');
+  
+  // NEW: Generic pattern to catch any food item with portion that repeats
+  const genericFoodPattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi;
+  normalizedMeal = normalizedMeal.replace(genericFoodPattern, '$1 (portion)');
   
   // Cleanup formatting after deduplication
   return cleanupDuplicationFormatting(normalizedMeal);
@@ -209,10 +226,19 @@ export const normalizeMealForPDF = (mealDescription: string): string => {
       foodName = portionMatch[1].trim().toLowerCase();
     }
     
+    // Check for seeds specifically (commonly duplicated)
+    const isSeedItem = foodName.toLowerCase().includes('seeds');
+    
     // If this food or its synonyms haven't been seen before, add it
     if (!seenFoods.has(foodName) && !hasSynonymInSeenFoods(foodName, seenFoods)) {
       parts.push(fragment);
       seenFoods.add(foodName);
+      
+      // For seed items, also add the base seed name to prevent variations
+      if (isSeedItem) {
+        const seedBase = foodName.toLowerCase().replace(/\s+seeds$/, '');
+        seenFoods.add(seedBase + ' seeds');
+      }
     }
   }
   
@@ -241,3 +267,4 @@ export const normalizeMealForPDF = (mealDescription: string): string => {
   // Final cleanups to fix spacing and formatting
   return formatForPDF(normalizedMeal);
 };
+

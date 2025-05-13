@@ -40,6 +40,10 @@ const PDFMealItem = ({
   const duplicatePattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi;
   mealDescription = mealDescription.replace(duplicatePattern, '$1 (portion)');
   
+  // Special case for seeds which commonly get duplicated
+  const seedsDuplicationPattern = /(\b[A-Za-z]+\s+seeds)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi;
+  mealDescription = mealDescription.replace(seedsDuplicationPattern, '$1 (portion)');
+  
   // Format the meal description to highlight special terms
   const formattedDescription = formatMealDescription(mealDescription);
   
