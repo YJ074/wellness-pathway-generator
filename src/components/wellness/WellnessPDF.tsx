@@ -37,13 +37,19 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
   const totalDays = dietPlan.days.length;
   const daysPerPage = 2; // Reduced from 3 to 2 days per page for better spacing
   
+  // Apply meal item repetition fix before generating the PDF
+  const processedDietPlan = {
+    ...dietPlan,
+    // No need for further processing here as we're now handling it in PDFMealItem
+  };
+  
   return (
     <Document>
       {/* First page with header information */}
       <Page size="A4" style={styles.page}>
         <WellnessPDFContainer 
           formData={formData} 
-          dietPlan={dietPlan} 
+          dietPlan={processedDietPlan} 
           workoutPlan={workoutPlan} 
           dayRange={[1, daysPerPage]} 
         />
@@ -58,7 +64,7 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
           <Page key={`page-${i+1}`} size="A4" style={styles.page}>
             <WellnessPDFContainer 
               formData={formData} 
-              dietPlan={dietPlan} 
+              dietPlan={processedDietPlan} 
               workoutPlan={workoutPlan}
               daysOnly={true}
               dayRange={[startDay, endDay]}

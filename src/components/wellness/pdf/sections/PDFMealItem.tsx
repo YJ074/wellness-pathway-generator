@@ -31,8 +31,8 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Apply thorough deduplication to the meal description
-  // Use normalizeMealForPDF for enhanced deduplication specifically for the PDF rendering
+  // Apply enhanced deduplication to the meal description
+  // Use normalizeMealForPDF for the most thorough deduplication specifically for the PDF rendering
   mealDescription = normalizeMealForPDF(mealDescription);
   
   // Format the meal description to highlight special terms

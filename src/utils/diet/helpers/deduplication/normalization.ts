@@ -1,4 +1,3 @@
-
 /**
  * Meal description normalization module
  * Provides functions to remove duplicates and normalize meal descriptions
@@ -88,14 +87,24 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
     const standalonePattern = new RegExp(`(${food}\\s+\\([^)]+\\)[^,]*),\\s*${food}\\s+\\([^)]+\\)`, 'gi');
     normalizedMeal = normalizedMeal.replace(standalonePattern, '$1');
     
-    // NEW: Enhanced pattern for exact duplications like the ones in the screenshot
-    // This pattern will catch items like "Chickoo (1 nos), cashews (1 handful)" repeating
+    // Enhanced pattern for exact duplications like the ones in the screenshot
     const exactDuplication = new RegExp(`(${food}\\s+\\([^)]+\\))(?:[^,]*),(?:[^,]*)(${food}\\s+\\([^)]+\\))`, 'gi');
     normalizedMeal = normalizedMeal.replace(exactDuplication, '$1');
     
-    // NEW: Handle direct repetitions like "Chickoo (1 nos), Chickoo (1 nos)"
+    // Handle direct repetitions like "Chickoo (1 nos), Chickoo (1 nos)"
     const directRepetition = new RegExp(`${food}\\s+\\([^)]+\\)(?:,\\s*|\\s+)${food}\\s+\\([^)]+\\)`, 'gi');
     normalizedMeal = normalizedMeal.replace(directRepetition, `${food} ([^)]+)`);
+    
+    // NEW: Super aggressive pattern to catch any repetition of the food with the same portion
+    // This will find "with X (portion)" anywhere and remove duplicates
+    const ultraAggressivePattern = new RegExp(`with\\s+${food}\\s+\\([^)]+\\)`, 'gi');
+    let matches = normalizedMeal.match(ultraAggressivePattern);
+    if (matches && matches.length > 1) {
+      // Keep only the first occurrence
+      for (let i = 1; i < matches.length; i++) {
+        normalizedMeal = normalizedMeal.replace(matches[i], '');
+      }
+    }
     
     // Handle duplicates across synonyms
     // First get potential synonyms for this food
@@ -119,12 +128,12 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
     });
   });
   
-  // NEW: Special handling for exact duplications of the same item with same portion
+  // Special handling for exact duplications of the same item with same portion
   // This catches cases like "chia seeds (1 tsp), chia seeds (1 tsp)"
   const exactDuplicatePattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)),\s+\1/gi;
   normalizedMeal = normalizedMeal.replace(exactDuplicatePattern, '$1');
   
-  // NEW: Enhanced complex sequence detection - finds repetitive sequences of food items
+  // Enhanced complex sequence detection - finds repetitive sequences of food items
   // This should catch the pattern seen in the screenshot
   const complexSequencePattern = /([A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)[^,]*,[^,]*[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)[^,]*),\s+\1/g;
   normalizedMeal = normalizedMeal.replace(complexSequencePattern, '$1');
@@ -140,38 +149,95 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
  * @returns Fully normalized meal description 
  */
 export const normalizeMealForPDF = (mealDescription: string): string => {
-  // First remove duplicates
+  // First apply the standard duplicate removal
   let normalizedMeal = removeDuplicateFoodItems(mealDescription);
   
-  // NEW: Enhanced method using a food registry to track seen items
+  // Now use a more thorough approach with a food registry
   const seenFoods = new Set<string>();
   const parts: string[] = [];
   
-  // Split by commas and process each part
-  const segments = normalizedMeal.split(/,\s*/);
+  // Instead of simple comma splitting, handle more complex patterns
+  // Split by various connectors: commas, "with", and "and"
+  const foodFragments: string[] = [];
+  let currentFragment = '';
+  let insideParens = false;
   
-  for (const segment of segments) {
-    // Skip empty segments
-    if (!segment.trim()) continue;
+  // First extract potential food items more carefully
+  for (let i = 0; i < normalizedMeal.length; i++) {
+    const char = normalizedMeal[i];
     
-    // Extract food name from segment (if it contains a portion in parentheses)
-    let foodName = segment.trim();
-    const match = segment.match(/^([^(]+)(?:\s*\([^)]+\))?/);
+    if (char === '(') {
+      insideParens = true;
+      currentFragment += char;
+    } else if (char === ')') {
+      insideParens = false;
+      currentFragment += char;
+    } else if ((char === ',' || 
+               (char === 'w' && normalizedMeal.substr(i, 5) === 'with ') || 
+               (char === 'a' && normalizedMeal.substr(i, 4) === 'and ')) && 
+               !insideParens) {
+      // We found a separator outside parentheses
+      if (currentFragment.trim()) {
+        foodFragments.push(currentFragment.trim());
+      }
+      
+      // Skip the connector word
+      if (char === 'w') {
+        i += 4; // Skip "with "
+      } else if (char === 'a') {
+        i += 3; // Skip "and "
+      }
+      
+      currentFragment = '';
+    } else {
+      currentFragment += char;
+    }
+  }
+  
+  // Add the final fragment
+  if (currentFragment.trim()) {
+    foodFragments.push(currentFragment.trim());
+  }
+  
+  // Now process each food fragment
+  for (const fragment of foodFragments) {
+    // Extract the food name from the fragment
+    let foodName = fragment;
+    const portionMatch = fragment.match(/^([^(]+)\s*\([^)]+\)/);
     
-    if (match && match[1]) {
-      foodName = match[1].trim().toLowerCase();
+    if (portionMatch && portionMatch[1]) {
+      foodName = portionMatch[1].trim().toLowerCase();
     }
     
     // If this food or its synonyms haven't been seen before, add it
     if (!seenFoods.has(foodName) && !hasSynonymInSeenFoods(foodName, seenFoods)) {
-      parts.push(segment);
+      parts.push(fragment);
       seenFoods.add(foodName);
     }
   }
   
-  // Rebuild the meal description
-  normalizedMeal = parts.join(', ');
+  // Join the unique parts with appropriate connectors based on context
+  normalizedMeal = '';
+  for (let i = 0; i < parts.length; i++) {
+    if (i === 0) {
+      normalizedMeal = parts[i];
+    } else if (i === parts.length - 1 && parts.length > 2) {
+      // Use "and" for the last item in a list of 3+ items
+      normalizedMeal += `, and ${parts[i]}`;
+    } else if (i === parts.length - 1) {
+      // Use "and" for the last item in a list of 2 items
+      normalizedMeal += ` and ${parts[i]}`;
+    } else {
+      // Use comma for middle items
+      normalizedMeal += `, ${parts[i]}`;
+    }
+  }
   
-  // Additional PDF-specific normalization
+  // Replace "with" connectors more consistently - only keep the first "with"
+  normalizedMeal = normalizedMeal.replace(/\b(with)\b/gi, (match, p1, offset) => {
+    return offset > 30 ? 'and' : match; // Keep first "with", replace others with "and"
+  });
+  
+  // Final cleanups to fix spacing and formatting
   return formatForPDF(normalizedMeal);
 };
