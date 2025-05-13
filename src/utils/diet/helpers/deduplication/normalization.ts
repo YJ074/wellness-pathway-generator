@@ -88,6 +88,11 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
     const standalonePattern = new RegExp(`(${food}\\s+\\([^)]+\\)[^,]*),\\s*${food}\\s+\\([^)]+\\)`, 'gi');
     normalizedMeal = normalizedMeal.replace(standalonePattern, '$1');
     
+    // NEW: Enhanced pattern for exact duplications like the ones in the screenshot
+    // This pattern will catch items like "Chickoo (1 nos), cashews (1 handful)" repeating
+    const exactDuplication = new RegExp(`(${food}\\s+\\([^)]+\\))(?:[^,]*),(?:[^,]*)(${food}\\s+\\([^)]+\\))`, 'gi');
+    normalizedMeal = normalizedMeal.replace(exactDuplication, '$1');
+    
     // NEW: Handle direct repetitions like "Chickoo (1 nos), Chickoo (1 nos)"
     const directRepetition = new RegExp(`${food}\\s+\\([^)]+\\)(?:,\\s*|\\s+)${food}\\s+\\([^)]+\\)`, 'gi');
     normalizedMeal = normalizedMeal.replace(directRepetition, `${food} ([^)]+)`);
@@ -119,6 +124,11 @@ export const removeDuplicateFoodItems = (mealDescription: string): string => {
   const exactDuplicatePattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)),\s+\1/gi;
   normalizedMeal = normalizedMeal.replace(exactDuplicatePattern, '$1');
   
+  // NEW: Enhanced complex sequence detection - finds repetitive sequences of food items
+  // This should catch the pattern seen in the screenshot
+  const complexSequencePattern = /([A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)[^,]*,[^,]*[A-Za-z]+(?:\s+[A-Za-z]+)*\s+\([^)]+\)[^,]*),\s+\1/g;
+  normalizedMeal = normalizedMeal.replace(complexSequencePattern, '$1');
+  
   // Cleanup formatting after deduplication
   return cleanupDuplicationFormatting(normalizedMeal);
 };
@@ -133,35 +143,34 @@ export const normalizeMealForPDF = (mealDescription: string): string => {
   // First remove duplicates
   let normalizedMeal = removeDuplicateFoodItems(mealDescription);
   
-  // Perform another pass to catch missed duplicates by checking
-  // fragments split by commas, "and", "with"
-  const fragments = normalizedMeal.split(/(?:,|\s+and\s+|\s+with\s+)/);
-  if (fragments.length > 1) {
-    const uniqueFragments = [];
-    const seenFoods = new Set<string>();
+  // NEW: Enhanced method using a food registry to track seen items
+  const seenFoods = new Set<string>();
+  const parts: string[] = [];
+  
+  // Split by commas and process each part
+  const segments = normalizedMeal.split(/,\s*/);
+  
+  for (const segment of segments) {
+    // Skip empty segments
+    if (!segment.trim()) continue;
     
-    for (const fragment of fragments) {
-      // Extract food name from fragment
-      const cleanFragment = fragment.trim();
-      const foodNameMatch = cleanFragment.match(/^([a-zA-Z\s]+?)(?:\s+\(|\s*$)/);
-      const foodName = foodNameMatch ? foodNameMatch[1].trim().toLowerCase() : cleanFragment.toLowerCase();
-      
-      if (!seenFoods.has(foodName)) {
-        // Check for synonyms in the seen foods set
-        const isDuplicate = hasSynonymInSeenFoods(foodName, seenFoods);
-        
-        if (!isDuplicate) {
-          uniqueFragments.push(cleanFragment);
-          seenFoods.add(foodName);
-        }
-      }
+    // Extract food name from segment (if it contains a portion in parentheses)
+    let foodName = segment.trim();
+    const match = segment.match(/^([^(]+)(?:\s*\([^)]+\))?/);
+    
+    if (match && match[1]) {
+      foodName = match[1].trim().toLowerCase();
     }
     
-    // Rebuild the string with proper connectors
-    if (uniqueFragments.length > 0) {
-      normalizedMeal = uniqueFragments.join(', ');
+    // If this food or its synonyms haven't been seen before, add it
+    if (!seenFoods.has(foodName) && !hasSynonymInSeenFoods(foodName, seenFoods)) {
+      parts.push(segment);
+      seenFoods.add(foodName);
     }
   }
+  
+  // Rebuild the meal description
+  normalizedMeal = parts.join(', ');
   
   // Additional PDF-specific normalization
   return formatForPDF(normalizedMeal);
