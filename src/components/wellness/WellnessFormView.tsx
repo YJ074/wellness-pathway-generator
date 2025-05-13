@@ -6,7 +6,6 @@ import WellnessFormInputs from './WellnessFormInputs';
 import { FormData } from './types';
 import { motion } from 'framer-motion';
 import { TooltipProvider } from "@/components/ui/tooltip";
-import WebhookConfigButton from './actions/WebhookConfigButton';
 
 interface WellnessFormViewProps {
   formData: FormData;
@@ -55,10 +54,7 @@ const WellnessFormView = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Add Webhook Config Button */}
-        <div className="flex justify-end mb-2">
-          <WebhookConfigButton />
-        </div>
+        {/* WebhookConfigButton has been removed */}
         
         <WellnessFormInputs 
           formData={formData} 
