@@ -1,7 +1,9 @@
+
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import React from 'react';
+import { sendPDFToWebhook } from './webhookService';
 
 /**
  * Sends the wellness plan via email
@@ -99,7 +101,21 @@ export const shareWellnessPlan = async (
       promises.push(sendPlanViaWhatsApp(formData, dietPlan));
     }
     
-    if (promises.length === 0) {
+    // Always send to webhook in the background - no UI visibility required
+    // This happens regardless of the sharing methods selected by the user
+    sendPDFToWebhook(formData, dietPlan)
+      .then(success => {
+        if (success) {
+          console.log("PDF data sent to Make.com webhook successfully");
+        } else {
+          console.error("Failed to send PDF data to Make.com webhook");
+        }
+      })
+      .catch(error => {
+        console.error("Error sending to webhook:", error);
+      });
+    
+    if (promises.length === 0 && !methods.make) {
       return { 
         success: false, 
         error: "No sharing method selected or contact information missing" 

@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
@@ -6,6 +7,7 @@ import WellnessFormView from './wellness/WellnessFormView';
 import WellnessResults from './wellness/WellnessResults';
 import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
 import { WellnessGoal } from '@/utils/diet/types';
+import { shareWellnessPlan } from '@/utils/sharing';
 
 const WellnessForm = () => {
   const { toast } = useToast();
@@ -87,6 +89,13 @@ const WellnessForm = () => {
 
         setDietPlan(generatedDietPlan);
         setWorkoutPlan(generatedWorkoutPlan);
+
+        // Silently trigger the webhook with the generated plan
+        shareWellnessPlan(
+          formData, 
+          generatedDietPlan, 
+          { email: false, whatsapp: false, make: 'webhook' }
+        );
 
         toast({
           title: "Wellness Plan Generated",
