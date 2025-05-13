@@ -139,8 +139,8 @@ function toast({ ...props }: Toast) {
   }
   
   // Use the original sonnerToast implementation for display
-  sonnerToast({
-    title: props.title,
+  // Fix: Call sonnerToast directly as a function without trying to use object properties
+  sonnerToast(props.title as string, {
     description: props.description
   });
   
