@@ -3,6 +3,7 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
+import { removeDuplicateFoodItems } from '../helpers/deduplicationHelper';
 import { 
   getLocalizedProteinName, 
   getLocalizedGrainName,
@@ -37,6 +38,9 @@ export const generateLunch = (
     // For regional specialties, gently introduce pre/probiotics without forcing them
     lunch = enrichWithPrebiotics(lunch, dayIndex);
     lunch = enrichWithProbiotics(lunch, dayIndex);
+    
+    // Apply deduplication to the regional lunch
+    lunch = removeDuplicateFoodItems(lunch);
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(lunch);
@@ -88,6 +92,9 @@ export const generateLunch = (
   
   // For days not already featuring prebiotics, add some to the meal
   main = enrichWithPrebiotics(main, dayIndex);
+  
+  // Apply deduplication to lunch
+  main = removeDuplicateFoodItems(main);
   
   if (allergies) {
     // Remove or swap allergy terms inside lunch text (rough approach)

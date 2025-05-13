@@ -3,6 +3,7 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
+import { removeDuplicateFoodItems } from '../helpers/deduplicationHelper';
 import { 
   getLocalizedProteinName, 
   getBreadPortionSize,
@@ -37,6 +38,9 @@ export const generateDinner = (
     // Gently introduce pre/probiotics to regional specialties
     dinner = enrichWithPrebiotics(dinner, dayIndex);
     dinner = enrichWithProbiotics(dinner, dayIndex);
+    
+    // Apply deduplication to regional dinner
+    dinner = removeDuplicateFoodItems(dinner);
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(dinner);
@@ -107,6 +111,9 @@ export const generateDinner = (
   if (dayIndex % 3 === 0) {
     main = enrichWithPrebiotics(main, dayIndex, true);
   }
+  
+  // Apply deduplication to dinner
+  main = removeDuplicateFoodItems(main);
   
   // Filter for allergies if specified
   if (allergies) {

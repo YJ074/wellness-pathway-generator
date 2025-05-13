@@ -4,6 +4,7 @@ import { View, Text } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
 import { formatMealDescription } from '../utils/textFormatUtils';
 import { styles } from '../styles/mealItemStyles';
+import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplicationHelper';
 
 interface PDFMealItemProps {
   label: string;
@@ -12,45 +13,6 @@ interface PDFMealItemProps {
   dailyCalories: number;
   goalFactor: number;
 }
-
-// Enhanced helper function to normalize whitespace and deduplicate food items in text
-const normalizeWhitespace = (text: string): string => {
-  let processed = text
-    .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
-    .replace(/\s+,/g, ',') // Remove spaces before commas
-    .replace(/,\s+/g, ', ') // Ensure exactly one space after commas
-    .replace(/\s+\(/g, ' (') // Ensure only one space before parentheses
-    .replace(/\)\s+/g, ') ') // Ensure only one space after parentheses
-    .trim();
-    
-  // Deduplicate repeated food items in the same description
-  // Build a comprehensive list of all possible food items that might get duplicated
-  const foodItems = [
-    "Chickoo", "cashews", "chia seeds", "flax seeds", "almonds", 
-    "walnuts", "sprouts", "Dandelion Greens", "peanuts", "yogurt",
-    "curd", "dahi", "kombucha", "kefir", "buttermilk", "chaas",
-    "sunflower seeds", "pumpkin seeds", "sesame seeds",
-    "Banana", "Apple", "Mango", "Orange", "Papaya", "Watermelon",
-    "Grapes", "Pomegranate", "Kiwi", "Berries", "Strawberries",
-    "Blueberries", "Raspberries", "Blackberries", "Pineapple",
-    "Guava", "Litchi", "Jackfruit", "Sapota", "Custard Apple"
-  ];
-  
-  // Deduplicate each food item
-  for (const food of foodItems) {
-    const regex = new RegExp(`(with|and)\\s+${food}\\s+\\([^)]+\\)([^,]*),\\s*(with|and)\\s+${food}\\s+\\([^)]+\\)`, 'gi');
-    processed = processed.replace(regex, '$1 $2 ($3)$4');
-    
-    // More aggressive pattern - any duplicates regardless of connector
-    const anyDuplicateRegex = new RegExp(`((?:with|and)\\s+${food}\\s+\\([^)]+\\)[^,]*),\\s*(?:with|and)\\s+${food}\\s+\\([^)]+\\)`, 'gi');
-    processed = processed.replace(anyDuplicateRegex, '$1');
-  }
-  
-  // Fix multiple commas that might appear after deduplication
-  processed = processed.replace(/,\s*,/g, ',');
-  
-  return processed;
-};
 
 const PDFMealItem = ({ 
   label, 
@@ -69,10 +31,10 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Normalize whitespace and deduplicate before formatting
-  mealDescription = normalizeWhitespace(mealDescription);
+  // Apply our advanced normalization to ensure no duplicates
+  mealDescription = normalizeMealForPDF(mealDescription);
   
-  // Format the meal description to highlight special terms and deduplicate repeated portions
+  // Format the meal description to highlight special terms
   const formattedDescription = formatMealDescription(mealDescription);
   
   return (

@@ -1,43 +1,13 @@
+
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { getFruitSources } from '../../data/foodSources';
 import { getStandardFruitPortion, getDailyNutsMixture } from '../../helpers/portionHelpers';
+import { addWithoutDuplication } from '../../helpers/deduplicationHelper';
 
 // Enhanced helper to prevent duplicate additions to breakfast descriptions
-// Now with comprehensive detection of all variations of food items
+// Now leverages the centralized deduplication module
 export const preventDuplicateAdditions = (breakfast: string, addition: string): string => {
-  // Case insensitive check for the exact addition
-  const lowerBreakfast = breakfast.toLowerCase();
-  const lowerAddition = addition.toLowerCase();
-  
-  if (lowerBreakfast.includes(lowerAddition)) {
-    return breakfast;
-  }
-  
-  // Extract the food name from the addition for more thorough checking
-  const foodMatch = addition.match(/(?:with|and)\s+([A-Za-z\s]+)(?:\s+\(|\b)/i);
-  if (foodMatch && foodMatch[1]) {
-    const foodName = foodMatch[1].trim().toLowerCase();
-    
-    // Check for the food name in various formats
-    if (lowerBreakfast.includes(`with ${foodName}`) || 
-        lowerBreakfast.includes(`and ${foodName}`) || 
-        lowerBreakfast.includes(` ${foodName} (`) ||
-        lowerBreakfast.includes(`${foodName},`)) {
-      return breakfast; // Food is already included in some form
-    }
-    
-    // Check for food variations (e.g., singular/plural forms)
-    const pluralFoodName = foodName.endsWith('s') ? foodName : `${foodName}s`;
-    const singularFoodName = foodName.endsWith('s') ? foodName.slice(0, -1) : foodName;
-    
-    if (lowerBreakfast.includes(` ${pluralFoodName} (`) || 
-        lowerBreakfast.includes(` ${singularFoodName} (`)) {
-      return breakfast; // Food is already included in variant form
-    }
-  }
-  
-  // Otherwise add it with proper comma formatting
-  return breakfast.endsWith(',') ? `${breakfast} ${addition}` : `${breakfast}, ${addition}`;
+  return addWithoutDuplication(breakfast, addition);
 };
 
 // Helper to add fruits to breakfast options

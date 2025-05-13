@@ -4,6 +4,7 @@ import { getRegionalFoods } from '../../data/regionalFoods';
 import { getFruitSources } from '../../data/foodSources';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { getStandardFruitPortion, composeRegionalMeal } from '../../helpers/portionHelpers';
+import { removeDuplicateFoodItems } from '../../helpers/deduplicationHelper';
 
 /**
  * Generates an evening snack based on diet preferences, day index and region
@@ -27,6 +28,9 @@ export const generateEveningSnack = (
     
     // Use the helper function for consistent formatting
     let snack = composeRegionalMeal(regionalSnack, isWeightLoss, false);
+    
+    // Apply deduplication to regional snack
+    snack = removeDuplicateFoodItems(snack);
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(snack);
@@ -61,6 +65,9 @@ export const generateEveningSnack = (
     } else {
       snack = `${seasonalFruit} ${fruitPortion}`;
     }
+    
+    // Apply deduplication to fruit snack
+    snack = removeDuplicateFoodItems(snack);
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(snack);
@@ -98,6 +105,9 @@ export const generateEveningSnack = (
   // Use a different prime-based calculation for evening snacks
   const variedEveningIndex = (dayIndex * 17 + 13) % eveningSnackOptions.length;
   let snack = eveningSnackOptions[variedEveningIndex] || "";
+  
+  // Apply deduplication to evening snack
+  snack = removeDuplicateFoodItems(snack);
   
   // Add health benefit
   const healthBenefit = getHealthBenefit(snack);

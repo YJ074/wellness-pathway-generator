@@ -4,6 +4,7 @@ import { getDryFruits } from '../../data/dryFruits';
 import { getFruitSources } from '../../data/foodSources';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { getStandardFruitPortion } from '../../helpers/portionHelpers';
+import { removeDuplicateFoodItems } from '../../helpers/deduplicationHelper';
 
 /**
  * Generates a mid-morning snack based on diet preferences and day index
@@ -34,6 +35,9 @@ export const generateMidMorningSnack = (
     
     // Simple fruit-based snack with minimal processing
     let snack = `${seasonalFruit} ${fruitPortion}${dayIndex % 3 === 0 ? ' with a sprinkle of kala namak and kali mirch' : ''}`;
+    
+    // Apply deduplication to fruit snack
+    snack = removeDuplicateFoodItems(snack);
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(snack);
@@ -75,6 +79,9 @@ export const generateMidMorningSnack = (
   // Use prime number offset for better variety across days
   const variedIndex = (dayIndex * 13 + 7) % midMorningOptions.length;
   let snack = midMorningOptions[variedIndex] || "";
+  
+  // Apply deduplication to mid-morning snack
+  snack = removeDuplicateFoodItems(snack);
   
   // Add health benefit
   const healthBenefit = getHealthBenefit(snack);
