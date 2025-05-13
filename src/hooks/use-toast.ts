@@ -1,5 +1,5 @@
 
-import { toast as sonnerToast, ToastT } from "sonner";
+import { toast as sonnerToast } from "sonner";
 import * as React from "react";
 
 // Define the type for toast options
@@ -95,7 +95,6 @@ const reducer = (state: State, action: Action): State => {
           t.id === toastId || toastId === undefined
             ? {
                 ...t,
-                open: false,
               }
             : t
         ),
@@ -140,7 +139,10 @@ function toast({ ...props }: Toast) {
   }
   
   // Use the original sonnerToast implementation for display
-  sonnerToast(props as ToastT);
+  sonnerToast({
+    title: props.title,
+    description: props.description
+  });
   
   const id = genId();
   
@@ -157,10 +159,6 @@ function toast({ ...props }: Toast) {
     toast: {
       ...props,
       id,
-      open: true,
-      onOpenChange: (open) => {
-        if (!open) dismiss();
-      },
     },
   });
 
