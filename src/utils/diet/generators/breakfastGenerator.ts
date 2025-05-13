@@ -8,9 +8,24 @@ import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
 
 // Helper to prevent duplicate additions to breakfast descriptions
 const preventDuplicateAdditions = (breakfast: string, addition: string): string => {
-  // If the addition is already in the breakfast description, don't add it again
-  if (breakfast.includes(addition)) {
+  // If the addition is already in the breakfast description (case insensitive check), don't add it again
+  const lowerBreakfast = breakfast.toLowerCase();
+  const lowerAddition = addition.toLowerCase();
+  
+  if (lowerBreakfast.includes(lowerAddition)) {
     return breakfast;
+  }
+  
+  // Check for specific food items by extracting the food name from the addition
+  const foodMatch = addition.match(/with\s+([A-Za-z]+)\s+\(/i);
+  if (foodMatch && foodMatch[1]) {
+    const foodName = foodMatch[1].toLowerCase();
+    // If the food name is already in the breakfast (as part of another addition), don't add it
+    if (lowerBreakfast.includes(foodName + ' (') || 
+        lowerBreakfast.includes('with ' + foodName) ||
+        lowerBreakfast.includes('and ' + foodName)) {
+      return breakfast;
+    }
   }
   
   // Otherwise add it with proper comma formatting
@@ -42,7 +57,7 @@ export const generateBreakfast = (
     const dailyNuts = getDailyNutsMixture(dayIndex);
     
     // Ensure dailyNuts is not already included in breakfast
-    if (!breakfast.includes(dailyNuts)) {
+    if (!breakfast.toLowerCase().includes(dailyNuts.toLowerCase())) {
       breakfast = preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
     }
     
@@ -101,8 +116,10 @@ export const generateBreakfast = (
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     breakfastOptions = breakfastOptions.map(breakfast => {
-      // Check if this fruit is already mentioned in the breakfast
-      if (breakfast.includes(seasonalFruit)) {
+      // Check if this fruit is already mentioned in the breakfast (using case insensitive check)
+      const lowerBreakfast = breakfast.toLowerCase();
+      const lowerFruit = seasonalFruit.toLowerCase();
+      if (lowerBreakfast.includes(lowerFruit)) {
         return breakfast;
       }
       return preventDuplicateAdditions(breakfast, `with ${seasonalFruit} ${fruitPortion}`);
@@ -112,8 +129,10 @@ export const generateBreakfast = (
   // Always add a daily nuts mixture to every breakfast (only once)
   const dailyNuts = getDailyNutsMixture(dayIndex);
   breakfastOptions = breakfastOptions.map(breakfast => {
-    // Only add nuts if they're not already included
-    return breakfast.includes(dailyNuts) ? breakfast : preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
+    // Only add nuts if they're not already included (case insensitive check)
+    const lowerBreakfast = breakfast.toLowerCase();
+    const lowerNuts = dailyNuts.toLowerCase();
+    return lowerBreakfast.includes(lowerNuts) ? breakfast : preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
   });
   
   if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
@@ -152,7 +171,7 @@ export const generateBreakfast = (
     // Always add daily nuts mixture to egg breakfasts (only once)
     eggBreakfasts = eggBreakfasts.map(breakfast => {
       // Only add nuts if they're not already included
-      return breakfast.includes(dailyNuts) ? breakfast : preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
+      return eggBreakfasts.includes(dailyNuts) ? breakfast : preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
     });
     
     if (allergies) {

@@ -13,15 +13,32 @@ interface PDFMealItemProps {
   goalFactor: number;
 }
 
-// Helper function to normalize whitespace in text
+// Helper function to normalize whitespace and deduplicate food items in text
 const normalizeWhitespace = (text: string): string => {
-  return text
+  let processed = text
     .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
     .replace(/\s+,/g, ',') // Remove spaces before commas
     .replace(/,\s+/g, ', ') // Ensure exactly one space after commas
     .replace(/\s+\(/g, ' (') // Ensure only one space before parentheses
     .replace(/\)\s+/g, ') ') // Ensure only one space after parentheses
     .trim();
+    
+  // Deduplicate repeated food items in the same description
+  // For example, "with Chickoo (1 nos), with Chickoo (1 nos)" -> "with Chickoo (1 nos)"
+  const foodItems = [
+    "Chickoo", "cashews", "chia seeds", "flax seeds", "almonds", 
+    "walnuts", "sprouts", "Dandelion Greens", "peanuts"
+  ];
+  
+  for (const food of foodItems) {
+    const regex = new RegExp(`(with|and)\\s+${food}\\s+\\([^)]+\\)([^,]*),\\s*(with|and)\\s+${food}\\s+\\([^)]+\\)`, 'gi');
+    processed = processed.replace(regex, '$1 $2 ($3)$4');
+  }
+  
+  // Fix multiple commas that might appear after deduplication
+  processed = processed.replace(/,\s*,/g, ',');
+  
+  return processed;
 };
 
 const PDFMealItem = ({ 
@@ -32,7 +49,7 @@ const PDFMealItem = ({
   goalFactor 
 }: PDFMealItemProps) => {
   // Extract health benefit if present in the description
-  const benefitMatch = description.match(/ - \((Contains [^)]+|[^)]+health|[^)]+sources|[^)]+protein)\)$/);
+  const benefitMatch = description.match(/ - \((Contains [^)]+|[^)]+health|[^)]+sources|[^)]+protein|[^)]+enzymes|[^)]+antioxidants)\)$/);
   let healthBenefit = null;
   let mealDescription = description;
   

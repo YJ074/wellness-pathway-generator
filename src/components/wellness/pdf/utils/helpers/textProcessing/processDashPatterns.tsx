@@ -14,10 +14,20 @@ export const processDashPatterns = (text: string): ReactNode[] => {
     const safePattern = new RegExp(dashPattern.source, "g");
     let match;
     
-    while ((match = safePattern.exec(text)) !== null) {
+    // Handle case where input is already an array of nodes
+    if (typeof text !== 'string') {
+      console.error("processDashPatterns expected string but got", typeof text);
+      return Array.isArray(text) ? text : [text];
+    }
+    
+    // After deduplication, remove any repeated phrases that might have slipped through
+    // This is a last line of defense against duplicates
+    const cleanedText = text.replace(/([^,\.]+)(,\s+)\1/g, '$1');
+    
+    while ((match = safePattern.exec(cleanedText)) !== null) {
       // Add text before the match
       if (match.index > lastIndex) {
-        results.push(text.substring(lastIndex, match.index));
+        results.push(cleanedText.substring(lastIndex, match.index));
       }
       
       // Add the base word
@@ -37,8 +47,8 @@ export const processDashPatterns = (text: string): ReactNode[] => {
     }
     
     // Add any remaining text
-    if (lastIndex < text.length) {
-      results.push(text.substring(lastIndex));
+    if (lastIndex < cleanedText.length) {
+      results.push(cleanedText.substring(lastIndex));
     }
     
     return results;
