@@ -37,10 +37,14 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
   const totalDays = dietPlan.days.length;
   const daysPerPage = 2; // Reduced from 3 to 2 days per page for better spacing
   
-  // Apply meal item repetition fix before generating the PDF
+  // Apply meal deduplication to each day before generating the PDF
   const processedDietPlan = {
     ...dietPlan,
-    // No need for further processing here as we're now handling it in PDFMealItem
+    days: dietPlan.days.map(day => ({
+      ...day,
+      // No pre-processing needed here anymore as we're now handling it directly in PDFMealItem
+      // for better per-meal deduplication
+    }))
   };
   
   return (

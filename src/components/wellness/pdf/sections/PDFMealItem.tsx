@@ -32,8 +32,13 @@ const PDFMealItem = ({
   }
   
   // Apply enhanced deduplication to the meal description
-  // Use normalizeMealForPDF for the most thorough deduplication specifically for the PDF rendering
+  // This is where the duplication bug was - we need to ensure more aggressive deduplication
   mealDescription = normalizeMealForPDF(mealDescription);
+  
+  // Additional deduplication for exact duplicate items with different portions
+  // This catches cases like "sunflower seeds (1 tsp), sunflower seeds (1 tsp handful)"
+  const duplicatePattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi;
+  mealDescription = mealDescription.replace(duplicatePattern, '$1 (portion)');
   
   // Format the meal description to highlight special terms
   const formattedDescription = formatMealDescription(mealDescription);
