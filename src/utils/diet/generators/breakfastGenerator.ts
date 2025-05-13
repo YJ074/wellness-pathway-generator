@@ -28,9 +28,13 @@ export const generateBreakfast = (
     breakfast = enrichWithPrebiotics(breakfast, dayIndex);
     breakfast = enrichWithProbiotics(breakfast, dayIndex);
     
-    // Add daily nuts mixture to every breakfast
+    // Add daily nuts mixture to every breakfast - but only once
     const dailyNuts = getDailyNutsMixture(dayIndex);
-    breakfast += `, with ${dailyNuts}`;
+    
+    // Ensure dailyNuts is not already included in breakfast
+    if (!breakfast.includes(dailyNuts)) {
+      breakfast += `, with ${dailyNuts}`;
+    }
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(breakfast);
@@ -91,11 +95,12 @@ export const generateBreakfast = (
     );
   }
 
-  // Always add a daily nuts mixture to every breakfast
+  // Always add a daily nuts mixture to every breakfast (only once)
   const dailyNuts = getDailyNutsMixture(dayIndex);
-  breakfastOptions = breakfastOptions.map(breakfast => 
-    `${breakfast}, with ${dailyNuts}`
-  );
+  breakfastOptions = breakfastOptions.map(breakfast => {
+    // Only add nuts if they're not already included
+    return breakfast.includes(dailyNuts) ? breakfast : `${breakfast}, with ${dailyNuts}`;
+  });
   
   if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
     let eggBreakfasts = [
@@ -121,12 +126,14 @@ export const generateBreakfast = (
       // Standardized fruit portion
       const fruitPortion = getStandardFruitPortion(seasonalFruit);
       
-      eggBreakfasts = eggBreakfasts.map(breakfast => `${breakfast}, with ${seasonalFruit} ${fruitPortion}`);
+      eggBreakfasts = eggBreakfasts.map(breakfast => 
+        breakfast.includes(seasonalFruit) ? breakfast : `${breakfast}, with ${seasonalFruit} ${fruitPortion}`
+      );
     }
     
-    // Always add daily nuts mixture to egg breakfasts
+    // Always add daily nuts mixture to egg breakfasts (only once)
     eggBreakfasts = eggBreakfasts.map(breakfast => 
-      `${breakfast}, with ${dailyNuts}`
+      breakfast.includes(dailyNuts) ? breakfast : `${breakfast}, with ${dailyNuts}`
     );
     
     if (allergies) {
@@ -140,7 +147,13 @@ export const generateBreakfast = (
       let breakfast = eggBreakfasts[variedEggIndex];
       
       // For egg breakfasts, we need to especially ensure probiotics as they naturally lack them
-      breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
+      // Only add if not already present
+      const hasProbiotics = breakfast.includes('Curd') || breakfast.includes('dahi') || 
+                           breakfast.includes('Yogurt') || breakfast.includes('Kombucha');
+      
+      if (!hasProbiotics) {
+        breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
+      }
       
       // Add health benefit
       const healthBenefit = getHealthBenefit(breakfast);
@@ -158,9 +171,15 @@ export const generateBreakfast = (
   let breakfast = breakfastOptions[variedDayIndex] || "";
   
   // Every even day, ensure probiotics; every odd day, ensure prebiotics
-  if (dayIndex % 2 === 0) {
+  // Only add if not already present
+  const hasProbiotics = breakfast.includes('Curd') || breakfast.includes('dahi') || 
+                        breakfast.includes('Yogurt') || breakfast.includes('Kombucha');
+  const hasPrebiotics = breakfast.includes('Onion') || breakfast.includes('Garlic') || 
+                        breakfast.includes('Banana') || breakfast.includes('Oats');
+                        
+  if (dayIndex % 2 === 0 && !hasProbiotics) {
     breakfast = enrichWithProbiotics(breakfast, dayIndex, true);
-  } else {
+  } else if (dayIndex % 2 === 1 && !hasPrebiotics) {
     breakfast = enrichWithPrebiotics(breakfast, dayIndex, true);
   }
   

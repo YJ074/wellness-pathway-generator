@@ -52,6 +52,8 @@ const deduplicateRepeatedTerms = (text: string): string => {
       /(\(\d+\/\d+\s*cup\))/g,
       /(\(\d+\s*handful\))/g, // Added for handful portions
       /(\(\d+\s*nos\))/g, // Added for 'nos' portions
+      /(\(\d+\s*tsp\))/g, // Added for 'tsp' portions
+      /(\(\d+\s*pancakes?\))/g, // Added for pancake portions
       
       // Ingredients with portions
       /(with\s+[a-zA-Z]+\s+\(\d+\s*[a-zA-Z]+\))/g,
@@ -61,20 +63,32 @@ const deduplicateRepeatedTerms = (text: string): string => {
       /(with\s+walnuts\s+\(\d+\s*[a-zA-Z]+\))/g,
       /(with\s+almonds\s+\(\d+\s*[a-zA-Z]+\))/g,
       /(with\s+Sitaphal\s+\([^)]*\))/g, // For "with Sitaphal (Sugar-apple)"
+      /(with\s+cashews\s+\(\d+\s*[a-zA-Z]+\))/g,
+      /(with\s+Lychee\s+\([^)]*\))/g, // For "with Lychee (seasonal)"
       
       // Seeds and nuts with portions
       /(with\s+[a-zA-Z]+\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g,
       /(with\s+cashews\s+\(\d+\s*handful\))/g,
       /(with\s+peanuts\s+\(\d+\s*handful\))/g,
+      /(and\s+chia\s+seeds\s+\(\d+\s*tsp\))/g, // For "and chia seeds (1 tsp)"
       
       // Special fruits and specific food items
       /(with\s+a\s+small\s+bowl\s+of\s+Handvo)/g,
+      /(with\s+a\s+small\s+bowl\s+of\s+Kombucha)/g, // For "with a small bowl of Kombucha"
       
-      // Chia seeds pattern
+      // Special patterns for repeated phrases
       /(and\s+chia\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g
     ];
     
     let dedupedText = text;
+    
+    // First handle kombucha with fractions specifically as they often cause issues
+    dedupedText = dedupedText.replace(/Kombucha\s*\(\d+\/\d+\s*cup[^)]*\)[^,]*,\s*with a small bowl of Kombucha\s*\(\d+\/\d+\s*cup[^)]*\)/g, 
+      match => match.split(',')[0]);
+    
+    // Handle repeated "and chia seeds" pattern
+    dedupedText = dedupedText.replace(/(and\s+chia\s+seeds\s+\(\d+\s*tsp\))[^,]*,\s*(and\s+chia\s+seeds\s+\(\d+\s*tsp\))/g, 
+      (_, first) => first);
     
     // Process each pattern to find duplicates
     for (const pattern of patterns) {
@@ -132,6 +146,21 @@ const deduplicateRepeatedTerms = (text: string): string => {
       }
     }
     
+    // Special case fixes for common patterns:
+    
+    // 1. Remove duplicated Kombucha phrases that may slip through
+    dedupedText = dedupedText.replace(/with a small bowl of Kombucha\s*\([^)]*\)[^,]*,\s*with a small bowl of Kombucha\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+    
+    // 2. Fix cases where chia seeds appear twice
+    dedupedText = dedupedText.replace(/chia seeds\s*\([^)]*\)[^,]*,\s*(?:and|with)\s+chia seeds\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+    
+    // 3. Fix cashews appearing twice
+    dedupedText = dedupedText.replace(/with cashews\s*\([^)]*\)[^,]*,\s*with cashews\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+    
+    // Clean up formatting issues:
     // Special case for repeated commas after removing terms
     dedupedText = dedupedText.replace(/,\s*,/g, ',');
     // Remove trailing commas followed by "and"

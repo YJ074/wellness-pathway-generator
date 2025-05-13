@@ -25,8 +25,9 @@ export const styles = StyleSheet.create({
   mealDescription: {
     fontSize: 11,
     color: '#1e293b',
-    lineHeight: 1.6, // Increased line height for better readability
+    lineHeight: 1.8, // Further increased line height for even better readability
     fontFamily: 'Helvetica',
+    letterSpacing: 0.2, // Added slight letter spacing to prevent character overlap
   },
   healthBenefitContainer: {
     marginTop: 4,
@@ -37,20 +38,23 @@ export const styles = StyleSheet.create({
     color: '#16a34a',
     fontFamily: 'Helvetica',
     paddingLeft: 5,
-    lineHeight: 1.6, // Increased line height
+    lineHeight: 1.8, // Increased line height
+    letterSpacing: 0.2, // Added letter spacing
   },
   calorieInfo: {
     fontSize: 10,
     color: '#94a3b8',
     fontFamily: 'Helvetica',
-    lineHeight: 1.6, // Increased line height
+    lineHeight: 1.8, // Increased line height
+    letterSpacing: 0.2, // Added letter spacing
   },
   // Improved highlight styles with better spacing and increased line height
   localNamesHighlight: {
     color: '#6366f1',
     fontFamily: 'Helvetica-Bold',
     fontSize: 11,
-    lineHeight: 1.6, // Increased
+    lineHeight: 1.8, // Increased
+    letterSpacing: 0.2, // Added letter spacing
     padding: 0, 
     margin: 0,
   },
@@ -58,7 +62,8 @@ export const styles = StyleSheet.create({
     color: '#d97706',
     fontFamily: 'Helvetica-Bold',
     fontSize: 11,
-    lineHeight: 1.6, // Increased
+    lineHeight: 1.8, // Increased
+    letterSpacing: 0.2, // Added letter spacing
     padding: 0,
     margin: 0,
   },
@@ -66,7 +71,8 @@ export const styles = StyleSheet.create({
     color: '#4f46e5',
     fontFamily: 'Helvetica-Bold',
     fontSize: 11,
-    lineHeight: 1.6, // Increased
+    lineHeight: 1.8, // Increased
+    letterSpacing: 0.2, // Added letter spacing
     padding: 0,
     margin: 0,
   },
@@ -74,7 +80,8 @@ export const styles = StyleSheet.create({
     color: '#059669',
     fontFamily: 'Helvetica-Bold',
     fontSize: 11,
-    lineHeight: 1.6, // Increased
+    lineHeight: 1.8, // Increased
+    letterSpacing: 0.2, // Added letter spacing
     padding: 0,
     margin: 0,
   }
