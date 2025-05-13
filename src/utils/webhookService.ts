@@ -10,9 +10,9 @@ import React from 'react';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 import { toast } from '@/components/ui/use-toast';
 
-// Static webhook URL - would be configured through environment variables in production
-// Make.com webhook URL - replace with your actual webhook URL
-const MAKE_WEBHOOK_URL = 'https://hook.us.make.com/YOUR_WEBHOOK_ID';
+// Make.com webhook URL - you should replace this with your actual Make.com webhook URL
+// This should be a URL provided by Make.com when you create a webhook there
+const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/YOUR_WEBHOOK_ID';
 
 /**
  * Sends wellness plan data to a Make.com webhook endpoint
@@ -42,6 +42,11 @@ export const sendPlanToMakeWebhook = async (
         dietaryPreference: formData.dietaryPreference,
         wellnessGoals: formData.wellnessGoals,
         timestamp: new Date().toISOString()
+      },
+      contactInfo: {
+        email: formData.email,
+        mobileNumber: formData.mobileNumber,
+        name: formData.name
       },
       dietPlan: {
         metrics: {
@@ -86,6 +91,11 @@ export const sendPlanToMakeWebhook = async (
     
     if (!response.ok) {
       console.error("Make.com webhook API error:", await response.text());
+      toast({
+        title: "Webhook Error",
+        description: "Could not send your data to our systems. We'll still provide your plan here.",
+        variant: "destructive",
+      });
       return false;
     }
     
@@ -139,6 +149,11 @@ export const sendPDFToWebhook = async (
               dietaryPreference: formData.dietaryPreference,
               timestamp: new Date().toISOString()
             },
+            contactData: {
+              email: formData.email,
+              mobileNumber: formData.mobileNumber,
+              name: formData.name
+            },
             pdfData: base64data,
             // Adding metadata for Make.com processing
             metadata: {
@@ -186,4 +201,3 @@ export const sendPDFToWebhook = async (
     return false;
   }
 };
-

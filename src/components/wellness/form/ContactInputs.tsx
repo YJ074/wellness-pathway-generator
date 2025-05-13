@@ -34,7 +34,7 @@ const ContactInputs = ({ email, mobileNumber, onInputChange }: ContactInputsProp
         value={mobileNumber}
         onChange={handleMobileNumberChange}
         placeholder="+91 Enter your mobile number"
-        helperText="Mobile number must start with +91 and have 10 digits"
+        helperText="Mobile number must start with +91 and have 10 digits. This will be used to send your plan."
       />
       
       <FormField
@@ -45,8 +45,12 @@ const ContactInputs = ({ email, mobileNumber, onInputChange }: ContactInputsProp
         type="email"
         onChange={handleEmailChange}
         placeholder="example@domain.com"
-        helperText="Please enter a valid email address (e.g., example@domain.com)"
+        helperText="Please enter a valid email address. Your wellness plan will be sent to this email."
       />
+      
+      <p className="text-xs text-muted-foreground mt-2">
+        Your contact information will only be used to deliver your wellness plan and related updates.
+      </p>
     </div>
   );
 };
