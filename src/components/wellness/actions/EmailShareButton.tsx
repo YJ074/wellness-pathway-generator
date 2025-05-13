@@ -9,56 +9,46 @@ import { FormData, DietPlan, WorkoutPlan } from "../types";
 interface EmailShareButtonProps {
   formData: FormData;
   dietPlan: DietPlan;
-  workoutPlan?: WorkoutPlan; // Added workoutPlan as optional prop
+  workoutPlan?: WorkoutPlan;  // Added workoutPlan as optional prop
 }
 
-const EmailShareButton = ({
-  formData,
-  dietPlan,
-  workoutPlan
-}: EmailShareButtonProps) => {
+const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonProps) => {
   const { toast } = useToast();
   const [isEmailSending, setIsEmailSending] = useState(false);
-  
+
   const handleSendEmail = async () => {
     if (!formData.email) {
       toast({
         title: "Email Required",
         description: "Please provide an email address to send the plan.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     setIsEmailSending(true);
     try {
       await sendPlanViaEmail(formData, dietPlan);
       toast({
         title: "Success!",
-        description: `Your wellness plan has been sent to ${formData.email}`
+        description: `Your wellness plan has been sent to ${formData.email}`,
       });
     } catch (error) {
       console.error("Error sending email:", error);
       toast({
         title: "Sending Failed",
         description: "Could not send the plan via email. Please try again.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsEmailSending(false);
     }
   };
-  
+
   return (
-    <Button onClick={handleSendEmail} variant="outline" disabled={isEmailSending}>
-      {isEmailSending ? (
-        <>Sending...</>
-      ) : (
-        <>
-          <Mail className="mr-2 h-4 w-4" />
-          Email
-        </>
-      )}
+    <Button variant="outline" onClick={handleSendEmail} disabled={isEmailSending}>
+      <Mail className="mr-2 h-4 w-4" />
+      {isEmailSending ? "Sending..." : "Email Plan"}
     </Button>
   );
 };

@@ -25,7 +25,7 @@ export const sendPDFToWebhook = async (
   workoutPlan?: WorkoutPlan
 ): Promise<boolean> => {
   try {
-    console.log("Preparing to send wellness plan data to Make.com webhook for Airtable integration");
+    console.log("Preparing to send PDF data to webhook");
     
     // Create the PDF document properly typed as Document element
     // The type casting is necessary to resolve the TypeScript error
@@ -44,64 +44,27 @@ export const sendPDFToWebhook = async (
         try {
           const base64data = reader.result?.toString().split(',')[1];
           
-          // Extract wellness benefits from diet plan for easier access in Make.com
-          const wellnessBenefits = dietPlan.days.map(day => ({
-            day: day.day,
-            hairNutrients: day.hairNutrients,
-            skinNutrients: day.skinNutrients,
-            fatLossNotes: day.fatLossNotes,
-            pcosFriendlyNotes: day.pcosFriendlyNotes,
-            herbalRecommendations: day.herbalRecommendations,
-            regionalNote: day.regionalNote
-          }));
-          
-          // Format contact details for better accessibility in Airtable
-          const contactInfo = {
-            email: formData.email,
-            mobileNumber: formData.mobileNumber.replace(/\s+/g, ''), // Remove spaces for consistent formatting
-            whatsappReady: formData.mobileNumber.startsWith('+91') ? true : false,
-            contactPreference: formData.mobileNumber.startsWith('+91') ? 'whatsapp' : 'email'
-          };
-          
-          // Prepare webhook payload with PDF data, plan data, and user information
+          // Prepare webhook payload with PDF data and user information
           const webhookData = {
             userInfo: {
               name: formData.name,
               email: formData.email,
               age: formData.age,
               gender: formData.gender,
-              height: formData.height || `${formData.heightFeet}'${formData.heightInches}"`,
-              weight: formData.weight,
-              mobileNumber: formData.mobileNumber,
               fitnessGoal: formData.fitnessGoal,
               dietaryPreference: formData.dietaryPreference,
-              wellnessGoals: formData.wellnessGoals,
               timestamp: new Date().toISOString()
             },
-            contactInfo, // Add dedicated contact info object for Airtable
-            planMetrics: {
-              bmi: dietPlan.bmi,
-              bmiCategory: dietPlan.bmiCategory,
-              bmr: dietPlan.bmr,
-              dailyCalories: dietPlan.dailyCalories
-            },
-            dietPlan: {
-              days: dietPlan.days,
-              wellnessBenefits // Adding extracted benefits for easier processing
-            },
-            workoutPlan: workoutPlan || null,
             pdfData: base64data,
             // Adding metadata for Make.com processing
             metadata: {
               contentType: 'application/pdf',
               filename: `${formData.name.replace(/\s+/g, '-').toLowerCase()}-wellness-plan.pdf`,
-              source: 'arogyam75',
-              version: '1.2',
-              airtableReady: true
+              source: 'arogyam75'
             }
           };
           
-          console.log("Sending webhook with complete wellness plan data for Airtable integration");
+          console.log("Sending webhook with PDF data");
           
           // Send the webhook payload
           const response = await fetch(WEBHOOK_URL, {
@@ -118,7 +81,7 @@ export const sendPDFToWebhook = async (
             return;
           }
           
-          console.log("Webhook sent successfully to Make.com for Airtable integration");
+          console.log("Webhook sent successfully");
           resolve(true);
         } catch (error) {
           console.error("Error sending webhook:", error);
