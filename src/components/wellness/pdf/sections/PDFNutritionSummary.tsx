@@ -35,6 +35,14 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
     marginTop: 1,
     fontFamily: 'Helvetica',
+  },
+  macroRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 4,
+  },
+  macroItem: {
+    marginRight: 8,
   }
 });
 
@@ -109,18 +117,49 @@ const PDFNutritionSummary = ({
   return (
     <View style={styles.nutritionBox}>
       <Text style={styles.nutritionTitle}>Daily Nutrition Summary</Text>
-      <Text style={styles.nutritionText}>
-        Total Calories: {dailyCalories} kcal  •  Water: {water}L
-      </Text>
-      <Text style={styles.nutritionText}>
-        Macronutrients: Protein: {macros.protein}g {proteinNote}  •  Carbs: {macros.carbs}g  •  Fats: {macros.fat}g
-      </Text>
+      
+      {/* Base nutrition info */}
+      <View style={styles.macroRow}>
+        <Text style={styles.nutritionText}>
+          Total Calories: {dailyCalories} kcal  •  Water: {water}L
+        </Text>
+      </View>
+      
+      {/* Macros - split into separate components to prevent overlapping */}
+      <View style={styles.macroRow}>
+        <Text style={styles.nutritionText}>
+          Macronutrients: 
+        </Text>
+      </View>
+      
+      <View style={styles.macroRow}>
+        <View style={styles.macroItem}>
+          <Text style={styles.nutritionText}>
+            Protein: {macros.protein}g {proteinNote && `${proteinNote}`}
+          </Text>
+        </View>
+        
+        <View style={styles.macroItem}>
+          <Text style={styles.nutritionText}>
+            Carbs: {macros.carbs}g
+          </Text>
+        </View>
+        
+        <View style={styles.macroItem}>
+          <Text style={styles.nutritionText}>
+            Fats: {macros.fat}g
+          </Text>
+        </View>
+      </View>
+      
       <Text style={styles.macroDetail}>
         Distribution: Protein: {proteinPct}% • Carbs: {carbsPct}% • Fats: {fatPct}%
       </Text>
+      
       <Text style={styles.nutritionText}>
         Micronutrients: Calcium, Iron, Vitamins A, B-complex (B12), C, D, E, Zinc, Magnesium
       </Text>
+      
       {proteinSources && <Text style={styles.proteinNote}>{proteinSources}</Text>}
     </View>
   );
