@@ -1,98 +1,69 @@
 
-/**
- * Meal description normalization
- * Core functions for cleaning up meal descriptions and removing duplicates
- */
-
-import { hasFoodItem } from './detection';
-import { normalizeWhitespaceAndPunctuation, formatForPDF } from './formatting';
-import { hasSynonymInSeenFoods } from './synonyms';
+import { addWithoutDuplication } from './addition';
+import { detectFoodDuplications } from './detection';
+import { formatMealWithDeduplication } from './formatting';
+import { FOOD_SYNONYMS } from './synonyms';
 
 /**
  * Removes duplicate food items from a meal description
- * @param mealDescription The meal description to deduplicate
- * @returns A meal description with duplicates removed
+ * by normalizing the text and handling different formats
  */
-export const removeDuplicateFoodItems = (mealDescription: string): string => {
-  if (!mealDescription) {
-    return '';
-  }
+export function removeDuplicateFoodItems(mealDescription: string): string {
+  if (!mealDescription || typeof mealDescription !== 'string') return mealDescription;
   
-  // Split description into individual food items
-  const items = mealDescription
-    .split(/,\s*/)
-    .map(item => item.trim())
-    .filter(item => item !== '');
+  let normalizedMeal = mealDescription;
   
-  const seenFoods = new Set<string>();
-  const result: string[] = [];
+  // Handle cooking methods with escaped parenthesis correctly
+  // Fix: Ensure parentheses are properly escaped in regex patterns
+  const cookingMethods = [
+    'grilled',
+    'roasted',
+    'steamed',
+    'boiled',
+    'baked',
+    'sautéed',
+    'sauteed',
+    'fried',
+    'stir-fried'
+  ];
   
-  // Process each item
-  for (const item of items) {
-    // Skip if this item is empty after trimming
-    if (item.trim().length === 0) {
-      continue;
-    }
+  // Apply more specific replacements first
+  cookingMethods.forEach(method => {
+    // Fix the regex pattern - escape parentheses properly
+    const methodWithPortionPattern = new RegExp(`\\(${method}\\)\\s+\\([^)]+\\)`, 'gi');
+    normalizedMeal = normalizedMeal.replace(methodWithPortionPattern, `(${method})`);
     
-    // Check for duplicate food using more sophisticated logic
-    // Uses food name extraction and synonym matching
-    let isDuplicate = false;
-    
-    // Check if this food or its synonym has been seen
-    const lowerItem = item.toLowerCase();
-    if (hasSynonymInSeenFoods(item, seenFoods)) {
-      isDuplicate = true;
-    } else {
-      // Check for direct duplicates with different formatting
-      isDuplicate = Array.from(seenFoods).some(seenFood => 
-        hasFoodItem(item, seenFood) || hasFoodItem(seenFood, item)
-      );
-    }
-    
-    if (!isDuplicate) {
-      seenFoods.add(lowerItem);
-      result.push(item);
-    }
-  }
+    // Fix the regex pattern - ensure correct escaping
+    const redundantMethodPattern = new RegExp(`${method}\\s+\\([^)]+\\)`, 'gi');
+    normalizedMeal = normalizedMeal.replace(redundantMethodPattern, method);
+  });
   
-  // Join processed items back together with proper formatting
-  return normalizeWhitespaceAndPunctuation(result.join(', '));
-};
+  // Detect and handle duplications
+  const duplications = detectFoodDuplications(normalizedMeal);
+  
+  // Format the meal with deduplication
+  normalizedMeal = formatMealWithDeduplication(normalizedMeal, duplications);
+  
+  return normalizedMeal;
+}
 
 /**
- * Normalizes meal descriptions specifically for PDF output
- * More aggressive deduplication for cleaner presentation
- * @param mealDescription The meal description to normalize
- * @returns A normalized and deduplicated meal description
+ * Normalizes meal descriptions for PDF rendering
+ * with enhanced formatting and deduplication
  */
-export const normalizeMealForPDF = (mealDescription: string): string => {
-  if (!mealDescription) {
-    return '';
-  }
+export function normalizeMealForPDF(mealDescription: string): string {
+  if (!mealDescription) return '';
   
-  // First pass: general duplicate removal
-  let normalizedText = removeDuplicateFoodItems(mealDescription);
+  // First remove duplicates
+  let normalized = removeDuplicateFoodItems(mealDescription);
   
-  // Second pass: special case cleanup for PDFs
-  normalizedText = normalizedText
-    // Fix duplicate connectors (very common in meal descriptions)
-    .replace(/\s+(and|with)\s+\1\s+/g, ' $1 ')
-    // Fix repeated "with" statement
-    .replace(/with\s+with/g, 'with')
-    // Fix repeated "and" statement
-    .replace(/and\s+and/g, 'and')
-    // Remove duplicate items that appear with different formatting
-    .replace(/(\w+(?:\s+\w+)*)\s*\([^)]+\)\s*(?:,|and|with)\s+\1\s*\([^)]+\)/gi, '$1 (portion)')
-    // Handle seed items which are particularly prone to duplication
-    .replace(/(\w+\s+seeds)\s*\([^)]+\)\s*(?:,|and|with)\s+\1\s*\([^)]+\)/gi, '$1 (portion)')
-    // Handle spices which can appear with different preparations
-    .replace(/(\w+)\s+powder\s*(?:,|and|with)\s+\1\s+/gi, '$1 powder, ')
-    // Fix awkward punctuation that can result from deduplication
-    .replace(/,\s*,/g, ',')
-    .replace(/,\s*\./g, '.')
-    // Normalize spaces once more
-    .replace(/\s{2,}/g, ' ');
+  // Handle synonyms
+  Object.entries(FOOD_SYNONYMS).forEach(([primary, synonyms]) => {
+    synonyms.forEach(synonym => {
+      const synonymPattern = new RegExp(`\\b${synonym}\\b`, 'gi');
+      normalized = normalized.replace(synonymPattern, primary);
+    });
+  });
   
-  // Final formatting for PDF presentation
-  return formatForPDF(normalizedText);
-};
+  return normalized;
+}
