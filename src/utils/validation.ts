@@ -1,3 +1,4 @@
+
 import { toast } from "@/hooks/use-toast";
 
 export const validateEmail = (email: string) => {

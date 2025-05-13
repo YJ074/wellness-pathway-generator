@@ -1,4 +1,3 @@
-
 /**
  * Webhook service for sending data to external services like Make.com
  * This file handles webhook communication without exposing it in the UI
@@ -8,7 +7,7 @@ import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
 import { pdf, Document } from '@react-pdf/renderer';
 import React from 'react';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 // Make.com webhook URL - you should replace this with your actual Make.com webhook URL
 // This should be a URL provided by Make.com when you create a webhook there
