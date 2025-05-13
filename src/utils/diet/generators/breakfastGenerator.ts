@@ -1,4 +1,3 @@
-
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { getDryFruits } from '../data/dryFruits';
@@ -6,6 +5,17 @@ import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebiotic
 import { getFruitSources } from '../data/foodSources';
 import { getStandardFruitPortion, getDailyNutsMixture } from '../helpers/portionHelpers';
 import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
+
+// Helper to prevent duplicate additions to breakfast descriptions
+const preventDuplicateAdditions = (breakfast: string, addition: string): string => {
+  // If the addition is already in the breakfast description, don't add it again
+  if (breakfast.includes(addition)) {
+    return breakfast;
+  }
+  
+  // Otherwise add it with proper comma formatting
+  return breakfast.endsWith(',') ? `${breakfast} ${addition}` : `${breakfast}, ${addition}`;
+};
 
 export const generateBreakfast = (
   dayIndex: number,
@@ -33,7 +43,7 @@ export const generateBreakfast = (
     
     // Ensure dailyNuts is not already included in breakfast
     if (!breakfast.includes(dailyNuts)) {
-      breakfast += `, with ${dailyNuts}`;
+      breakfast = preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
     }
     
     // Add health benefit
@@ -90,16 +100,20 @@ export const generateBreakfast = (
     // Standardized fruit portion using our helper
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
-    breakfastOptions = breakfastOptions.map(breakfast => 
-      `${breakfast}, with ${seasonalFruit} ${fruitPortion}`
-    );
+    breakfastOptions = breakfastOptions.map(breakfast => {
+      // Check if this fruit is already mentioned in the breakfast
+      if (breakfast.includes(seasonalFruit)) {
+        return breakfast;
+      }
+      return preventDuplicateAdditions(breakfast, `with ${seasonalFruit} ${fruitPortion}`);
+    });
   }
 
   // Always add a daily nuts mixture to every breakfast (only once)
   const dailyNuts = getDailyNutsMixture(dayIndex);
   breakfastOptions = breakfastOptions.map(breakfast => {
     // Only add nuts if they're not already included
-    return breakfast.includes(dailyNuts) ? breakfast : `${breakfast}, with ${dailyNuts}`;
+    return breakfast.includes(dailyNuts) ? breakfast : preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
   });
   
   if (dietaryPreference === 'lacto-ovo-vegetarian' || dietaryPreference === 'non-vegetarian') {
@@ -126,15 +140,20 @@ export const generateBreakfast = (
       // Standardized fruit portion
       const fruitPortion = getStandardFruitPortion(seasonalFruit);
       
-      eggBreakfasts = eggBreakfasts.map(breakfast => 
-        breakfast.includes(seasonalFruit) ? breakfast : `${breakfast}, with ${seasonalFruit} ${fruitPortion}`
-      );
+      eggBreakfasts = eggBreakfasts.map(breakfast => {
+        // Check if this fruit is already mentioned in the breakfast
+        if (breakfast.includes(seasonalFruit)) {
+          return breakfast;
+        }
+        return preventDuplicateAdditions(breakfast, `with ${seasonalFruit} ${fruitPortion}`);
+      });
     }
     
     // Always add daily nuts mixture to egg breakfasts (only once)
-    eggBreakfasts = eggBreakfasts.map(breakfast => 
-      breakfast.includes(dailyNuts) ? breakfast : `${breakfast}, with ${dailyNuts}`
-    );
+    eggBreakfasts = eggBreakfasts.map(breakfast => {
+      // Only add nuts if they're not already included
+      return breakfast.includes(dailyNuts) ? breakfast : preventDuplicateAdditions(breakfast, `with ${dailyNuts}`);
+    });
     
     if (allergies) {
       eggBreakfasts = filterAllergies(eggBreakfasts, allergies);

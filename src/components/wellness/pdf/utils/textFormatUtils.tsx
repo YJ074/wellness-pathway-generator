@@ -54,6 +54,20 @@ const deduplicateRepeatedTerms = (text: string): string => {
       /(\(\d+\s*nos\))/g, // Added for 'nos' portions
       /(\(\d+\s*tsp\))/g, // Added for 'tsp' portions
       /(\(\d+\s*pancakes?\))/g, // Added for pancake portions
+      /(\(\d+\s*glass\))/g, // Added for glass portions
+      /(\(\d+\s*idlis?\))/g, // Added for idli portions
+      /(\(\d+\s*dosas?\))/g, // Added for dosa portions
+      /(\(\d+\s*slice\))/g, // Added for slice portions
+      /(\(\d+\s*pieces?\))/g, // Added for pieces portions
+      /(\(\d+\s*ande\))/g, // Added for egg portions
+      /(\(\d+\s*egg whites?\))/g, // Added for egg white portions
+      /(\(\d+\s*whole wheat wrap\))/g, // Added for wrap portions
+      /(\(\d+\s*dhokla\))/g, // Added for dhokla portions
+      /(\(\d+\s*cheela\))/g, // Added for cheela portions
+      /(\(\d+\s*uttapam\))/g, // Added for uttapam portions
+      /(\(\d+\s*paratha\))/g, // Added for paratha portions
+      /(\(smaller portion\))/g, // Added for smaller portion notation
+      /(\(\d+\s*small katori\))/g, // Added for small katori portions
       
       // Ingredients with portions
       /(with\s+[a-zA-Z]+\s+\(\d+\s*[a-zA-Z]+\))/g,
@@ -65,19 +79,34 @@ const deduplicateRepeatedTerms = (text: string): string => {
       /(with\s+Sitaphal\s+\([^)]*\))/g, // For "with Sitaphal (Sugar-apple)"
       /(with\s+cashews\s+\(\d+\s*[a-zA-Z]+\))/g,
       /(with\s+Lychee\s+\([^)]*\))/g, // For "with Lychee (seasonal)"
+      /(with\s+mixed\s+fruits)/g, // For "with mixed fruits"
+      /(with\s+seasonal\s+fruits)/g, // For "with seasonal fruits"
+      /(with\s+seasonal\s+sabzi)/g, // For "with seasonal sabzi"
+      /(with\s+sabzi(\s+\(\d+\s*katori\))?)/g, // For "with sabzi" with optional portion
+      /(with\s+a\s+side\s+of\s+sprouts\s+\(\d+\s*[a-zA-Z\s]+\))/g, // For "with a side of sprouts"
+      /(with\s+badam\s+milk\s+\(\d+\s*glass\))/g, // For "with badam milk"
+      /(with\s+chaas\s+\(\d+\s*glass\))/g, // For "with chaas"
       
       // Seeds and nuts with portions
       /(with\s+[a-zA-Z]+\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g,
       /(with\s+cashews\s+\(\d+\s*handful\))/g,
       /(with\s+peanuts\s+\(\d+\s*handful\))/g,
       /(and\s+chia\s+seeds\s+\(\d+\s*tsp\))/g, // For "and chia seeds (1 tsp)"
+      /(with\s+flax\s+seeds\s+\(\d+\s*tsp\))/g, // For "with flax seeds (1 tsp)"
       
       // Special fruits and specific food items
       /(with\s+a\s+small\s+bowl\s+of\s+Handvo)/g,
       /(with\s+a\s+small\s+bowl\s+of\s+Kombucha)/g, // For "with a small bowl of Kombucha"
+      /(with\s+[A-Z][a-z]+\s+\([^)]+\))/g, // For fruits like "with Apple (1 medium)"
       
       // Special patterns for repeated phrases
-      /(and\s+chia\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g
+      /(and\s+chia\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g,
+      /(with\s+dahi\s+\(\d+\s*[a-zA-Z\s]+\))/g, // For "with dahi (1 small katori)"
+      /(with\s+sambhar\s+\(\d+\s*katori\))/g, // For "with sambhar (1 katori)"
+      /(with\s+sambar\s+\(\d+\s*katori\))/g, // For "with sambar (1 katori)" (alternative spelling)
+      /(with\s+tamatar\s+chutney\s+\(\d+\s*chamach\))/g, // For "with tamatar chutney (2 chamach)"
+      /(with\s+pudina\s+chutney\s+\(\d+\s*chamach\))/g, // For "with pudina chutney (2 chamach)"
+      /(with\s+nariyal\s+chutney\s+\(\d+\s*chamach\))/g // For "with nariyal chutney (2 chamach)"
     ];
     
     let dedupedText = text;
@@ -158,6 +187,30 @@ const deduplicateRepeatedTerms = (text: string): string => {
     
     // 3. Fix cashews appearing twice
     dedupedText = dedupedText.replace(/with cashews\s*\([^)]*\)[^,]*,\s*with cashews\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+      
+    // 4. Fix generic fruits appearing twice
+    dedupedText = dedupedText.replace(/with\s+([A-Z][a-z]+)\s+\([^)]+\)[^,]*,\s*with\s+\1\s+\([^)]+\)/g, 
+      match => match.split(',')[0]);
+      
+    // 5. Fix repeated sabzi mentions
+    dedupedText = dedupedText.replace(/with sabzi\s*\([^)]*\)[^,]*,\s*with sabzi\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+      
+    // 6. Fix repeated dahi mentions
+    dedupedText = dedupedText.replace(/with dahi\s*\([^)]*\)[^,]*,\s*with dahi\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+      
+    // 7. Fix repeated chutney mentions
+    dedupedText = dedupedText.replace(/with\s+(pudina|tamatar|nariyal)\s+chutney\s*\([^)]*\)[^,]*,\s*with\s+\1\s+chutney\s*\([^)]*\)/g, 
+      match => match.split(',')[0]);
+      
+    // 8. Fix seasonal fruits appearing twice
+    dedupedText = dedupedText.replace(/with seasonal fruits[^,]*,\s*with seasonal fruits/g, 
+      match => match.split(',')[0]);
+      
+    // 9. Fix mixed fruits appearing twice
+    dedupedText = dedupedText.replace(/with mixed fruits[^,]*,\s*with mixed fruits/g, 
       match => match.split(',')[0]);
     
     // Clean up formatting issues:
