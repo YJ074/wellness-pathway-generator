@@ -25,7 +25,7 @@ export const sendPDFToWebhook = async (
   workoutPlan?: WorkoutPlan
 ): Promise<boolean> => {
   try {
-    console.log("Preparing to send wellness plan data to Make.com webhook");
+    console.log("Preparing to send wellness plan data to Make.com webhook for Airtable integration");
     
     // Create the PDF document properly typed as Document element
     // The type casting is necessary to resolve the TypeScript error
@@ -55,6 +55,14 @@ export const sendPDFToWebhook = async (
             regionalNote: day.regionalNote
           }));
           
+          // Format contact details for better accessibility in Airtable
+          const contactInfo = {
+            email: formData.email,
+            mobileNumber: formData.mobileNumber.replace(/\s+/g, ''), // Remove spaces for consistent formatting
+            whatsappReady: formData.mobileNumber.startsWith('+91') ? true : false,
+            contactPreference: formData.mobileNumber.startsWith('+91') ? 'whatsapp' : 'email'
+          };
+          
           // Prepare webhook payload with PDF data, plan data, and user information
           const webhookData = {
             userInfo: {
@@ -70,6 +78,7 @@ export const sendPDFToWebhook = async (
               wellnessGoals: formData.wellnessGoals,
               timestamp: new Date().toISOString()
             },
+            contactInfo, // Add dedicated contact info object for Airtable
             planMetrics: {
               bmi: dietPlan.bmi,
               bmiCategory: dietPlan.bmiCategory,
@@ -87,11 +96,12 @@ export const sendPDFToWebhook = async (
               contentType: 'application/pdf',
               filename: `${formData.name.replace(/\s+/g, '-').toLowerCase()}-wellness-plan.pdf`,
               source: 'arogyam75',
-              version: '1.1'
+              version: '1.2',
+              airtableReady: true
             }
           };
           
-          console.log("Sending webhook with complete wellness plan data");
+          console.log("Sending webhook with complete wellness plan data for Airtable integration");
           
           // Send the webhook payload
           const response = await fetch(WEBHOOK_URL, {
@@ -108,7 +118,7 @@ export const sendPDFToWebhook = async (
             return;
           }
           
-          console.log("Webhook sent successfully to Make.com");
+          console.log("Webhook sent successfully to Make.com for Airtable integration");
           resolve(true);
         } catch (error) {
           console.error("Error sending webhook:", error);
