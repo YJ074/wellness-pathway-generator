@@ -5,7 +5,9 @@
  */
 
 // Re-export all public functions from the modules
-export { hasFoodItem, extractBaseFoodName, DuplicateDetectionOptions, DEFAULT_OPTIONS } from './detection';
+export { hasFoodItem, extractBaseFoodName } from './detection';
+export type { DuplicateDetectionOptions } from './detection';
+export { DEFAULT_OPTIONS } from './detection';
 export { addWithoutDuplication, removeDuplicateFoodItems, normalizeMealForPDF } from './normalization';
 export { FOOD_SYNONYMS, getSynonymsForFood } from './synonyms';
 
