@@ -4,6 +4,16 @@
  * Use the new modular deduplication system from './deduplication/index.ts' instead.
  */
 
+// First import the functions from the new module before re-exporting them
+import {
+  hasFoodItem,
+  extractBaseFoodName,
+  addWithoutDuplication,
+  removeDuplicateFoodItems,
+  normalizeMealForPDF,
+  DEFAULT_OPTIONS
+} from './deduplication';
+
 // Re-export all relevant functions from the new modular system
 export {
   hasFoodItem,
