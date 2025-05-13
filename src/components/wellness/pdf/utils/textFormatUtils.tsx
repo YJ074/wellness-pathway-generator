@@ -1,8 +1,10 @@
 
 import { ReactNode } from 'react';
-import { processDashPatterns } from './helpers/textProcessingHelpers';
-import { processMeasurements } from './helpers/textProcessingHelpers';
-import { processLocalNames } from './helpers/textProcessingHelpers';
+import { 
+  processDashPatterns,
+  processMeasurements,
+  processLocalNames 
+} from './helpers/textProcessing';
 import { processProbioticFoods, processPrebioticFoods } from './helpers/probioticPrebioticProcessor';
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
