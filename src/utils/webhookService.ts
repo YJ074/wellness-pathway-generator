@@ -4,7 +4,7 @@
  * This file handles webhook communication without exposing it in the UI
  */
 
-import { DietPlan, FormData } from '@/components/wellness/types';
+import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
 import { pdf } from '@react-pdf/renderer';
 import React from 'react';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
@@ -22,13 +22,17 @@ const WEBHOOK_URL = 'https://hook.us.make.com/YOUR_WEBHOOK_ID';
 export const sendPDFToWebhook = async (
   formData: FormData, 
   dietPlan: DietPlan, 
-  workoutPlan?: any
+  workoutPlan?: WorkoutPlan
 ): Promise<boolean> => {
   try {
     console.log("Preparing to send PDF data to webhook");
     
-    // Create the PDF document
-    const pdfDocument = React.createElement(WellnessPDF, { formData, dietPlan, workoutPlan });
+    // Create the PDF document - fixed the TypeScript error by explicit typing
+    const pdfDocument = React.createElement(WellnessPDF, { 
+      formData, 
+      dietPlan, 
+      workoutPlan 
+    });
     
     // Generate PDF as base64 data
     const pdfBlob = await pdf(pdfDocument).toBlob();
