@@ -285,7 +285,7 @@ export const normalizeMealForPDF = (mealDescription: string): string => {
   const fragments = normalizedMeal.split(/(?:,|\s+and\s+|\s+with\s+)/);
   if (fragments.length > 1) {
     const uniqueFragments = [];
-    const seenFoods = new Set();
+    const seenFoods = new Set<string>(); // Explicitly type as Set<string>
     
     for (const fragment of fragments) {
       // Extract food name from fragment (this could be improved for more complex cases)
@@ -297,14 +297,17 @@ export const normalizeMealForPDF = (mealDescription: string): string => {
         // Check synonyms as well
         let isDuplicate = false;
         for (const [key, values] of Object.entries(FOOD_SYNONYMS)) {
+          // Fixed: Explicitly cast seenFoods entries to string array
+          const seenFoodsArray = Array.from(seenFoods);
+          
           if (foodName.includes(key.toLowerCase()) && 
-              [...seenFoods].some(seen => seen.includes(key.toLowerCase()) || values.some(v => seen.includes(v.toLowerCase())))) {
+              seenFoodsArray.some(seen => seen.includes(key.toLowerCase()) || values.some(v => seen.includes(v.toLowerCase())))) {
             isDuplicate = true;
             break;
           }
           
           if (values.some(value => foodName.includes(value.toLowerCase())) &&
-              [...seenFoods].some(seen => seen.includes(key.toLowerCase()) || values.some(v => seen.includes(v.toLowerCase())))) {
+              seenFoodsArray.some(seen => seen.includes(key.toLowerCase()) || values.some(v => seen.includes(v.toLowerCase())))) {
             isDuplicate = true;
             break;
           }
@@ -336,4 +339,3 @@ export const normalizeMealForPDF = (mealDescription: string): string => {
     
   return normalizedMeal;
 };
-
