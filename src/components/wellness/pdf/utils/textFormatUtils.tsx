@@ -6,7 +6,7 @@ import {
   processLocalNames 
 } from './helpers/textProcessing';
 import { processProbioticFoods, processPrebioticFoods } from './helpers/probioticPrebioticProcessor';
-import { removeDuplicateFoodItems, normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplicationHelper';
+import { removeDuplicateFoodItems, normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplication';
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
 // Fixed to prevent word repetition and overlapping highlights

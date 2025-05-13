@@ -3,7 +3,7 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
-import { removeDuplicateFoodItems } from '../helpers/deduplicationHelper';
+import { removeDuplicateFoodItems } from '../helpers/deduplication';
 import { 
   getLocalizedProteinName, 
   getLocalizedGrainName,
