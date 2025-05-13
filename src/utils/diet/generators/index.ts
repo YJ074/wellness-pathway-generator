@@ -1,5 +1,5 @@
 
-export { generateBreakfast } from './breakfastGenerator';
+export { generateBreakfast } from './breakfast';
 export { 
   generateMidMorningSnack, 
   generateEveningSnack, 

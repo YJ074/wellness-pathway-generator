@@ -13,9 +13,12 @@ const deduplicateText = (text: string): string => {
   const foodItems = [
     "Chickoo", "cashews", "chia seeds", "flax seeds", "almonds", 
     "walnuts", "sprouts", "Dandelion Greens", "peanuts", "yogurt", 
-    "curd", "dahi", "kombucha", "kefir", "cottage cheese",
+    "curd", "dahi", "kombucha", "kefir", "cottage cheese", "buttermilk", "chaas",
     "sunflower seeds", "pumpkin seeds", "sesame seeds", "Banana",
-    "Apple", "Mango", "Orange", "Papaya", "Watermelon"
+    "Apple", "Mango", "Orange", "Papaya", "Watermelon", "Grapes",
+    "Pomegranate", "Kiwi", "Berries", "Strawberries", "Blueberries",
+    "Raspberries", "Blackberries", "Pineapple", "Guava", "Litchi",
+    "Jackfruit", "Sapota", "Custard Apple"
   ];
   
   // Build a regex pattern for each food item with different conjunction patterns
@@ -39,6 +42,10 @@ const deduplicateText = (text: string): string => {
     // More aggressive - catch any duplicates regardless of connector words
     const anyPattern = new RegExp(`((?:with|and)\\s+${food}\\s+\\([^)]+\\)[^,]*),\\s*(?:with|and)\\s+${food}\\s+\\([^)]+\\)`, 'gi');
     cleanedText = cleanedText.replace(anyPattern, '$1');
+    
+    // Handle standalone duplicate mentions of the food item
+    const standalonePattern = new RegExp(`${food}\\s+\\([^)]+\\)([^,]*),\\s*${food}\\s+\\([^)]+\\)`, 'gi');
+    cleanedText = cleanedText.replace(standalonePattern, `${food} ($1)`);
   }
   
   // Remove repeated phrases that might have slipped through
