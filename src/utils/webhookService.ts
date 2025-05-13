@@ -25,7 +25,7 @@ export const sendPDFToWebhook = async (
   workoutPlan?: WorkoutPlan
 ): Promise<boolean> => {
   try {
-    console.log("Preparing to send PDF data to webhook");
+    console.log("Preparing to send wellness plan data to Make.com webhook");
     
     // Create the PDF document properly typed as Document element
     // The type casting is necessary to resolve the TypeScript error
@@ -44,27 +44,54 @@ export const sendPDFToWebhook = async (
         try {
           const base64data = reader.result?.toString().split(',')[1];
           
-          // Prepare webhook payload with PDF data and user information
+          // Extract wellness benefits from diet plan for easier access in Make.com
+          const wellnessBenefits = dietPlan.days.map(day => ({
+            day: day.day,
+            hairNutrients: day.hairNutrients,
+            skinNutrients: day.skinNutrients,
+            fatLossNotes: day.fatLossNotes,
+            pcosFriendlyNotes: day.pcosFriendlyNotes,
+            herbalRecommendations: day.herbalRecommendations,
+            regionalNote: day.regionalNote
+          }));
+          
+          // Prepare webhook payload with PDF data, plan data, and user information
           const webhookData = {
             userInfo: {
               name: formData.name,
               email: formData.email,
               age: formData.age,
               gender: formData.gender,
+              height: formData.height || `${formData.heightFeet}'${formData.heightInches}"`,
+              weight: formData.weight,
+              mobileNumber: formData.mobileNumber,
               fitnessGoal: formData.fitnessGoal,
               dietaryPreference: formData.dietaryPreference,
+              wellnessGoals: formData.wellnessGoals,
               timestamp: new Date().toISOString()
             },
+            planMetrics: {
+              bmi: dietPlan.bmi,
+              bmiCategory: dietPlan.bmiCategory,
+              bmr: dietPlan.bmr,
+              dailyCalories: dietPlan.dailyCalories
+            },
+            dietPlan: {
+              days: dietPlan.days,
+              wellnessBenefits // Adding extracted benefits for easier processing
+            },
+            workoutPlan: workoutPlan || null,
             pdfData: base64data,
             // Adding metadata for Make.com processing
             metadata: {
               contentType: 'application/pdf',
               filename: `${formData.name.replace(/\s+/g, '-').toLowerCase()}-wellness-plan.pdf`,
-              source: 'arogyam75'
+              source: 'arogyam75',
+              version: '1.1'
             }
           };
           
-          console.log("Sending webhook with PDF data");
+          console.log("Sending webhook with complete wellness plan data");
           
           // Send the webhook payload
           const response = await fetch(WEBHOOK_URL, {
@@ -81,7 +108,7 @@ export const sendPDFToWebhook = async (
             return;
           }
           
-          console.log("Webhook sent successfully");
+          console.log("Webhook sent successfully to Make.com");
           resolve(true);
         } catch (error) {
           console.error("Error sending webhook:", error);
