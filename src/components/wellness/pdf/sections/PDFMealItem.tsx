@@ -30,7 +30,7 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Format the meal description to highlight special terms
+  // Format the meal description to highlight special terms - ensures proper word wrapping
   const formattedDescription = formatMealDescription(mealDescription);
   
   return (
@@ -47,7 +47,7 @@ const PDFMealItem = ({
       </View>
       
       {healthBenefit && (
-        <View>
+        <View style={styles.healthBenefitContainer}>
           <Text style={styles.healthBenefit}>
             ♥ {healthBenefit}
           </Text>

@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold',
     color: '#334155',
-    marginBottom: 4,
+    marginBottom: 6, // Increased from 4 to provide more spacing
     fontFamily: 'Helvetica-Bold',
   },
   descriptionContainer: {
@@ -28,20 +28,24 @@ export const styles = StyleSheet.create({
     lineHeight: 1.5,
     fontFamily: 'Helvetica',
   },
-  calorieInfo: {
-    fontSize: 10,
-    color: '#94a3b8',
-    fontFamily: 'Helvetica',
+  healthBenefitContainer: {
+    marginTop: 4,
+    marginBottom: 6,
   },
   healthBenefit: {
     fontSize: 10,
     color: '#16a34a',
     fontFamily: 'Helvetica',
-    marginTop: 2,
     paddingLeft: 5,
-    marginBottom: 6,
+    lineHeight: 1.4,
   },
-  // Improved highlight styles for better text rendering without overlapping
+  calorieInfo: {
+    fontSize: 10,
+    color: '#94a3b8',
+    fontFamily: 'Helvetica',
+    lineHeight: 1.4, // Added line height to improve readability
+  },
+  // Improved highlight styles with better spacing to prevent overlapping
   localNamesHighlight: {
     color: '#6366f1',
     fontFamily: 'Helvetica-Bold',

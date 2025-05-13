@@ -1,3 +1,4 @@
+
 import { ReactNode } from 'react';
 import { processDashPatterns } from './helpers/textProcessingHelpers';
 import { processMeasurements } from './helpers/textProcessingHelpers';
@@ -38,7 +39,7 @@ export const formatMealDescription = (text: string): ReactNode[] => {
   }
 };
 
-// Helper function to deduplicate repeated food and portion terms
+// Enhanced helper function to deduplicate repeated food and portion terms
 const deduplicateRepeatedTerms = (text: string): string => {
   try {
     // Common patterns that get repeated
@@ -49,15 +50,25 @@ const deduplicateRepeatedTerms = (text: string): string => {
       /(\(\d+\s*chamach\))/g,
       /(\(\d+\s*cup\))/g,
       /(\(\d+\/\d+\s*cup\))/g,
+      /(\(\d+\s*handful\))/g, // Added for handful portions
+      /(\(\d+\s*nos\))/g, // Added for 'nos' portions
       
       // Ingredients with portions
       /(with\s+[a-zA-Z]+\s+\(\d+\s*[a-zA-Z]+\))/g,
-      /(with\s+[a-zA-Z]+\s+\(seasonal\)\(\d+\s*[a-zA-Z]+\))/g,
+      /(with\s+[a-zA-Z]+\s+\(seasonal\))/g,
+      
+      // Specific ingredients that get repeated
+      /(with\s+walnuts\s+\(\d+\s*[a-zA-Z]+\))/g,
+      /(with\s+almonds\s+\(\d+\s*[a-zA-Z]+\))/g,
+      /(with\s+Sitaphal\s+\([^)]*\))/g, // For "with Sitaphal (Sugar-apple)"
       
       // Seeds and nuts with portions
       /(with\s+[a-zA-Z]+\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g,
       /(with\s+cashews\s+\(\d+\s*handful\))/g,
       /(with\s+peanuts\s+\(\d+\s*handful\))/g,
+      
+      // Special fruits and specific food items
+      /(with\s+a\s+small\s+bowl\s+of\s+Handvo)/g,
       
       // Chia seeds pattern
       /(and\s+chia\s+seeds\s+\(\d+\s*[a-zA-Z]+\))/g
@@ -123,6 +134,12 @@ const deduplicateRepeatedTerms = (text: string): string => {
     
     // Special case for repeated commas after removing terms
     dedupedText = dedupedText.replace(/,\s*,/g, ',');
+    // Remove trailing commas followed by "and"
+    dedupedText = dedupedText.replace(/,\s+and/g, ' and');
+    // Fix any double "and" that might have been created
+    dedupedText = dedupedText.replace(/\s+and\s+and\s+/g, ' and ');
+    // Fix repeated "with" instances
+    dedupedText = dedupedText.replace(/with\s+with/g, 'with');
     
     return dedupedText;
   } catch (error) {
