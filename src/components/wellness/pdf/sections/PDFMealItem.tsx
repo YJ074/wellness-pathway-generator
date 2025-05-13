@@ -4,6 +4,7 @@ import { View, Text } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
 import { formatMealDescription } from '../utils/textFormatUtils';
 import { styles } from '../styles/mealItemStyles';
+// Update this import to use the new modular deduplication system
 import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplication';
 
 interface PDFMealItemProps {

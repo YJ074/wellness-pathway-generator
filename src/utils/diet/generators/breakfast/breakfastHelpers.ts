@@ -1,7 +1,7 @@
-
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { getFruitSources } from '../../data/foodSources';
 import { getStandardFruitPortion, getDailyNutsMixture } from '../../helpers/portionHelpers';
+// Update this import to use the new modular deduplication system
 import { addWithoutDuplication } from '../../helpers/deduplication';
 
 // Enhanced helper to prevent duplicate additions to breakfast descriptions

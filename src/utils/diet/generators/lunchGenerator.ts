@@ -3,6 +3,7 @@ import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
+// Update this import to use the new modular deduplication system
 import { removeDuplicateFoodItems } from '../helpers/deduplication';
 import { 
   getLocalizedProteinName, 

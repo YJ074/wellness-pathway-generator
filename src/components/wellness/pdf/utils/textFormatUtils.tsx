@@ -6,6 +6,7 @@ import {
   processLocalNames 
 } from './helpers/textProcessing';
 import { processProbioticFoods, processPrebioticFoods } from './helpers/probioticPrebioticProcessor';
+// Update this import to use the new modular deduplication system
 import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplication';
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
