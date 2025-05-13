@@ -32,17 +32,24 @@ const PDFMealItem = ({
   }
   
   // Apply enhanced deduplication to the meal description
-  // This is where the duplication bug was - we need to ensure more aggressive deduplication
+  // This is critical for breakfast items which tend to have more duplication
   mealDescription = normalizeMealForPDF(mealDescription);
   
-  // Additional deduplication for exact duplicate items with different portions
-  // This catches cases like "sunflower seeds (1 tsp), sunflower seeds (1 tsp handful)"
-  const duplicatePattern = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi;
-  mealDescription = mealDescription.replace(duplicatePattern, '$1 (portion)');
-  
-  // Special case for seeds which commonly get duplicated
-  const seedsDuplicationPattern = /(\b[A-Za-z]+\s+seeds)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi;
-  mealDescription = mealDescription.replace(seedsDuplicationPattern, '$1 (portion)');
+  // Additional aggressive deduplication for PDF generation
+  // Handle exact duplicates even if they appear with different formatting
+  mealDescription = mealDescription
+    // Remove duplicate items with same name but different portions or descriptions 
+    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
+    // Special handling for seeds which are prone to duplication 
+    .replace(/(\b[A-Za-z]+\s+seeds)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
+    // Catch variations like "X and X" or "with X, X"
+    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:and|with|,)\s+\1\b/gi, '$1')
+    // Deduplicate common items that get repeated with connectors
+    .replace(/(with|and)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*),\s+\1\s+\2/gi, '$1 $2')
+    // Fix double connectors
+    .replace(/(with|and)\s+\1/gi, '$1')
+    // Fix "with X and with X" pattern
+    .replace(/with\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+and\s+with\s+\1/gi, 'with $1');
   
   // Format the meal description to highlight special terms
   const formattedDescription = formatMealDescription(mealDescription);

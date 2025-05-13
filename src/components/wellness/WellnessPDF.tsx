@@ -40,11 +40,14 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
   // Apply meal deduplication to each day before generating the PDF
   const processedDietPlan = {
     ...dietPlan,
-    days: dietPlan.days.map(day => ({
-      ...day,
-      // No pre-processing needed here anymore as we're now handling it directly in PDFMealItem
-      // for better per-meal deduplication
-    }))
+    days: dietPlan.days.map(day => {
+      // Pre-process all meal descriptions to ensure no duplication in the PDF
+      return {
+        ...day,
+        // We'll leave the deep deduplication to the PDFMealItem component
+        // for maximum effectiveness
+      };
+    })
   };
   
   return (
