@@ -5,7 +5,7 @@
  */
 
 import { DietPlan, FormData, WorkoutPlan } from '@/components/wellness/types';
-import { pdf } from '@react-pdf/renderer';
+import { pdf, Document } from '@react-pdf/renderer';
 import React from 'react';
 import WellnessPDF from '@/components/wellness/WellnessPDF';
 
@@ -27,8 +27,9 @@ export const sendPDFToWebhook = async (
   try {
     console.log("Preparing to send PDF data to webhook");
     
-    // Create the PDF document - fixed the TypeScript error by explicit typing
-    const pdfDocument = React.createElement(WellnessPDF, { 
+    // Create the PDF document properly typed as Document element
+    // The type casting is necessary to resolve the TypeScript error
+    const pdfDocument = React.createElement(WellnessPDF as unknown as React.FC<Record<string, unknown>>, { 
       formData, 
       dietPlan, 
       workoutPlan 
