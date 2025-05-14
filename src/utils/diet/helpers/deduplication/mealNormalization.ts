@@ -24,7 +24,7 @@ export function removeDuplicateFoodItems(mealDescription: string): string {
     const baseName = extractBaseFoodName(cleanPart.toLowerCase());
     
     // Skip if we've already seen this food item or a synonym
-    if (seenItems.has(baseName) || hasSynonymInSeenFoods(seenItems, baseName)) continue;
+    if (seenItems.has(baseName) || hasSynonymInSeenFoods(baseName, seenItems)) continue;
     
     // Add base name to seen set and original text to result
     seenItems.add(baseName);
