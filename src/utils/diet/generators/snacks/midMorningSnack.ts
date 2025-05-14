@@ -90,7 +90,7 @@ export const generateMidMorningSnack = (
       // Apply deduplication to traditional snack
       snack = removeDuplicateFoodItems(snack);
       
-      // Add health benefit
+      // Add health benefit - THIS CALL NEEDS THE ARGUMENT
       const traditionalHealthBenefit = getHealthBenefit(indianSnack);
       snack += ` - (${traditionalHealthBenefit})`;
       break;
