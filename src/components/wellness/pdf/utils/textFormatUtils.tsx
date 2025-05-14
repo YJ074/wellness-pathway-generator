@@ -7,7 +7,7 @@ import {
 } from './helpers/textProcessing';
 import { processProbioticFoods, processPrebioticFoods } from './helpers/probioticPrebioticProcessor';
 // Update this import to use the new modular deduplication system
-import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplication';
+import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplicationHelper';
 
 // Enhanced function to highlight Indian measurements, local names, prebiotics, and probiotics
 // Fixed to prevent word repetition and overlapping highlights

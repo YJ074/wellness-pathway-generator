@@ -5,7 +5,7 @@ import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
 import { formatMealDescription } from '../utils/textFormatUtils';
 import { styles } from '../styles/mealItemStyles';
 // Update this import to use the new modular deduplication system
-import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplication';
+import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplicationHelper';
 
 interface PDFMealItemProps {
   label: string;
@@ -13,7 +13,7 @@ interface PDFMealItemProps {
   mealType: string;
   dailyCalories: number;
   goalFactor: number;
-  applyDeduplication?: boolean; // Add this prop to the interface
+  applyDeduplication?: boolean; 
 }
 
 const PDFMealItem = ({ 
@@ -22,7 +22,7 @@ const PDFMealItem = ({
   mealType, 
   dailyCalories, 
   goalFactor,
-  applyDeduplication = true // Default to true to maintain current behavior
+  applyDeduplication = true 
 }: PDFMealItemProps) => {
   // Extract health benefit if present in the description
   const benefitMatch = description.match(/ - \((Contains [^)]+|[^)]+health|[^)]+sources|[^)]+protein|[^)]+enzymes|[^)]+antioxidants)\)$/);

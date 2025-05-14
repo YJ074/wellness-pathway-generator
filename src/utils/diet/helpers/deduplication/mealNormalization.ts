@@ -48,14 +48,33 @@ export function removeDuplicateFoodItems(mealDescription: string): string {
 }
 
 /**
- * Normalizes meal descriptions for PDF rendering
- * with enhanced formatting and deduplication
+ * Enhanced normalization for PDF rendering
+ * More aggressive than the standard deduplication used for web display
  */
 export function normalizeMealForPDF(mealDescription: string): string {
   if (!mealDescription) return '';
   
-  // First remove duplicates
+  // First remove duplicates using the standard approach
   let normalized = removeDuplicateFoodItems(mealDescription);
+  
+  // PDF-specific extra aggressive deduplication
+  normalized = normalized
+    // Deduplicate items with different portions
+    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
+    // Deduplicate with different cooking methods
+    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\((?:grilled|roasted|boiled|steamed|baked|fried|sautéed)\)(?:[^,]*),(?:[^,]*)\1/gi, '$1')
+    // Remove adjacent repeated items separated by connectors
+    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)[,\s]+(?:with|and|or)[,\s]+\1\b/gi, '$1')
+    // Handle duplicate connectors
+    .replace(/(?:with|and)[,\s]+(?:with|and)/gi, 'with')
+    // Fix patterns like "with vegetable with vegetable"
+    .replace(/with\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+with\s+\1/gi, 'with $1')
+    // Remove "and and" duplications
+    .replace(/\band\s+and\b/gi, 'and')
+    // Clean up spacing around commas and parentheses
+    .replace(/\s+,\s*/g, ', ')
+    .replace(/\(\s+/g, '(')
+    .replace(/\s+\)/g, ')');
   
   // Handle synonyms
   Object.entries(FOOD_SYNONYMS).forEach(([primary, synonyms]) => {
