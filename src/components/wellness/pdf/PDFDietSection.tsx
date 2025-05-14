@@ -7,6 +7,7 @@ import PDFMealItem from './sections/PDFMealItem';
 import PDFNutritionSummary from './sections/PDFNutritionSummary';
 import PDFWellnessBenefits from './sections/PDFWellnessBenefits';
 import PDFRegionalNote from './sections/PDFRegionalNote';
+import PDFMealTimings from './sections/PDFMealTimings';
 
 const styles = StyleSheet.create({
   planSection: {
@@ -44,6 +45,15 @@ interface PDFDietSectionProps {
     pcosFriendlyNotes?: string;
     herbalRecommendations?: string[];
     regionalNote?: string;
+    mealTimings?: {
+      breakfast: string;
+      midMorningSnack: string;
+      lunch: string;
+      eveningSnack: string;
+      dinner: string;
+    };
+    cheatMealInfo?: string | null;
+    timingTips?: string;
   };
   formData: FormData;
 }
@@ -75,6 +85,15 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       {/* Regional Note */}
       <PDFRegionalNote regionalNote={day.regionalNote} />
       
+      {/* Meal Timings Section - Added new component */}
+      <View style={styles.spacing} wrap={false}>
+        <PDFMealTimings 
+          mealTimings={day.mealTimings}
+          cheatMealInfo={day.cheatMealInfo}
+          timingTips={day.timingTips}
+        />
+      </View>
+      
       {/* Breakfast */}
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
@@ -84,6 +103,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
           applyDeduplication={true}
+          suggestedTime={day.mealTimings?.breakfast}
         />
       </View>
       
@@ -97,6 +117,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
             applyDeduplication={true}
+            suggestedTime={day.mealTimings?.midMorningSnack}
           />
         </View>
       )}
@@ -110,6 +131,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
           applyDeduplication={true}
+          suggestedTime={day.mealTimings?.lunch}
         />
       </View>
       
@@ -123,6 +145,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
             applyDeduplication={true}
+            suggestedTime={day.mealTimings?.eveningSnack}
           />
         </View>
       )}
@@ -136,6 +159,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
           applyDeduplication={true}
+          suggestedTime={day.mealTimings?.dinner}
         />
       </View>
       

@@ -1,47 +1,37 @@
 
-import { WorkoutDay } from '../../types/workout';
-import { WellnessGoal } from '../../utils/diet/types';
-
-export interface FormData {
-  name: string;
-  email: string;
-  age: string;
-  height: string; // in cm
-  weight: string;
-  mobileNumber: string;
-  gender: 'male' | 'female' | 'other';
-  dietaryPreference: 'lacto-vegetarian' | 'lacto-ovo-vegetarian' | 'pure-vegetarian' | 'sattvic' | 'non-vegetarian' | 'pure-jain' | 'vegan';
-  fitnessGoal: string;
-  exerciseFrequency: string;
-  heightFeet?: string;   // optional, for feet input
-  heightInches?: string; // optional, for inches input
-  has_muscular_build: boolean; // Muscular build self-identification
-  includeWorkoutPlan?: boolean; // New field to indicate if workout plan should be generated
-  allergies?: string; // New field to support allergies/exclusions
-  wellnessGoals?: WellnessGoal[]; // New field for specific wellness goals
-  region?: string; // New field for regional preferences
-}
+// Extend with additional properties as needed
+// Re-export existing types for backward compatibility
+export * from '@/utils/diet/types';
 
 export interface DietPlan {
   days: Array<{
     day: number;
     breakfast: string;
-    midMorningSnack?: string;
     lunch: string;
-    eveningSnack?: string;
     dinner: string;
-    snacks?: string; // legacy field
+    snacks?: string;
+    midMorningSnack?: string;
+    eveningSnack?: string;
     calories?: number;
     water?: number;
     bmi?: number;
     bmiCategory?: string;
-    wellnessGoals?: WellnessGoal[];
+    wellnessGoals?: string[];
     hairNutrients?: string;
     skinNutrients?: string;
     fatLossNotes?: string;
-    pcosFriendlyNotes?: string; // Added this property
+    pcosFriendlyNotes?: string;
     herbalRecommendations?: string[];
-    regionalNote?: string; // New field for regional cultural notes
+    regionalNote?: string;
+    mealTimings?: {
+      breakfast: string;
+      midMorningSnack: string;
+      lunch: string;
+      eveningSnack: string;
+      dinner: string;
+    };
+    cheatMealInfo?: string | null;
+    timingTips?: string;
   }>;
   bmi?: number;
   bmiCategory?: string;
@@ -50,5 +40,40 @@ export interface DietPlan {
 }
 
 export interface WorkoutPlan {
-  days: WorkoutDay[];
+  days: Array<{
+    day: number;
+    type: string;
+    exercises: Array<{
+      name: string;
+      sets?: number;
+      reps?: string;
+      notes?: string;
+    }>;
+    duration: string;
+    intensity: string;
+    calories: number;
+    notes?: string;
+    warmup?: string[];
+    cooldown?: string[];
+  }>;
+}
+
+export interface FormData {
+  name: string;
+  email: string;
+  age: string;
+  height: string;
+  heightFeet?: string;
+  heightInches?: string;
+  weight: string;
+  mobileNumber: string;
+  gender: string;
+  dietaryPreference: string;
+  fitnessGoal: string;
+  exerciseFrequency: string;
+  has_muscular_build: boolean;
+  includeWorkoutPlan?: boolean;
+  wellnessGoals: string[];
+  region?: string;
+  allergies?: string;
 }

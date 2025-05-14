@@ -24,6 +24,7 @@ import {
   generateHerbalRecommendations
 } from '../wellness/wellnessRecommendations';
 import { generateRegionalNote } from '../regional/regionalRecommendations';
+import { getMealTimings, getCheatMealGuidance, getMealTimingTips } from '../helpers/mealTimingsHelper';
 import { FormData } from '@/components/wellness/types';
 
 export function generateDays(
@@ -73,6 +74,15 @@ export function generateDays(
   
   for (let i = 1; i <= 75; i++) {
     const dayIndex = (i - 1) % 15;
+    
+    // Get meal timings for this day
+    const mealTimings = getMealTimings(dayIndex);
+    
+    // Check if this is a cheat meal day
+    const cheatMealInfo = getCheatMealGuidance(i, formData.fitnessGoal || 'maintenance');
+    
+    // Get meal timing tips based on fitness goal
+    const timingTips = getMealTimingTips(formData.fitnessGoal || 'maintenance');
     
     // Apply varied patterns to ensure food diversity
     const breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
@@ -129,7 +139,10 @@ export function generateDays(
       fatLossNotes,
       pcosFriendlyNotes,
       herbalRecommendations,
-      regionalNote
+      regionalNote,
+      mealTimings, // Add meal timings
+      cheatMealInfo, // Add cheat meal information if applicable
+      timingTips // Add meal timing tips
     });
   }
   

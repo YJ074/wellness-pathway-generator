@@ -1,8 +1,11 @@
 
-import React from "react";
-import { Utensils, Droplet, Sparkles, MapPin, Heart } from "lucide-react";
-import { calculateMealCalories } from "./utils/mealCalories";
-import { WellnessGoal } from "@/utils/diet/types";
+import React from 'react';
+import { 
+  Card, 
+  CardContent 
+} from "@/components/ui/card";
+import { Clock, Utensils, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DietSectionProps {
   diet: {
@@ -14,185 +17,171 @@ interface DietSectionProps {
     snacks?: string;
     calories?: number;
     water?: number;
-    wellnessGoals?: WellnessGoal[];
-    hairNutrients?: string;
-    skinNutrients?: string;
-    fatLossNotes?: string;
-    herbalRecommendations?: string[];
-    regionalNote?: string;
+    mealTimings?: {
+      breakfast: string;
+      midMorningSnack: string;
+      lunch: string;
+      eveningSnack: string;
+      dinner: string;
+    };
+    cheatMealInfo?: string | null;
+    timingTips?: string;
   };
 }
 
 const DietSection = ({ diet }: DietSectionProps) => {
-  const mealCalories = calculateMealCalories(diet.calories || 2000);
-  const totalCalories = diet.calories || 0;
-  const hasRegionalNote = !!diet.regionalNote && diet.regionalNote.trim() !== '';
-  
-  // Helper to extract health benefits from meal descriptions
-  const extractHealthBenefit = (mealText: string): { meal: string, benefit: string | null } => {
-    const benefitMatch = mealText.match(/ - \((.*?)\)$/);
-    if (benefitMatch && benefitMatch[1]) {
-      return {
-        meal: mealText.replace(benefitMatch[0], ''),
-        benefit: benefitMatch[1]
-      };
-    }
-    return { meal: mealText, benefit: null };
-  };
-
-  // Process each meal to extract benefits
-  const breakfast = extractHealthBenefit(diet.breakfast);
-  const midMorningSnack = diet.midMorningSnack ? extractHealthBenefit(diet.midMorningSnack) : null;
-  const lunch = extractHealthBenefit(diet.lunch);
-  const eveningSnack = diet.eveningSnack ? extractHealthBenefit(diet.eveningSnack) : null;
-  const dinner = extractHealthBenefit(diet.dinner);
-  const snacks = diet.snacks ? extractHealthBenefit(diet.snacks) : null;
+  const { 
+    breakfast, 
+    midMorningSnack, 
+    lunch, 
+    eveningSnack, 
+    dinner, 
+    snacks,
+    mealTimings,
+    cheatMealInfo,
+    timingTips
+  } = diet;
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-primary flex items-center gap-2">
-        <Utensils className="w-5 h-5" />
-        Diet Plan {totalCalories > 0 ? `(${totalCalories} kcal)` : ''}
-      </h3>
+    <div>
+      <h3 className="text-lg font-semibold mb-3">Diet Plan</h3>
       
-      {/* Regional Note */}
-      {hasRegionalNote && (
-        <div className="p-3 bg-amber-50 rounded-lg border border-amber-100">
-          <p className="text-sm text-amber-800 flex items-start">
-            <MapPin className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0 text-amber-600" />
-            <span className="italic">{diet.regionalNote}</span>
-          </p>
-        </div>
+      {/* Meal Timings Card */}
+      {mealTimings && (
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Clock className="h-4 w-4 text-blue-600" />
+              <h4 className="font-medium text-sm">Recommended Meal Timings</h4>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div className="text-sm">
+                <span className="font-medium">Breakfast:</span> {mealTimings.breakfast}
+              </div>
+              
+              <div className="text-sm">
+                <span className="font-medium">Mid-Morning:</span> {mealTimings.midMorningSnack}
+              </div>
+              
+              <div className="text-sm">
+                <span className="font-medium">Lunch:</span> {mealTimings.lunch}
+              </div>
+              
+              <div className="text-sm">
+                <span className="font-medium">Evening Snack:</span> {mealTimings.eveningSnack}
+              </div>
+              
+              <div className="text-sm">
+                <span className="font-medium">Dinner:</span> {mealTimings.dinner}
+              </div>
+            </div>
+            
+            {timingTips && (
+              <div className="mt-2 text-sm text-gray-600 border-t border-gray-100 pt-2">
+                <span className="font-medium">Tip:</span> {timingTips}
+              </div>
+            )}
+            
+            {cheatMealInfo && (
+              <div className="mt-3 p-2 bg-amber-50 rounded-md border border-amber-100">
+                <div className="flex gap-2 items-start">
+                  <AlertCircle className="h-4 w-4 text-amber-500 mt-0.5" />
+                  <p className="text-sm text-amber-800">{cheatMealInfo}</p>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
       
-      <div className="space-y-3">
-        <div>
-          <p>
-            <strong>Breakfast:</strong> {breakfast.meal} 
-            <span className="text-sm font-medium text-amber-600 ml-1">
-              ({mealCalories.breakfast} kcal)
-            </span>
-          </p>
-          {breakfast.benefit && (
-            <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
-              <Heart className="h-3 w-3 mr-1 inline-block" /> {breakfast.benefit}
-            </p>
-          )}
-        </div>
-        
-        {midMorningSnack && (
-          <div>
-            <p>
-              <strong>Mid-Morning Snack:</strong> {midMorningSnack.meal}
-              <span className="text-sm font-medium text-amber-600 ml-1">
-                ({mealCalories.midMorningSnack} kcal)
+      <Card className="mb-4">
+        <CardContent className="p-4">
+          <h4 className="font-medium mb-2 flex items-center gap-2">
+            <Utensils className="h-4 w-4" />
+            <span>Breakfast</span>
+            {mealTimings && (
+              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded ml-auto">
+                {mealTimings.breakfast}
               </span>
-            </p>
-            {midMorningSnack.benefit && (
-              <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
-                <Heart className="h-3 w-3 mr-1 inline-block" /> {midMorningSnack.benefit}
-              </p>
             )}
-          </div>
-        )}
-        
-        <div>
-          <p>
-            <strong>Lunch:</strong> {lunch.meal}
-            <span className="text-sm font-medium text-amber-600 ml-1">
-              ({mealCalories.lunch} kcal)
-            </span>
-          </p>
-          {lunch.benefit && (
-            <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
-              <Heart className="h-3 w-3 mr-1 inline-block" /> {lunch.benefit}
-            </p>
-          )}
-        </div>
-        
-        {eveningSnack && (
-          <div>
-            <p>
-              <strong>Evening Snack:</strong> {eveningSnack.meal}
-              <span className="text-sm font-medium text-amber-600 ml-1">
-                ({mealCalories.eveningSnack} kcal)
-              </span>
-            </p>
-            {eveningSnack.benefit && (
-              <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
-                <Heart className="h-3 w-3 mr-1 inline-block" /> {eveningSnack.benefit}
-              </p>
-            )}
-          </div>
-        )}
-        
-        <div>
-          <p>
-            <strong>Dinner:</strong> {dinner.meal}
-            <span className="text-sm font-medium text-amber-600 ml-1">
-              ({mealCalories.dinner} kcal)
-            </span>
-          </p>
-          {dinner.benefit && (
-            <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
-              <Heart className="h-3 w-3 mr-1 inline-block" /> {dinner.benefit}
-            </p>
-          )}
-        </div>
-        
-        {snacks && !midMorningSnack && !eveningSnack && (
-          <div>
-            <p><strong>Snacks:</strong> {snacks.meal}</p>
-            {snacks.benefit && (
-              <p className="text-sm text-green-600 ml-6 flex items-center mt-1">
-                <Heart className="h-3 w-3 mr-1 inline-block" /> {snacks.benefit}
-              </p>
-            )}
-          </div>
-        )}
-        
-        {diet.water && (
-          <p className="flex items-center text-sm text-gray-600 mt-1">
-            <Droplet className="h-3 w-3 mr-1 text-blue-500" />
-            <strong>Water:</strong> {diet.water} L
-          </p>
-        )}
-        
-        {/* Wellness Goals Section */}
-        {diet.wellnessGoals && diet.wellnessGoals.length > 0 && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
-            <h4 className="font-medium flex items-center gap-2 text-blue-700">
-              <Sparkles className="h-4 w-4" />
-              Wellness Benefits
+          </h4>
+          <p>{breakfast}</p>
+        </CardContent>
+      </Card>
+
+      {midMorningSnack && (
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <h4 className="font-medium mb-2 flex items-center gap-2">
+              <Utensils className="h-4 w-4" />
+              <span>Mid-Morning Snack</span>
+              {mealTimings && (
+                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded ml-auto">
+                  {mealTimings.midMorningSnack}
+                </span>
+              )}
             </h4>
-            
-            <div className="mt-2 space-y-2 text-sm">
-              {diet.hairNutrients && (
-                <p><strong>Hair Health:</strong> {diet.hairNutrients}</p>
+            <p>{midMorningSnack}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      <Card className="mb-4">
+        <CardContent className="p-4">
+          <h4 className="font-medium mb-2 flex items-center gap-2">
+            <Utensils className="h-4 w-4" />
+            <span>Lunch</span>
+            {mealTimings && (
+              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded ml-auto">
+                {mealTimings.lunch}
+              </span>
+            )}
+          </h4>
+          <p>{lunch}</p>
+        </CardContent>
+      </Card>
+
+      {eveningSnack && (
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <h4 className="font-medium mb-2 flex items-center gap-2">
+              <Utensils className="h-4 w-4" />
+              <span>Evening Snack</span>
+              {mealTimings && (
+                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded ml-auto">
+                  {mealTimings.eveningSnack}
+                </span>
               )}
-              
-              {diet.skinNutrients && (
-                <p><strong>Skin Health:</strong> {diet.skinNutrients}</p>
-              )}
-              
-              {diet.fatLossNotes && (
-                <p><strong>Weight Management:</strong> {diet.fatLossNotes}</p>
-              )}
-              
-              {diet.herbalRecommendations && diet.herbalRecommendations.length > 0 && (
-                <div>
-                  <strong>Recommended Beverages:</strong>
-                  <ul className="list-disc list-inside ml-2">
-                    {diet.herbalRecommendations.map((herb, index) => (
-                      <li key={index}>{herb}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+            </h4>
+            <p>{eveningSnack}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      <Card className="mb-4">
+        <CardContent className="p-4">
+          <h4 className="font-medium mb-2 flex items-center gap-2">
+            <Utensils className="h-4 w-4" />
+            <span>Dinner</span>
+            {mealTimings && (
+              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded ml-auto">
+                {mealTimings.dinner}
+              </span>
+            )}
+          </h4>
+          <p>{dinner}</p>
+        </CardContent>
+      </Card>
+
+      {snacks && !midMorningSnack && !eveningSnack && (
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <h4 className="font-medium mb-2">Snacks</h4>
+            <p>{snacks}</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

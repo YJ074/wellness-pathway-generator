@@ -1,19 +1,53 @@
 
 import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
-import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
-import { formatMealDescription } from '../utils/textFormatUtils';
-import { styles } from '../styles/mealItemStyles';
-// Use the direct import path from the deduplication module
-import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { getEstimatedCalories } from '../../utils/mealCalories';
+import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication/mealNormalization';
+
+// These are imported from mealItemStyles.tsx
+// Just using inline styles here for clarity
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 6,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 3,
+  },
+  title: {
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 10,
+  },
+  calories: {
+    fontSize: 8,
+    color: '#64748b',
+  },
+  mealText: {
+    fontSize: 9,
+    lineHeight: 1.5,
+  },
+  timeContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+  timeText: {
+    fontSize: 8,
+    color: '#3b82f6',
+    fontFamily: 'Helvetica-Bold',
+  }
+});
 
 interface PDFMealItemProps {
   label: string;
   description: string;
   mealType: string;
   dailyCalories: number;
-  goalFactor: number;
-  applyDeduplication?: boolean; 
+  goalFactor?: number;
+  applyDeduplication?: boolean;
+  suggestedTime?: string;
 }
 
 const PDFMealItem = ({ 
@@ -21,49 +55,33 @@ const PDFMealItem = ({
   description, 
   mealType, 
   dailyCalories, 
-  goalFactor,
-  applyDeduplication = true 
+  goalFactor = 1,
+  applyDeduplication = true,
+  suggestedTime
 }: PDFMealItemProps) => {
-  // Extract health benefit if present in the description
-  const benefitMatch = description.match(/ - \((Contains [^)]+|[^)]+health|[^)]+sources|[^)]+protein|[^)]+enzymes|[^)]+antioxidants)\)$/);
-  const healthBenefit = benefitMatch ? benefitMatch[0] : '';
-  
-  // Remove health benefit from description for processing
-  const descriptionWithoutBenefit = description.replace(healthBenefit, '');
-  
-  // Perform a double-pass deduplication for maximum effectiveness
-  // First pass: Basic deduplication with our core algorithm
-  const firstPassDeduplication = applyDeduplication 
-    ? normalizeMealForPDF(descriptionWithoutBenefit) 
-    : descriptionWithoutBenefit;
-    
-  // Second pass: More aggressive deduplication for stubborn cases
+  // Apply our enhanced deduplication with double-pass processing for better results
   const processedDescription = applyDeduplication 
-    ? normalizeMealForPDF(firstPassDeduplication) 
-    : firstPassDeduplication;
-  
-  // Reattach health benefit if it was present
-  const finalDescription = healthBenefit 
-    ? `${processedDescription}${healthBenefit}` 
-    : processedDescription;
+    ? normalizeMealForPDF(normalizeMealForPDF(description))
+    : description;
   
   // Calculate estimated calories for this meal
-  const caloriesForMeal = getEstimatedCalories(mealType, dailyCalories, goalFactor);
+  const mealCalories = getEstimatedCalories(mealType, dailyCalories);
   
   return (
-    <View style={styles.mealSection}>
-      <View style={styles.mealHeader}>
-        <Text style={styles.mealLabel}>{label}</Text>
-        <Text style={styles.calorieInfo}>~{caloriesForMeal} cal</Text>
+    <View style={styles.container} wrap={false}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{label}</Text>
+        <View>
+          <Text style={styles.calories}>~{mealCalories} kcal</Text>
+        </View>
+        
+        {suggestedTime && (
+          <View style={styles.timeContainer}>
+            <Text style={styles.timeText}>{suggestedTime}</Text>
+          </View>
+        )}
       </View>
-      <View style={styles.mealContent}>
-        {formatMealDescription(finalDescription).map((item, index) => {
-          if (typeof item === 'string') {
-            return <Text key={`text-${index}`} style={styles.mealDescription}>{item}</Text>;
-          }
-          return item;
-        })}
-      </View>
+      <Text style={styles.mealText}>{processedDescription}</Text>
     </View>
   );
 };
