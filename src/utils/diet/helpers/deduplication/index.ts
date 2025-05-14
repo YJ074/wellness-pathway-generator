@@ -18,6 +18,9 @@ export {
   cleanupDuplicationFormatting 
 } from './formatting';
 
+// Import the normalizeMealForPDF function for use in this file
+import { normalizeMealForPDF } from './mealNormalization';
+
 // Export enhanced deduplication functionality
 export const applyTriplePassDeduplication = (mealDescription: string): string => {
   if (!mealDescription) return '';
