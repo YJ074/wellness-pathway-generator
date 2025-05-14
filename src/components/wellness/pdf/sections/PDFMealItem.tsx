@@ -5,7 +5,7 @@ import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
 import { formatMealDescription } from '../utils/textFormatUtils';
 import { styles } from '../styles/mealItemStyles';
 // Update this import to use the new modular deduplication system
-import { normalizeMealForPDF } from '../../../../utils/diet/helpers/deduplicationHelper';
+import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplicationHelper';
 
 interface PDFMealItemProps {
   label: string;
