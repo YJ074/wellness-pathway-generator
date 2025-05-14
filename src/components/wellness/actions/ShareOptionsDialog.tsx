@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { trackEvent } from "@/utils/tracking";
 
 interface ShareOptionsDialogProps {
   formData: FormData;
@@ -46,6 +47,11 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
       return;
     }
 
+    // Track share dialog submission
+    trackEvent('share', 'combined_share', 
+      `email:${shareOptions.email ? 'yes' : 'no'}_whatsapp:${shareOptions.whatsapp ? 'yes' : 'no'}`
+    );
+
     try {
       setIsEmailSending(shareOptions.email);
       setIsWhatsAppSending(shareOptions.whatsapp);
@@ -62,12 +68,14 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
           title: "Success!",
           description: "Your wellness plan has been shared successfully.",
         });
+        trackEvent('share', 'combined_success', formData.dietaryPreference);
       } else {
         toast({
           title: "Sharing Failed",
           description: result.error || "Could not share the wellness plan. Please try again.",
           variant: "destructive",
         });
+        trackEvent('share', 'combined_failure', result.error || 'unknown_error');
       }
     } catch (error) {
       console.error("Error in sharing plan:", error);
@@ -76,6 +84,7 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
+      trackEvent('share', 'combined_error', String(error));
     } finally {
       setIsEmailSending(false);
       setIsWhatsAppSending(false);
@@ -83,7 +92,10 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
   };
 
   return (
-    <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>
+    <Dialog open={isShareDialogOpen} onOpenChange={(open) => {
+      setIsShareDialogOpen(open);
+      if (open) trackEvent('ui', 'dialog_open', 'share_options');
+    }}>
       <DialogTrigger asChild>
         <Button variant="default">
           <Send className="mr-2 h-4 w-4" />
@@ -100,8 +112,10 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
             <Checkbox 
               id="share-email" 
               checked={shareOptions.email}
-              onCheckedChange={(checked) => 
-                setShareOptions(prev => ({ ...prev, email: checked === true }))}
+              onCheckedChange={(checked) => {
+                setShareOptions(prev => ({ ...prev, email: checked === true }));
+                trackEvent('ui', 'toggle_option', 'email_share', checked === true ? 1 : 0);
+              }}
               disabled={!formData.email}
             />
             <Label htmlFor="share-email" className={!formData.email ? "text-gray-400" : ""}>
@@ -113,8 +127,10 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
             <Checkbox 
               id="share-whatsapp" 
               checked={shareOptions.whatsapp}
-              onCheckedChange={(checked) => 
-                setShareOptions(prev => ({ ...prev, whatsapp: checked === true }))}
+              onCheckedChange={(checked) => {
+                setShareOptions(prev => ({ ...prev, whatsapp: checked === true }));
+                trackEvent('ui', 'toggle_option', 'whatsapp_share', checked === true ? 1 : 0);
+              }}
               disabled={!formData.mobileNumber}
             />
             <Label htmlFor="share-whatsapp" className={!formData.mobileNumber ? "text-gray-400" : ""}>
@@ -125,7 +141,9 @@ const ShareOptionsDialog = ({ formData, dietPlan, workoutPlan }: ShareOptionsDia
         
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" onClick={() => trackEvent('ui', 'dialog_cancel', 'share_options')}>
+              Cancel
+            </Button>
           </DialogClose>
           <Button 
             onClick={handleSharePlan}

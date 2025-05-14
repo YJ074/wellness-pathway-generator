@@ -5,6 +5,7 @@ import { Share } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { sendPlanViaWhatsApp } from "@/utils/sharing";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
+import { trackEvent } from "@/utils/tracking";
 
 interface WhatsAppShareButtonProps {
   formData: FormData;
@@ -27,12 +28,17 @@ const WhatsAppShareButton = ({ formData, dietPlan, workoutPlan }: WhatsAppShareB
     }
 
     setIsWhatsAppSending(true);
+    // Track WhatsApp sharing attempt
+    trackEvent('share', 'whatsapp_start', formData.dietaryPreference);
+    
     try {
       await sendPlanViaWhatsApp(formData, dietPlan);
       toast({
         title: "WhatsApp Message Prepared",
         description: `WhatsApp should open in a new tab with your wellness plan for ${formData.mobileNumber}`,
       });
+      // Track successful WhatsApp share
+      trackEvent('share', 'whatsapp_success', 'whatsapp_web');
     } catch (error) {
       console.error("Error sending WhatsApp:", error);
       toast({
@@ -40,6 +46,8 @@ const WhatsAppShareButton = ({ formData, dietPlan, workoutPlan }: WhatsAppShareB
         description: "Could not send the plan via WhatsApp. Please try again.",
         variant: "destructive",
       });
+      // Track failed WhatsApp share
+      trackEvent('share', 'whatsapp_failure', String(error));
     } finally {
       setIsWhatsAppSending(false);
     }

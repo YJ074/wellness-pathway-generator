@@ -7,6 +7,7 @@ import WellnessPDF from "../WellnessPDF";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
 import { useToast } from "@/hooks/use-toast";
 import { DietaryPreference } from "@/utils/diet/types";
+import { trackEvent } from "@/utils/tracking";
 
 interface DownloadPDFButtonProps {
   formData: FormData;
@@ -48,6 +49,8 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   // Show a toast message when PDF generation fails
   const handleGenerationError = () => {
     console.error("PDF generation failed");
+    trackEvent('pdf', 'error', 'generation_failed');
+    
     if (!hasErrored) {
       setHasErrored(true);
       toast({
@@ -62,12 +65,19 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
   const handleGenerationSuccess = () => {
     if (isGenerating) {
       setIsGenerating(false);
+      trackEvent('pdf', 'ready', 'generation_success');
+      
       toast({
         title: "PDF Generated Successfully",
         description: "Your 75-day wellness plan PDF is ready for download.",
         variant: "default"
       });
     }
+  };
+
+  // Handle PDF download
+  const handleDownloadClick = () => {
+    trackEvent('pdf', 'download', formData.dietaryPreference, workoutPlan ? 1 : 0);
   };
 
   return (
@@ -97,6 +107,7 @@ const DownloadPDFButton = ({ formData, dietPlan, workoutPlan }: DownloadPDFButto
           }
           fileName={`${formData.name || 'wellness'}-75-day-wellness-plan.pdf`}
           className={isGenerating ? "hidden" : "inline-block"}
+          onClick={handleDownloadClick}
         >
           {({ loading, error }) => {
             // Handle error state

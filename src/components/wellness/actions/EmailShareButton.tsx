@@ -5,6 +5,7 @@ import { Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { sendPlanViaEmail } from "@/utils/sharing";
 import { FormData, DietPlan, WorkoutPlan } from "../types";
+import { trackEvent } from "@/utils/tracking";
 
 interface EmailShareButtonProps {
   formData: FormData;
@@ -26,12 +27,17 @@ const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonP
     }
 
     setIsEmailSending(true);
+    // Track email sharing attempt
+    trackEvent('share', 'email_start', formData.dietaryPreference);
+    
     try {
       await sendPlanViaEmail(formData, dietPlan);
       toast({
         title: "Success!",
         description: `Your wellness plan has been sent to ${formData.email}`,
       });
+      // Track successful email share
+      trackEvent('share', 'email_success', formData.email.split('@')[1]);
     } catch (error) {
       console.error("Error sending email:", error);
       toast({
@@ -39,6 +45,8 @@ const EmailShareButton = ({ formData, dietPlan, workoutPlan }: EmailShareButtonP
         description: "Could not send the plan via email. Please try again.",
         variant: "destructive",
       });
+      // Track failed email share
+      trackEvent('share', 'email_failure', String(error));
     } finally {
       setIsEmailSending(false);
     }

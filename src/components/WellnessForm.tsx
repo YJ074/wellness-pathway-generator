@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { toast } from "@/hooks/use-toast";
 import { generateDietPlan } from '@/utils/diet/dietGenerator';
 import { generateWorkoutPlan } from '@/utils/workoutGenerator';
@@ -9,6 +9,7 @@ import { FormData, DietPlan, WorkoutPlan } from './wellness/types';
 import { WellnessGoal } from '@/utils/diet/types';
 import { shareWellnessPlan } from '@/utils/sharing';
 import { sendPlanToMakeWebhook } from '@/utils/webhookService';
+import { trackEvent, trackPageView } from '@/utils/tracking';
 
 const WellnessForm = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -31,6 +32,11 @@ const WellnessForm = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null);
+
+  // Track page view on component mount
+  useEffect(() => {
+    trackPageView('wellness_form');
+  }, []);
 
   const handleInputChange = useCallback((field: keyof FormData, value: string | boolean | WellnessGoal[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -72,6 +78,9 @@ const WellnessForm = () => {
     
     setIsGenerating(true);
 
+    // Track form submission
+    trackEvent('generation', 'submit', 'wellness_plan', 1);
+
     // Use setTimeout to avoid blocking the main thread during generation
     setTimeout(() => {
       try {
@@ -90,13 +99,22 @@ const WellnessForm = () => {
         setDietPlan(generatedDietPlan);
         setWorkoutPlan(generatedWorkoutPlan);
 
+        // Track successful plan generation
+        trackEvent(
+          'generation', 
+          'success', 
+          `${formData.dietaryPreference}_${formData.includeWorkoutPlan ? 'with_workout' : 'diet_only'}`
+        );
+
         // Send the wellness plan to Make.com webhook
         sendPlanToMakeWebhook(formData, generatedDietPlan, generatedWorkoutPlan || undefined)
           .then(success => {
             if (success) {
               console.log("Successfully sent wellness plan to Make.com");
+              trackEvent('webhook', 'success', 'make_webhook');
             } else {
               console.error("Failed to send wellness plan to Make.com");
+              trackEvent('webhook', 'failure', 'make_webhook');
             }
           });
 
@@ -113,6 +131,7 @@ const WellnessForm = () => {
         });
       } catch (error) {
         console.error("Error generating wellness plan:", error);
+        trackEvent('generation', 'error', String(error));
         toast({
           title: "Generation Error",
           description: "There was an error generating your wellness plan. Please try again.",
@@ -125,6 +144,7 @@ const WellnessForm = () => {
   }, [formData]);
 
   const handleReset = useCallback(() => {
+    trackEvent('navigation', 'reset', 'back_to_form');
     setDietPlan(null);
     setWorkoutPlan(null);
   }, []);
