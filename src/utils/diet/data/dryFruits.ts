@@ -1,5 +1,5 @@
 
-export const getDryFruits = (isWeightLoss: boolean, fromProteinFoods = false, dayIndex = 0): string => {
+export const getDryFruits = (isWeightLoss = false, fromProteinFoods = false, dayIndex = 0): string[] => {
   const dryFruitOptions = [
     'mixed dry fruits (1 handful)',
     'badaam (1 handful)',
@@ -22,7 +22,7 @@ export const getDryFruits = (isWeightLoss: boolean, fromProteinFoods = false, da
       'til seeds (1 chamach)',
       'flax seeds (1 chamach)'
     ];
-    return proteinDryFruits[dayIndex % proteinDryFruits.length];
+    return proteinDryFruits;
   }
   
   // If weight loss is a goal, use smaller portions or restrict to certain types
@@ -37,8 +37,8 @@ export const getDryFruits = (isWeightLoss: boolean, fromProteinFoods = false, da
       'chia seeds (½ chamach)',
       'sunflower seeds (½ chamach)'
     ];
-    return lightDryFruits[dayIndex % lightDryFruits.length];
+    return lightDryFruits;
   }
   
-  return dryFruitOptions[dayIndex % dryFruitOptions.length];
+  return dryFruitOptions;
 };
