@@ -31,7 +31,7 @@ const PDFMealItem = ({
   // Remove health benefit from description for processing
   const descriptionWithoutBenefit = description.replace(healthBenefit, '');
   
-  // Apply deduplication if requested using the same function as in the wellness plan
+  // Apply extra aggressive deduplication for breakfast items
   const processedDescription = applyDeduplication 
     ? normalizeMealForPDF(descriptionWithoutBenefit) 
     : descriptionWithoutBenefit;

@@ -24,3 +24,6 @@ export {
   formatForPDF,
   cleanupDuplicationFormatting 
 } from './deduplication';
+
+// Export any additional utilities needed
+export { hasSynonymInSeenFoods } from './deduplication';

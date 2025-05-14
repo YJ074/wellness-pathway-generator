@@ -52,7 +52,7 @@ type PDFDayBlockProps = {
 };
 
 const PDFDayBlock = (dietDay: PDFDayBlockProps) => {
-  // Apply the same deduplication used in the wellness plan
+  // Apply our enhanced deduplication specifically for breakfast
   const processedBreakfast = normalizeMealForPDF(dietDay.breakfast);
   const processedLunch = normalizeMealForPDF(dietDay.lunch);
   const processedDinner = normalizeMealForPDF(dietDay.dinner);
