@@ -1,128 +1,88 @@
 
 import { filterAllergies } from '../../helpers/allergyHelpers';
-import { getRegionalFoods } from '../../data/regionalFoods';
-import { enrichWithPrebiotics, enrichWithProbiotics } from '../../helpers/prebioticProbioticHelper';
-import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
-import { getStandardFruitPortion, isBigFruit } from '../../helpers/portionHelpers';
+import { enrichWithPrebiotics } from '../../helpers/prebioticProbioticHelper';
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
+import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
+import { getStandardFruitPortion } from '../../helpers/portionHelpers';
 
-/**
- * Generate afternoon snack optimized for:
- * - Blood sugar management (to prevent afternoon energy dips)
- * - Balanced energy for the second half of the day
- * - Nutritional synergy with lunch and dinner
- */
 export const generateAfternoonSnack = (
   dayIndex: number,
   snacks: string[],
   fruits: string[],
   isWeightLoss: boolean,
-  allergies?: string,
-  region?: string
-): string => {
-  const regionalFoods = getRegionalFoods(region);
+  allergies?: string
+) => {
+  // Every other day, use a fruit-based snack for afternoon to ensure variety
+  const useFruit = dayIndex % 2 === 1;
   
-  // Use regional foods for afternoon snack every 7th day if available
-  if (region && regionalFoods.snacks && regionalFoods.snacks.length > 0 && dayIndex % 7 === 3) {
-    const regionalSnackIndex = (dayIndex * 7 + 3) % regionalFoods.snacks.length;
-    let afternoonSnack = regionalFoods.snacks[regionalSnackIndex];
+  // Use prime number-based offsets to ensure variety
+  const snackIndex = (dayIndex * 13 + 7) % snacks.length;
+  const fruitIndex = (dayIndex * 11 + 3) % fruits.length;
+  
+  let snack = '';
+  
+  if (useFruit) {
+    // On fruit days, provide a simple fresh fruit option
+    const fruit = fruits[fruitIndex];
+    const portion = getStandardFruitPortion(fruit);
     
-    // Add portion size information for regional snack
+    snack = `Fresh ${fruit} (${portion})`;
+    
+    // For weight loss, add guidance on timing
     if (isWeightLoss) {
-      afternoonSnack += " (small portion)";
+      snack += ' - consume at least 2 hours before dinner for optimal digestion';
     }
-    
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(afternoonSnack);
-    afternoonSnack += ` - (${healthBenefit})`;
-    
-    return afternoonSnack;
-  }
-  
-  // Focus on balanced snacks with protein + fiber combination
-  // This helps maintain stable blood sugar through afternoon
-  
-  // Select a protein-rich snack
-  const proteinSnacks = [
-    "Roasted chana", 
-    "Greek yogurt", 
-    "Paneer cubes", 
-    "Mixed nuts", 
-    "Cheese cubes", 
-    "Hummus", 
-    "Tofu slices", 
-    "Boiled egg"
-  ];
-  
-  // Select fiber-rich additions
-  const fiberAdditions = [
-    "carrot sticks", 
-    "cucumber slices", 
-    "bell pepper strips", 
-    "whole grain crackers", 
-    "multigrain toast", 
-    "apple slices", 
-    "berries", 
-    "flaxseeds"
-  ];
-  
-  // Use prime number based indices for variety
-  const proteinIndex = (dayIndex * 7 + 3) % proteinSnacks.length;
-  const fiberIndex = (dayIndex * 11 + 5) % fiberAdditions.length;
-  const fruitIndex = (dayIndex * 13 + 7) % fruits.length;
-  
-  // Select today's components
-  const proteinComponent = proteinSnacks[proteinIndex];
-  const fiberComponent = fiberAdditions[fiberIndex];
-  const fruit = fruits[fruitIndex];
-  
-  // Get standardized fruit portion
-  // The error was here - getStandardFruitPortion expects only one argument
-  const fruitPortion = getStandardFruitPortion(fruit);
-  
-  // Build the afternoon snack with balanced nutrition
-  let afternoonSnack = '';
-  
-  if (dayIndex % 3 === 0) {
-    // Protein + fiber combination (no fruit)
-    afternoonSnack = `${proteinComponent} with ${fiberComponent}`;
-  } else if (dayIndex % 3 === 1) {
-    // Protein-focused snack with fruit
-    afternoonSnack = `${proteinComponent} and ${fruit} (${fruitPortion})`;
   } else {
-    // Fruit + fiber combination
-    afternoonSnack = `${fruit} (${fruitPortion}) with ${fiberComponent}`;
-  }
-  
-  // For weight loss, emphasize portion control
-  if (isWeightLoss) {
-    afternoonSnack += " - keep portions moderate";
-  }
-  
-  // Add probiotics or prebiotics for gut health
-  if (dayIndex % 5 === 2) {
-    afternoonSnack = enrichWithProbiotics(afternoonSnack, dayIndex);
-  } else if (dayIndex % 5 === 4) {
-    afternoonSnack = enrichWithPrebiotics(afternoonSnack, dayIndex);
-  }
-  
-  // Apply deduplication to avoid repeat ingredients
-  afternoonSnack = removeDuplicateFoodItems(afternoonSnack);
-  
-  // Filter for allergies
-  if (allergies) {
-    const allergyOptions = filterAllergies([afternoonSnack], allergies);
-    if (allergyOptions.length > 0) {
-      afternoonSnack = allergyOptions[0];
+    // On regular days, provide traditional Indian snack options
+    let snackOption = snacks[snackIndex];
+    
+    // Add portion sizes appropriate for afternoon snacks
+    if (isWeightLoss) {
+      snack = `Small portion of ${snackOption} (½ serving)`;
     } else {
-      // Default safe option if allergies filter everything
-      afternoonSnack = "Mixed vegetable sticks with hummus";
+      snack = `${snackOption} (1 small serving)`;
     }
+    
+    // Every 5th day, suggest traditional Indian tea-time snack combinations
+    if (dayIndex % 5 === 0) {
+      const teaSnacks = [
+        'Masala Chai with 2 Marie biscuits',
+        'Adrak Chai with 1 small samosa',
+        'Small cup of Masala Chai with 2 homemade mathri',
+        'Kadak Chai with 2-3 small namkeen sevs',
+        'Ginger Tea with 1 small mathi',
+        'Masala Chai with 2-3 pieces of homemade dhokla',
+        'Light Lemon Tea with 1 small vegetable puff'
+      ];
+      
+      snack = teaSnacks[dayIndex % teaSnacks.length];
+      
+      // For weight loss, modify the portion
+      if (isWeightLoss) {
+        snack = snack.replace('2 Marie', '1 Marie')
+                     .replace('1 small samosa', 'half samosa')
+                     .replace('2 homemade', '1 homemade')
+                     .replace('2-3 small', '1-2 small')
+                     .replace('1 small mathi', 'half mathi')
+                     .replace('2-3 pieces', '1-2 pieces')
+                     .replace('1 small vegetable puff', 'half vegetable puff');
+      }
+    }
+  }
+  
+  // Apply deduplication to snack description
+  snack = removeDuplicateFoodItems(snack);
+  
+  // Filter for allergies if specified
+  if (allergies) {
+    const snackArray = [snack];
+    const filteredSnacks = filterAllergies(snackArray, allergies);
+    snack = filteredSnacks[0] || "Fresh seasonal fruit";
   }
   
   // Add health benefit
-  const healthBenefit = getHealthBenefit(afternoonSnack);
-  afternoonSnack += ` - (${healthBenefit})`;
+  const healthBenefit = getHealthBenefit(snack);
+  snack += ` - (${healthBenefit})`;
   
-  return afternoonSnack;
+  return snack;
 };

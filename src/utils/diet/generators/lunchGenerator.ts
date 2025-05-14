@@ -36,6 +36,11 @@ export const generateLunch = (
     // Format lunch based on dietary goals using helper function
     let lunch = composeRegionalMeal(regionalLunch, isWeightLoss, isProteinFocus);
     
+    // Ensure regional meals always mention rice/roti
+    if (!lunch.toLowerCase().includes('roti') && !lunch.toLowerCase().includes('rice')) {
+      lunch += ', served with 2 rotis or ½ katori rice';
+    }
+    
     // For regional specialties, gently introduce pre/probiotics without forcing them
     lunch = enrichWithPrebiotics(lunch, dayIndex);
     lunch = enrichWithProbiotics(lunch, dayIndex);
@@ -80,12 +85,14 @@ export const generateLunch = (
   
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
+  
+  // Make sure we always include Indian staples - rotis and rice options
   if (isWeightLoss) {
-    main = `${grainWithLocalName} (${rotiCount} roti or ½ katori rice), ${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ½ katori brown rice`;
   } else if (isProteinFocus) {
-    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), double portion of ${protein1WithLocalName} and ${protein2WithLocalName} curry (1 katori - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (1 katori - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ¾ katori rice`;
   } else {
-    main = `${grainWithLocalName} (${rotiCount} roti or ¾ katori rice), ${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori)`;
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ¾ katori rice`;
   }
   
   // Add curd (probiotic) to every lunch - a staple in Indian diets

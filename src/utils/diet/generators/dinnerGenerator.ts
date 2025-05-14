@@ -36,6 +36,11 @@ export const generateDinner = (
     // Format dinner based on dietary goals using the helper function
     let dinner = composeRegionalMeal(regionalDinner, isWeightLoss, isProteinFocus);
     
+    // Ensure regional meals always mention rice/roti
+    if (!dinner.toLowerCase().includes('roti') && !dinner.toLowerCase().includes('rice')) {
+      dinner += ', served with 2 rotis or ½ katori rice';
+    }
+    
     // Gently introduce pre/probiotics to regional specialties
     dinner = enrichWithPrebiotics(dinner, dayIndex);
     dinner = enrichWithProbiotics(dinner, dayIndex);
@@ -101,8 +106,8 @@ export const generateDinner = (
     }
   );
   
-  // Build a protein-optimized dinner with both protein sources for complementary amino acids
-  let main = `${protein1WithLocalName} and ${protein2WithLocalName} combined curry (${curryPortion} - protein-optimized), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), Roti (${rotiCount}), or Brown Rice (${ricePortion})`;
+  // Always explicitly include both roti and rice options in dinner for Indian diet context
+  let main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), ${rotiCount} rotis OR ${ricePortion} brown rice`;
   
   // Include probiotic-rich buttermilk with dinner for gut health benefits
   main += `, chaas (1 glass)`;

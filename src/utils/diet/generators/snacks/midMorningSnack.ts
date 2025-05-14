@@ -1,92 +1,129 @@
 
 import { filterAllergies } from '../../helpers/allergyHelpers';
-import { getDryFruits } from '../../data/dryFruits';
-import { getFruitSources } from '../../data/foodSources';
+import { enrichWithPrebiotics } from '../../helpers/prebioticProbioticHelper';
+import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
-import { getStandardFruitPortion } from '../../helpers/portionHelpers';
-import { removeDuplicateFoodItems } from '../../helpers/deduplicationHelper';
+import { getStandardFruitPortion, isBigFruit } from '../../helpers/portionHelpers';
+import { getDryFruits } from '../../data/dryFruits';
 
-/**
- * Generates a mid-morning snack based on diet preferences and day index
- */
 export const generateMidMorningSnack = (
-  dayIndex: number, 
-  snacks: string[], 
-  fruits: string[], 
+  dayIndex: number,
+  snacks: string[],
+  fruits: string[],
   isWeightLoss: boolean,
   allergies?: string
 ) => {
-  // Increase fruit frequency in mid-morning snacks (3-4 days per week)
-  // Monday, Wednesday, Friday
-  const includeFruit = dayIndex % 7 === 1 || dayIndex % 7 === 3 || dayIndex % 7 === 5;
+  // Use prime number-based offsets for unique results
+  const snackIndex = (dayIndex * 7 + 5) % snacks.length;
+  const fruitIndex = (dayIndex * 11 + 3) % fruits.length;
+  const dryFruitIndex = dayIndex % 4;
   
-  if (includeFruit) {
-    // Get available fruits based on allergies
-    const availableFruits = getFruitSources(undefined, allergies);
-    
-    // Use a prime-based offset to vary fruit selection and avoid repetition
-    const fruitIndex = (dayIndex * 7 + 11) % availableFruits.length;
-    
-    // Select a seasonal/local fruit based on the varied day index
-    const seasonalFruit = availableFruits[fruitIndex];
-    
-    // Standardized fruit portion using our helper
-    const fruitPortion = getStandardFruitPortion(seasonalFruit);
-    
-    // Simple fruit-based snack with minimal processing
-    // Removed the addition of kala namak and kali mirch
-    let snack = `${seasonalFruit} ${fruitPortion}`;
-    
-    // Apply deduplication to fruit snack
-    snack = removeDuplicateFoodItems(snack);
-    
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(snack);
-    snack += ` - (${healthBenefit})`;
-    
-    return snack;
+  // Get a seasonal fruit option
+  const seasonalFruit = fruits[fruitIndex];
+  
+  // Determines type of snack based on day pattern for variety
+  const snackType = dayIndex % 4;
+  
+  let snack = '';
+  
+  switch (snackType) {
+    case 0:
+      // FRUIT-BASED SNACK
+      // Simple fruit option with correctly calculated portion
+      const fruitPortion = getStandardFruitPortion(seasonalFruit);
+      
+      // Simple fruit-based snack with minimal processing
+      // Removed the addition of kala namak and kali mirch
+      snack = `${seasonalFruit} ${fruitPortion}`;
+      
+      // Apply deduplication to fruit snack
+      snack = removeDuplicateFoodItems(snack);
+      
+      // Add health benefit
+      const fruitHealthBenefit = getHealthBenefit(snack);
+      snack += ` - (${fruitHealthBenefit})`;
+      break;
+      
+    case 1:
+      // PROTEIN-RICH SNACK
+      // For mid-morning, focus on protein-rich snacks to maintain satiety
+      const proteinSnacks = [
+        'Roasted Chana (¼ cup)',
+        'Boiled Sprouts (½ katori)',
+        'Paneer Cubes (4-5 small pieces)',
+        'Masala Chaas (1 glass)',
+        'Soya Chaat (½ katori)',
+        'Curd with Cucumber (¾ katori)',
+        'Boiled Moong Dal (½ katori)'
+      ];
+      
+      snack = proteinSnacks[dayIndex % proteinSnacks.length];
+      
+      // For weight loss, modify portions
+      if (isWeightLoss) {
+        snack = snack.replace('(¼ cup)', '(3 tbsp)')
+                     .replace('(½ katori)', '(⅓ katori)')
+                     .replace('(4-5 small pieces)', '(3-4 small pieces)')
+                     .replace('(¾ katori)', '(½ katori)');
+      }
+      
+      // Apply deduplication to protein snack
+      snack = removeDuplicateFoodItems(snack);
+      
+      // Add health benefit
+      const proteinHealthBenefit = getHealthBenefit(snack);
+      snack += ` - (${proteinHealthBenefit})`;
+      break;
+      
+    case 2:
+      // TRADITIONAL INDIAN SNACK
+      const indianSnack = snacks[snackIndex];
+      
+      // Portion control based on weight loss goal
+      if (isWeightLoss) {
+        snack = `Small portion of ${indianSnack} (½ serving)`;
+      } else {
+        snack = `${indianSnack} (1 small serving)`;
+      }
+      
+      // Apply deduplication to traditional snack
+      snack = removeDuplicateFoodItems(snack);
+      
+      // Add health benefit
+      const traditionalHealthBenefit = getHealthBenefit(snack);
+      snack += ` - (${traditionalHealthBenefit})`;
+      break;
+      
+    case 3:
+      // DRY FRUITS & NUTS
+      // Get dry fruits from our specialized module
+      const dryFruits = getDryFruits();
+      
+      // Create a mix of 2 types of dry fruits for variety and nutrition
+      const dryFruit1 = dryFruits[dryFruitIndex % dryFruits.length];
+      const dryFruit2 = dryFruits[(dryFruitIndex + 3) % dryFruits.length]; // Offset to ensure different selections
+      
+      // Adjust portion based on weight loss goal
+      if (isWeightLoss) {
+        snack = `Mixed dry fruits: ${dryFruit1} (4-5) and ${dryFruit2} (4-5)`;
+      } else {
+        snack = `Mixed dry fruits: ${dryFruit1} (6-7) and ${dryFruit2} (6-7)`;
+      }
+      
+      // Apply deduplication to dry fruit snack
+      snack = removeDuplicateFoodItems(snack);
+      
+      // Add health benefit
+      const dryFruitHealthBenefit = getHealthBenefit(snack);
+      snack += ` - (${dryFruitHealthBenefit})`;
+      break;
   }
   
-  let midMorningOptions = [
-    'Chaas (1 glass)',
-    'Bhuna chana (1 handful)',
-    'Ankurit anaj salad (½ katori)',
-    'Dahi (½ katori)',
-    'Mixed dry fruits (1 handful)',
-    'Kheera and gajar sticks (1 katori)',
-    'Nariyal pieces (¼ katori)',
-    'Makhana (fox nuts, 1 handful)',
-    'Kaddu ke beej (2 chamach)',
-    'Homemade lassi (1 glass)',
-    'Nariyal pani (1 glass)',
-    'Ragi malt (1 glass)',
-    'Beetroot juice (1 glass)',
-    'Homemade sabzi soup (1 katori)',
-    'Steam kiya hua makka (½ katori)',
-    'Multigrain khakhra (2 pieces)',
-    'Sabzi cutlet (1 piece, baked)'
-  ];
-  
-  // Add dry fruits to mid-morning snack on even-numbered days
-  if (dayIndex % 2 === 1) {
-    const dryFruits = getDryFruits(isWeightLoss, false, dayIndex);
-    midMorningOptions = midMorningOptions.map(snack => `${snack}, with ${dryFruits}`);
-  }
-  
+  // Filter allergies if specified
   if (allergies) {
-    midMorningOptions = filterAllergies(midMorningOptions, allergies);
+    const filteredSnacks = filterAllergies([snack], allergies);
+    snack = filteredSnacks[0] || 'Apple (1 medium) - safe alternative';
   }
-  
-  // Use prime number offset for better variety across days
-  const variedIndex = (dayIndex * 13 + 7) % midMorningOptions.length;
-  let snack = midMorningOptions[variedIndex] || "";
-  
-  // Apply deduplication to mid-morning snack
-  snack = removeDuplicateFoodItems(snack);
-  
-  // Add health benefit
-  const healthBenefit = getHealthBenefit(snack);
-  snack += ` - (${healthBenefit})`;
   
   return snack;
 };
