@@ -13,6 +13,7 @@ interface PDFMealItemProps {
   mealType: string;
   dailyCalories: number;
   goalFactor: number;
+  applyDeduplication?: boolean; // Add this prop to the interface
 }
 
 const PDFMealItem = ({ 
@@ -20,7 +21,8 @@ const PDFMealItem = ({
   description, 
   mealType, 
   dailyCalories, 
-  goalFactor 
+  goalFactor,
+  applyDeduplication = true // Default to true to maintain current behavior
 }: PDFMealItemProps) => {
   // Extract health benefit if present in the description
   const benefitMatch = description.match(/ - \((Contains [^)]+|[^)]+health|[^)]+sources|[^)]+protein|[^)]+enzymes|[^)]+antioxidants)\)$/);
@@ -32,25 +34,27 @@ const PDFMealItem = ({
     mealDescription = description.replace(benefitMatch[0], '');
   }
   
-  // Apply enhanced deduplication to the meal description
+  // Apply enhanced deduplication to the meal description if requested
   // This is critical for breakfast items which tend to have more duplication
-  mealDescription = normalizeMealForPDF(mealDescription);
-  
-  // Additional aggressive deduplication for PDF generation
-  // Handle exact duplicates even if they appear with different formatting
-  mealDescription = mealDescription
-    // Remove duplicate items with same name but different portions or descriptions 
-    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
-    // Special handling for seeds which are prone to duplication 
-    .replace(/(\b[A-Za-z]+\s+seeds)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
-    // Catch variations like "X and X" or "with X, X"
-    .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:and|with|,)\s+\1\b/gi, '$1')
-    // Deduplicate common items that get repeated with connectors
-    .replace(/(with|and)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*),\s+\1\s+\2/gi, '$1 $2')
-    // Fix double connectors
-    .replace(/(with|and)\s+\1/gi, '$1')
-    // Fix "with X and with X" pattern
-    .replace(/with\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+and\s+with\s+\1/gi, 'with $1');
+  if (applyDeduplication) {
+    mealDescription = normalizeMealForPDF(mealDescription);
+    
+    // Additional aggressive deduplication for PDF generation
+    // Handle exact duplicates even if they appear with different formatting
+    mealDescription = mealDescription
+      // Remove duplicate items with same name but different portions or descriptions 
+      .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
+      // Special handling for seeds which are prone to duplication 
+      .replace(/(\b[A-Za-z]+\s+seeds)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
+      // Catch variations like "X and X" or "with X, X"
+      .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:and|with|,)\s+\1\b/gi, '$1')
+      // Deduplicate common items that get repeated with connectors
+      .replace(/(with|and)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*),\s+\1\s+\2/gi, '$1 $2')
+      // Fix double connectors
+      .replace(/(with|and)\s+\1/gi, '$1')
+      // Fix "with X and with X" pattern
+      .replace(/with\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+and\s+with\s+\1/gi, 'with $1');
+  }
   
   // Format the meal description to highlight special terms
   const formattedDescription = formatMealDescription(mealDescription);
