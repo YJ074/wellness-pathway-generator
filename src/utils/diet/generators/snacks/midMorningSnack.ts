@@ -90,7 +90,7 @@ export const generateMidMorningSnack = (
       // Apply deduplication to traditional snack
       snack = removeDuplicateFoodItems(snack);
       
-      // Add health benefit
+      // Add health benefit - THIS IS WHERE THE ERROR WAS
       const traditionalHealthBenefit = getHealthBenefit(indianSnack);
       snack += ` - (${traditionalHealthBenefit})`;
       break;
