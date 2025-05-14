@@ -23,5 +23,9 @@ export const applyTriplePassDeduplication = (mealDescription: string): string =>
   if (!mealDescription) return '';
   
   // Apply multiple passes of deduplication for maximum effectiveness
-  return normalizeMealForPDF(normalizeMealForPDF(normalizeMealForPDF(mealDescription)));
+  const firstPass = normalizeMealForPDF(mealDescription);
+  const secondPass = normalizeMealForPDF(firstPass);
+  const thirdPass = normalizeMealForPDF(secondPass);
+  
+  return thirdPass;
 };

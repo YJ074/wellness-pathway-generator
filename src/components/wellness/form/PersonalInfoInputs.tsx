@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import BasicInfoInputs from './BasicInfoInputs';
@@ -22,7 +23,7 @@ const PersonalInfoInputs = ({ formData, handleInputChange }: PersonalInfoInputsP
         age={formData.age}
         height={formData.height}
         weight={formData.weight}
-        gender={formData.gender}
+        gender={formData.gender as 'male' | 'female' | 'other'}
         heightFeet={formData.heightFeet}
         heightInches={formData.heightInches}
         onInputChange={handleInputChange}

@@ -1,11 +1,11 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import WellnessResultsHeaderActions from "./WellnessResultsHeaderActions";
 import WellnessMetricsDisplay from "./WellnessMetricsDisplay";
 import WellnessDietDayCard from "./WellnessDietDayCard";
 import PlanDetailsCard from './PlanDetailsCard';
-import { FormData, DietPlan, WorkoutPlan } from './types';
-import WorkoutPlanDisplay from './WorkoutPlanDisplay';
+import { FormData, DietPlan, WorkoutPlan, WorkoutDay } from './types';
 
 interface WellnessResultsProps {
   formData: FormData;

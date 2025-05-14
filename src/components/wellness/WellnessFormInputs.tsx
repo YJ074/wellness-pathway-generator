@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -58,7 +59,10 @@ const WellnessFormInputs = ({
           <DietaryPreferenceInput value={formData.dietaryPreference} onChange={value => handleInputChange('dietaryPreference', value)} />
           
           {/* Wellness Goals Input */}
-          <WellnessGoalsInput selectedGoals={formData.wellnessGoals || []} onChange={handleWellnessGoalsChange} />
+          <WellnessGoalsInput 
+            selectedGoals={(formData.wellnessGoals || ['general-wellness']) as WellnessGoal[]} 
+            onChange={handleWellnessGoalsChange} 
+          />
           
           {/* Regional Preferences */}
           <RegionSelector selectedRegion={formData.region || ''} onChange={handleRegionChange} />

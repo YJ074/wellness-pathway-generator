@@ -40,23 +40,12 @@ export interface DietPlan {
 }
 
 export interface WorkoutPlan {
-  days: Array<{
-    day: number;
-    type: string;
-    exercises: Array<{
-      name: string;
-      sets?: number;
-      reps?: string;
-      notes?: string;
-    }>;
-    duration: string;
-    intensity: string;
-    calories: number;
-    notes?: string;
-    warmup?: string[];
-    cooldown?: string[];
-  }>;
+  days: WorkoutDay[];
 }
+
+// Import and re-export the WorkoutDay type to ensure consistency
+import { WorkoutDay } from '@/types/workout';
+export type { WorkoutDay };
 
 export interface FormData {
   name: string;

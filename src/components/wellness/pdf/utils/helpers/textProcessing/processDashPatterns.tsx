@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { Text } from '@react-pdf/renderer';
 import { styles } from '../../../styles/mealItemStyles';
 import { dashPattern } from '../../constants/textPatterns';
-import { normalizeMealForPDF } from '../../../../../../utils/diet/helpers/deduplicationHelper';
+import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
 
 // Process text with dash patterns (like "Rice Flakes - Poha")
 export const processDashPatterns = (text: string): ReactNode[] => {

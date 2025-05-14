@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
-import { DietPlan, FormData, WorkoutPlan } from './types';
+import { DietPlan, FormData, WorkoutPlan, WorkoutDay } from './types';
 import PDFDietSection from './pdf/PDFDietSection';
 import PDFWorkoutSection from './pdf/PDFWorkoutSection';
 import { estimateMacros } from './utils/pdfCalorieUtils';
@@ -80,7 +80,7 @@ const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSect
             {/* Workout Plan Section */}
             {workoutDay && (
               <PDFWorkoutSection 
-                workoutDay={workoutDay} 
+                workoutDay={workoutDay as WorkoutDay} 
                 formData={formData} 
                 dayNumber={day.day} 
               />
