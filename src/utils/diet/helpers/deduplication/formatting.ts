@@ -1,3 +1,4 @@
+
 /**
  * Text formatting utilities for meal descriptions
  * Provides functions to clean and standardize text formatting
@@ -32,6 +33,9 @@ export const formatForPDF = (text: string): string => {
     .replace(/\s+\./g, '.')          // Remove space before period
     .replace(/\.\s+\(/g, ' (')       // Fix spacing between period and parenthesis
     .replace(/\s{2,}/g, ' ')         // Remove extra spaces
+    .replace(/,\s*,/g, ',')          // Fix double commas
+    .replace(/,,+/g, ',')            // Fix multiple commas
+    .replace(/\(\s*\)/g, '')         // Remove empty parentheses
     .trim();
 };
 
@@ -92,5 +96,9 @@ export const cleanupDuplicationFormatting = (text: string): string => {
     .replace(/with\s+with/g, 'with')   // Fix repeated "with"
     .replace(/and\s+and/g, 'and')      // Fix repeated "and"
     .replace(/\s+/g, ' ')              // Normalize spaces
+    .replace(/, *$/g, '')              // Remove trailing commas
+    .replace(/\s*,\s*and\s*,\s*/g, ' and ') // Fix ", and ,"
+    .replace(/\(\s*\)/g, '')           // Remove empty parentheses
+    .replace(/, +\)/g, ')')            // Fix comma before closing parenthesis
     .trim();
 };

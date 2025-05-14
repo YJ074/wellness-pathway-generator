@@ -76,7 +76,36 @@ export const hasFoodItem = (
 export const extractBaseFoodName = (foodItem: string): string => {
   return foodItem
     .replace(/\([^)]*\)/g, '')       // Remove parenthetical portions
-    .replace(/\d+\s*(?:g|ml|katori|cup|glass|chamach|slice|pieces?|tbsp)/gi, '') // Remove measurements
+    .replace(/\d+\s*(?:g|ml|katori|cup|glass|chamach|slice|pieces?|tbsp|tsp|nos|handful)/gi, '') // Remove measurements
     .replace(/small|medium|large|diced|chopped|sliced|raw|cooked/gi, '') // Remove modifiers
+    .replace(/\s+/g, ' ')            // Normalize spaces
     .trim();
+};
+
+/**
+ * Detects duplicate food items in a meal description
+ * @param mealDescription The meal description to analyze
+ * @returns Array of detected duplicate food names
+ */
+export const detectDuplicateFoods = (mealDescription: string): string[] => {
+  const foodPattern = /(\w+(?:\s+\w+)*)(?:\s*\([^)]*\))?/g;
+  const seenItems = new Set<string>();
+  const duplicates = new Set<string>();
+  let match;
+  
+  while ((match = foodPattern.exec(mealDescription)) !== null) {
+    const foodItem = match[1].trim().toLowerCase();
+    if (foodItem.length < 3) continue; // Skip very short words
+    
+    const baseName = extractBaseFoodName(foodItem);
+    
+    // Check if we've seen this food before
+    if (seenItems.has(baseName) || hasSynonymInSeenFoods(baseName, seenItems)) {
+      duplicates.add(baseName);
+    } else {
+      seenItems.add(baseName);
+    }
+  }
+  
+  return Array.from(duplicates);
 };

@@ -1,4 +1,3 @@
-
 import { hasFoodItem, extractBaseFoodName } from './detection';
 import { cleanupDuplicationFormatting } from './formatting';
 import { hasSynonymInSeenFoods } from './synonyms';
@@ -68,6 +67,37 @@ export function normalizeMealForPDF(mealDescription: string): string {
     normalizedText = normalizedText.replace(healthBenefit, '');
   }
   
+  // Enhanced duplicate detection - specifically catch repeated food items with portions
+  const foodItemRegex = /(\w+(?:\s+\w+)*)\s*\((\d+(?:\s+\w+)*)\)/g;
+  const foodItems = new Map<string, string>();
+  let match;
+  
+  // First pass: collect all food items with their portions
+  while ((match = foodItemRegex.exec(normalizedText)) !== null) {
+    const [fullMatch, foodName, portion] = match;
+    const cleanName = foodName.toLowerCase().trim();
+    
+    // Store the first occurrence of each food item
+    if (!foodItems.has(cleanName)) {
+      foodItems.set(cleanName, fullMatch);
+    }
+  }
+  
+  // Second pass: remove duplicates, keeping only the first occurrence
+  foodItems.forEach((fullItem, foodName) => {
+    // Create a regex that matches this food item with any portion
+    const duplicateRegex = new RegExp(`${foodName}\\s*\\([^)]+\\)`, 'gi');
+    let firstOccurrence = true;
+    
+    normalizedText = normalizedText.replace(duplicateRegex, (match) => {
+      if (firstOccurrence) {
+        firstOccurrence = false;
+        return match; // Keep the first occurrence
+      }
+      return ''; // Remove subsequent occurrences
+    });
+  });
+  
   // Handle common repetition patterns in breakfast items
   normalizedText = normalizedText
     // Fix repeated "with X" phrases
@@ -82,26 +112,21 @@ export function normalizeMealForPDF(mealDescription: string): string {
   // Apply the main deduplication algorithm
   normalizedText = removeDuplicateFoodItems(normalizedText);
   
-  // Additional cleaning passes for PDF formatting
+  // Clean up empty constructs and normalize spacing
+  normalizedText = normalizedText
+    // Remove empty items created by our replacements
+    .replace(/,\s*,/g, ',')
+    .replace(/\(\s*\)/g, '')
+    .replace(/\s*,\s*$/g, '')
+    .replace(/^\s*,\s*/g, '')
+    .replace(/\s{2,}/g, ' ')
+    // Fix commas and spaces
+    .replace(/,(?!\s)/g, ', ')
+    .trim();
+  
+  // Apply additional formatting cleanup
   normalizedText = cleanupDuplicationFormatting(normalizedText);
   
-  // Fix common style issues that appear in PDFs
-  normalizedText = normalizedText
-    // Remove double spaces
-    .replace(/\s{2,}/g, ' ')
-    // Ensure comma spacing
-    .replace(/,(?!\s)/g, ', ')
-    // Fix dash spacing
-    .replace(/\s-\s/g, ' - ')
-    // Fix parenthesis spacing
-    .replace(/\(\s+/g, '(')
-    .replace(/\s+\)/g, ')')
-    // Fix overuse of "and" or "with"
-    .replace(/(\s(?:and|with)\s)(?:and|with)\s/gi, '$1')
-    // Fix repeated phrases with "and" or "with"
-    .replace(/(\w+(?:\s+\w+)*)\s+and\s+\1/gi, '$1')
-    .replace(/(\w+(?:\s+\w+)*)\s+with\s+\1/gi, '$1');
-    
   // Reattach the health benefit
   if (healthBenefit) {
     normalizedText = `${normalizedText} ${healthBenefit}`;
