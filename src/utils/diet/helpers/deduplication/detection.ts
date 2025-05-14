@@ -105,7 +105,7 @@ export const detectDuplicateFoods = (mealDescription: string): string[] => {
     if (baseName.length < 2) continue; // Skip invalid items
     
     // Check if we've seen this food before
-    if (seenItems.has(baseName) || hasSynonymInSeenFoods(baseName, new Set(Array.from(seenItems)))) {
+    if (seenItems.has(baseName) || hasSynonymInSeenFoods(baseName, seenItems)) {
       duplicates.add(baseName);
     } else {
       seenItems.add(baseName);

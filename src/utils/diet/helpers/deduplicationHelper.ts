@@ -7,7 +7,8 @@
 // Re-export necessary functions from the modular system
 export { 
   removeDuplicateFoodItems,
-  normalizeMealForPDF
+  normalizeMealForPDF,
+  applyTriplePassDeduplication
 } from './deduplication';
 
 export { 
@@ -17,7 +18,8 @@ export {
 // Re-export additional functionality that might be needed
 export { 
   hasFoodItem, 
-  extractBaseFoodName 
+  extractBaseFoodName,
+  detectDuplicateFoods
 } from './deduplication';
 
 export { 

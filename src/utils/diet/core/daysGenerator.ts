@@ -1,5 +1,5 @@
 
-import { DietaryPreference } from '../types';
+import { DietaryPreference, WellnessGoal } from '../types';
 import { 
   getProteinSources, 
   getGrainSources, 
@@ -35,14 +35,15 @@ export function generateDays(
 ) {
   const days = [];
   
-  const dietaryPreference = formData.dietaryPreference;
+  const dietaryPreference = formData.dietaryPreference as DietaryPreference;
   const proteinFocus = formData.fitnessGoal === 'muscle-gain';
   const calorieReduction = (formData.fitnessGoal === 'weight-loss' || 
-                           formData.wellnessGoals.includes('fat-loss') || 
-                           formData.wellnessGoals.includes('inch-loss')) && 
+                           (formData.wellnessGoals && formData.wellnessGoals.includes('fat-loss')) || 
+                           (formData.wellnessGoals && formData.wellnessGoals.includes('inch-loss'))) && 
                            !formData.has_muscular_build;
-  const { allergies, region, exerciseFrequency, gender, wellnessGoals } = formData;
-  const weight = parseInt(formData.weight); // Convert string weight to number
+  const { allergies, region, exerciseFrequency, gender } = formData;
+  const wellnessGoals = formData.wellnessGoals as WellnessGoal[] || [];
+  const weight = parseInt(formData.weight) || 70; // Convert string weight to number
 
   // Optimize protein sources - get double the amount needed for variety
   const rawProteins = getProteinSources(dietaryPreference, allergies);
@@ -104,17 +105,17 @@ export function generateDays(
       Math.max(2.0, Math.round((weight * 0.03) * 10) / 10);
     
     // Generate wellness goal specific information
-    const hairNutrients = wellnessGoals.includes('hair-fall-control') ? 
+    const hairNutrients = wellnessGoals.includes('hair-fall-control' as WellnessGoal) ? 
       generateHairNutrients(`${breakfast} ${lunch} ${dinner}`) : undefined;
       
-    const skinNutrients = wellnessGoals.includes('glowing-skin') ? 
+    const skinNutrients = wellnessGoals.includes('glowing-skin' as WellnessGoal) ? 
       generateSkinNutrients(`${breakfast} ${lunch} ${dinner}`) : undefined;
       
-    const fatLossNotes = (wellnessGoals.includes('fat-loss') || wellnessGoals.includes('inch-loss')) ? 
+    const fatLossNotes = (wellnessGoals.includes('fat-loss' as WellnessGoal) || wellnessGoals.includes('inch-loss' as WellnessGoal)) ? 
       generateFatLossNotes(`${breakfast} ${lunch} ${dinner}`, totalCalories) : undefined;
     
     // Generate PCOS/PCOD friendly notes if that goal is selected
-    const pcosFriendlyNotes = wellnessGoals.includes('pcos-pcod-friendly') ?
+    const pcosFriendlyNotes = wellnessGoals.includes('pcos-pcod-friendly' as WellnessGoal) ?
       generatePCOSFriendlyNotes(`${breakfast} ${lunch} ${dinner}`) : undefined;
       
     const herbalRecommendations = generateHerbalRecommendations(dayIndex, wellnessGoals);

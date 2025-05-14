@@ -1,21 +1,19 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
-import { Clock, AlertCircle } from '@react-pdf/renderer/lib/react-pdf-lucide-icons';
 
-// Create styles
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
-    padding: 8,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 4,
+    marginBottom: 8,
+    borderRadius: 3,
+    padding: 6,
+    backgroundColor: '#f8fafc'
   },
-  header: {
+  title: {
     fontSize: 10,
+    fontWeight: 'bold',
+    marginBottom: 4,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 6,
-    color: '#334155',
   },
   timingsGrid: {
     display: 'flex',
@@ -25,36 +23,29 @@ const styles = StyleSheet.create({
   timingItem: {
     width: '50%',
     marginBottom: 4,
+    flexDirection: 'row',
   },
   mealLabel: {
     fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
     color: '#475569',
+    width: '40%',
   },
   timeText: {
     fontSize: 8,
-    color: '#1e293b',
+    color: '#0f172a',
   },
-  tipContainer: {
-    marginTop: 6,
-    paddingTop: 4,
-    borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-  },
-  tipText: {
+  note: {
     fontSize: 8,
+    marginTop: 4,
+    color: '#64748b',
     fontStyle: 'italic',
-    color: '#334155',
   },
-  cheatMealContainer: {
-    marginTop: 6,
-    padding: 5,
-    backgroundColor: '#fef3c7', // Light amber color
-    borderRadius: 3,
-  },
-  cheatMealText: {
+  cheatMealNote: {
     fontSize: 8,
-    color: '#92400e', // Amber text
+    marginTop: 4,
+    padding: 4,
+    backgroundColor: '#fff9db',
+    color: '#92400e',
   }
 });
 
@@ -66,16 +57,16 @@ interface PDFMealTimingsProps {
     eveningSnack: string;
     dinner: string;
   };
-  timingTips?: string;
   cheatMealInfo?: string | null;
+  timingTips?: string;
 }
 
-const PDFMealTimings = ({ mealTimings, timingTips, cheatMealInfo }: PDFMealTimingsProps) => {
+const PDFMealTimings = ({ mealTimings, cheatMealInfo, timingTips }: PDFMealTimingsProps) => {
   if (!mealTimings) return null;
-
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Recommended Meal Timings</Text>
+      <Text style={styles.title}>Recommended Meal Timings</Text>
       
       <View style={styles.timingsGrid}>
         <View style={styles.timingItem}>
@@ -84,7 +75,7 @@ const PDFMealTimings = ({ mealTimings, timingTips, cheatMealInfo }: PDFMealTimin
         </View>
         
         <View style={styles.timingItem}>
-          <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
+          <Text style={styles.mealLabel}>Mid-Morning:</Text>
           <Text style={styles.timeText}>{mealTimings.midMorningSnack}</Text>
         </View>
         
@@ -105,15 +96,11 @@ const PDFMealTimings = ({ mealTimings, timingTips, cheatMealInfo }: PDFMealTimin
       </View>
       
       {timingTips && (
-        <View style={styles.tipContainer}>
-          <Text style={styles.tipText}>Tip: {timingTips}</Text>
-        </View>
+        <Text style={styles.note}>Tip: {timingTips}</Text>
       )}
       
       {cheatMealInfo && (
-        <View style={styles.cheatMealContainer}>
-          <Text style={styles.cheatMealText}>{cheatMealInfo}</Text>
-        </View>
+        <Text style={styles.cheatMealNote}>{cheatMealInfo}</Text>
       )}
     </View>
   );

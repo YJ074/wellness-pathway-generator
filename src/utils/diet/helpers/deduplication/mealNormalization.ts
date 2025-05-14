@@ -1,3 +1,4 @@
+
 import { hasFoodItem, extractBaseFoodName } from './detection';
 import { cleanupDuplicationFormatting } from './formatting';
 import { hasSynonymInSeenFoods } from './synonyms';
@@ -38,8 +39,7 @@ export function removeDuplicateFoodItems(mealDescription: string): string {
     if (!baseName || baseName.length < 2) continue;
     
     // Skip if we've already seen this food item or a synonym
-    // Convert the seenBaseFoods Set to an Array before passing to hasSynonymInSeenFoods
-    if (seenBaseFoods.has(baseName) || hasSynonymInSeenFoods(baseName, new Set(Array.from(seenBaseFoods)))) {
+    if (seenBaseFoods.has(baseName) || hasSynonymInSeenFoods(baseName, seenBaseFoods)) {
       continue;
     }
     
@@ -63,7 +63,7 @@ export function removeDuplicateFoodItems(mealDescription: string): string {
         normalizedText += ` and ${result[i]}`;
       }
     } else {
-      // Use commas for other items
+      // Separate items with commas
       normalizedText += `, ${result[i]}`;
     }
   }
@@ -96,14 +96,19 @@ export function normalizeMealForPDF(mealDescription: string): string {
     normalizedText = normalizedText.replace(healthBenefit, '');
   }
   
-  // First, handle specified portions with quantities
-  // This regex matches food items with portions in parentheses
-  const foodItemRegex = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s*\(([^)]+)\)/g;
-  const foodItems = new Map<string, string>();
-  let match;
+  // First, handle options like "X or Y" to ensure they appear only once
+  normalizedText = normalizedText.replace(/(\d+\s+roti\s+OR\s+[^,]+)(?:.*?)(\1)/gi, '$1');
+  normalizedText = normalizedText.replace(/(\d+\s+rotis\s+OR\s+[^,]+)(?:.*?)(\1)/gi, '$1');
+  
+  // Handle common patterns like "X and Y curry" where X and Y are both curries
+  normalizedText = normalizedText.replace(/(\w+)\s+curry(?:.*?)and\s+(\w+)\s+curry/gi, '$1 and $2 curry');
   
   // First pass: collect all food items with their portions
-  while ((match = foodItemRegex.exec(normalizedText)) !== null) {
+  const foodItems = new Map<string, string>();
+  const foodPortionRegex = /(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s*\(([^)]+)\)/g;
+  let match;
+  
+  while ((match = foodPortionRegex.exec(normalizedText)) !== null) {
     const [fullMatch, foodName, portion] = match;
     const cleanName = foodName.toLowerCase().trim();
     
@@ -128,7 +133,7 @@ export function normalizeMealForPDF(mealDescription: string): string {
     });
   });
   
-  // Handle common repetition patterns in meal items
+  // Handle specific repetition patterns that frequently occur
   normalizedText = normalizedText
     // Fix repeated "with X" phrases
     .replace(/with\s+([^,]+)(?:,|\s+and|\s+with)\s+with\s+\1/gi, 'with $1')
@@ -143,7 +148,13 @@ export function normalizeMealForPDF(mealDescription: string): string {
     // Fix repeated specific foods that commonly cause problems
     .replace(/(\b(?:chickoo|apple|banana|orange|grapes|mango)\b)(?:[^,]*?\([^)]*\))?[^,]*?,\s*[^,]*?\1\b/gi, '$1 (portion)')
     // Fix "and" followed immediately by the same word
-    .replace(/\band\s+(\w+)(?:\s+\w+)*\s+\1\b/gi, 'and $1');
+    .replace(/\band\s+(\w+)(?:\s+\w+)*\s+\1\b/gi, 'and $1')
+    // Fix "OR" issues where the same option is repeated
+    .replace(/\b([^\s,]+(?:\s+[^\s,]+)*)\s+OR\s+[^,]*?\1\b/gi, '$1 OR alternative')
+    // Fix "dahi/curd/yogurt" appearing multiple times
+    .replace(/dahi\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:curd|yogurt|dahi)\s*\([^)]*\)/gi, 'dahi (1 katori)')
+    .replace(/curd\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|yogurt|curd)\s*\([^)]*\)/gi, 'curd (1 katori)')
+    .replace(/yogurt\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|curd|yogurt)\s*\([^)]*\)/gi, 'yogurt (1 katori)');
   
   // Apply the main deduplication algorithm
   normalizedText = removeDuplicateFoodItems(normalizedText);

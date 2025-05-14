@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/mealCalories';
-import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication/mealNormalization';
+import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
 
 // These are imported from mealItemStyles.tsx
 // Just using inline styles here for clarity
@@ -59,13 +59,18 @@ const PDFMealItem = ({
   applyDeduplication = true,
   suggestedTime
 }: PDFMealItemProps) => {
-  // Apply our enhanced deduplication with double-pass processing for better results
+  // Apply triple-pass deduplication for maximum effectiveness
+  // This ensures all possible duplications are caught
   const processedDescription = applyDeduplication 
-    ? normalizeMealForPDF(normalizeMealForPDF(description))
+    ? normalizeMealForPDF(normalizeMealForPDF(normalizeMealForPDF(description)))
     : description;
   
   // Calculate estimated calories for this meal
-  const mealCalories = getEstimatedCalories(mealType, dailyCalories);
+  const mealCalories = getEstimatedCalories(
+    mealType as any, 
+    dailyCalories, 
+    goalFactor
+  );
   
   return (
     <View style={styles.container} wrap={false}>
