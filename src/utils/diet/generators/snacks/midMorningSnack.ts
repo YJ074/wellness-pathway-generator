@@ -40,7 +40,7 @@ export const generateMidMorningSnack = (
       snack = removeDuplicateFoodItems(snack);
       
       // Add health benefit
-      const fruitHealthBenefit = getHealthBenefit(snack);
+      const fruitHealthBenefit = getHealthBenefit(seasonalFruit);
       snack += ` - (${fruitHealthBenefit})`;
       break;
       
@@ -90,7 +90,7 @@ export const generateMidMorningSnack = (
       snack = removeDuplicateFoodItems(snack);
       
       // Add health benefit
-      const traditionalHealthBenefit = getHealthBenefit(snack);
+      const traditionalHealthBenefit = getHealthBenefit(indianSnack);
       snack += ` - (${traditionalHealthBenefit})`;
       break;
       
@@ -114,7 +114,7 @@ export const generateMidMorningSnack = (
       snack = removeDuplicateFoodItems(snack);
       
       // Add health benefit
-      const dryFruitHealthBenefit = getHealthBenefit(snack);
+      const dryFruitHealthBenefit = getHealthBenefit(dryFruit1 + " and " + dryFruit2);
       snack += ` - (${dryFruitHealthBenefit})`;
       break;
   }
