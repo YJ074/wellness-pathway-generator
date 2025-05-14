@@ -13,8 +13,9 @@ import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
 // Fixed to prevent word repetition and overlapping highlights
 export const formatMealDescription = (text: string): ReactNode[] => {
   try {
-    // First, ensure the text has been deduplicated
-    const deduplicatedText = normalizeMealForPDF(text);
+    // First, ensure the text has been thoroughly deduplicated
+    // Apply double-pass deduplication for maximum effectiveness
+    const deduplicatedText = normalizeMealForPDF(normalizeMealForPDF(text));
     
     // Process the text in sequence to avoid overlapping highlights
     // Each step takes the output of the previous step

@@ -43,24 +43,27 @@ export const hasFoodItem = (
   // Extract base name for matching (removing portions, etc.)
   const baseFoodName = extractBaseFoodName(processedFoodItem);
   
-  // Check for exact matches, handling plurality variations
-  if (processedMealDescription.includes(baseFoodName)) {
+  // Check for exact matches with word boundaries
+  const exactRegex = new RegExp(`\\b${baseFoodName}\\b`, 'i');
+  if (exactRegex.test(processedMealDescription)) {
     return true;
   }
   
-  // Check for plural/singular variations
+  // Check for plural/singular variations with word boundaries
   const pluralVariation = baseFoodName.endsWith('s') ? 
     baseFoodName.slice(0, -1) : 
     `${baseFoodName}s`;
   
-  if (processedMealDescription.includes(pluralVariation)) {
+  const pluralRegex = new RegExp(`\\b${pluralVariation}\\b`, 'i');
+  if (pluralRegex.test(processedMealDescription)) {
     return true;
   }
   
   // Check for synonyms
   const synonyms = getSynonymsForFood(baseFoodName);
   for (const synonym of synonyms) {
-    if (processedMealDescription.includes(synonym)) {
+    const synonymRegex = new RegExp(`\\b${synonym}\\b`, 'i');
+    if (synonymRegex.test(processedMealDescription)) {
       return true;
     }
   }
@@ -78,6 +81,7 @@ export const extractBaseFoodName = (foodItem: string): string => {
     .replace(/\([^)]*\)/g, '')       // Remove parenthetical portions
     .replace(/\d+\s*(?:g|ml|katori|cup|glass|chamach|slice|pieces?|tbsp|tsp|nos|handful)/gi, '') // Remove measurements
     .replace(/small|medium|large|diced|chopped|sliced|raw|cooked/gi, '') // Remove modifiers
+    .replace(/mixed|assorted|varied|fresh|boiled|steamed|grilled|roasted/gi, '') // Additional modifiers
     .replace(/\s+/g, ' ')            // Normalize spaces
     .trim();
 };
@@ -98,9 +102,10 @@ export const detectDuplicateFoods = (mealDescription: string): string[] => {
     if (foodItem.length < 3) continue; // Skip very short words
     
     const baseName = extractBaseFoodName(foodItem);
+    if (baseName.length < 2) continue; // Skip invalid items
     
     // Check if we've seen this food before
-    if (seenItems.has(baseName) || hasSynonymInSeenFoods(baseName, seenItems)) {
+    if (seenItems.has(baseName) || hasSynonymInSeenFoods(baseName, Array.from(seenItems))) {
       duplicates.add(baseName);
     } else {
       seenItems.add(baseName);

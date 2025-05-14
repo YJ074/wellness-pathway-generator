@@ -1,51 +1,68 @@
 
 import { filterAllergies } from '../../helpers/allergyHelpers';
-import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { getStandardFruitPortion } from '../../helpers/portionHelpers';
+import { enrichWithPrebiotics, enrichWithProbiotics } from '../../helpers/prebioticProbioticHelper';
+import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
+// Update to use the new modular deduplication system
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 
-/**
- * Generates a general snack option based on diet preferences and day index
- */
 export const generateSnacks = (
-  dayIndex: number, 
-  snacks: string[], 
-  fruits: string[], 
+  dayIndex: number,
+  snacks: string[],
+  fruits: string[],
   isWeightLoss: boolean,
   allergies?: string
 ) => {
-  // Not directly used in generation pipeline above, but add allergies param for legacy compat
+  // Use prime numbers for varied indices to prevent repetition patterns
+  const snackIndex1 = (dayIndex * 31 + 19) % snacks.length;
+  const snackIndex2 = (dayIndex * 37 + 23) % snacks.length;
+  const fruitIndex = (dayIndex * 41 + 29) % fruits.length;
   
-  // Use prime number offsets to ensure variety
-  const snackIndex = (dayIndex * 11 + 3) % snacks.length;
-  const fruitIndex = (dayIndex * 13 + 7) % fruits.length;
-  
-  let snack = snacks[snackIndex];
-  let fruit = fruits[fruitIndex];
-  
-  // Standardized fruit portion using our helper
-  const fruitPortion = getStandardFruitPortion(fruit);
-  fruit = `${fruit} ${fruitPortion}`;
+  let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
   
   if (allergies) {
-    snack = filterAllergies([snack], allergies)[0] || "";
-    fruit = filterAllergies([fruit], allergies)[0] || "";
+    snackOptions = filterAllergies(snackOptions, allergies);
   }
   
-  // Apply enhanced deduplication to ensure no repeated food terms
-  // Using our more comprehensive normalization function
-  snack = removeDuplicateFoodItems(snack);
-  fruit = removeDuplicateFoodItems(fruit);
+  // Generate two different snacks for variety
+  let snack1 = snackOptions[snackIndex1];
+  let snack2 = snackOptions[snackIndex2];
   
-  // Add health benefits
-  const snackHealthBenefit = getHealthBenefit(snack);
-  const fruitHealthBenefit = getHealthBenefit(fruit);
+  // Ensure we're not repeating the same snack
+  while (snack1.toLowerCase().includes(snack2.toLowerCase()) || 
+         snack2.toLowerCase().includes(snack1.toLowerCase())) {
+    snackIndex2 = (snackIndex2 + 1) % snackOptions.length;
+    snack2 = snackOptions[snackIndex2];
+  }
   
-  snack += ` - (${snackHealthBenefit})`;
-  fruit += ` - (${fruitHealthBenefit})`;
+  // Every few days, include a fruit instead of a snack
+  if (dayIndex % 5 === 0) {
+    const fruit = fruits[fruitIndex];
+    const portion = getStandardFruitPortion(fruit);
+    
+    // Replace one of the snacks with a fruit
+    snack1 = `${fruit} ${portion}`;
+  }
   
+  // Add probiotic or prebiotic foods to enhance nutritional value
+  if (dayIndex % 3 === 0) {
+    snack2 = enrichWithProbiotics(snack2, dayIndex);
+  } else if (dayIndex % 3 === 1) {
+    snack2 = enrichWithPrebiotics(snack2, dayIndex);
+  }
+  
+  // Combine snacks and apply deduplication
+  let combinedSnack = `${snack1} and ${snack2}`;
   if (isWeightLoss) {
-    return `${fruit} OR ${snack} (choose one per day)`;
+    combinedSnack = `Choose one: ${snack1} or ${snack2}`;
   }
-  return `${fruit} AND ${snack}`;
+  
+  // Apply deduplication
+  combinedSnack = removeDuplicateFoodItems(combinedSnack);
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(combinedSnack);
+  combinedSnack += ` - (${healthBenefit})`;
+  
+  return combinedSnack;
 };

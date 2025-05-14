@@ -46,6 +46,10 @@ export const formatForPDF = (text: string): string => {
  * @returns Formatted meal description with the addition
  */
 export const formatAddition = (mealDescription: string, addition: string): string => {
+  if (!mealDescription || mealDescription.trim() === '') {
+    return addition;
+  }
+  
   if (mealDescription.endsWith(',')) {
     return `${mealDescription} ${addition}`;
   } else if (mealDescription.endsWith('.') || mealDescription.endsWith('!')) {
@@ -89,7 +93,8 @@ export const formatMealWithDeduplication = (mealDescription: string, duplication
  * @returns Text with fixed connector formatting
  */
 export const cleanupDuplicationFormatting = (text: string): string => {
-  return text
+  // First pass - clean up basic formatting issues
+  let cleaned = text
     .replace(/,\s*,/g, ',')            // Fix double commas
     .replace(/,\s+(and|with)/g, ' $1') // Fix comma followed by connector
     .replace(/\s+(and|with)\s+\1\s+/g, ' $1 ') // Fix double connectors
@@ -101,4 +106,23 @@ export const cleanupDuplicationFormatting = (text: string): string => {
     .replace(/\(\s*\)/g, '')           // Remove empty parentheses
     .replace(/, +\)/g, ')')            // Fix comma before closing parenthesis
     .trim();
+  
+  // Second pass - handle more complex patterns
+  cleaned = cleaned
+    // Fix sandwich pattern duplications like "A, B, C, and A"
+    .replace(/(\w+(?:\s+\w+)*),(?:[^,]+,)*\s*(?:and|with)\s+\1/gi, '$1')
+    // Fix repeated fruits with portions
+    .replace(/(\b(?:fruit|apple|banana|orange|grapes|mango|chickoo)\b)(?:[^,]*?\([^)]*\))?[^,]*?,\s*[^,]*?\1\b/gi, '$1 (portion)')
+    // Fix repeated vegetables with portions
+    .replace(/(\b(?:vegetable|carrot|spinach|tomato|cucumber|onion|garlic)\b)(?:[^,]*?\([^)]*\))?[^,]*?,\s*[^,]*?\1\b/gi, '$1 (portion)')
+    // Fix common additions that get duplicated
+    .replace(/with\s+(?:\w+\s+)?seeds(?:,|\s+and|\s+with)\s+with\s+(?:\w+\s+)?seeds/gi, 'with mixed seeds')
+    .replace(/with\s+(?:\w+\s+)?nuts(?:,|\s+and|\s+with)\s+with\s+(?:\w+\s+)?nuts/gi, 'with mixed nuts')
+    // Remove any empty sections that may result from our cleaning
+    .replace(/\s*,\s*,\s*/g, ', ')
+    .replace(/\s*,\s*\)/g, ')')
+    .replace(/\(\s*,\s*/g, '(')
+    .trim();
+  
+  return cleaned;
 };

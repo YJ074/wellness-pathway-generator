@@ -31,10 +31,16 @@ const PDFMealItem = ({
   // Remove health benefit from description for processing
   const descriptionWithoutBenefit = description.replace(healthBenefit, '');
   
-  // Apply extra aggressive deduplication for breakfast items
-  const processedDescription = applyDeduplication 
+  // Perform a double-pass deduplication for maximum effectiveness
+  // First pass: Basic deduplication with our core algorithm
+  const firstPassDeduplication = applyDeduplication 
     ? normalizeMealForPDF(descriptionWithoutBenefit) 
     : descriptionWithoutBenefit;
+    
+  // Second pass: More aggressive deduplication for stubborn cases
+  const processedDescription = applyDeduplication 
+    ? normalizeMealForPDF(firstPassDeduplication) 
+    : firstPassDeduplication;
   
   // Reattach health benefit if it was present
   const finalDescription = healthBenefit 

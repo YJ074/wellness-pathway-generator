@@ -1,14 +1,12 @@
 
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { getRegionalFoods } from '../../data/regionalFoods';
-import { getFruitSources } from '../../data/foodSources';
+import { getStandardFruitPortion } from '../../helpers/portionHelpers';
+import { enrichWithPrebiotics } from '../../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
-import { getStandardFruitPortion, composeRegionalMeal } from '../../helpers/portionHelpers';
-import { removeDuplicateFoodItems } from '../../helpers/deduplicationHelper';
+// Update to use the new modular deduplication system
+import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 
-/**
- * Generates an evening snack based on diet preferences, day index and region
- */
 export const generateEveningSnack = (
   dayIndex: number,
   snacks: string[],
@@ -17,56 +15,74 @@ export const generateEveningSnack = (
   allergies?: string,
   region?: string
 ) => {
-  // Check for regional snack options
+  // Check for regional snacks first
   const regionalFoods = getRegionalFoods(region);
   
-  // Use regional snack options every 4th day if available
-  if (region && regionalFoods.snacks.length > 0 && dayIndex % 4 === 0) {
-    // Use a varied index to avoid repetition
-    const regionalIndex = (dayIndex * 3 + 5) % regionalFoods.snacks.length;
-    const regionalSnack = regionalFoods.snacks[regionalIndex];
+  // Use regional evening snacks every 4th day if available
+  if (region && regionalFoods.snacks && regionalFoods.snacks.length > 0 && dayIndex % 4 === 0) {
+    // Use varied index to prevent repetition
+    const regionalIndex = (dayIndex * 7 + 3) % regionalFoods.snacks.length;
+    let regionalSnack = regionalFoods.snacks[regionalIndex];
     
-    // Use the helper function for consistent formatting
-    let snack = composeRegionalMeal(regionalSnack, isWeightLoss, false);
-    
-    // Apply deduplication to regional snack
-    snack = removeDuplicateFoodItems(snack);
-    
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(snack);
-    snack += ` - (${healthBenefit})`;
-    
-    return snack;
-  }
-  
-  // Increase fruit frequency in evening snacks (3 days per week)
-  // Sunday, Tuesday, Thursday
-  const includeFruit = dayIndex % 7 === 0 || dayIndex % 7 === 2 || dayIndex % 7 === 4;
-  
-  if (includeFruit) {
-    // Get available fruits based on allergies
-    const availableFruits = getFruitSources(undefined, allergies);
-    
-    // Use a different prime-based offset to ensure variety
-    const fruitIndex = (dayIndex * 11 + 17) % availableFruits.length;
-    
-    // Select a seasonal/local fruit based on the varied day index
-    const seasonalFruit = availableFruits[fruitIndex];
-    
-    // Standardized fruit portion using our helper
-    const fruitPortion = getStandardFruitPortion(seasonalFruit);
-    
-    // Create a more interesting fruit snack
-    let snack = "";
-    if (dayIndex % 3 === 0) {
-      snack = `${seasonalFruit} slices ${fruitPortion} with a sprinkle of chaat masala`;
-    } else if (dayIndex % 3 === 1) {
-      snack = `${seasonalFruit} ${fruitPortion} with mixed seeds (1 chamach)`;
-    } else {
-      snack = `${seasonalFruit} ${fruitPortion}`;
+    // Adjust portion for weight loss
+    if (isWeightLoss) {
+      regionalSnack += " (small portion)";
     }
     
-    // Apply deduplication to fruit snack
+    // Apply deduplication to regional snack
+    regionalSnack = removeDuplicateFoodItems(regionalSnack);
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(regionalSnack);
+    regionalSnack += ` - (${healthBenefit})`;
+    
+    return regionalSnack;
+  }
+  
+  // Use prime numbers for varied indices to prevent repetition patterns
+  // Different offsets from mid-morning to ensure variety
+  const snackIndex = (dayIndex * 19 + 7) % snacks.length;
+  const fruitIndex = (dayIndex * 23 + 11) % fruits.length;
+  
+  // For evening, prefer snacks on even days and fruits on odd days (opposite of mid-morning)
+  const isEvenDay = dayIndex % 2 === 0;
+  
+  let snack = "";
+  
+  if (!isEvenDay) { // Opposite of mid-morning pattern
+    // Fruit-based snack
+    const fruit = fruits[fruitIndex];
+    const portion = getStandardFruitPortion(fruit);
+    
+    snack = isWeightLoss
+      ? `${fruit} ${portion}`
+      : `${fruit} ${portion} with a small handful of mixed seeds`;
+      
+    // Apply deduplication
+    snack = removeDuplicateFoodItems(snack);
+    
+    // Add health benefit
+    const healthBenefit = getHealthBenefit(snack);
+    snack += ` - (${healthBenefit})`;
+    
+    return snack;
+  } else {
+    // Regular snack from snack options
+    let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
+    
+    if (allergies) {
+      snackOptions = filterAllergies(snackOptions, allergies);
+    }
+    
+    // Get the snack for today
+    snack = snackOptions[snackIndex];
+    
+    // Add prebiotic foods occasionally for gut health
+    if (dayIndex % 5 === 2) { // Different pattern from mid-morning
+      snack = enrichWithPrebiotics(snack, dayIndex);
+    }
+    
+    // Apply deduplication
     snack = removeDuplicateFoodItems(snack);
     
     // Add health benefit
@@ -75,43 +91,4 @@ export const generateEveningSnack = (
     
     return snack;
   }
-  
-  let eveningSnackOptions = [
-    'Roasted makhana (1 handful)',
-    'Sabzi cutlet (2 pieces, baked)',
-    'Multigrain dhokla (2 dhokla)',
-    'Bhuna chana (1 handful) with pyaaz and tamatar',
-    'Masala murmure (½ katori)',
-    'Steamed bhutta dana (½ katori) with nimbu and kala namak',
-    'Paneer tikka (4-5 small pieces, grilled)',
-    'Moongfali chaat (1 handful)',
-    'Roasted shakarkandi (1 small)',
-    'Mixed sabzi soup (1 katori)',
-    'Kala chana chaat (½ katori)',
-    'Ankurit anaj bhel (¾ katori)',
-    'Mini idlis with sambar (4 idlis)',
-    'Moong dal cheela (1 piece)',
-    'Baked mathri (2 pieces)',
-    'Steamed muthia (2 pieces)',
-    'Roasted jowar puffs (½ katori)',
-    'Kheera and pudina raita (1 katori)',
-    'Palak and oats tikki (2 small pieces)'
-  ];
-  
-  if (allergies) {
-    eveningSnackOptions = filterAllergies(eveningSnackOptions, allergies);
-  }
-  
-  // Use a different prime-based calculation for evening snacks
-  const variedEveningIndex = (dayIndex * 17 + 13) % eveningSnackOptions.length;
-  let snack = eveningSnackOptions[variedEveningIndex] || "";
-  
-  // Apply deduplication to evening snack
-  snack = removeDuplicateFoodItems(snack);
-  
-  // Add health benefit
-  const healthBenefit = getHealthBenefit(snack);
-  snack += ` - (${healthBenefit})`;
-  
-  return snack;
 };
