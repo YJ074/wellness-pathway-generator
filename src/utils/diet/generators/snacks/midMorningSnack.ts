@@ -57,7 +57,8 @@ export const generateMidMorningSnack = (
         'Boiled Moong Dal (½ katori)'
       ];
       
-      snack = proteinSnacks[dayIndex % proteinSnacks.length];
+      const proteinSnack = proteinSnacks[dayIndex % proteinSnacks.length];
+      snack = proteinSnack;
       
       // For weight loss, modify portions
       if (isWeightLoss) {
@@ -71,7 +72,7 @@ export const generateMidMorningSnack = (
       snack = removeDuplicateFoodItems(snack);
       
       // Add health benefit
-      const proteinHealthBenefit = getHealthBenefit(snack);
+      const proteinHealthBenefit = getHealthBenefit(proteinSnack);
       snack += ` - (${proteinHealthBenefit})`;
       break;
       
@@ -114,7 +115,7 @@ export const generateMidMorningSnack = (
       snack = removeDuplicateFoodItems(snack);
       
       // Add health benefit
-      const dryFruitHealthBenefit = getHealthBenefit(dryFruit1 + " and " + dryFruit2);
+      const dryFruitHealthBenefit = getHealthBenefit(`${dryFruit1} and ${dryFruit2}`);
       snack += ` - (${dryFruitHealthBenefit})`;
       break;
   }
