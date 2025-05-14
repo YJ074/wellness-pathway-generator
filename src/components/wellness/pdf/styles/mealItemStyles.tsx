@@ -2,6 +2,20 @@
 import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
+  mealSection: {
+    marginBottom: 14, // Added missing style
+    padding: 10, // Added missing style
+  },
+  mealHeader: {
+    display: 'flex', // Added missing style
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  mealContent: {
+    marginTop: 4, // Added missing style
+  },
   mealItem: {
     marginBottom: 14, // Increased from 10 to 14
     padding: 10, // Increased from 8 to 10

@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
-import { normalizeMealForPDF } from '../utils/diet/helpers/deduplicationHelper';
+// Fix the import path to use the correct path to the deduplication helper
+import { normalizeMealForPDF } from '../../utils/diet/helpers/deduplicationHelper';
 
 const styles = StyleSheet.create({
   dayBlock: {
