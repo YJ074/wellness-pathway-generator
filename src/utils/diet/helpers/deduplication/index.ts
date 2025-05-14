@@ -18,10 +18,3 @@ export {
   cleanupDuplicationFormatting 
 } from './formatting';
 
-// The original deduplicationHelper.ts functionality is now distributed across these more focused files:
-// - detection.ts: Functions for detecting food items in text
-// - mealNormalization.ts: Functions for removing duplicates and normalizing meal descriptions
-// - addition.ts: Functions for adding food items without creating duplicates
-// - formatting.ts: Utilities for text formatting and cleanup
-// - synonyms.ts: Food synonym definitions and related functions
-// - index.ts: This file, which re-exports the public API

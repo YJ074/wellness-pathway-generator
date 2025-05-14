@@ -4,8 +4,8 @@ import { View, Text } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/pdfCalorieUtils';
 import { formatMealDescription } from '../utils/textFormatUtils';
 import { styles } from '../styles/mealItemStyles';
-// Update this import to use the new modular deduplication system
-import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplicationHelper';
+// Use the direct import path from the deduplication module
+import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
 
 interface PDFMealItemProps {
   label: string;
@@ -31,7 +31,7 @@ const PDFMealItem = ({
   // Remove health benefit from description for processing
   const descriptionWithoutBenefit = description.replace(healthBenefit, '');
   
-  // Apply deduplication if requested
+  // Apply deduplication if requested using the same function as in the wellness plan
   const processedDescription = applyDeduplication 
     ? normalizeMealForPDF(descriptionWithoutBenefit) 
     : descriptionWithoutBenefit;

@@ -8,19 +8,19 @@
 export { 
   removeDuplicateFoodItems,
   normalizeMealForPDF
-} from './deduplication/mealNormalization';
+} from './deduplication';
 
 export { 
   addWithoutDuplication 
-} from './deduplication/addition';
+} from './deduplication';
 
 // Re-export additional functionality that might be needed
 export { 
   hasFoodItem, 
   extractBaseFoodName 
-} from './deduplication/detection';
+} from './deduplication';
 
 export { 
   formatForPDF,
   cleanupDuplicationFormatting 
-} from './deduplication/formatting';
+} from './deduplication';

@@ -1,87 +1,89 @@
 
 /**
- * Food synonym definitions and related helper functions
- * Helps identify duplicates with different names
+ * Food synonym definitions and related utilities
+ * Provides mapping of common food synonyms in Indian cuisine
  */
 
-// Common food synonyms to help identify duplicates with different names
+// Define food synonyms dictionary for Indian cuisine context
 export const FOOD_SYNONYMS: Record<string, string[]> = {
+  // Dairy products
   'curd': ['yogurt', 'dahi', 'yoghurt'],
   'yogurt': ['curd', 'dahi', 'yoghurt'],
   'dahi': ['curd', 'yogurt', 'yoghurt'],
   'buttermilk': ['chaas', 'mattha'],
   'chaas': ['buttermilk', 'mattha'],
-  'rice flakes': ['poha', 'beaten rice'],
-  'poha': ['rice flakes', 'beaten rice'],
-  'semolina': ['suji', 'rava', 'rawa'],
-  'suji': ['semolina', 'rava', 'rawa'],
-  'rava': ['semolina', 'suji', 'rawa'],
-  'rawa': ['semolina', 'suji', 'rava'],
-  'broken wheat': ['daliya', 'dalia', 'bulgur'],
-  'daliya': ['broken wheat', 'dalia', 'bulgur'],
-  'dalia': ['broken wheat', 'daliya', 'bulgur'],
+  
+  // Grains
+  'rice': ['chawal', 'bhaat'],
+  'brown rice': ['bhura chawal'],
+  'bread': ['roti', 'chapati', 'paratha'],
+  'roti': ['chapati', 'phulka'],
+  'chapati': ['roti', 'phulka'],
+  
+  // Vegetables
+  'spinach': ['palak'],
+  'fenugreek': ['methi'],
+  'eggplant': ['baingan', 'brinjal'],
+  'ladyfinger': ['okra', 'bhindi'],
+  'okra': ['ladyfinger', 'bhindi'],
+  'potato': ['aloo'],
+  'cauliflower': ['gobi', 'phool gobi'],
+  
+  // Legumes
+  'lentil': ['dal', 'daal'],
+  'dal': ['lentil', 'daal'],
+  'chickpeas': ['chana', 'chole'],
+  'chana': ['chickpeas', 'chole'],
+  
+  // Milk and milk products
   'cottage cheese': ['paneer'],
   'paneer': ['cottage cheese'],
-  'chickpeas': ['chana', 'garbanzo beans'],
-  'chana': ['chickpeas', 'garbanzo beans'],
-  'egg': ['anda', 'eggs'],
-  'anda': ['egg', 'eggs'],
-  'chapati': ['roti', 'phulka'],
-  'roti': ['chapati', 'phulka'],
-  'flat bread': ['chapati', 'roti', 'phulka'],
+  
+  // Nuts
+  'peanuts': ['moongfali'],
+  'almonds': ['badam'],
 };
 
 /**
- * Gets all synonyms for a given food item
- * @param foodName The food name to look up synonyms for
+ * Gets a list of known synonyms for a given food
+ * @param foodName The name of the food to find synonyms for
  * @returns Array of synonyms for the food
  */
 export const getSynonymsForFood = (foodName: string): string[] => {
-  const synonyms: string[] = [];
-  const lowerFoodName = foodName.toLowerCase();
+  // Clean up the food name for matching
+  const cleanFoodName = foodName.toLowerCase().trim();
   
-  // Check if this food name has direct synonyms
-  Object.entries(FOOD_SYNONYMS).forEach(([key, values]) => {
-    // If food contains this key, add all its synonyms
-    if (lowerFoodName.includes(key.toLowerCase())) {
-      synonyms.push(...values);
-    }
-    
-    // If food contains any of the values, add the key
-    if (values.some(value => lowerFoodName.includes(value.toLowerCase()))) {
-      synonyms.push(key);
-    }
-  });
+  // Direct lookup in the dictionary
+  if (FOOD_SYNONYMS[cleanFoodName]) {
+    return FOOD_SYNONYMS[cleanFoodName];
+  }
   
-  return synonyms;
-};
-
-/**
- * Check if a food name has a synonym match in the seen foods set
- * @param foodName The food name to check
- * @param seenFoods Set of previously seen foods
- * @returns True if a synonym match is found
- */
-export const hasSynonymInSeenFoods = (foodName: string, seenFoods: Set<string>): boolean => {
-  const lowerFoodName = foodName.toLowerCase();
-  const seenFoodsArray = Array.from(seenFoods);
-  
-  // Check all synonym pairs
-  for (const [key, values] of Object.entries(FOOD_SYNONYMS)) {
-    // If our food contains this key and any seen food contains this key or its values
-    if (lowerFoodName.includes(key.toLowerCase()) && 
-        seenFoodsArray.some(seen => seen.includes(key.toLowerCase()) || 
-                                  values.some(v => seen.includes(v.toLowerCase())))) {
-      return true;
-    }
-    
-    // If our food contains any of the values and any seen food contains the key or values
-    if (values.some(value => lowerFoodName.includes(value.toLowerCase())) &&
-        seenFoodsArray.some(seen => seen.includes(key.toLowerCase()) || 
-                                  values.some(v => seen.includes(v.toLowerCase())))) {
-      return true;
+  // Check if this food is a synonym in the dictionary
+  for (const [key, synonyms] of Object.entries(FOOD_SYNONYMS)) {
+    if (synonyms.includes(cleanFoodName)) {
+      return [key, ...synonyms.filter(s => s !== cleanFoodName)];
     }
   }
   
-  return false;
+  // No synonyms found
+  return [];
+};
+
+/**
+ * Checks if a food has a synonym in the seen foods list
+ * @param foodName The food to check
+ * @param seenFoods Set of already seen foods
+ * @returns True if a synonym was found in the seen foods
+ */
+export const hasSynonymInSeenFoods = (foodName: string, seenFoods: Set<string>): boolean => {
+  const cleanFoodName = foodName.toLowerCase().trim();
+  
+  // Check if the food itself is in seen foods
+  if (seenFoods.has(cleanFoodName)) {
+    return true;
+  }
+  
+  // Check synonyms
+  const synonyms = getSynonymsForFood(cleanFoodName);
+  return synonyms.some(synonym => seenFoods.has(synonym.toLowerCase().trim()));
 };
