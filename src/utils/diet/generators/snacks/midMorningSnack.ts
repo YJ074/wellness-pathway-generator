@@ -34,7 +34,8 @@ export const generateMidMorningSnack = (
     const fruitPortion = getStandardFruitPortion(seasonalFruit);
     
     // Simple fruit-based snack with minimal processing
-    let snack = `${seasonalFruit} ${fruitPortion}${dayIndex % 3 === 0 ? ' with a sprinkle of kala namak and kali mirch' : ''}`;
+    // Removed the addition of kala namak and kali mirch
+    let snack = `${seasonalFruit} ${fruitPortion}`;
     
     // Apply deduplication to fruit snack
     snack = removeDuplicateFoodItems(snack);
