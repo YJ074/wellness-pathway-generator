@@ -2,7 +2,7 @@
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { getStandardFruitPortion } from '../../helpers/portionHelpers';
-import { removeDuplicateFoodItems, normalizeMealForPDF } from '../../helpers/deduplicationHelper';
+import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 
 /**
  * Generates a general snack option based on diet preferences and day index
@@ -34,8 +34,8 @@ export const generateSnacks = (
   
   // Apply enhanced deduplication to ensure no repeated food terms
   // Using our more comprehensive normalization function
-  snack = normalizeMealForPDF(snack);
-  fruit = normalizeMealForPDF(fruit);
+  snack = removeDuplicateFoodItems(snack);
+  fruit = removeDuplicateFoodItems(fruit);
   
   // Add health benefits
   const snackHealthBenefit = getHealthBenefit(snack);

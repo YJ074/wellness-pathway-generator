@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   spacing: {
-    marginBottom: 12, // Increased spacing between meal sections to prevent overlap
+    marginBottom: 14, // Increased spacing between meal sections to prevent overlap
   }
 });
 
@@ -83,6 +83,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           mealType="breakfast"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
+          applyDeduplication={true}
         />
       </View>
       
@@ -95,6 +96,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
             mealType="midMorningSnack"
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
+            applyDeduplication={true}
           />
         </View>
       )}
@@ -107,6 +109,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           mealType="lunch"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
+          applyDeduplication={true}
         />
       </View>
       
@@ -119,6 +122,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
             mealType="eveningSnack"
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
+            applyDeduplication={true}
           />
         </View>
       )}
@@ -131,6 +135,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           mealType="dinner"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
+          applyDeduplication={true}
         />
       </View>
       

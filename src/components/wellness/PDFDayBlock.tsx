@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { normalizeMealForPDF } from '../utils/diet/helpers/deduplication';
 
 const styles = StyleSheet.create({
   dayBlock: {
@@ -49,52 +50,62 @@ type PDFDayBlockProps = {
   water?: number;
 };
 
-const PDFDayBlock = (dietDay: PDFDayBlockProps) => (
-  <View style={styles.dayBlock} wrap={false}>
-    <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
-    
-    <View style={styles.mealContainer}>
-      <Text style={styles.mealLabel}>Breakfast:</Text>
-      <Text style={styles.mealText}>{dietDay.breakfast}</Text>
-    </View>
-
-    {dietDay.midMorningSnack && (
+const PDFDayBlock = (dietDay: PDFDayBlockProps) => {
+  // Apply the same deduplication used in the wellness plan
+  const processedBreakfast = normalizeMealForPDF(dietDay.breakfast);
+  const processedLunch = normalizeMealForPDF(dietDay.lunch);
+  const processedDinner = normalizeMealForPDF(dietDay.dinner);
+  const processedMidMorningSnack = dietDay.midMorningSnack ? normalizeMealForPDF(dietDay.midMorningSnack) : undefined;
+  const processedEveningSnack = dietDay.eveningSnack ? normalizeMealForPDF(dietDay.eveningSnack) : undefined;
+  const processedSnacks = dietDay.snacks ? normalizeMealForPDF(dietDay.snacks) : undefined;
+  
+  return (
+    <View style={styles.dayBlock} wrap={false}>
+      <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
+      
       <View style={styles.mealContainer}>
-        <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
-        <Text style={styles.mealText}>{dietDay.midMorningSnack}</Text>
+        <Text style={styles.mealLabel}>Breakfast:</Text>
+        <Text style={styles.mealText}>{processedBreakfast}</Text>
       </View>
-    )}
 
-    <View style={styles.mealContainer}>
-      <Text style={styles.mealLabel}>Lunch:</Text>
-      <Text style={styles.mealText}>{dietDay.lunch}</Text>
-    </View>
+      {processedMidMorningSnack && (
+        <View style={styles.mealContainer}>
+          <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
+          <Text style={styles.mealText}>{processedMidMorningSnack}</Text>
+        </View>
+      )}
 
-    {dietDay.eveningSnack && (
       <View style={styles.mealContainer}>
-        <Text style={styles.mealLabel}>Evening Snack:</Text>
-        <Text style={styles.mealText}>{dietDay.eveningSnack}</Text>
+        <Text style={styles.mealLabel}>Lunch:</Text>
+        <Text style={styles.mealText}>{processedLunch}</Text>
       </View>
-    )}
 
-    <View style={styles.mealContainer}>
-      <Text style={styles.mealLabel}>Dinner:</Text>
-      <Text style={styles.mealText}>{dietDay.dinner}</Text>
-    </View>
+      {processedEveningSnack && (
+        <View style={styles.mealContainer}>
+          <Text style={styles.mealLabel}>Evening Snack:</Text>
+          <Text style={styles.mealText}>{processedEveningSnack}</Text>
+        </View>
+      )}
 
-    {dietDay.snacks && !dietDay.midMorningSnack && !dietDay.eveningSnack && (
       <View style={styles.mealContainer}>
-        <Text style={styles.mealLabel}>Snacks:</Text>
-        <Text style={styles.mealText}>{dietDay.snacks}</Text>
+        <Text style={styles.mealLabel}>Dinner:</Text>
+        <Text style={styles.mealText}>{processedDinner}</Text>
       </View>
-    )}
 
-    {dietDay.calories && (
-      <Text style={styles.footnote}>
-        Approx. Calories: {dietDay.calories} kcal • Water: {dietDay.water} L
-      </Text>
-    )}
-  </View>
-);
+      {processedSnacks && !processedMidMorningSnack && !processedEveningSnack && (
+        <View style={styles.mealContainer}>
+          <Text style={styles.mealLabel}>Snacks:</Text>
+          <Text style={styles.mealText}>{processedSnacks}</Text>
+        </View>
+      )}
+
+      {dietDay.calories && (
+        <Text style={styles.footnote}>
+          Approx. Calories: {dietDay.calories} kcal • Water: {dietDay.water} L
+        </Text>
+      )}
+    </View>
+  );
+};
 
 export default PDFDayBlock;
