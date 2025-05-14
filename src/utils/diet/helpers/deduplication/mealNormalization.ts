@@ -1,4 +1,3 @@
-
 import { hasFoodItem, extractBaseFoodName } from './detection';
 import { cleanupDuplicationFormatting } from './formatting';
 import { hasSynonymInSeenFoods } from './synonyms';
@@ -39,7 +38,8 @@ export function removeDuplicateFoodItems(mealDescription: string): string {
     if (!baseName || baseName.length < 2) continue;
     
     // Skip if we've already seen this food item or a synonym
-    if (seenBaseFoods.has(baseName) || hasSynonymInSeenFoods(baseName, Array.from(seenBaseFoods))) {
+    // Convert the seenBaseFoods Set to an Array before passing to hasSynonymInSeenFoods
+    if (seenBaseFoods.has(baseName) || hasSynonymInSeenFoods(baseName, new Set(Array.from(seenBaseFoods)))) {
       continue;
     }
     

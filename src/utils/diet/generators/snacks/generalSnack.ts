@@ -15,7 +15,7 @@ export const generateSnacks = (
 ) => {
   // Use prime numbers for varied indices to prevent repetition patterns
   const snackIndex1 = (dayIndex * 31 + 19) % snacks.length;
-  const snackIndex2 = (dayIndex * 37 + 23) % snacks.length;
+  let snackIndex2 = (dayIndex * 37 + 23) % snacks.length; // Changed from const to let
   const fruitIndex = (dayIndex * 41 + 29) % fruits.length;
   
   let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
