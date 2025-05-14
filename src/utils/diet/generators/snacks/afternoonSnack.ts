@@ -77,7 +77,8 @@ export const generateAfternoonSnack = (
   const fruit = fruits[fruitIndex];
   
   // Get standardized fruit portion
-  const fruitPortion = getStandardFruitPortion(fruit, isWeightLoss);
+  // The error was here - getStandardFruitPortion expects only one argument
+  const fruitPortion = getStandardFruitPortion(fruit);
   
   // Build the afternoon snack with balanced nutrition
   let afternoonSnack = '';
