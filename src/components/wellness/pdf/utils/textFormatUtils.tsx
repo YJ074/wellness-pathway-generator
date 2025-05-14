@@ -15,7 +15,7 @@ export const formatMealDescription = (text: string): ReactNode[] => {
   try {
     // First, deduplicate the text using our enhanced normalizeMealForPDF function
     // This aggressive deduplication is crucial for PDF rendering
-    const deduplicatedText = normalizeMealForPDF(text);
+    const deduplicatedText = text;
     
     // Additional quick deduplication pass for cases that may have been missed
     // Especially for breakfast items which tend to have more duplication

@@ -26,63 +26,38 @@ const PDFMealItem = ({
 }: PDFMealItemProps) => {
   // Extract health benefit if present in the description
   const benefitMatch = description.match(/ - \((Contains [^)]+|[^)]+health|[^)]+sources|[^)]+protein|[^)]+enzymes|[^)]+antioxidants)\)$/);
-  let healthBenefit = null;
-  let mealDescription = description;
+  const healthBenefit = benefitMatch ? benefitMatch[0] : '';
   
-  if (benefitMatch && benefitMatch[0]) {
-    healthBenefit = benefitMatch[1];
-    mealDescription = description.replace(benefitMatch[0], '');
-  }
+  // Remove health benefit from description for processing
+  const descriptionWithoutBenefit = description.replace(healthBenefit, '');
   
-  // Apply enhanced deduplication to the meal description if requested
-  // This is critical for breakfast items which tend to have more duplication
-  if (applyDeduplication) {
-    mealDescription = normalizeMealForPDF(mealDescription);
-    
-    // Additional aggressive deduplication for PDF generation
-    // Handle exact duplicates even if they appear with different formatting
-    mealDescription = mealDescription
-      // Remove duplicate items with same name but different portions or descriptions 
-      .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
-      // Special handling for seeds which are prone to duplication 
-      .replace(/(\b[A-Za-z]+\s+seeds)\s+\([^)]+\)(?:[^,]*),(?:[^,]*)\1\s+\([^)]+\)/gi, '$1 (portion)')
-      // Catch variations like "X and X" or "with X, X"
-      .replace(/(\b[A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:and|with|,)\s+\1\b/gi, '$1')
-      // Deduplicate common items that get repeated with connectors
-      .replace(/(with|and)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*),\s+\1\s+\2/gi, '$1 $2')
-      // Fix double connectors
-      .replace(/(with|and)\s+\1/gi, '$1')
-      // Fix "with X and with X" pattern
-      .replace(/with\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+and\s+with\s+\1/gi, 'with $1');
-  }
+  // Apply deduplication if requested
+  const processedDescription = applyDeduplication 
+    ? normalizeMealForPDF(descriptionWithoutBenefit) 
+    : descriptionWithoutBenefit;
   
-  // Format the meal description to highlight special terms
-  const formattedDescription = formatMealDescription(mealDescription);
+  // Reattach health benefit if it was present
+  const finalDescription = healthBenefit 
+    ? `${processedDescription}${healthBenefit}` 
+    : processedDescription;
+  
+  // Calculate estimated calories for this meal
+  const caloriesForMeal = getEstimatedCalories(mealType, dailyCalories, goalFactor);
   
   return (
-    <View style={styles.mealItem} wrap={false}>
-      <Text style={styles.mealLabel}>• {label}</Text>
-      
-      <View style={styles.descriptionContainer}>
-        {formattedDescription.map((segment, index) => {
-          if (typeof segment === 'string') {
-            return <Text key={`text-${index}`} style={styles.mealDescription}>{segment}</Text>;
+    <View style={styles.mealSection}>
+      <View style={styles.mealHeader}>
+        <Text style={styles.mealLabel}>{label}</Text>
+        <Text style={styles.calorieInfo}>~{caloriesForMeal} cal</Text>
+      </View>
+      <View style={styles.mealContent}>
+        {formatMealDescription(finalDescription).map((item, index) => {
+          if (typeof item === 'string') {
+            return <Text key={`text-${index}`} style={styles.mealDescription}>{item}</Text>;
           }
-          return React.cloneElement(segment as React.ReactElement, { key: `segment-${index}` });
+          return item;
         })}
       </View>
-      
-      {healthBenefit && (
-        <View style={styles.healthBenefitContainer}>
-          <Text style={styles.healthBenefit}>
-            ♥ {healthBenefit}
-          </Text>
-        </View>
-      )}
-      
-      <Text style={styles.calorieInfo}>
-        Calories: {getEstimatedCalories(mealType, dailyCalories, goalFactor)} kcal
-      </Text>
     </View>
   );
 };

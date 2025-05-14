@@ -43,6 +43,11 @@ const styles = StyleSheet.create({
   },
   macroItem: {
     marginRight: 8,
+  },
+  summaryRow: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 3,
   }
 });
 
@@ -118,39 +123,14 @@ const PDFNutritionSummary = ({
     <View style={styles.nutritionBox}>
       <Text style={styles.nutritionTitle}>Daily Nutrition Summary</Text>
       
-      {/* Base nutrition info */}
-      <View style={styles.macroRow}>
-        <Text style={styles.nutritionText}>
-          Total Calories: {dailyCalories} kcal  •  Water: {water}L
-        </Text>
-      </View>
+      {/* Base nutrition info - formatted like your screenshot */}
+      <Text style={styles.summaryRow}>
+        Protein: {macros.protein}g per day (based on bodyweight) • Water: {water}L
+      </Text>
       
-      {/* Macros - split into separate components to prevent overlapping */}
-      <View style={styles.macroRow}>
-        <Text style={styles.nutritionText}>
-          Macronutrients: 
-        </Text>
-      </View>
-      
-      <View style={styles.macroRow}>
-        <View style={styles.macroItem}>
-          <Text style={styles.nutritionText}>
-            Protein: {macros.protein}g {proteinNote && `${proteinNote}`}
-          </Text>
-        </View>
-        
-        <View style={styles.macroItem}>
-          <Text style={styles.nutritionText}>
-            Carbs: {macros.carbs}g
-          </Text>
-        </View>
-        
-        <View style={styles.macroItem}>
-          <Text style={styles.nutritionText}>
-            Fats: {macros.fat}g
-          </Text>
-        </View>
-      </View>
+      <Text style={styles.summaryRow}>
+        Carbs: {macros.carbs}g • Fats: {macros.fat}g • Total: {dailyCalories} kcal
+      </Text>
       
       <Text style={styles.macroDetail}>
         Distribution: Protein: {proteinPct}% • Carbs: {carbsPct}% • Fats: {fatPct}%

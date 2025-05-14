@@ -4,9 +4,10 @@
  * Serves as the main entry point for deduplication functionality
  */
 
+// Re-export necessary functions from the modular system
 export { 
   removeDuplicateFoodItems,
-  normalizeMealForPDF 
+  normalizeMealForPDF
 } from './deduplication/mealNormalization';
 
 export { 
