@@ -115,7 +115,8 @@ export const generateMidMorningSnack = (
       snack = removeDuplicateFoodItems(snack);
       
       // Add health benefit
-      const dryFruitHealthBenefit = getHealthBenefit(`${dryFruit1} and ${dryFruit2}`);
+      const dryFruitsMix = `${dryFruit1} and ${dryFruit2}`;
+      const dryFruitHealthBenefit = getHealthBenefit(dryFruitsMix);
       snack += ` - (${dryFruitHealthBenefit})`;
       break;
   }
