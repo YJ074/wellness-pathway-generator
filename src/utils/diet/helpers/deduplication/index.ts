@@ -21,6 +21,10 @@ export {
 // Import the normalizeMealForPDF function for use in this file
 import { normalizeMealForPDF } from './mealNormalization';
 
+// Import additional functions needed in this file
+import { extractBaseFoodName } from './detection';
+import { hasSynonymInSeenFoods } from './synonyms';
+
 // Export enhanced deduplication functionality
 export const applyTriplePassDeduplication = (mealDescription: string): string => {
   if (!mealDescription) return '';
