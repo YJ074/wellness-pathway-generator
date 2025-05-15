@@ -113,7 +113,6 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
           applyDeduplication={false} // Already deduplicated above
-          suggestedTime={day.mealTimings?.breakfast}
         />
       </View>
       
@@ -127,7 +126,6 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
             applyDeduplication={false} // Already deduplicated above
-            suggestedTime={day.mealTimings?.midMorningSnack}
           />
         </View>
       )}
@@ -141,7 +139,6 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
           applyDeduplication={false} // Already deduplicated above
-          suggestedTime={day.mealTimings?.lunch}
         />
       </View>
       
@@ -155,7 +152,6 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
             applyDeduplication={false} // Already deduplicated above
-            suggestedTime={day.mealTimings?.eveningSnack}
           />
         </View>
       )}
@@ -169,7 +165,6 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
           applyDeduplication={false} // Already deduplicated above
-          suggestedTime={day.mealTimings?.dinner}
         />
       </View>
       

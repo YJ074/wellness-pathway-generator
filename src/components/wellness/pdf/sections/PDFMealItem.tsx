@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/mealCalories';
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   },
   caloriesContainer: {
     position: 'absolute',
-    right: 60, // Offset to allow space for time display
+    right: 0, // Positioned all the way to the right
     top: 0,
   },
   calories: {
@@ -32,17 +33,6 @@ const styles = StyleSheet.create({
   mealText: {
     fontSize: 9,
     lineHeight: 1.5,
-  },
-  timeContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  timeText: {
-    fontSize: 8,
-    color: '#3b82f6',
-    fontFamily: 'Helvetica-Bold',
-    textAlign: 'right',
   }
 });
 
@@ -62,8 +52,7 @@ const PDFMealItem = ({
   mealType, 
   dailyCalories, 
   goalFactor = 1,
-  applyDeduplication = true,
-  suggestedTime
+  applyDeduplication = true
 }: PDFMealItemProps) => {
   // Apply triple-pass deduplication for maximum effectiveness
   const processedDescription = applyDeduplication 
@@ -82,17 +71,10 @@ const PDFMealItem = ({
       <View style={styles.header}>
         <Text style={styles.title}>{label}</Text>
         
-        {/* Calories display with fixed position */}
+        {/* Calories display with fixed position on the right side */}
         <View style={styles.caloriesContainer}>
           <Text style={styles.calories}>~{mealCalories} kcal</Text>
         </View>
-        
-        {/* Time display with fixed position */}
-        {suggestedTime && (
-          <View style={styles.timeContainer}>
-            <Text style={styles.timeText}>{suggestedTime}</Text>
-          </View>
-        )}
       </View>
       <Text style={styles.mealText}>{processedDescription}</Text>
     </View>
