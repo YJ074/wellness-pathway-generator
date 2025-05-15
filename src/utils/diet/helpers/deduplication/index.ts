@@ -9,7 +9,11 @@ export { hasFoodItem, extractBaseFoodName, detectDuplicateFoods } from './detect
 export type { DuplicateDetectionOptions } from './detection';
 export { DEFAULT_OPTIONS } from './detection';
 export { addWithoutDuplication } from './addition';
-export { removeDuplicateFoodItems, normalizeMealForPDF } from './mealNormalization';
+export { 
+  removeDuplicateFoodItems, 
+  normalizeMealForPDF, 
+  deduplicateMealWithDailyContext 
+} from './mealNormalization';
 export { FOOD_SYNONYMS, getSynonymsForFood, hasSynonymInSeenFoods } from './synonyms';
 export { 
   normalizeWhitespaceAndPunctuation, 
