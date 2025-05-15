@@ -3,6 +3,7 @@ import React from 'react';
 import { Document, Page, StyleSheet, Font } from '@react-pdf/renderer';
 import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
+import { applyTriplePassDeduplication } from '@/utils/diet/helpers/deduplication';
 
 // Register only standard PDF fonts that are guaranteed to work
 // Only using Helvetica and Helvetica-Bold which are built into PDF format
@@ -37,15 +38,19 @@ const WellnessPDF = ({ formData, dietPlan, workoutPlan }: WellnessPDFProps) => {
   const totalDays = dietPlan.days.length;
   const daysPerPage = 2; // Reduced from 3 to 2 days per page for better spacing
   
-  // Apply meal deduplication to each day before generating the PDF
+  // Apply enhanced deduplication to each day before generating the PDF
   const processedDietPlan = {
     ...dietPlan,
     days: dietPlan.days.map(day => {
       // Pre-process all meal descriptions to ensure no duplication in the PDF
       return {
         ...day,
-        // We'll leave the deep deduplication to the PDFMealItem component
-        // for maximum effectiveness
+        // Apply triple-pass deduplication to each meal
+        breakfast: applyTriplePassDeduplication(day.breakfast),
+        lunch: applyTriplePassDeduplication(day.lunch),
+        dinner: applyTriplePassDeduplication(day.dinner),
+        midMorningSnack: day.midMorningSnack ? applyTriplePassDeduplication(day.midMorningSnack) : undefined,
+        eveningSnack: day.eveningSnack ? applyTriplePassDeduplication(day.eveningSnack) : undefined
       };
     })
   };

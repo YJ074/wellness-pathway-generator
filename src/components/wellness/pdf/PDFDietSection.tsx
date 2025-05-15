@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 import { estimateMacros } from '../utils/pdfCalorieUtils';
@@ -8,6 +7,7 @@ import PDFNutritionSummary from './sections/PDFNutritionSummary';
 import PDFWellnessBenefits from './sections/PDFWellnessBenefits';
 import PDFRegionalNote from './sections/PDFRegionalNote';
 import PDFMealTimings from './sections/PDFMealTimings';
+import { applyTriplePassDeduplication } from '@/utils/diet/helpers/deduplication';
 
 const styles = StyleSheet.create({
   planSection: {
@@ -69,6 +69,15 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   // Get weight in kg for protein calculation
   const weightKg = formData.weight ? parseInt(formData.weight) : 70;
   
+  // Pre-process all meal descriptions with enhanced triple-pass deduplication
+  const processedBreakfast = applyTriplePassDeduplication(day.breakfast);
+  const processedLunch = applyTriplePassDeduplication(day.lunch);
+  const processedDinner = applyTriplePassDeduplication(day.dinner);
+  const processedMidMorningSnack = day.midMorningSnack ? 
+    applyTriplePassDeduplication(day.midMorningSnack) : undefined;
+  const processedEveningSnack = day.eveningSnack ? 
+    applyTriplePassDeduplication(day.eveningSnack) : undefined;
+    
   // Pass exercise frequency to macro calculator for protein calculation
   const macros = estimateMacros(
     dailyCalories, 
@@ -99,25 +108,25 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Breakfast"
-          description={day.breakfast}
+          description={processedBreakfast}
           mealType="breakfast"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
-          applyDeduplication={true}
+          applyDeduplication={false} // Already deduplicated above
           suggestedTime={day.mealTimings?.breakfast}
         />
       </View>
       
       {/* Mid-Morning Snack with improved spacing */}
-      {day.midMorningSnack && (
+      {processedMidMorningSnack && (
         <View style={styles.spacing} wrap={false}>
           <PDFMealItem 
             label="Mid-Morning Snack"
-            description={day.midMorningSnack}
+            description={processedMidMorningSnack}
             mealType="midMorningSnack"
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
-            applyDeduplication={true}
+            applyDeduplication={false} // Already deduplicated above
             suggestedTime={day.mealTimings?.midMorningSnack}
           />
         </View>
@@ -127,25 +136,25 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Lunch"
-          description={day.lunch}
+          description={processedLunch}
           mealType="lunch"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
-          applyDeduplication={true}
+          applyDeduplication={false} // Already deduplicated above
           suggestedTime={day.mealTimings?.lunch}
         />
       </View>
       
       {/* Evening Snack with improved spacing */}
-      {day.eveningSnack && (
+      {processedEveningSnack && (
         <View style={styles.spacing} wrap={false}>
           <PDFMealItem 
             label="Evening Snack"
-            description={day.eveningSnack}
+            description={processedEveningSnack}
             mealType="eveningSnack"
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
-            applyDeduplication={true}
+            applyDeduplication={false} // Already deduplicated above
             suggestedTime={day.mealTimings?.eveningSnack}
           />
         </View>
@@ -155,11 +164,11 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Dinner"
-          description={day.dinner}
+          description={processedDinner}
           mealType="dinner"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
-          applyDeduplication={true}
+          applyDeduplication={false} // Already deduplicated above
           suggestedTime={day.mealTimings?.dinner}
         />
       </View>
