@@ -1,32 +1,24 @@
+
 import React from 'react';
-import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { View, StyleSheet } from '@react-pdf/renderer';
 import { estimateMacros } from '../utils/pdfCalorieUtils';
 import { FormData } from '../types';
-import PDFMealItem from './sections/PDFMealItem';
 import PDFNutritionSummary from './sections/PDFNutritionSummary';
 import PDFWellnessBenefits from './sections/PDFWellnessBenefits';
 import PDFRegionalNote from './sections/PDFRegionalNote';
 import PDFMealTimings from './sections/PDFMealTimings';
 import { applyTriplePassDeduplication } from '@/utils/diet/helpers/deduplication';
+import PDFDietPlanHeader from './sections/PDFDietPlanHeader';
+import PDFMealsContainer from './sections/PDFMealsContainer';
 
 const styles = StyleSheet.create({
   planSection: {
     marginBottom: 15,
     padding: 5,
   },
-  sectionTitle: {
-    fontSize: 14,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: '#f9f9f9',
-    padding: 6,
-    borderRadius: 3,
-    fontFamily: 'Helvetica',
-    fontWeight: 'bold',
-  },
   spacing: {
-    marginBottom: 16, // Increased spacing between meal sections
-    padding: 2, // Added slight padding to improve layout
+    marginBottom: 16,
+    padding: 2,
   }
 });
 
@@ -90,7 +82,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
   
   return (
     <View style={styles.planSection}>
-      <Text style={styles.sectionTitle}>Diet Plan</Text>
+      <PDFDietPlanHeader />
       
       {/* Regional Note */}
       <PDFRegionalNote regionalNote={day.regionalNote} />
@@ -104,69 +96,16 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         />
       </View>
       
-      {/* Breakfast with improved spacing */}
-      <View style={styles.spacing} wrap={false}>
-        <PDFMealItem 
-          label="Breakfast"
-          description={processedBreakfast}
-          mealType="breakfast"
-          dailyCalories={dailyCalories}
-          goalFactor={goalFactor}
-          applyDeduplication={false} // Already deduplicated above
-        />
-      </View>
-      
-      {/* Mid-Morning Snack with improved spacing */}
-      {processedMidMorningSnack && (
-        <View style={styles.spacing} wrap={false}>
-          <PDFMealItem 
-            label="Mid-Morning Snack"
-            description={processedMidMorningSnack}
-            mealType="midMorningSnack"
-            dailyCalories={dailyCalories}
-            goalFactor={goalFactor}
-            applyDeduplication={false} // Already deduplicated above
-          />
-        </View>
-      )}
-      
-      {/* Lunch with improved spacing */}
-      <View style={styles.spacing} wrap={false}>
-        <PDFMealItem 
-          label="Lunch"
-          description={processedLunch}
-          mealType="lunch"
-          dailyCalories={dailyCalories}
-          goalFactor={goalFactor}
-          applyDeduplication={false} // Already deduplicated above
-        />
-      </View>
-      
-      {/* Evening Snack with improved spacing */}
-      {processedEveningSnack && (
-        <View style={styles.spacing} wrap={false}>
-          <PDFMealItem 
-            label="Evening Snack"
-            description={processedEveningSnack}
-            mealType="eveningSnack"
-            dailyCalories={dailyCalories}
-            goalFactor={goalFactor}
-            applyDeduplication={false} // Already deduplicated above
-          />
-        </View>
-      )}
-      
-      {/* Dinner with improved spacing */}
-      <View style={styles.spacing} wrap={false}>
-        <PDFMealItem 
-          label="Dinner"
-          description={processedDinner}
-          mealType="dinner"
-          dailyCalories={dailyCalories}
-          goalFactor={goalFactor}
-          applyDeduplication={false} // Already deduplicated above
-        />
-      </View>
+      {/* All Meals Container */}
+      <PDFMealsContainer 
+        breakfast={processedBreakfast}
+        lunch={processedLunch}
+        dinner={processedDinner}
+        midMorningSnack={processedMidMorningSnack}
+        eveningSnack={processedEveningSnack}
+        dailyCalories={dailyCalories}
+        goalFactor={goalFactor}
+      />
       
       {/* Nutrition Summary Box */}
       <View style={styles.spacing}>
