@@ -118,6 +118,11 @@ export const cleanupDuplicationFormatting = (text: string): string => {
     // Fix common additions that get duplicated
     .replace(/with\s+(?:\w+\s+)?seeds(?:,|\s+and|\s+with)\s+with\s+(?:\w+\s+)?seeds/gi, 'with mixed seeds')
     .replace(/with\s+(?:\w+\s+)?nuts(?:,|\s+and|\s+with)\s+with\s+(?:\w+\s+)?nuts/gi, 'with mixed nuts')
+    // Fix sabzi duplications
+    .replace(/(\w+)\s+sabzi(?:[^,]*?)\s+\1\s+sabzi/gi, '$1 sabzi')
+    // Fix dal/lentil duplications
+    .replace(/(\w+)\s+dal(?:[^,]*?)\s+\1\s+dal/gi, '$1 dal')
+    .replace(/(\w+)\s+lentil(?:[^,]*?)\s+\1\s+lentil/gi, '$1 lentil')
     // Remove any empty sections that may result from our cleaning
     .replace(/\s*,\s*,\s*/g, ', ')
     .replace(/\s*,\s*\)/g, ')')

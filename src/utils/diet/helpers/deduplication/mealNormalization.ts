@@ -77,6 +77,94 @@ export function removeDuplicateFoodItems(mealDescription: string): string {
 }
 
 /**
+ * Enhanced food deduplication for meals across a day
+ * Keeps track of food items to prevent repetition
+ * 
+ * @param mealDescription The original meal description
+ * @param seenFoods Set of food items already seen in the day
+ * @returns A cleaned meal description with day-level deduplication
+ */
+export function deduplicateMealWithDailyContext(
+  mealDescription: string,
+  seenFoods: Set<string>
+): { text: string; addedFoods: string[] } {
+  if (!mealDescription) return { text: '', addedFoods: [] };
+
+  // Extract health benefit to process separately
+  const benefitMatch = mealDescription.match(/ - \(([^)]+)\)$/);
+  const healthBenefit = benefitMatch ? benefitMatch[0] : '';
+  
+  // Remove health benefit for processing
+  let cleanDescription = healthBenefit ? 
+    mealDescription.replace(healthBenefit, '') : 
+    mealDescription;
+  
+  // Split by commas, "with", "and", "or" conjunctions to analyze each part
+  const parts = cleanDescription.split(/,\s*|\s+with\s+|\s+and\s+|\s+or\s+/);
+  const newlyAddedFoods: string[] = [];
+  const result: string[] = [];
+  
+  for (const part of parts) {
+    const cleanPart = part.trim();
+    if (!cleanPart) continue;
+    
+    // Skip portions in parentheses when standalone
+    if (cleanPart.startsWith('(') && cleanPart.endsWith(')')) continue;
+    
+    // Extract base food name for comparison
+    const baseName = extractBaseFoodName(cleanPart.toLowerCase());
+    if (!baseName || baseName.length < 2) continue;
+    
+    // Skip if we've already seen this food item or a synonym in the day
+    if (seenFoods.has(baseName) || hasSynonymInSeenFoods(baseName, seenFoods)) {
+      continue;
+    }
+    
+    // Add the base name to seen foods and the original text to result
+    seenFoods.add(baseName);
+    newlyAddedFoods.push(baseName);
+    result.push(cleanPart);
+  }
+  
+  // If everything was filtered out (all duplicates), return a generic placeholder
+  if (result.length === 0) {
+    return { 
+      text: `Assorted seasonal vegetables and protein (as per dietary preference)${healthBenefit || ''}`,
+      addedFoods: ['vegetables', 'protein'] 
+    };
+  }
+  
+  // Rejoin with appropriate conjunctions based on context
+  let normalizedText = '';
+  for (let i = 0; i < result.length; i++) {
+    if (i === 0) {
+      normalizedText = result[i];
+    } else if (i === result.length - 1) {
+      // Use "and" for the last item if there are more than 2 items
+      if (result.length > 2) {
+        normalizedText += `, and ${result[i]}`;
+      } else {
+        // Use just "and" for 2 items
+        normalizedText += ` and ${result[i]}`;
+      }
+    } else {
+      // Separate items with commas
+      normalizedText += `, ${result[i]}`;
+    }
+  }
+  
+  // Reattach health benefit if present
+  if (healthBenefit) {
+    normalizedText += ` ${healthBenefit}`;
+  }
+  
+  return { 
+    text: normalizedText,
+    addedFoods: newlyAddedFoods
+  };
+}
+
+/**
  * More aggressive normalization for PDF output to avoid duplication
  * Specifically designed to handle the complex meal descriptions
  * 
@@ -147,6 +235,10 @@ export function normalizeMealForPDF(mealDescription: string): string {
     .replace(/(\w+\s+fruit)\s+\([^)]+\)(?:.*?)(?:,|\s+and|\s+with)\s+\1\s+\([^)]+\)/gi, '$1 (portion)')
     // Fix repeated specific foods that commonly cause problems
     .replace(/(\b(?:chickoo|apple|banana|orange|grapes|mango)\b)(?:[^,]*?\([^)]*\))?[^,]*?,\s*[^,]*?\1\b/gi, '$1 (portion)')
+    // Fix repeated sprouts
+    .replace(/(\b(?:sprouts|moong|mung|matki)\b)(?:[^,]*?\([^)]*\))?[^,]*?,\s*[^,]*?\1\b/gi, '$1 (portion)')
+    // Fix repeated sabzi references
+    .replace(/(\w+)\s+sabzi(?:.*?)(?:,|\s+and|\s+with)\s+\1\s+sabzi/gi, '$1 sabzi')
     // Fix "and" followed immediately by the same word
     .replace(/\band\s+(\w+)(?:\s+\w+)*\s+\1\b/gi, 'and $1')
     // Fix "OR" issues where the same option is repeated
@@ -154,7 +246,13 @@ export function normalizeMealForPDF(mealDescription: string): string {
     // Fix "dahi/curd/yogurt" appearing multiple times
     .replace(/dahi\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:curd|yogurt|dahi)\s*\([^)]*\)/gi, 'dahi (1 katori)')
     .replace(/curd\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|yogurt|curd)\s*\([^)]*\)/gi, 'curd (1 katori)')
-    .replace(/yogurt\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|curd|yogurt)\s*\([^)]*\)/gi, 'yogurt (1 katori)');
+    .replace(/yogurt\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|curd|yogurt)\s*\([^)]*\)/gi, 'yogurt (1 katori)')
+    // Fix chaas and buttermilk duplication
+    .replace(/chaas\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:buttermilk|chaas)\s*\([^)]*\)/gi, 'chaas (1 glass)')
+    .replace(/buttermilk\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:chaas|buttermilk)\s*\([^)]*\)/gi, 'buttermilk (1 glass)')
+    // Fix rajma and kidney beans duplication
+    .replace(/rajma\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:kidney beans|rajma)\s*\([^)]*\)/gi, 'rajma (portion)')
+    .replace(/kidney beans\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:rajma|kidney beans)\s*\([^)]*\)/gi, 'kidney beans (portion)');
   
   // Apply the main deduplication algorithm
   normalizedText = removeDuplicateFoodItems(normalizedText);

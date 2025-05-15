@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 // Update import path to use the consolidated deduplication module
-import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
+import { applyTriplePassDeduplication } from '@/utils/diet/helpers/deduplication';
 
 const styles = StyleSheet.create({
   dayBlock: {
@@ -69,13 +69,13 @@ type PDFDayBlockProps = {
 };
 
 const PDFDayBlock = (dietDay: PDFDayBlockProps) => {
-  // Apply our enhanced deduplication with double-pass processing for breakfast
-  const processedBreakfast = normalizeMealForPDF(normalizeMealForPDF(dietDay.breakfast));
-  const processedLunch = normalizeMealForPDF(normalizeMealForPDF(dietDay.lunch));
-  const processedDinner = normalizeMealForPDF(normalizeMealForPDF(dietDay.dinner));
-  const processedMidMorningSnack = dietDay.midMorningSnack ? normalizeMealForPDF(dietDay.midMorningSnack) : undefined;
-  const processedEveningSnack = dietDay.eveningSnack ? normalizeMealForPDF(dietDay.eveningSnack) : undefined;
-  const processedSnacks = dietDay.snacks ? normalizeMealForPDF(dietDay.snacks) : undefined;
+  // Apply our enhanced triple-pass deduplication for each meal
+  const processedBreakfast = applyTriplePassDeduplication(dietDay.breakfast);
+  const processedLunch = applyTriplePassDeduplication(dietDay.lunch);
+  const processedDinner = applyTriplePassDeduplication(dietDay.dinner);
+  const processedMidMorningSnack = dietDay.midMorningSnack ? applyTriplePassDeduplication(dietDay.midMorningSnack) : undefined;
+  const processedEveningSnack = dietDay.eveningSnack ? applyTriplePassDeduplication(dietDay.eveningSnack) : undefined;
+  const processedSnacks = dietDay.snacks ? applyTriplePassDeduplication(dietDay.snacks) : undefined;
   
   // Extract meal timings
   const { mealTimings } = dietDay;

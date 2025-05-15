@@ -26,6 +26,7 @@ import {
 import { generateRegionalNote } from '../regional/regionalRecommendations';
 import { getMealTimings, getCheatMealGuidance, getMealTimingTips } from '../helpers/mealTimingsHelper';
 import { FormData } from '@/components/wellness/types';
+import { resetDailyFoodMemory, addFoodToDailyMemory, normalizeMealForPDF } from '../helpers/deduplication';
 
 export function generateDays(
   formData: FormData,
@@ -76,6 +77,9 @@ export function generateDays(
   for (let i = 1; i <= 75; i++) {
     const dayIndex = (i - 1) % 15;
     
+    // Reset food memory for this day to track cross-meal duplicates
+    resetDailyFoodMemory(dayIndex);
+    
     // Get meal timings for this day
     const mealTimings = getMealTimings(dayIndex);
     
@@ -86,14 +90,33 @@ export function generateDays(
     const timingTips = getMealTimingTips(formData.fitnessGoal || 'maintenance');
     
     // Apply varied patterns to ensure food diversity
-    const breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
+    let breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
+    
+    // Process breakfast through normalization to remove any internal duplicates
+    breakfast = normalizeMealForPDF(breakfast);
+    
+    // Add breakfast foods to daily memory to prevent repetition in other meals
+    addFoodToDailyMemory(dayIndex, breakfast);
+    
+    // Generate and deduplicate mid-morning snack
     const midMorningSnack = generateMidMorningSnack(dayIndex + ((i * 3) % 17), snacks, fruits, calorieReduction, allergies);
+    const cleanMidMorningSnack = normalizeMealForPDF(midMorningSnack);
+    addFoodToDailyMemory(dayIndex, cleanMidMorningSnack);
 
     // Use the entire protein array for lunch/dinner to enable protein pairing for complete amino acids
     // Apply varied patterns to avoid repetition
-    const lunch = generateLunch(dayIndex + lunchPatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
+    let lunch = generateLunch(dayIndex + lunchPatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
+    lunch = normalizeMealForPDF(lunch);
+    addFoodToDailyMemory(dayIndex, lunch);
+    
+    // Generate and deduplicate evening snack
     const eveningSnack = generateEveningSnack(dayIndex + ((i * 5) % 19), snacks, fruits, calorieReduction, allergies, region);
-    const dinner = generateDinner(dayIndex + dinnerPatterns[i-1], proteinsByDay, vegetables, calorieReduction, proteinFocus, allergies, region);
+    const cleanEveningSnack = normalizeMealForPDF(eveningSnack);
+    addFoodToDailyMemory(dayIndex, cleanEveningSnack);
+    
+    // Generate and deduplicate dinner
+    let dinner = generateDinner(dayIndex + dinnerPatterns[i-1], proteinsByDay, vegetables, calorieReduction, proteinFocus, allergies, region);
+    dinner = normalizeMealForPDF(dinner);
     
     // Calculate approximate calories for the day
     const totalCalories = Math.round(dailyCalories / 10) * 10;
@@ -126,9 +149,9 @@ export function generateDays(
     days.push({
       day: i,
       breakfast,
-      midMorningSnack,
+      midMorningSnack: cleanMidMorningSnack,
       lunch,
-      eveningSnack,
+      eveningSnack: cleanEveningSnack,
       dinner,
       calories: totalCalories,
       water: waterIntake,
@@ -141,9 +164,9 @@ export function generateDays(
       pcosFriendlyNotes,
       herbalRecommendations,
       regionalNote,
-      mealTimings, // Add meal timings
-      cheatMealInfo, // Add cheat meal information if applicable
-      timingTips // Add meal timing tips
+      mealTimings,
+      cheatMealInfo,
+      timingTips
     });
   }
   

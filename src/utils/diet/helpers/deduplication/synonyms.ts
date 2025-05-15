@@ -1,89 +1,139 @@
 
 /**
- * Food synonym definitions and related utilities
- * Provides mapping of common food synonyms in Indian cuisine
+ * Food synonym management
+ * Provides functionality to track food synonyms
+ * and prevent repetition of similar foods
  */
 
-// Define food synonyms dictionary for Indian cuisine context
+// Dictionary of known synonyms for specific food items
 export const FOOD_SYNONYMS: Record<string, string[]> = {
   // Dairy products
-  'curd': ['yogurt', 'dahi', 'yoghurt'],
-  'yogurt': ['curd', 'dahi', 'yoghurt'],
-  'dahi': ['curd', 'yogurt', 'yoghurt'],
-  'buttermilk': ['chaas', 'mattha'],
-  'chaas': ['buttermilk', 'mattha'],
-  
-  // Grains
-  'rice': ['chawal', 'bhaat'],
-  'brown rice': ['bhura chawal'],
-  'bread': ['roti', 'chapati', 'paratha'],
-  'roti': ['chapati', 'phulka'],
-  'chapati': ['roti', 'phulka'],
-  
-  // Vegetables
-  'spinach': ['palak'],
-  'fenugreek': ['methi'],
-  'eggplant': ['baingan', 'brinjal'],
-  'ladyfinger': ['okra', 'bhindi'],
-  'okra': ['ladyfinger', 'bhindi'],
-  'potato': ['aloo'],
-  'cauliflower': ['gobi', 'phool gobi'],
+  'dahi': ['curd', 'yogurt', 'yoghurt', 'raita'],
+  'curd': ['dahi', 'yogurt', 'yoghurt', 'raita'],
+  'yogurt': ['dahi', 'curd', 'yoghurt', 'raita'],
+  'paneer': ['cottage cheese', 'queso fresco'],
+  'buttermilk': ['chaas', 'mattha', 'lassi'],
+  'chaas': ['buttermilk', 'mattha', 'lassi'],
   
   // Legumes
-  'lentil': ['dal', 'daal'],
-  'dal': ['lentil', 'daal'],
-  'chickpeas': ['chana', 'chole'],
-  'chana': ['chickpeas', 'chole'],
+  'rajma': ['kidney beans', 'red beans'],
+  'kidney beans': ['rajma', 'red beans'],
+  'chana': ['chickpeas', 'garbanzo beans', 'chole'],
+  'chickpeas': ['chana', 'garbanzo beans', 'chole'],
+  'moong': ['mung', 'green gram', 'mung beans', 'moong sprouts'],
+  'mung': ['moong', 'green gram', 'mung beans', 'moong sprouts'],
+  'sprouts': ['moong sprouts', 'matki sprouts', 'sprouted', 'bean sprouts'],
   
-  // Milk and milk products
-  'cottage cheese': ['paneer'],
-  'paneer': ['cottage cheese'],
+  // Grains
+  'brown rice': ['bhura chaval', 'whole grain rice'],
+  'rotis': ['roti', 'chapati', 'chapatis', 'phulka'],
+  'roti': ['rotis', 'chapati', 'chapatis', 'phulka'],
+  'chapati': ['roti', 'chapatis', 'rotis', 'phulka'],
+  'poha': ['flattened rice', 'beaten rice', 'rice flakes'],
+  'oats': ['oatmeal', 'rolled oats', 'instant oats', 'steel cut oats'],
   
-  // Nuts
-  'peanuts': ['moongfali'],
-  'almonds': ['badam'],
+  // Fruits
+  'kela': ['banana', 'plantain'],
+  'banana': ['kela', 'plantain'],
+  'seb': ['apple'],
+  'apple': ['seb'],
+  'santra': ['orange', 'mosambi', 'sweet lime'],
+  'orange': ['santra', 'mosambi', 'sweet lime'],
+  'papaya': ['papita'],
+  'chickoo': ['sapota', 'sapodilla', 'chiku'],
+  
+  // Vegetables
+  'palak': ['spinach'],
+  'spinach': ['palak'],
+  'gobi': ['cauliflower'],
+  'cauliflower': ['gobi'],
+  'tamatar': ['tomato', 'tomatoes'],
+  'tomato': ['tamatar', 'tomatoes'],
+  'aloo': ['potato', 'potatoes'],
+  'potato': ['aloo', 'potatoes'],
+  'bhindi': ['okra', 'lady finger', 'ladies finger'],
+  'karela': ['bitter gourd', 'bitter melon'],
+  
+  // Seeds and Nuts
+  'chia seeds': ['chia', 'sabja', 'tukmaria'],
+  'flax seeds': ['flaxseed', 'alsi'],
+  'almond': ['badam', 'almonds'],
+  'peanuts': ['moongfali', 'groundnuts', 'peanut'],
+  'peanut butter': ['moongfali butter', 'groundnut butter'],
+  'walnut': ['akhrot', 'walnuts'],
+  
+  // Proteins
+  'egg whites': ['egg white', 'whites of egg'],
+  'egg': ['anda', 'eggs'],
+  'chicken': ['murgh', 'chicken breast', 'chicken thigh'],
+  'mutton': ['lamb', 'goat meat'],
+  'fish': ['machli', 'seafood', 'salmon', 'tuna'],
+  
+  // Multiple tpes of sabzi (vegetable dish)
+  'cabbage sabzi': ['patta gobi sabzi', 'cabbage curry', 'patta gobi'],
+  'bhindi sabzi': ['okra sabzi', 'bhindi fry', 'okra curry'],
+  'lauki sabzi': ['bottle gourd sabzi', 'doodhi sabzi', 'ghiya sabzi'],
+  'vegetable curry': ['mixed vegetables', 'vegetable sabzi', 'sabzi', 'veg curry'],
+  'mixed vegetables': ['vegetable curry', 'vegetable sabzi', 'sabzi', 'veg curry'],
+  
+  // Multiple ways to say curry
+  'curry': ['sabzi', 'gravy', 'preparation'],
+  'sabzi': ['curry', 'vegetable dish', 'bhaji'],
+  
+  // Multiple types of dal (lentil dish)
+  'moong dal': ['yellow lentils', 'green gram dal'],
+  'masoor dal': ['red lentils', 'masoor'],
+  'toor dal': ['arhar dal', 'pigeon pea dal', 'split pigeon peas'],
+  'urad dal': ['black gram dal', 'black lentils', 'maa ki dal'],
+  'dal': ['lentils', 'pulses', 'legumes'],
+  'lentils': ['dal', 'pulses', 'legumes'],
 };
 
 /**
- * Gets a list of known synonyms for a given food
- * @param foodName The name of the food to find synonyms for
- * @returns Array of synonyms for the food
+ * Gets all known synonyms for a particular food
+ * @param foodName Base food name
+ * @returns Array of synonyms
  */
 export const getSynonymsForFood = (foodName: string): string[] => {
-  // Clean up the food name for matching
-  const cleanFoodName = foodName.toLowerCase().trim();
-  
-  // Direct lookup in the dictionary
-  if (FOOD_SYNONYMS[cleanFoodName]) {
-    return FOOD_SYNONYMS[cleanFoodName];
-  }
-  
-  // Check if this food is a synonym in the dictionary
-  for (const [key, synonyms] of Object.entries(FOOD_SYNONYMS)) {
-    if (synonyms.includes(cleanFoodName)) {
-      return [key, ...synonyms.filter(s => s !== cleanFoodName)];
-    }
-  }
-  
-  // No synonyms found
-  return [];
+  const normalizedName = foodName.toLowerCase().trim();
+  return FOOD_SYNONYMS[normalizedName] || [];
 };
 
 /**
- * Checks if a food has a synonym in the seen foods list
- * @param foodName The food to check
- * @param seenFoods Set of already seen foods
- * @returns True if a synonym was found in the seen foods
+ * Checks if any synonyms of a food item exist in a set of seen foods
+ * @param foodName The food item to check
+ * @param seenFoods Set of food items already seen
+ * @returns True if a synonym was found in the seen foods set
  */
 export const hasSynonymInSeenFoods = (foodName: string, seenFoods: Set<string>): boolean => {
-  const cleanFoodName = foodName.toLowerCase().trim();
+  const normalizedName = foodName.toLowerCase().trim();
   
-  // Check if the food itself is in seen foods
-  if (seenFoods.has(cleanFoodName)) {
+  // First check if this exact food is in the set
+  if (seenFoods.has(normalizedName)) {
     return true;
   }
   
-  // Check synonyms
-  const synonyms = getSynonymsForFood(cleanFoodName);
-  return synonyms.some(synonym => seenFoods.has(synonym.toLowerCase().trim()));
+  // Get all synonyms and check each one
+  const synonyms = getSynonymsForFood(normalizedName);
+  for (const synonym of synonyms) {
+    if (seenFoods.has(synonym)) {
+      return true;
+    }
+  }
+  
+  // Also handle checking known compound foods
+  // For example, check if "moong" is present when "moong dal" is checked
+  for (const seenFood of seenFoods) {
+    // Check if the seen food is part of this food name
+    if (normalizedName.includes(seenFood) && seenFood.length > 3) {
+      return true;
+    }
+    
+    // Check if this food is part of a seen food name
+    if (seenFood.includes(normalizedName) && normalizedName.length > 3) {
+      return true;
+    }
+  }
+  
+  return false;
 };
