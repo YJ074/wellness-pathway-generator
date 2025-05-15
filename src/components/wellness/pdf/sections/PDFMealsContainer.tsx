@@ -40,7 +40,7 @@ const PDFMealsContainer = ({
           mealType="breakfast"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
-          applyDeduplication={false}
+          applyDeduplication={true}
         />
       </View>
       
@@ -53,7 +53,7 @@ const PDFMealsContainer = ({
             mealType="midMorningSnack"
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
-            applyDeduplication={false}
+            applyDeduplication={true}
           />
         </View>
       )}
@@ -66,7 +66,7 @@ const PDFMealsContainer = ({
           mealType="lunch"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
-          applyDeduplication={false}
+          applyDeduplication={true}
         />
       </View>
       
@@ -79,7 +79,7 @@ const PDFMealsContainer = ({
             mealType="eveningSnack"
             dailyCalories={dailyCalories}
             goalFactor={goalFactor}
-            applyDeduplication={false}
+            applyDeduplication={true}
           />
         </View>
       )}
@@ -92,7 +92,7 @@ const PDFMealsContainer = ({
           mealType="dinner"
           dailyCalories={dailyCalories}
           goalFactor={goalFactor}
-          applyDeduplication={false}
+          applyDeduplication={true}
         />
       </View>
     </>
