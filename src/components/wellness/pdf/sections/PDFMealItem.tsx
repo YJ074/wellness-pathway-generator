@@ -4,25 +4,31 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/mealCalories';
 import { normalizeMealForPDF } from '@/utils/diet/helpers/deduplication';
 
-// These are imported from mealItemStyles.tsx
-// Just using inline styles here for clarity
+// Improved styles with better alignment and spacing
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 6,
+    marginBottom: 8,
+    position: 'relative',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 3,
+    marginBottom: 4,
   },
   title: {
     fontFamily: 'Helvetica-Bold',
     fontSize: 10,
   },
+  caloriesContainer: {
+    position: 'absolute',
+    right: 60, // Offset to allow space for time display
+    top: 0,
+  },
   calories: {
     fontSize: 8,
     color: '#64748b',
+    textAlign: 'right',
   },
   mealText: {
     fontSize: 9,
@@ -37,6 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: '#3b82f6',
     fontFamily: 'Helvetica-Bold',
+    textAlign: 'right',
   }
 });
 
@@ -60,7 +67,6 @@ const PDFMealItem = ({
   suggestedTime
 }: PDFMealItemProps) => {
   // Apply triple-pass deduplication for maximum effectiveness
-  // This ensures all possible duplications are caught
   const processedDescription = applyDeduplication 
     ? normalizeMealForPDF(normalizeMealForPDF(normalizeMealForPDF(description)))
     : description;
@@ -76,10 +82,13 @@ const PDFMealItem = ({
     <View style={styles.container} wrap={false}>
       <View style={styles.header}>
         <Text style={styles.title}>{label}</Text>
-        <View>
+        
+        {/* Calories display with fixed position */}
+        <View style={styles.caloriesContainer}>
           <Text style={styles.calories}>~{mealCalories} kcal</Text>
         </View>
         
+        {/* Time display with fixed position */}
         {suggestedTime && (
           <View style={styles.timeContainer}>
             <Text style={styles.timeText}>{suggestedTime}</Text>

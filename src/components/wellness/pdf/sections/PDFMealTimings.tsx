@@ -4,15 +4,15 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 8,
+    marginBottom: 10,
     borderRadius: 3,
-    padding: 6,
+    padding: 8,
     backgroundColor: '#f8fafc'
   },
   title: {
     fontSize: 10,
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 6,
     fontFamily: 'Helvetica-Bold',
   },
   timingsGrid: {
@@ -24,25 +24,27 @@ const styles = StyleSheet.create({
     width: '50%',
     marginBottom: 4,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   mealLabel: {
     fontSize: 8,
     color: '#475569',
-    width: '40%',
+    width: '45%', // Increased width for label
   },
   timeText: {
     fontSize: 8,
     color: '#0f172a',
+    width: '55%', // Set fixed width for time value
   },
   note: {
     fontSize: 8,
-    marginTop: 4,
+    marginTop: 6,
     color: '#64748b',
     fontStyle: 'italic',
   },
   cheatMealNote: {
     fontSize: 8,
-    marginTop: 4,
+    marginTop: 6,
     padding: 4,
     backgroundColor: '#fff9db',
     color: '#92400e',

@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   spacing: {
-    marginBottom: 14, // Increased spacing between meal sections to prevent overlap
+    marginBottom: 16, // Increased spacing between meal sections
+    padding: 2, // Added slight padding to improve layout
   }
 });
 
@@ -85,7 +86,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
       {/* Regional Note */}
       <PDFRegionalNote regionalNote={day.regionalNote} />
       
-      {/* Meal Timings Section - Added new component */}
+      {/* Meal Timings Section with improved layout */}
       <View style={styles.spacing} wrap={false}>
         <PDFMealTimings 
           mealTimings={day.mealTimings}
@@ -94,7 +95,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         />
       </View>
       
-      {/* Breakfast */}
+      {/* Breakfast with improved spacing */}
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Breakfast"
@@ -107,7 +108,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         />
       </View>
       
-      {/* Mid-Morning Snack */}
+      {/* Mid-Morning Snack with improved spacing */}
       {day.midMorningSnack && (
         <View style={styles.spacing} wrap={false}>
           <PDFMealItem 
@@ -122,7 +123,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         </View>
       )}
       
-      {/* Lunch */}
+      {/* Lunch with improved spacing */}
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Lunch"
@@ -135,7 +136,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         />
       </View>
       
-      {/* Evening Snack */}
+      {/* Evening Snack with improved spacing */}
       {day.eveningSnack && (
         <View style={styles.spacing} wrap={false}>
           <PDFMealItem 
@@ -150,7 +151,7 @@ const PDFDietSection = ({ day, formData }: PDFDietSectionProps) => {
         </View>
       )}
       
-      {/* Dinner */}
+      {/* Dinner with improved spacing */}
       <View style={styles.spacing} wrap={false}>
         <PDFMealItem 
           label="Dinner"
