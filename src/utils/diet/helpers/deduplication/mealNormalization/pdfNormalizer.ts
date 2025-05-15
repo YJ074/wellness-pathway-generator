@@ -1,3 +1,4 @@
+
 import { cleanupDuplicationFormatting } from '../formatting';
 import { removeDuplicateFoodItems } from './duplicateRemover';
 
@@ -80,7 +81,7 @@ export function normalizeMealForPDF(mealDescription: string): string {
     .replace(/\band\s+(\w+)(?:\s+\w+)*\s+\1\b/gi, 'and $1')
     // Fix "OR" issues where the same option is repeated
     .replace(/\b([^\s,]+(?:\s+[^\s,]+)*)\s+OR\s+[^,]*?\1\b/gi, '$1 OR alternative')
-    // Fix "dahi/curd/yogurt" appearing multiple times
+    // Fix "dahi/curd/yogurt" appearing multiple times - any dairy repetition
     .replace(/dahi\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:curd|yogurt|dahi)\s*\([^)]*\)/gi, 'dahi (1 katori)')
     .replace(/curd\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|yogurt|curd)\s*\([^)]*\)/gi, 'curd (1 katori)')
     .replace(/yogurt\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:dahi|curd|yogurt)\s*\([^)]*\)/gi, 'yogurt (1 katori)')
@@ -89,7 +90,18 @@ export function normalizeMealForPDF(mealDescription: string): string {
     .replace(/buttermilk\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:chaas|buttermilk)\s*\([^)]*\)/gi, 'buttermilk (1 glass)')
     // Fix rajma and kidney beans duplication
     .replace(/rajma\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:kidney beans|rajma)\s*\([^)]*\)/gi, 'rajma (portion)')
-    .replace(/kidney beans\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:rajma|kidney beans)\s*\([^)]*\)/gi, 'kidney beans (portion)');
+    .replace(/kidney beans\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:rajma|kidney beans)\s*\([^)]*\)/gi, 'kidney beans (portion)')
+    // Fix dal repetition (different types of dal in one meal)
+    .replace(/moong dal\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:toor|masoor|urad)\s+dal\s*\([^)]*\)/gi, 'mixed dal (portion)')
+    .replace(/toor dal\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:moong|masoor|urad)\s+dal\s*\([^)]*\)/gi, 'mixed dal (portion)')
+    .replace(/masoor dal\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:toor|moong|urad)\s+dal\s*\([^)]*\)/gi, 'mixed dal (portion)')
+    .replace(/urad dal\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:toor|masoor|moong)\s+dal\s*\([^)]*\)/gi, 'mixed dal (portion)')
+    // Remove redundant legume mentions
+    .replace(/(?:toor|masoor|moong|urad) dal and (?:toor|masoor|moong|urad) dal/gi, 'mixed dal')
+    // Simplify references to black-eyed peas and similar legumes
+    .replace(/black-eyed peas\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:cowpeas|lobia)\s*\([^)]*\)/gi, 'black-eyed peas (portion)')
+    .replace(/cowpeas\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:black-eyed peas|lobia)\s*\([^)]*\)/gi, 'cowpeas (portion)')
+    .replace(/lobia\s*\([^)]*\)(?:.*?)(?:,|\s+and|\s+with)\s+(?:black-eyed peas|cowpeas)\s*\([^)]*\)/gi, 'lobia (portion)');
   
   // Apply the main deduplication algorithm
   normalizedText = removeDuplicateFoodItems(normalizedText);

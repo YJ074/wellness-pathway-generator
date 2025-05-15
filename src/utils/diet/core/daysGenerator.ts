@@ -26,7 +26,7 @@ import {
 import { generateRegionalNote } from '../regional/regionalRecommendations';
 import { getMealTimings, getCheatMealGuidance, getMealTimingTips } from '../helpers/mealTimingsHelper';
 import { FormData } from '@/components/wellness/types';
-import { resetDailyFoodMemory, addFoodToDailyMemory, normalizeMealForPDF } from '../helpers/deduplication';
+import { resetDailyFoodMemory, addFoodToDailyMemory, normalizeMealForPDF, hasFoodBeenUsedToday, applyTriplePassDeduplication } from '../helpers/deduplication';
 
 export function generateDays(
   formData: FormData,
@@ -74,6 +74,9 @@ export function generateDays(
   const lunchPatterns = Array.from({ length: 75 }, (_, i) => (i * 11 + 5) % 15);
   const dinnerPatterns = Array.from({ length: 75 }, (_, i) => (i * 13 + 7) % 15);
   
+  // More varied legume patterns to ensure better rotation
+  const legumePatterns = Array.from({ length: 75 }, (_, i) => (i * 17 + 13) % proteinsByDay.length);
+  
   for (let i = 1; i <= 75; i++) {
     const dayIndex = (i - 1) % 15;
     
@@ -93,30 +96,39 @@ export function generateDays(
     let breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
     
     // Process breakfast through normalization to remove any internal duplicates
-    breakfast = normalizeMealForPDF(breakfast);
+    breakfast = applyTriplePassDeduplication(breakfast);
     
     // Add breakfast foods to daily memory to prevent repetition in other meals
     addFoodToDailyMemory(dayIndex, breakfast);
     
     // Generate and deduplicate mid-morning snack
     const midMorningSnack = generateMidMorningSnack(dayIndex + ((i * 3) % 17), snacks, fruits, calorieReduction, allergies);
-    const cleanMidMorningSnack = normalizeMealForPDF(midMorningSnack);
+    const cleanMidMorningSnack = applyTriplePassDeduplication(midMorningSnack);
     addFoodToDailyMemory(dayIndex, cleanMidMorningSnack);
 
     // Use the entire protein array for lunch/dinner to enable protein pairing for complete amino acids
     // Apply varied patterns to avoid repetition
-    let lunch = generateLunch(dayIndex + lunchPatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
-    lunch = normalizeMealForPDF(lunch);
+    let lunch = generateLunch(dayIndex + lunchPatterns[i-1] + legumePatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
+    lunch = applyTriplePassDeduplication(lunch);
     addFoodToDailyMemory(dayIndex, lunch);
     
     // Generate and deduplicate evening snack
     const eveningSnack = generateEveningSnack(dayIndex + ((i * 5) % 19), snacks, fruits, calorieReduction, allergies, region);
-    const cleanEveningSnack = normalizeMealForPDF(eveningSnack);
+    const cleanEveningSnack = applyTriplePassDeduplication(eveningSnack);
     addFoodToDailyMemory(dayIndex, cleanEveningSnack);
     
-    // Generate and deduplicate dinner
-    let dinner = generateDinner(dayIndex + dinnerPatterns[i-1], proteinsByDay, vegetables, calorieReduction, proteinFocus, allergies, region);
-    dinner = normalizeMealForPDF(dinner);
+    // Generate and deduplicate dinner - use a different legume pattern to ensure variety
+    // Add extra offset to avoid same-day repetition
+    let dinner = generateDinner(
+      dayIndex + dinnerPatterns[i-1] + legumePatterns[(i+30) % 75], 
+      proteinsByDay, 
+      vegetables, 
+      calorieReduction, 
+      proteinFocus, 
+      allergies, 
+      region
+    );
+    dinner = applyTriplePassDeduplication(dinner);
     
     // Calculate approximate calories for the day
     const totalCalories = Math.round(dailyCalories / 10) * 10;

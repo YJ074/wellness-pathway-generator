@@ -1,4 +1,5 @@
 
+
 import { DietaryPreference } from '../types';
 import { filterAllergies } from '../helpers/allergyHelpers';
 
@@ -11,7 +12,9 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Channa Flour Roti', 'Milk', 'Cottage Cheese', 
       'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans',
       'Milk Protein', 'Protein-Enriched Milk', 'Yogurt',
-      'Chhena', 'Milk Solids (Khoya)'
+      'Chhena', 'Milk Solids (Khoya)', 'Black-Eyed Peas',
+      'Kulthi Dal', 'Val Dal', 'Horse Gram', 'Lima Beans',
+      'Cowpeas', 'Green Pigeon Peas', 'Split Pigeon Peas'
     ],
     'lacto-ovo-vegetarian': [
       'Paneer', 'Eggs', 'Toor Dal', 'Chana Dal', 'Moong Dal',
@@ -19,7 +22,9 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Mixed Sprouts', 'Rajma', 'Chana', 'Peanuts', 
       'Channa Flour Roti', 'Yogurt', 'Boiled Eggs', 'Egg Bhurji',
       'Kala Chana', 'White Beans', 'Urad Dal', 'Moth Beans',
-      'Milk Protein', 'Protein-Enriched Milk', 'Egg Curry'
+      'Milk Protein', 'Protein-Enriched Milk', 'Egg Curry',
+      'Black-Eyed Peas', 'Kulthi Dal', 'Val Dal', 'Horse Gram',
+      'Lima Beans', 'Cowpeas', 'Green Pigeon Peas', 'Split Pigeon Peas'
     ],
     'pure-vegetarian': [
       'Paneer', 'Soya Chunks', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
@@ -28,7 +33,9 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Channa Flour Roti', 'Tofu', 'Lentil Soup', 'Flax Seeds', 
       'Kala Chana', 'White Beans', 'Moth Beans',
       'Protein-Enriched Milk', 'Yogurt', 'Soya Milk',
-      'Chhena', 'Milk Solids (Khoya)'
+      'Chhena', 'Milk Solids (Khoya)', 'Black-Eyed Peas',
+      'Kulthi Dal', 'Val Dal', 'Horse Gram', 'Lima Beans',
+      'Cowpeas', 'Green Pigeon Peas', 'Split Pigeon Peas'
     ],
     'vegan': [
       'Soya Chunks', 'Tofu', 'Mixed Sprouts', 'Chana Dal', 'Moong Dal',
@@ -36,7 +43,9 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Peanuts', 'Besan (Gram Flour)', 'Chana', 'Whole Moong',
       'Channa Flour Roti', 'Lentil Soup', 'Flax Seeds', 'Chia Seeds',
       'Kala Chana', 'White Beans', 'Moth Beans', 'Quinoa',
-      'Soya Milk', 'Peanut Butter', 'Almond Milk'
+      'Soya Milk', 'Peanut Butter', 'Almond Milk', 'Black-Eyed Peas',
+      'Kulthi Dal', 'Val Dal', 'Horse Gram', 'Lima Beans',
+      'Cowpeas', 'Green Pigeon Peas', 'Split Pigeon Peas'
     ],
     'pure-jain': [
       // Strict Jain: NO sprouts, NO root vegetables, NO eggs, NO non-veg
@@ -46,7 +55,8 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'White Beans', 'Channa Flour Roti', 'Flax Seeds', 'Peanuts',
       'Dry Fruits (assorted and soaked)', 'Milk Solids (Khoya)',
       'Protein-Enriched Milk', 'Yogurt', 'Almond Milk',
-      'Sunflower Seeds', 'Pumpkin Seeds'
+      'Sunflower Seeds', 'Pumpkin Seeds', 'Val Dal',
+      'Green Pigeon Peas', 'Split Pigeon Peas'
     ],
     'sattvic': [
       'Paneer', 'Moong Dal', 'Toor Dal', 'Masoor Dal', 'Urad Dal',
@@ -55,7 +65,8 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Fresh Yogurt', 'Ghee', 'Organic Honey', 'Fresh Cottage Cheese',
       'Kheer', 'White Beans', 'Channa Flour Roti', 'Amaranth',
       'Soaked and Peeled Almonds', 'Protein-Enriched Milk', 
-      'Yogurt', 'Organic Soy Milk'
+      'Yogurt', 'Organic Soy Milk', 'Black-Eyed Peas',
+      'Green Pigeon Peas', 'Split Pigeon Peas'
     ],
     'non-vegetarian': [
       'Eggs', 'Chicken (local variety)', 'Sardines', 'Indian Mackerel',
@@ -64,7 +75,8 @@ export const getProteinSources = (dietaryPreference: DietaryPreference, allergie
       'Lean Mutton', 'Farm-Raised Prawns', 'Rohu Fish',
       'Grilled Chicken Tikka', 'Egg Whites', 'Yogurt',
       'Tandoori Fish', 'Free-Range Eggs',
-      'Egg Protein', 'Chicken Breast'
+      'Egg Protein', 'Chicken Breast', 'Black-Eyed Peas',
+      'Kulthi Dal', 'Val Dal', 'Horse Gram'
     ]
   };
   return filterAllergies(proteins[dietaryPreference] || proteins['lacto-vegetarian'], allergies);

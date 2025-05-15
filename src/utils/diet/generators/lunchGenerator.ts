@@ -4,7 +4,7 @@ import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../helpers/healthBenefitsHelper';
 // Update this import to use the new modular deduplication system
-import { removeDuplicateFoodItems } from '../helpers/deduplication';
+import { removeDuplicateFoodItems, hasFoodBeenUsedToday } from '../helpers/deduplication';
 import { 
   getLocalizedProteinName, 
   getLocalizedGrainName,
@@ -58,15 +58,51 @@ export const generateLunch = (
   // Use prime number-based offsets to ensure variety across days
   // These create non-repeating patterns over 75 days to avoid repetition
   const protein1Index = (dayIndex * 7 + 3) % proteins.length;
-  const protein2Index = (dayIndex * 11 + 13) % proteins.length; // Different offset ensures variety
+  let protein2Index = (dayIndex * 11 + 13) % proteins.length; // Different offset ensures variety
   
   const grainIndex = (dayIndex * 5 + 1) % grains.length;
   const veggie1Index = (dayIndex * 13 + 7) % vegetables.length;
   const veggie2Index = (dayIndex * 17 + 11) % vegetables.length;
   
   // Ensure we get at least 2 protein sources for each lunch to maximize protein intake
-  const protein1 = proteins[protein1Index];
-  const protein2 = proteins[protein2Index]; // Use a different protein source
+  let protein1 = proteins[protein1Index];
+  let protein2 = proteins[protein2Index]; // Use a different protein source
+  
+  // Check if these proteins have been used today already
+  if (hasFoodBeenUsedToday(dayIndex, protein1)) {
+    // Try to find another protein that hasn't been used
+    for (let i = 1; i < proteins.length; i++) {
+      const newIndex = (protein1Index + i) % proteins.length;
+      if (!hasFoodBeenUsedToday(dayIndex, proteins[newIndex])) {
+        protein1 = proteins[newIndex];
+        break;
+      }
+    }
+  }
+  
+  // Also check second protein for repetition or similarity to first
+  const legumeType1 = protein1.toLowerCase().includes('dal') || 
+                     protein1.toLowerCase().includes('beans') ||
+                     protein1.toLowerCase().includes('lentil');
+                     
+  if (hasFoodBeenUsedToday(dayIndex, protein2) || 
+     (legumeType1 && (protein2.toLowerCase().includes('dal') || 
+                     protein2.toLowerCase().includes('beans') ||
+                     protein2.toLowerCase().includes('lentil')))) {
+    // Try to find a non-legume protein if the first one was legume
+    for (let i = 1; i < proteins.length; i++) {
+      const newIndex = (protein2Index + i) % proteins.length;
+      const candidate = proteins[newIndex];
+      
+      if (!hasFoodBeenUsedToday(dayIndex, candidate) && 
+         !(legumeType1 && (candidate.toLowerCase().includes('dal') || 
+                          candidate.toLowerCase().includes('beans') ||
+                          candidate.toLowerCase().includes('lentil')))) {
+        protein2 = candidate;
+        break;
+      }
+    }
+  }
   
   // Make sure we use a grain in every meal for consistent carb balance
   const grain = grains[grainIndex];
@@ -95,8 +131,14 @@ export const generateLunch = (
     main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ¾ katori rice`;
   }
   
-  // Add curd (probiotic) to every lunch - a staple in Indian diets
-  main += `, dahi (1 katori)`;
+  // Check if dairy has been used already today before adding curd
+  const dairyTerms = ['dahi', 'yogurt', 'curd', 'buttermilk', 'chaas', 'milk', 'paneer'];
+  const hasDairyInMeals = dairyTerms.some(term => hasFoodBeenUsedToday(dayIndex, term));
+  
+  // Add curd (probiotic) to lunch only if we haven't used dairy yet
+  if (!hasDairyInMeals) {
+    main += `, dahi (1 katori)`;
+  }
   
   // For days not already featuring prebiotics, add some to the meal
   main = enrichWithPrebiotics(main, dayIndex);

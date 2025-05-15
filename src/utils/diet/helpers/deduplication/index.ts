@@ -44,6 +44,12 @@ export const applyTriplePassDeduplication = (mealDescription: string): string =>
 // Track food items that have been used in a day to prevent cross-meal repetition
 const dailyFoodMemory = new Map<number, Set<string>>();
 
+// Define food groups for rotation and diversity tracking
+const FOOD_GROUPS = {
+  DAIRY: ['dahi', 'chaas', 'yogurt', 'curd', 'buttermilk', 'milk', 'paneer', 'cheese'],
+  LEGUMES: ['mung', 'moong', 'masoor', 'toor', 'tur', 'chana', 'rajma', 'kidney', 'beans', 'peas', 'lentil', 'dal', 'urad', 'black-eyed']
+};
+
 /**
  * Reset the food memory for a specific day
  * @param dayIndex The day index to reset memory for
@@ -60,6 +66,33 @@ export const resetAllFoodMemory = (): void => {
 };
 
 /**
+ * Check if a food belongs to a specific food group
+ * @param foodItem The food item to check
+ * @param groupName The food group to check against
+ */
+const belongsToFoodGroup = (foodItem: string, groupItems: string[]): boolean => {
+  const lowerFood = foodItem.toLowerCase();
+  return groupItems.some(item => lowerFood.includes(item));
+};
+
+/**
+ * Check if any food from the same group has been used in a day
+ * @param dayIndex The day index to check
+ * @param foodItem The food item to check
+ * @param group The food group to check
+ */
+export const hasFoodGroupBeenUsedToday = (dayIndex: number, foodItem: string, group: string[]): boolean => {
+  const dayMemory = dailyFoodMemory.get(dayIndex);
+  if (!dayMemory) return false;
+  
+  const isFoodInGroup = belongsToFoodGroup(foodItem, group);
+  if (!isFoodInGroup) return false;
+  
+  // Check if any food from the same group is already in the day's memory
+  return Array.from(dayMemory).some(item => belongsToFoodGroup(item, group));
+};
+
+/**
  * Check if a food item has been used in any meal for a specific day
  * @param dayIndex The day index to check
  * @param foodItem The food item to check
@@ -70,8 +103,35 @@ export const hasFoodBeenUsedToday = (dayIndex: number, foodItem: string): boolea
   
   const baseName = extractBaseFoodName(foodItem.toLowerCase());
   
-  // Check for the exact base name or any synonyms
-  return dayMemory.has(baseName) || hasSynonymInSeenFoods(baseName, dayMemory);
+  // First check for exact match
+  if (dayMemory.has(baseName)) return true;
+  
+  // Check for synonyms
+  if (hasSynonymInSeenFoods(baseName, dayMemory)) return true;
+  
+  // Check food groups - prevent multiple dairy products or similar legumes
+  if (belongsToFoodGroup(baseName, FOOD_GROUPS.DAIRY) && 
+      hasFoodGroupBeenUsedToday(dayIndex, baseName, FOOD_GROUPS.DAIRY)) {
+    return true;
+  }
+  
+  // Check for legume repetition - encourage variety
+  if (belongsToFoodGroup(baseName, FOOD_GROUPS.LEGUMES) && 
+      hasFoodGroupBeenUsedToday(dayIndex, baseName, FOOD_GROUPS.LEGUMES)) {
+    // Only consider this a repeat if it's a very similar legume
+    // This allows different types of legumes in the same day
+    const similarLegumes = ['mung', 'moong'].includes(baseName) ? ['mung', 'moong'] :
+                           ['masoor', 'lentil'].includes(baseName) ? ['masoor', 'lentil'] :
+                           ['toor', 'tur'].includes(baseName) ? ['toor', 'tur'] :
+                           ['rajma', 'kidney'].includes(baseName) ? ['rajma', 'kidney'] : 
+                           null;
+    
+    if (similarLegumes) {
+      return Array.from(dayMemory).some(item => similarLegumes.some(l => item.includes(l)));
+    }
+  }
+  
+  return false;
 };
 
 /**
@@ -121,6 +181,12 @@ export const findDuplicateFoodsInDay = (dayIndex: number, mealDescription: strin
     // Check if this food has been used today
     if (dayMemory.has(baseName) || hasSynonymInSeenFoods(baseName, dayMemory)) {
       duplicates.push(baseName);
+    }
+    
+    // Check food groups - prevent multiple dairy products
+    if (belongsToFoodGroup(baseName, FOOD_GROUPS.DAIRY) && 
+        hasFoodGroupBeenUsedToday(dayIndex, baseName, FOOD_GROUPS.DAIRY)) {
+      duplicates.push(`${baseName} (dairy group)`);
     }
   }
   
