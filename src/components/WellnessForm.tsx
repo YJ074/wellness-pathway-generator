@@ -24,7 +24,7 @@ const WellnessForm = () => {
     fitnessGoal: '',
     exerciseFrequency: '',
     has_muscular_build: false, // Default: not selected
-    includeWorkoutPlan: false, // Default: don't include workout plan
+    includeWorkoutPlan: true, // Default: always include workout plan
     wellnessGoals: ['general-wellness'], // Default wellness goal
     region: '', // Default: no region selected
   });
@@ -87,14 +87,11 @@ const WellnessForm = () => {
         // Generate the diet plan passing the entire formData
         const generatedDietPlan = generateDietPlan(formData);
         
-        // Only generate workout plan if user opted in
-        let generatedWorkoutPlan = null;
-        if (formData.includeWorkoutPlan) {
-          generatedWorkoutPlan = generateWorkoutPlan(
-            formData.exerciseFrequency || 'sedentary', 
-            formData.fitnessGoal || 'maintenance'
-          );
-        }
+        // Always generate workout plan regardless of checkbox state
+        const generatedWorkoutPlan = generateWorkoutPlan(
+          formData.exerciseFrequency || 'sedentary', 
+          formData.fitnessGoal || 'maintenance'
+        );
 
         setDietPlan(generatedDietPlan);
         setWorkoutPlan(generatedWorkoutPlan);
@@ -103,7 +100,7 @@ const WellnessForm = () => {
         trackEvent(
           'generation', 
           'success', 
-          `${formData.dietaryPreference}_${formData.includeWorkoutPlan ? 'with_workout' : 'diet_only'}`
+          `${formData.dietaryPreference}_with_workout`
         );
 
         // Send the wellness plan to Make.com webhook
@@ -127,7 +124,7 @@ const WellnessForm = () => {
 
         toast({
           title: "Wellness Plan Generated",
-          description: `Your 75-day personalized ${formData.includeWorkoutPlan ? 'diet and workout' : 'diet'} plan has been created.`,
+          description: `Your 75-day personalized diet and workout plan has been created.`,
         });
       } catch (error) {
         console.error("Error generating wellness plan:", error);

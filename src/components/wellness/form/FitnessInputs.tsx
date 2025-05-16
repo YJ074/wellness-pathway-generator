@@ -1,22 +1,31 @@
+
 import React from 'react';
 import { Target, Activity, Dumbbell } from 'lucide-react';
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Checkbox } from "@/components/ui/checkbox";
+
 interface FitnessInputsProps {
   formData: {
     fitnessGoal: string;
     exerciseFrequency: string;
     has_muscular_build?: boolean;
-    includeWorkoutPlan?: boolean; // New field for workout plan option
+    includeWorkoutPlan?: boolean; // Field is still kept for backward compatibility
   };
   handleInputChange: (field: string, value: string | boolean) => void;
 }
+
 const FitnessInputs = ({
   formData,
   handleInputChange
 }: FitnessInputsProps) => {
+  // Set includeWorkoutPlan to true by default when the component loads
+  React.useEffect(() => {
+    if (formData.includeWorkoutPlan !== true) {
+      handleInputChange('includeWorkoutPlan', true);
+    }
+  }, []);
+
   return <div className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="goal" className="flex items-center gap-2">
@@ -60,17 +69,19 @@ const FitnessInputs = ({
         </Label>
       </div>
 
-      {/* Workout Plan Checkbox */}
+      {/* Info box about workout plan - replaced checkbox with informational message */}
       <div className="flex items-center space-x-2 mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
-        <Checkbox id="includeWorkoutPlan" checked={!!formData.includeWorkoutPlan} onCheckedChange={checked => handleInputChange('includeWorkoutPlan', Boolean(checked))} />
         <div className="grid gap-1.5 leading-none">
-          <Label htmlFor="includeWorkoutPlan" className="text-sm font-medium flex items-center gap-2">
+          <Label className="text-sm font-medium flex items-center gap-2">
             <Dumbbell className="w-4 h-4 text-blue-600" />
-            Include 75-day workout plan
+            75-day workout plan included
           </Label>
-          <p className="text-sm text-muted-foreground">Generate a personalized exercise routine without GYM alongside your diet plan at Rs 150</p>
+          <p className="text-sm text-muted-foreground">
+            Your personalized exercise routine without gym equipment is automatically included alongside your diet plan
+          </p>
         </div>
       </div>
     </div>;
 };
+
 export default FitnessInputs;
