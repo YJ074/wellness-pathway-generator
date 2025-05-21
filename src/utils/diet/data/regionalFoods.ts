@@ -422,6 +422,43 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Buckwheat Snack Bars',
       'Ragi Banana Slices'
     ]
+  },
+  'chhattisgarh': {
+    breakfast: [
+      'Faraa (Steamed Rice Dumplings)',
+      'Ragi Porridge',
+      'Chana Dal Pancake',
+      'Vegetable Cheela',
+      'Moong Dal Idli',
+      'Red Rice Poha',
+      'Saag Bhaji with Bajra Roti',
+      'Millet Dosa',
+      'Boiled Gram Salad',
+      'Cucumber Dal Pancakes'
+    ],
+    mains: [
+      'Kodo Millet Khichdi',
+      'Chaulai Saag Curry',
+      'Tamarind Lentil Curry',
+      'Baasi Bhaat with Curd (Fermented Rice)',
+      'Aloo Baingan Curry',
+      'Bottle Gourd & Lentil Stew',
+      'Pumpkin and Mustard Curry',
+      'Lauki Kofta (Steamed)',
+      'Amaranth Leaf with Dal'
+    ],
+    snacks: [
+      'Tilgur (Sesame Jaggery Balls)',
+      'Rice Flour Chakli (Baked)',
+      'Ragi Ladoo',
+      'Boiled Peanut Salad',
+      'Air-fried Banana Chips',
+      'Foxnut Mix with Herbs',
+      'Low-oil Dal Vada',
+      'Vegetable Millet Puffs',
+      'Sweet Potato Sticks',
+      'Raw Papaya Chaat'
+    ]
   }
 };
 

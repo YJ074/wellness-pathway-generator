@@ -138,6 +138,14 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Incorporates bamboo shoot preparations common in Arunachal tribal cuisine, providing unique prebiotics that support gut health.",
       "Features traditional Arunachal cooking with millet varieties indigenous to the region that support sustained energy and provide essential micronutrients.",
       "This meal balances traditional fermented foods with fresh seasonal produce, maintaining the authentic flavors of Arunachal tribal cuisine while optimizing nutrition."
+    ],
+    'chhattisgarh': [
+      "Chhattisgarhi cuisine emphasizes locally grown millets and rice varieties. This meal incorporates traditional cooking methods that preserve the nutritional values of indigenous grains.",
+      "This meal features Chhattisgarh's distinctive use of forest produce and foraged ingredients that have been part of tribal nutrition for generations.",
+      "Chhattisgarh's traditional cooking uses minimal oil and maximizes fermentation for digestive health, reflected in dishes like Baasi Bhaat (fermented rice).",
+      "This meal incorporates Chhattisgarh's rich variety of leafy greens like Chaulai (amaranth) that provide exceptional micronutrient content.",
+      "Features traditional Chhattisgarhi techniques for preparing kodo and kutki millets that enhance their protein bioavailability and flavor.",
+      "The meal adapts Chhattisgarhi tribal cooking methods that focus on bringing out natural flavors without excessive spices or oil."
     ]
   };
   
@@ -215,7 +223,6 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'tripura': 'north east',
     'mizoram': 'north east',
     'nagaland': 'north east',
-    'arunachalpradesh': 'north east',
     'sikkim': 'north east'
   };
   

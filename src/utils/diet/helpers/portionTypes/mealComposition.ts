@@ -1,4 +1,3 @@
-
 /**
  * Helper functions for assembling meal components with proper portions
  */
@@ -141,3 +140,50 @@ export const getArunachalDishPortion = (
   return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
 };
 
+// Helper for Chhattisgarh-specific portion recommendations
+export const getChattisgarhDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Chhattisgarh breakfast portions
+  if (dishName.includes('Faraa') || dishName.includes('Dumplings')) {
+    return isWeightLoss ? "2-3 small" : (isProteinFocus ? "4-5 medium" : "3-4 medium");
+  }
+  
+  if (dishName.includes('Porridge') || dishName.includes('Ragi')) {
+    return isWeightLoss ? "3/4 cup" : (isProteinFocus ? "1 cup with added protein" : "1 cup");
+  }
+  
+  if (dishName.includes('Pancake') || dishName.includes('Cheela')) {
+    return isWeightLoss ? "1-2 small" : (isProteinFocus ? "2-3 medium" : "2 medium");
+  }
+  
+  if (dishName.includes('Idli')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2-3 medium");
+  }
+  
+  if (dishName.includes('Poha') || dishName.includes('Rice')) {
+    return isWeightLoss ? "1/2 cup" : (isProteinFocus ? "3/4 cup" : "2/3 cup");
+  }
+  
+  // Handle Chhattisgarh main dish portions
+  if (dishName.includes('Khichdi')) {
+    return isWeightLoss ? "3/4 cup" : (isProteinFocus ? "1 cup" : "1 cup");
+  }
+  
+  if (dishName.includes('Curry') || dishName.includes('Saag')) {
+    return isWeightLoss ? "3/4 katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Stew')) {
+    return isWeightLoss ? "3/4 bowl" : "1 bowl";
+  }
+  
+  if (dishName.includes('Kofta')) {
+    return isWeightLoss ? "3-4 small pieces" : "4-5 medium pieces";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
