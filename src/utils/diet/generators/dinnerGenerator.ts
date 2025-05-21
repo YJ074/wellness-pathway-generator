@@ -14,6 +14,8 @@ import {
   getVeganProteinAlternative,
   getProteinPortion
 } from '../helpers/portionHelpers';
+import { getAllowedNonVegTypes } from '../helpers/dietaryPreferenceHelper';
+import { generateNonVegDish } from './nonVegGenerator';
 
 export const generateDinner = (
   dayIndex: number, 
@@ -22,8 +24,29 @@ export const generateDinner = (
   isWeightLoss: boolean,
   isProteinFocus: boolean,
   allergies?: string,
-  region?: string
+  region?: string,
+  dietaryPreference?: string // Added parameter
 ) => {
+  // Check if non-vegetarian dishes are allowed
+  const allowNonVeg = dietaryPreference && getAllowedNonVegTypes(dietaryPreference).length > 0;
+  
+  // Use non-vegetarian dishes every 4th day if user allows non-veg food
+  // Use a different pattern than lunch to ensure variety
+  if (allowNonVeg && (dayIndex + 2) % 4 === 0) {
+    const allowedTypes = getAllowedNonVegTypes(dietaryPreference || 'non-vegetarian');
+    // Use different non-veg types on different days
+    const nonVegType = allowedTypes[(dayIndex * 11 + 5) % allowedTypes.length];
+    
+    return generateNonVegDish(
+      dayIndex,
+      isWeightLoss,
+      isProteinFocus,
+      nonVegType,
+      allergies,
+      region
+    );
+  }
+
   // Check for regional specialties
   const regionalFoods = getRegionalFoods(region);
   

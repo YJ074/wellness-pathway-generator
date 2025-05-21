@@ -1,4 +1,3 @@
-
 import { DietaryPreference, WellnessGoal } from '../types';
 import { 
   getProteinSources, 
@@ -108,7 +107,17 @@ export function generateDays(
 
     // Use the entire protein array for lunch/dinner to enable protein pairing for complete amino acids
     // Apply varied patterns to avoid repetition
-    let lunch = generateLunch(dayIndex + lunchPatterns[i-1] + legumePatterns[i-1], proteinsByDay, grains, vegetables, calorieReduction, proteinFocus, allergies, region);
+    let lunch = generateLunch(
+      dayIndex + lunchPatterns[i-1] + legumePatterns[i-1], 
+      proteinsByDay, 
+      grains, 
+      vegetables, 
+      calorieReduction, 
+      proteinFocus, 
+      allergies, 
+      region,
+      dietaryPreference
+    );
     lunch = applyTriplePassDeduplication(lunch);
     addFoodToDailyMemory(dayIndex, lunch);
     
@@ -126,7 +135,8 @@ export function generateDays(
       calorieReduction, 
       proteinFocus, 
       allergies, 
-      region
+      region,
+      dietaryPreference
     );
     dinner = applyTriplePassDeduplication(dinner);
     
