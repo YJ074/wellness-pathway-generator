@@ -218,7 +218,6 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'bihar': 'east',
     'jharkhand': 'east',
     'andamanandnicobar': 'east',
-    'assam': 'east',
     
     // West
     'maharashtra': 'west',
