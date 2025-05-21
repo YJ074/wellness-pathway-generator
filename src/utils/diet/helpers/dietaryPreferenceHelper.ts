@@ -35,7 +35,8 @@ export const allowsDairy = (dietaryPreference: string): boolean => {
     'lacto-vegetarian', 
     'lacto-ovo-vegetarian', 
     'pure-vegetarian',
-    'sattvic'
+    'sattvic',
+    'pure-jain'
   ];
   
   return dairyDiets.includes(dietaryPreference.toLowerCase());

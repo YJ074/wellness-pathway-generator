@@ -1,4 +1,3 @@
-
 export type DietaryPreference =
   | 'lacto-vegetarian'
   | 'lacto-ovo-vegetarian'

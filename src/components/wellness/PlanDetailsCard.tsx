@@ -15,6 +15,10 @@ interface PlanDetailsProps {
 const PlanDetailsCard = ({ formData }: PlanDetailsProps) => {
   // Format the dietary preference for display
   const formatPreference = (preference: string) => {
+    // Special case for pure-jain to show as just "Jain"
+    if (preference === 'pure-jain') {
+      return 'Jain';
+    }
     return preference
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))

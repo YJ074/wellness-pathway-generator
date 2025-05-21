@@ -38,53 +38,61 @@ interface PDFPersonalInfoSectionProps {
   formData: FormData;
 }
 
-const PDFPersonalInfoSection = ({ formData }: PDFPersonalInfoSectionProps) => (
-  <View style={styles.infoSection}>
-    <Text style={styles.infoTitle}>Personal Information</Text>
-    <View style={styles.infoGrid}>
-      <View style={styles.infoItem}>
-        <Text style={styles.infoLabel}>Age:</Text>
-        <Text style={styles.infoValue}>{formData.age} years</Text>
-      </View>
-      <View style={styles.infoItem}>
-        <Text style={styles.infoLabel}>Gender:</Text>
-        <Text style={styles.infoValue}>
-          {formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1)}
-        </Text>
-      </View>
-      <View style={styles.infoItem}>
-        <Text style={styles.infoLabel}>Weight:</Text>
-        <Text style={styles.infoValue}>{formData.weight} kg</Text>
-      </View>
-      <View style={styles.infoItem}>
-        <Text style={styles.infoLabel}>Height:</Text>
-        <Text style={styles.infoValue}>
-          {formData.height
-            ? `${formData.height} cm`
-            : `${formData.heightFeet || '0'}ft ${formData.heightInches || '0'}in`}
-        </Text>
-      </View>
-      <View style={styles.infoItem}>
-        <Text style={styles.infoLabel}>Diet Preference:</Text>
-        <Text style={styles.infoValue}>
-          {formData.dietaryPreference
-            .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ')}
-        </Text>
-      </View>
-      <View style={styles.infoItem}>
-        <Text style={styles.infoLabel}>Fitness Goal:</Text>
-        <Text style={styles.infoValue}>
-          {formData.fitnessGoal
-            .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ')}
-        </Text>
+const PDFPersonalInfoSection = ({ formData }: PDFPersonalInfoSectionProps) => {
+  // Format dietary preference properly
+  const formatDietaryPreference = (pref: string) => {
+    if (pref === 'pure-jain') return 'Jain';
+    
+    return pref
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  return (
+    <View style={styles.infoSection}>
+      <Text style={styles.infoTitle}>Personal Information</Text>
+      <View style={styles.infoGrid}>
+        <View style={styles.infoItem}>
+          <Text style={styles.infoLabel}>Age:</Text>
+          <Text style={styles.infoValue}>{formData.age} years</Text>
+        </View>
+        <View style={styles.infoItem}>
+          <Text style={styles.infoLabel}>Gender:</Text>
+          <Text style={styles.infoValue}>
+            {formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1)}
+          </Text>
+        </View>
+        <View style={styles.infoItem}>
+          <Text style={styles.infoLabel}>Weight:</Text>
+          <Text style={styles.infoValue}>{formData.weight} kg</Text>
+        </View>
+        <View style={styles.infoItem}>
+          <Text style={styles.infoLabel}>Height:</Text>
+          <Text style={styles.infoValue}>
+            {formData.height
+              ? `${formData.height} cm`
+              : `${formData.heightFeet || '0'}ft ${formData.heightInches || '0'}in`}
+          </Text>
+        </View>
+        <View style={styles.infoItem}>
+          <Text style={styles.infoLabel}>Diet Preference:</Text>
+          <Text style={styles.infoValue}>
+            {formatDietaryPreference(formData.dietaryPreference)}
+          </Text>
+        </View>
+        <View style={styles.infoItem}>
+          <Text style={styles.infoLabel}>Fitness Goal:</Text>
+          <Text style={styles.infoValue}>
+            {formData.fitnessGoal
+              .split('-')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}
+          </Text>
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default PDFPersonalInfoSection;
-
