@@ -4,22 +4,22 @@ import { getRegionalNonVegDishes } from './regionalDishData';
 
 /**
  * Generate a region-specific non-vegetarian dish
- * @param region - Region code
+ * @param nonVegType - Optional specific non-veg type preference
  * @param dayIndex - Current day index (0-based)
  * @param isWeightLoss - Whether the diet is for weight loss
  * @param isProteinFocus - Whether the diet is for protein focus
- * @param nonVegType - Optional specific non-veg type preference
+ * @param region - Region code
  * @returns Regional dish description or empty string if not found
  */
 export const generateNonVegByRegion = (
-  region: string,
+  nonVegType: string,
   dayIndex: number,
   isWeightLoss: boolean,
   isProteinFocus: boolean,
-  nonVegType?: string
+  region?: string
 ): string => {
   // Get region-specific dishes
-  const regionalNonVegDishes = getRegionalNonVegDishes(region);
+  const regionalNonVegDishes = getRegionalNonVegDishes(region || '');
   
   // Use regional dish every 4th day if available
   if (regionalNonVegDishes.length > 0 && dayIndex % 4 === 0) {

@@ -4,7 +4,7 @@ import { getRegionalFoods } from '../../data/regionalFoods';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { enrichWithPrebiotics } from '../../helpers/prebioticProbioticHelper';
-import { getNonVegOptions } from './nonVegDishOptions';
+import { getNonVegDishOptions } from './nonVegDishOptions';
 import { generateNonVegByRegion } from './regional/nonVegRegionalGenerator';
 
 // Main generator function for non-vegetarian dishes
@@ -19,11 +19,11 @@ export const generateNonVegDish = (
   // Try regional non-veg dishes first if region is specified and it's a good day for it
   if (region && dayIndex % 4 === 0) {
     const regionalNonVegDish = generateNonVegByRegion(
-      dayIndex,
       nonVegType,
-      region,
+      dayIndex,
       isWeightLoss,
-      isProteinFocus
+      isProteinFocus,
+      region
     );
     
     if (regionalNonVegDish) {
@@ -33,7 +33,7 @@ export const generateNonVegDish = (
   }
 
   // Get standard non-veg options if no regional dish was selected
-  const nonVegOptions = getNonVegOptions(nonVegType);
+  const nonVegOptions = getNonVegDishOptions(nonVegType);
   
   // Use the day index to select a dish, with prime number offset to avoid repetition
   const dishIndex = (dayIndex * 7 + 11) % nonVegOptions.length;
