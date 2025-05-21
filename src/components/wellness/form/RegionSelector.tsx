@@ -13,6 +13,7 @@ const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
   // Complete list of all Indian states and union territories
   const states = [
     { id: 'andhra', name: 'Andhra Pradesh' },
+    { id: 'arunachal', name: 'Arunachal Pradesh' },
     { id: 'arunachalpradesh', name: 'Arunachal Pradesh' },
     { id: 'assam', name: 'Assam' },
     { id: 'bihar', name: 'Bihar' },

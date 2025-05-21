@@ -96,3 +96,48 @@ export const getAndhraDishPortion = (
   // Default portion
   return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
 };
+
+// Helper for Arunachal Pradesh-specific portion recommendations
+export const getArunachalDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Arunachal Pradesh breakfast portions
+  if (dishName.includes('Khura') || dishName.includes('Pancakes')) {
+    return isWeightLoss ? "1-2 small" : (isProteinFocus ? "2-3 medium" : "2 medium");
+  }
+  
+  if (dishName.includes('Porridge') || dishName.includes('Soup')) {
+    return isWeightLoss ? "3/4 bowl" : (isProteinFocus ? "1 bowl" : "1 bowl");
+  }
+  
+  if (dishName.includes('Millet') || dishName.includes('Red Rice')) {
+    return isWeightLoss ? "1/2 cup" : (isProteinFocus ? "3/4 cup" : "3/4 cup");
+  }
+  
+  if (dishName.includes('Upma') || dishName.includes('Idli')) {
+    return isWeightLoss ? "2-3 small" : "3-4 medium";
+  }
+  
+  // Handle Arunachal Pradesh main dish portions
+  if (dishName.includes('Thukpa')) {
+    return isWeightLoss ? "3/4 bowl" : (isProteinFocus ? "1 bowl with extra protein" : "1 bowl");
+  }
+  
+  if (dishName.includes('Stew') || dishName.includes('Curry')) {
+    return isWeightLoss ? "3/4 katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Stir Fry') || dishName.includes('Stir-fry')) {
+    return isWeightLoss ? "1/2 katori" : "3/4 katori";
+  }
+  
+  if (dishName.includes('Bamboo Shoot')) {
+    return isWeightLoss ? "1/3 cup" : "1/2 cup";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
+

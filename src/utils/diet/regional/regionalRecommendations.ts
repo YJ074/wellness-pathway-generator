@@ -130,6 +130,14 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Incorporates kosambari (moong dal salad) and other nutritious Karnataka specialties that provide balanced nutrition.",
       "Features traditional Udupi-style preparations that emphasize quality ingredients and traditional cooking methods for optimal nutrition.",
       "The meal introduces Kodava-style preparations using indigenous spices that enhance flavor while providing medicinal benefits."
+    ],
+    'arunachal': [
+      "Arunachal Pradesh cuisine emphasizes minimally processed ingredients with traditional preservation techniques. This meal features fermentation methods that enhance nutritional benefits.",
+      "This meal incorporates indigenous herbs and vegetables from Arunachal, many of which have medicinal properties recognized in traditional healing practices.",
+      "Arunachal's diverse tribal cuisines favor steaming and boiling over frying. This meal uses these traditional cooking methods that naturally preserve nutrients while minimizing added fats.",
+      "Incorporates bamboo shoot preparations common in Arunachal tribal cuisine, providing unique prebiotics that support gut health.",
+      "Features traditional Arunachal cooking with millet varieties indigenous to the region that support sustained energy and provide essential micronutrients.",
+      "This meal balances traditional fermented foods with fresh seasonal produce, maintaining the authentic flavors of Arunachal tribal cuisine while optimizing nutrition."
     ]
   };
   
@@ -147,7 +155,7 @@ export const generateRegionalNote = (region?: string): string | undefined => {
   if (normalizedRegion === 'tamilnadu') {
     return notes['tamil nadu'] ? notes['tamil nadu'][Math.floor(Math.random() * notes['tamil nadu'].length)] : undefined;
   }
-    if (normalizedRegion === 'karnataka') {
+  if (normalizedRegion === 'karnataka') {
     return notes['karnataka'] ? notes['karnataka'][Math.floor(Math.random() * notes['karnataka'].length)] : undefined;
   }
   
@@ -199,6 +207,8 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'chhattisgarh': 'central',
     
     // Northeast
+    'arunachal': 'north east',
+    'arunachalpradesh': 'north east',
     'assam': 'north east',
     'manipur': 'north east',
     'meghalaya': 'north east',
