@@ -59,22 +59,6 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Includes spices like mustard seeds, fenugreek, and red chilies, which are rich in antioxidants.",
       "Emphasizes the use of fresh ingredients to maximize flavor and nutritional value."
     ],
-    'telangana': [
-      "Telangana cuisine blends flavors from Andhra and Maharashtra. This meal balances traditional tastes with health-conscious cooking methods.",
-      "Features dishes like biryani and bagara baingan, prepared with controlled oil and spices to maintain their authentic taste while optimizing nutrition.",
-      "Incorporates baking and stir-frying techniques that enhance flavors while minimizing the use of oil.",
-      "Uses a variety of lentils and locally sourced vegetables to provide essential nutrients.",
-      "Includes spices like cumin, coriander, and turmeric, which are rich in antioxidants.",
-      "Emphasizes the use of fresh ingredients to maximize flavor and nutritional value."
-    ],
-    'karnataka': [
-      "Karnataka cuisine is known for its diverse flavors and use of lentils. This meal balances traditional tastes with health-conscious cooking methods.",
-      "Features dishes like bisi bele bath and akki roti, prepared with controlled oil and spices to maintain their authentic taste while optimizing nutrition.",
-      "Incorporates steaming and stir-frying techniques that enhance flavors while minimizing the use of oil.",
-      "Uses a variety of lentils and locally sourced vegetables to provide essential nutrients.",
-      "Includes spices like mustard seeds, fenugreek, and curry leaves, which are rich in antioxidants.",
-      "Emphasizes the use of fresh ingredients to maximize flavor and nutritional value."
-    ],
     'arunachal': [
       "Arunachal cuisine utilizes indigenous herbs and bamboo shoots. This meal adapts traditional recipes to create a nutritionally balanced option.",
       "Features dishes prepared with minimal oil and emphasizes the natural flavors of local ingredients.",
@@ -163,14 +147,6 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Uses classic Konkan and Marathwada cooking techniques that maximize flavor through careful tempering with minimal oil.",
       "Includes Kolhapuri mathha (buttermilk) preparation that provides gut-friendly probiotics while enhancing the meal's digestibility."
     ],
-    'jammu': [
-      "Jammu cuisine is known for its use of dairy products and spices. This meal balances traditional flavors with lighter cooking methods.",
-      "Features dishes like rajma chawal and dum aloo, prepared with controlled oil and spices to maintain their authentic taste while optimizing nutrition.",
-      "Incorporates tandoori cooking techniques that enhance flavors through roasting rather than frying, reducing overall fat content.",
-      "Uses whole wheat and millets to provide sustained energy and excellent micronutrient profiles.",
-      "Includes seasonal vegetables and fruits that are locally sourced to maximize freshness and nutritional value.",
-      "Emphasizes the use of homemade spices and masalas to control sodium levels and avoid artificial additives."
-    ],
     'kerala': [
       "Kerala cuisine skillfully balances coconut, spices, and fresh ingredients. This meal adapts traditional recipes for enhanced nutrition.",
       "Features dishes that highlight the natural flavors of ingredients with minimal oil and balanced spice profiles.",
@@ -202,6 +178,94 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Uses bamboo shoots, local greens, and foraged ingredients known for their medicinal properties.",
       "Includes traditional fermented components that support gut health while enhancing flavor complexity.",
       "Balances the region's starchy staples with protein-rich plant foods for sustained energy release."
+    ],
+    'nagaland': [
+      "Naga cuisine features fermentation techniques and smoked ingredients. This meal adapts traditional recipes while preserving their essence.",
+      "This meal reimagines classic Naga preparations traditionally centered on meat with nutrient-dense plant alternatives.",
+      "Features unique local ingredients like bamboo shoots and forest herbs naturally rich in antioxidants and dietary fiber.",
+      "Incorporates fermented foods that promote gut health but with controlled sodium content for balanced nutrition.",
+      "Uses traditional cooking methods like steaming and open-fire roasting that minimize oil while maximizing flavor intensity.",
+      "Balances indigenous Naga ingredients with readily available alternatives while respecting traditional flavor combinations."
+    ],
+    'odisha': [
+      "Odisha cuisine balances rice, legumes, and seasonal vegetables. This meal adapts traditional recipes for enhanced nutrition.",
+      "Features traditional dishes like dalma and santula prepared with minimal oil while preserving authentic flavors.",
+      "Incorporates steaming and boiling techniques that enhance nutritional value while reducing fat content.",
+      "Uses locally inspired preparations of lentils and rice, providing complete proteins and sustained energy.",
+      "Includes traditional Odia spices like pancha phutana (five spices) known for their digestive benefits.",
+      "Balances the region's fondness for rice with protein-rich legumes for a complete nutritional profile."
+    ],
+    'punjab': [
+      "Punjabi cuisine is known for its richness and bold flavors. This meal adapts traditional recipes for balanced nutrition.",
+      "Features signature dishes like dal makhani and sarson da saag made with minimal oil and dairy while preserving taste.",
+      "Uses tandoor-inspired cooking methods that enhance flavor through dry heat rather than excessive fat.",
+      "Incorporates whole wheat and millets in traditional breads to increase fiber and micronutrient content.",
+      "Balances the region's love for dairy with plant-based alternatives that maintain creamy textures.",
+      "Emphasizes fresh seasonal vegetables in sabzis prepared with carefully controlled spices and minimal oil."
+    ],
+    'rajasthan': [
+      "Rajasthani cuisine maximizes nutrition from minimal ingredients in an arid climate. This meal honors that tradition.",
+      "Features water-conservative cooking methods traditionally developed to adapt to desert conditions.",
+      "Uses millet varieties like bajra that are naturally suited to arid environments while providing excellent nutrition.",
+      "Incorporates beans and pulses in traditional preparations to provide sustained protein and energy.",
+      "Adapts Rajasthani preservation techniques like sun-drying and pickling for enhanced nutritional profiles.",
+      "Balances the traditionally high oil content of Rajasthani cuisine while maintaining authentic flavors."
+    ],
+    'sikkim': [
+      "Sikkimese cuisine reflects its mountainous terrain with unique fermented foods. This meal adapts these techniques for health benefits.",
+      "Features traditional fermentation methods that enhance nutritional bioavailability while controlled for salt content.",
+      "Uses indigenous herbs and vegetables naturally rich in micronutrients adapted to high-altitude environments.",
+      "Incorporates buckwheat and millet varieties traditionally grown in Sikkim's mountains for sustained energy.",
+      "Adapts traditional momos and thukpas with steaming methods and reduced-fat fillings without compromising flavor.",
+      "Balances the warming spices of mountain cuisines with portion control for optimal metabolism support."
+    ],
+    'tamilnadu': [
+      "Tamil cuisine masterfully combines rice, lentils, and vegetables with medicinal spices. This meal honors that tradition.",
+      "Features traditional fermented rice preparations like idli and dosa made with controlled proportions for balanced nutrition.",
+      "Uses millets like ragi, kambu, and thinai that were staples in ancient Tamil cooking before rice predominance.",
+      "Incorporates traditional cooling ingredients like buttermilk and coconut in controlled quantities for balanced intake.",
+      "Adapts classical Tamil Nadu spice blends like sambar powder and milagai podi with careful portion control.",
+      "Balances traditional rasams and kuzhambus with enhanced vegetable content for increased nutritional density."
+    ],
+    'telangana': [
+      "Telangana cuisine balances fiery spices with cooling ingredients. This meal adapts traditional recipes for balanced nutrition.",
+      "Features signature dishes like pesarattu and gongura preparations with controlled oil and enhanced protein content.",
+      "Uses millets like jowar that were traditional to the region before rice became predominant.",
+      "Incorporates leafy vegetables like gongura (sorrel) and bachalakura (malabar spinach) rich in vitamins and minerals.",
+      "Adapts traditional tempering techniques to enhance flavor while minimizing oil content.",
+      "Balances the region's penchant for spicy flavors with cooling elements like yogurt and herbs."
+    ],
+    'tripura': [
+      "Tripuri cuisine highlights bamboo and indigenous herbs. This meal adapts traditional recipes for enhanced nutrition.",
+      "Features bamboo shoot preparations naturally rich in fiber and prepared with minimal oil.",
+      "Uses traditional Tripuri berma (dried fish) flavoring techniques applied to plant proteins for balanced meals.",
+      "Incorporates indigenous herbs used in Tripuri cooking that naturally enhance flavor without excess salt.",
+      "Adapts traditional fermentation methods for improved gut health while controlling sodium levels.",
+      "Balances the traditional preference for rice with protein-rich accompaniments for complete nutrition."
+    ],
+    'uttarpradesh': [
+      "UP cuisine blends Awadhi, Bhojpuri, and Mughlai influences. This meal adapts these traditions with balanced nutrition.",
+      "Features traditional dishes like kadhi and bhartas prepared with minimal oil without compromising flavor.",
+      "Uses whole grains in traditional breads like paratha and roti made with mixed flours for better nutrition.",
+      "Incorporates protein-rich lentil preparations that balance the region's carbohydrate-rich staples.",
+      "Adapts traditional Awadhi cooking techniques that enhance flavor through slow cooking rather than excess fat.",
+      "Balances the rich flavors of UP cuisine with portion control and enhanced vegetable content."
+    ],
+    'uttarakhand': [
+      "Uttarakhand cuisine showcases mountain grains and rustic preparation styles. This meal adapts these regional specialties.",
+      "Features traditional Garhwali and Kumaoni preparations made with minimal oil while preserving authentic flavors.",
+      "Uses indigenous grains like jhangora (barnyard millet) and mandua (finger millet) that provide excellent nutrition.",
+      "Incorporates traditional legumes like gahat (horse gram) and bhatt (black soybean) known for their protein content.",
+      "Adapts traditional rustic cooking techniques that enhance flavor through slow cooking and careful spice selection.",
+      "Balances the hearty mountain flavors with portion control for optimal nutritional balance."
+    ],
+    'westbengal': [
+      "Bengali cuisine masterfully balances sweet, bitter, and savory flavors. This meal honors that balanced approach.",
+      "Features traditional preparations like shukto and ghonto made with minimal oil while maintaining authentic taste.",
+      "Uses traditional fish preparations with enhanced vegetable content and controlled oil for balanced meals.",
+      "Incorporates bitter greens like shorshe shaak (mustard greens) prepared in the Bengali style for their health benefits.",
+      "Adapts traditional phoron (tempering) techniques that maximize flavor with minimal fat content.",
+      "Balances the Bengali love for sweets with naturally sweet vegetables and fruits to satisfy the palate."
     ]
   };
   
@@ -211,19 +275,22 @@ export const generateRegionalNote = (region?: string): string | undefined => {
   // Handle states/regions with spaces in their names
   const normalizedRegion = regionLower.replace(' ', '');
   if (normalizedRegion === 'northeast' || normalizedRegion === 'northeastindian') {
-    return notes['north east'] ? notes['north east'][Math.floor(Math.random() * notes['north east'].length)] : undefined;
+    return notes['northeast'] ? notes['northeast'][Math.floor(Math.random() * notes['northeast'].length)] : undefined;
   }
   if (normalizedRegion === 'westbengal') {
-    return notes['west bengal'] ? notes['west bengal'][Math.floor(Math.random() * notes['west bengal'].length)] : undefined;
+    return notes['westbengal'] ? notes['westbengal'][Math.floor(Math.random() * notes['westbengal'].length)] : undefined;
   }
   if (normalizedRegion === 'tamilnadu') {
-    return notes['tamil nadu'] ? notes['tamil nadu'][Math.floor(Math.random() * notes['tamil nadu'].length)] : undefined;
+    return notes['tamilnadu'] ? notes['tamilnadu'][Math.floor(Math.random() * notes['tamilnadu'].length)] : undefined;
   }
   if (normalizedRegion === 'himachalpradesh') {
     return notes['himachal'] ? notes['himachal'][Math.floor(Math.random() * notes['himachal'].length)] : undefined;
   }
   if (normalizedRegion === 'madhyapradesh') {
     return notes['madhyapradesh'][Math.floor(Math.random() * notes['madhyapradesh'].length)];
+  }
+  if (normalizedRegion === 'uttarpradesh') {
+    return notes['uttarpradesh'][Math.floor(Math.random() * notes['uttarpradesh'].length)];
   }
   
   // Check for the exact region match first
@@ -275,15 +342,15 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'chhattisgarh': 'central',
     
     // Northeast
-    'arunachal': 'north east',
-    'arunachalpradesh': 'north east',
-    'assam': 'north east',
+    'arunachal': 'northeast',
+    'arunachalpradesh': 'northeast',
+    'assam': 'northeast',
     'manipur': 'northeast',
     'meghalaya': 'northeast',
-    'tripura': 'north east',
+    'tripura': 'northeast',
     'mizoram': 'northeast',
-    'nagaland': 'north east',
-    'sikkim': 'north east'
+    'nagaland': 'northeast',
+    'sikkim': 'northeast'
   };
   
   const mappedRegion = stateToRegionMap[normalizedRegion];

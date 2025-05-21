@@ -212,3 +212,179 @@ export const getKeralaDishPortion = (
   // Default portion
   return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
 };
+
+// Helper for Tamil Nadu-specific portion recommendations
+export const getTamilNaduDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Tamil Nadu breakfast portions
+  if (dishName.includes('Dosa') || dishName.includes('Idli')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2 medium");
+  }
+  
+  if (dishName.includes('Pongal') || dishName.includes('Upma')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "⅔ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Porridge') || dishName.includes('Koozh')) {
+    return isWeightLoss ? "¾ cup" : "1 cup";
+  }
+  
+  if (dishName.includes('Uthappam') || dishName.includes('Adai')) {
+    return isWeightLoss ? "1 medium" : (isProteinFocus ? "1 large" : "1 medium");
+  }
+  
+  // Handle Tamil Nadu main dish portions
+  if (dishName.includes('Kootu') || dishName.includes('Sambar')) {
+    return isWeightLoss ? "¾ katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Poriyal') || dishName.includes('Curry')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Avial') || dishName.includes('Kuzhambu')) {
+    return isWeightLoss ? "½ katori" : "¾ katori";
+  }
+  
+  if (dishName.includes('Rice') || dishName.includes('Millets')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "⅔ cup" : "⅔ cup");
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
+
+// Helper for North-East India specific portion recommendations
+export const getNorthEastDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle North-East breakfast portions
+  if (dishName.includes('Rice') || dishName.includes('Porridge')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "⅔ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Pancake') || dishName.includes('Cheela')) {
+    return isWeightLoss ? "1-2 small" : (isProteinFocus ? "2 medium" : "2 small");
+  }
+  
+  if (dishName.includes('Stir Fry') || dishName.includes('Poha')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "¾ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Sweet Potato') || dishName.includes('Tapioca')) {
+    return isWeightLoss ? "½ cup" : "¾ cup";
+  }
+  
+  // Handle North-East main dish portions
+  if (dishName.includes('Curry') || dishName.includes('Stew')) {
+    return isWeightLoss ? "¾ katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Bamboo') || dishName.includes('Fermented')) {
+    return isWeightLoss ? "2 tablespoons" : "3 tablespoons";
+  }
+  
+  if (dishName.includes('Saag') || dishName.includes('Greens')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Red Rice') || dishName.includes('Sticky Rice')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "⅔ cup" : "⅔ cup");
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
+
+// Helper for Rajasthan-specific portion recommendations
+export const getRajasthanDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Rajasthani breakfast portions
+  if (dishName.includes('Khichdi') || dishName.includes('Upma')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "⅔ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Roti') || dishName.includes('Paratha')) {
+    return isWeightLoss ? "1 small" : (isProteinFocus ? "1 medium" : "1 medium");
+  }
+  
+  if (dishName.includes('Cheela') || dishName.includes('Dhokla')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2 medium");
+  }
+  
+  if (dishName.includes('Chaat') || dishName.includes('Poha')) {
+    return isWeightLoss ? "½ cup" : "⅔ cup";
+  }
+  
+  // Handle Rajasthani main dish portions
+  if (dishName.includes('Sangri') || dishName.includes('Gatte')) {
+    return isWeightLoss ? "½ katori" : (isProteinFocus ? "¾ katori" : "¾ katori");
+  }
+  
+  if (dishName.includes('Dal') || dishName.includes('Sabzi')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Bajra') || dishName.includes('Jowar')) {
+    return isWeightLoss ? "1 small" : "1 medium";
+  }
+  
+  if (dishName.includes('Curry') || dishName.includes('Masala')) {
+    return isWeightLoss ? "½ katori" : "¾ katori";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
+
+// Helper for Punjab-specific portion recommendations
+export const getPunjabDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Punjabi breakfast portions
+  if (dishName.includes('Paratha') || dishName.includes('Roti')) {
+    return isWeightLoss ? "1 small" : (isProteinFocus ? "1 medium" : "1 medium");
+  }
+  
+  if (dishName.includes('Cheela') || dishName.includes('Idli')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2 medium");
+  }
+  
+  if (dishName.includes('Dalia') || dishName.includes('Smoothie')) {
+    return isWeightLoss ? "¾ cup" : "1 cup";
+  }
+  
+  if (dishName.includes('Chole') || dishName.includes('Toast')) {
+    return isWeightLoss ? "½ cup" : "⅔ cup";
+  }
+  
+  // Handle Punjabi main dish portions
+  if (dishName.includes('Masala') || dishName.includes('Bharta')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Saag') || dishName.includes('Kadhi')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Dal') || dishName.includes('Curry')) {
+    return isWeightLoss ? "¾ katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Palak') || dishName.includes('Gobhi')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};

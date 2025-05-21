@@ -990,6 +990,424 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Dry Fruit and Seed Mix',
       'Ragi Coconut Laddoos'
     ]
+  },
+  'nagaland': {
+    breakfast: [
+      'Boiled Red Rice with Steamed Vegetables',
+      'Sticky Rice with Boiled Eggs',
+      'Tapioca and Banana Mash',
+      'Fermented Bamboo Shoot Porridge',
+      'Vegetable Poha with Herbs',
+      'Boiled Sweet Potato with Chili Paste',
+      'Ragi Upma',
+      'Leafy Greens and Rice Pancake',
+      'Pumpkin Rice Porridge',
+      'Tofu Veg Stir Fry'
+    ],
+    mains: [
+      'Smoked Veg Curry with Bamboo Shoot',
+      'Axone (Fermented Soybean) with Steamed Veg',
+      'Bitter Gourd Tomato Curry',
+      'Banana Flower Curry',
+      'Cucumber Stew',
+      'Boiled Pumpkin with Mustard',
+      'Colocasia Curry with Greens',
+      'Steamed Beans and Carrots',
+      'Red Rice and Vegetable Curry',
+      'Spinach with Boiled Herbs'
+    ],
+    snacks: [
+      'Steamed Momos (Veg)',
+      'Black Sesame Seed Ladoo',
+      'Roasted Soy Nut Chaat',
+      'Dry Roasted Corn',
+      'Banana Chips (Air Fried)',
+      'Boiled Yam Chunks with Herbs',
+      'Sweet Potato Patties',
+      'Foxnut and Peanut Mix',
+      'Rice Flour Balls',
+      'Cucumber Chili Salad'
+    ]
+  },
+  'odisha': {
+    breakfast: [
+      'Chuda Kadamba (Flattened Rice Balls)',
+      'Dahibara (Without Aludam)',
+      'Vegetable Pakhala Bhata (Fermented Rice)',
+      'Moong Dal Cheela',
+      'Suji Upma with Veggies',
+      'Vegetable Idli',
+      'Ragi Dosa with Chutney',
+      'Sweet Corn Poha',
+      'Boiled Chana with Lemon',
+      'Multigrain Dalia'
+    ],
+    mains: [
+      'Dalma (Lentils with Veggies)',
+      'Santula (Boiled Veg Curry)',
+      'Besara (Mustard Veg Curry)',
+      'Low-Oil Aloo Bharta',
+      'Rasabali with Ragi',
+      'Matar Ghugni',
+      'Pumpkin Curry',
+      'Lauki and Moong Dal',
+      'Mixed Veg Khichdi',
+      'Spinach Tomato Curry'
+    ],
+    snacks: [
+      'Chuda Ghasa (Low Sugar)',
+      'Ragi Chakuli (Steamed)',
+      'Dry Roasted Peanuts',
+      'Coconut Ladoo (No Sugar)',
+      'Oats Cutlets',
+      'Boiled Sweet Corn with Spices',
+      'Foxnut Snack Mix',
+      'Steamed Green Gram Balls',
+      'Low-Oil Vegetable Pakora',
+      'Carrot Cucumber Chaat'
+    ]
+  },
+  'punjab': {
+    breakfast: [
+      'Stuffed Tofu Paratha (No Oil)',
+      'Besan Cheela with Veggies',
+      'Vegetable Dalia',
+      'Moong Dal Idli',
+      'Ragi Roti with Curd',
+      'Missi Roti with Mint Chutney',
+      'Stuffed Bajra Paratha',
+      'Low-Oil Chole with Toast',
+      'Sattu Smoothie',
+      'Boiled Egg and Spinach Stir Fry'
+    ],
+    mains: [
+      'Chana Masala (Low Oil)',
+      'Baingan Bharta',
+      'Sarson da Saag (Low Ghee)',
+      'Kadhi with Lauki',
+      'Palak Paneer (Tofu Variant)',
+      'Gobhi Masala',
+      'Mixed Vegetable Curry',
+      'Dal Makhani (Low Cream)',
+      'Lobia Masala',
+      'Bottle Gourd Curry'
+    ],
+    snacks: [
+      'Roasted Chana with Masala',
+      'Dry Fruit & Makhana Mix',
+      'Steamed Tikkis',
+      'Cucumber & Carrot Salad',
+      'Low-Oil Baked Samosa',
+      'Tofu Veg Rolls',
+      'Oats Cutlets',
+      'Beetroot Hummus with Sticks',
+      'Chickpea Chaat',
+      'Low-Oil Moong Dal Pakodi'
+    ]
+  },
+  'rajasthan': {
+    breakfast: [
+      'Bajra Khichdi',
+      'Missi Roti with Mint Chutney',
+      'Besan Cheela',
+      'Moong Dal Dhokla',
+      'Ragi Upma',
+      'Vegetable Poha',
+      'Steamed Bajra Idli',
+      'Oats Paratha',
+      'Chana Chaat with Lemon',
+      'Tofu Bhurji with Jowar Roti'
+    ],
+    mains: [
+      'Ker Sangri (Low Oil)',
+      'Gatte ki Sabzi (Steamed Gatta)',
+      'Bajra Roti with Lahsun Chutney',
+      'Chana Dal with Lauki',
+      'Panchmel Dal',
+      'Papad ki Sabzi (Low Oil)',
+      'Bhindi Masala (Low Oil)',
+      'Baingan Bharta',
+      'Tinda Curry',
+      'Palak Tofu Curry'
+    ],
+    snacks: [
+      'Baked Bikaneri Bhujia',
+      'Roasted Moong Dal',
+      'Oats Cutlet',
+      'Steamed Dhokla',
+      'Ragi Chakli',
+      'Cucumber Chaat',
+      'Beetroot and Carrot Tikkis',
+      'Low-Oil Mirchi Pakora',
+      'Sprouted Moong Salad',
+      'Foxnut Trail Mix'
+    ]
+  },
+  'sikkim': {
+    breakfast: [
+      'Phagshapa (Veg Low-Fat Version)',
+      'Chhurpi with Boiled Millet',
+      'Vegetable Thukpa',
+      'Buckwheat Pancakes',
+      'Millet Porridge',
+      'Spinach Rice Pancakes',
+      'Steamed Tapioca with Salt',
+      'Soybean Sabzi with Rice',
+      'Red Rice Idli',
+      'Sweet Corn Chilla'
+    ],
+    mains: [
+      'Gundruk Soup (Fermented Veg Broth)',
+      'Saag Curry',
+      'Mushroom and Bamboo Curry',
+      'Tofu and Leafy Stir Fry',
+      'Dal with Chhurpi',
+      'Rayo Saag Curry',
+      'Red Rice with Boiled Veggies',
+      'Pumpkin and Beans Curry',
+      'Carrot Peas Subzi',
+      'Lentil Bamboo Soup'
+    ],
+    snacks: [
+      'Steamed Veg Momos',
+      'Tofu Lettuce Wraps',
+      'Sweet Potato Cutlets',
+      'Boiled Corn Chaat',
+      'Buckwheat Bars',
+      'Roasted Soy Nuts',
+      'Black Rice Balls',
+      'Cucumber Radish Salad',
+      'Pumpkin Seed Trail Mix',
+      'Low-Oil Dal Pakoras'
+    ]
+  },
+  'tamilnadu': {
+    breakfast: [
+      'Ragi Dosa',
+      'Kambu Koozh (Pearl Millet Porridge)',
+      'Vegetable Upma',
+      'Ragi Idli',
+      'Thinai Pongal (Foxtail Millet Pongal)',
+      'Adai Dosa (Mixed Lentil)',
+      'Kuthiraivali (Barnyard Millet) Upma',
+      'Tofu Uthappam',
+      'Red Rice Idiyappam',
+      'Sweet Corn and Vegetable Chilla'
+    ],
+    mains: [
+      'Keerai Kootu (Spinach Dal)',
+      'Vegetable Kurma with Red Rice',
+      'Sambhar with Millets',
+      'Poriyal (Stir Fry Veg)',
+      'Avial (Mixed Veg Coconut Curry)',
+      'Vathal Kuzhambu (Low Oil)',
+      'Kollu Rasam (Horse Gram)',
+      'Karamani Kuzhambu (Cowpeas Curry)',
+      'Kootu with Lauki',
+      'Cabbage Peas Curry'
+    ],
+    snacks: [
+      'Sundal (Boiled Chickpeas with Coconut)',
+      'Murungai Keerai Soup (Drumstick Leaf)',
+      'Steamed Millet Balls',
+      'Oats Masala Vadai (Air Fried)',
+      'Cucumber Kosambari',
+      'Dry Fruit and Ragi Ladoo',
+      'Sweet Potato Tikkis',
+      'Low-Oil Paniyaram',
+      'Foxnut & Peanut Chaat',
+      'Beetroot Moong Cutlets'
+    ]
+  },
+  'telangana': {
+    breakfast: [
+      'Jonna Rotte (Sorghum Roti)',
+      'Pesarattu (Green Moong Dosa)',
+      'Ragi Sangati',
+      'Vegetable Upma',
+      'Oats Dosa with Chutney',
+      'Red Rice Idli',
+      'Besan Cheela with Veggies',
+      'Foxtail Millet Pongal',
+      'Boiled Sprouts Salad',
+      'Sajja Upma (Bajra)'
+    ],
+    mains: [
+      'Sambar with Veggies',
+      'Kanda Bachali Kura (Yam & Greens)',
+      'Dosakaya Pappu (Yellow Cucumber Dal)',
+      'Gongura Dal',
+      'Beerakaya Curry (Ridge Gourd)',
+      'Lauki Kofta (Steamed)',
+      'Brinjal Tomato Curry',
+      'Spinach Moong Dal',
+      'Bendakaya Fry (Low Oil Okra)',
+      'Mixed Veg Kurma'
+    ],
+    snacks: [
+      'Boiled Corn with Lemon',
+      'Roasted Chana Trail Mix',
+      'Oats and Sprouts Tikki',
+      'Ragi Laddoo (No Sugar)',
+      'Cucumber Peanut Chaat',
+      'Baked Moong Dal Vada',
+      'Foxnut Mix',
+      'Tofu Lettuce Wraps',
+      'Low-Oil Murukulu',
+      'Beetroot Cutlets'
+    ]
+  },
+  'tripura': {
+    breakfast: [
+      'Mui Borok Style Veg Upma',
+      'Sticky Rice with Banana',
+      'Vegetable Rice Pancake',
+      'Millet Khichdi',
+      'Tofu Stir Fry with Red Rice',
+      'Sweet Potato Porridge',
+      'Red Rice Idli',
+      'Boiled Egg with Herbs',
+      'Pumpkin Rice Mash',
+      'Leafy Veg Cheela'
+    ],
+    mains: [
+      'Berma Veg Curry (Non-Fish Variant)',
+      'Chopped Green Curry',
+      'Bamboo Shoot & Jackfruit Curry',
+      'Tofu and Beans Stew',
+      'Mixed Veg Kharzi (Low Oil)',
+      'Red Rice with Moong Dal',
+      'Pumpkin and Colocasia Curry',
+      'Steamed Cabbage Mix',
+      'Sweet Potato and Saag',
+      'Lauki Chana Dal Curry'
+    ],
+    snacks: [
+      'Roasted Pumpkin Seeds',
+      'Cucumber and Green Chili Salad',
+      'Steamed Tapioca Sticks',
+      'Tofu Salad with Mustard',
+      'Boiled Chickpeas with Lime',
+      'Black Rice Balls',
+      'Air-Fried Banana Chips',
+      'Carrot Beetroot Cutlets',
+      'Foxnut and Dry Fruit Mix',
+      'Sattu Energy Balls'
+    ]
+  },
+  'uttarpradesh': {
+    breakfast: [
+      'Sooji Cheela with Vegetables',
+      'Moong Dal Idli',
+      'Ragi Daliya (Cracked Wheat Porridge)',
+      'Oats Upma',
+      'Sattu Paratha (Oil-Free)',
+      'Vegetable Poha',
+      'Besan Toast',
+      'Sprouted Moong Stir Fry',
+      'Multigrain Paratha',
+      'Boiled Chana Chat'
+    ],
+    mains: [
+      'Lauki Tamatar Curry',
+      'Baingan Bharta',
+      'Low-Oil Aloo Matar',
+      'Karela Bhaji',
+      'Moong Dal Tadka',
+      'Ghiya Kofta (Steamed)',
+      'Chana Dal with Saag',
+      'Low-Oil Kadhi',
+      'Cabbage Peas Subzi',
+      'Palak Chole'
+    ],
+    snacks: [
+      'Steamed Dhokla',
+      'Boiled Peanut Salad',
+      'Foxnut with Turmeric',
+      'Beetroot Tikkis',
+      'Baked Samosa',
+      'Oats Cutlet',
+      'Carrot Cucumber Chaat',
+      'Dry Fruit Laddoo',
+      'Roasted Chana Mix',
+      'Low-Oil Pakodi'
+    ]
+  },
+  'uttarakhand': {
+    breakfast: [
+      'Jhangora Kheer (Millet Porridge)',
+      'Mandua Roti (Ragi Flatbread)',
+      'Aloo Ke Gutke with Multigrain Roti',
+      'Vegetable Cheela',
+      'Red Rice Idli',
+      'Tofu Bhurji',
+      'Flattened Rice Upma',
+      'Boiled Kala Chana',
+      'Sweet Corn Porridge',
+      'Besan Dhokla'
+    ],
+    mains: [
+      'Chainsoo (Roasted Urad Dal Curry)',
+      'Gahat Dal (Horse Gram)',
+      'Phaanu (Mixed Lentils)',
+      'Jhangora Khichdi',
+      'Kafuli (Spinach Curry)',
+      'Bhangjeera Chutney with Veg',
+      'Cabbage Moong Dal',
+      'Palak Tofu Curry',
+      'Pumpkin Tomato Curry',
+      'Ragi Roti with Masoor Dal'
+    ],
+    snacks: [
+      'Roasted Mandua Chakli',
+      'Baked Aloo Tikkis',
+      'Black Soybean Chaat',
+      'Dry Fruit Balls',
+      'Foxnut and Peanut Mix',
+      'Boiled Veg Chaat',
+      'Sweet Potato Sticks',
+      'Oats Masala Tikkis',
+      'Ragi Ladoo',
+      'Steamed Mixed Veg Balls'
+    ]
+  },
+  'westbengal': {
+    breakfast: [
+      'Chirer Pulao (Poha with Veggies)',
+      'Moong Dal Chilla',
+      'Radhaballavi (Baked Lentil Puris)',
+      'Luchi with Aloor Dom (Low Oil)',
+      'Vegetable Dalia',
+      'Oats Upma',
+      'Ragi Idli',
+      'Sweet Potato Pancakes',
+      'Tofu Bhurji with Paratha',
+      'Cucumber Yogurt Parfait'
+    ],
+    mains: [
+      'Shukto (Mixed Vegetable Stew)',
+      'Lau Ghonto (Bottle Gourd Curry)',
+      'Moong Dal with Veggies',
+      'Begun Bharta',
+      'Cholar Dal',
+      'Dhokar Dalna (Steamed Lentil Cakes Curry)',
+      'Palong Shaak with Chana',
+      'Low-Oil Aloo Posto',
+      'Rui Curry with Steamed Veg',
+      'Spinach and Pumpkin Curry'
+    ],
+    snacks: [
+      'Jhal Muri (Low Oil)',
+      'Mocha Chop (Air-Fried)',
+      'Chana Chaat',
+      'Baked Samosa',
+      'Oats Cutlet',
+      'Boiled Corn Chaat',
+      'Sweet Corn Pattice',
+      'Low-Oil Ghugni',
+      'Ragi Cookies',
+      'Cucumber Beet Salad'
+    ]
   }
 };
 

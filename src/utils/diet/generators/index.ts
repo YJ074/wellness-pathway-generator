@@ -13,5 +13,7 @@ export { generateDinner } from './dinnerGenerator';
 export const supportedRegions = [
   'north', 'south', 'east', 'west', 'central', 'northeast', 'andhra', 'arunachal', 'chhattisgarh',
   'assam', 'bihar', 'goa', 'gujarat', 'haryana', 'himachal', 'jharkhand', 'karnataka', 
-  'madhyapradesh', 'maharashtra', 'kerala', 'manipur', 'meghalaya', 'mizoram'
+  'madhyapradesh', 'maharashtra', 'kerala', 'manipur', 'meghalaya', 'mizoram', 'nagaland', 
+  'odisha', 'punjab', 'rajasthan', 'sikkim', 'tamilnadu', 'telangana', 'tripura', 'uttarpradesh',
+  'uttarakhand', 'westbengal'
 ];
