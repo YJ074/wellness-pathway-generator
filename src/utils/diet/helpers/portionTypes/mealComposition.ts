@@ -56,3 +56,43 @@ export const createMealItem = (
 ): string => {
   return `${itemName} (${portionInfo})`;
 };
+
+// Helper for Andhra-specific portion recommendations
+export const getAndhraDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Andhra breakfast portions
+  if (dishName.includes('Pesarattu') || dishName.includes('Dosa')) {
+    return isWeightLoss ? "1 medium sized" : (isProteinFocus ? "2 medium sized" : "1-2 medium sized");
+  }
+  
+  if (dishName.includes('Idli')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2-3 medium");
+  }
+  
+  if (dishName.includes('Ragi') || dishName.includes('Millet')) {
+    return isWeightLoss ? "1 small cup" : (isProteinFocus ? "1 cup with extra protein" : "1 cup");
+  }
+  
+  if (dishName.includes('Upma') || dishName.includes('Pongal')) {
+    return isWeightLoss ? "3/4 cup" : "1 cup";
+  }
+  
+  // Handle Andhra main dish portions
+  if (dishName.includes('Pappu') || dishName.includes('Dal')) {
+    return isWeightLoss ? "3/4 katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Curry')) {
+    return isWeightLoss ? "3/4 katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Vepudu') || dishName.includes('Fry') || dishName.includes('Poriyal')) {
+    return isWeightLoss ? "1/2 katori" : "3/4 katori";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};

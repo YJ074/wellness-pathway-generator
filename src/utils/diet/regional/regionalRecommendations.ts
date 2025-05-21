@@ -1,4 +1,3 @@
-
 // Generate regional cultural notes with enhanced details about traditional foods and cooking methods
 export const generateRegionalNote = (region?: string): string | undefined => {
   if (!region) return undefined;
@@ -109,20 +108,12 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "The meal introduces traditional fermented bamboo shoot preparations that provide unique prebiotics important for gut health."
     ],
     'andhra': [
-      "Andhra cuisine is known for its spicy flavors and unique use of tamarind. This meal incorporates traditional spices in moderation.",
-      "Features gunpowder (podi) preparations authentic to Andhra that enhance flavor with minimal oil and maximum nutrition.",
-      "This meal includes traditional Andhra-style vegetable preparations that preserve micronutrients while keeping authentic flavors.",
-      "Incorporates rice preparations like pulihora with controlled portions, balanced with protein sources common in Andhra households.",
-      "Features traditional Andhra millets like jowar prepared in authentic ways that support sustained energy release.",
-      "The meal adapts traditional coastal Andhra seafood preparations rich in essential fatty acids important for metabolism."
-    ],
-    'karnataka': [
-      "Karnataka cuisine features diverse regional variations. This meal incorporates elements of both North Karnataka's hearty dishes and South Karnataka's lighter fare.",
-      "Features traditional ragi-based preparations that were staples in Karnataka long before refined grains became common.",
-      "This meal includes traditional Karnataka-style sambar and huli preparations with authentic spice combinations.",
-      "Incorporates kosambari (moong dal salad) and other nutritious Karnataka specialties that provide balanced nutrition.",
-      "Features traditional Udupi-style preparations that emphasize quality ingredients and traditional cooking methods for optimal nutrition.",
-      "The meal introduces Kodava-style preparations using indigenous spices that enhance flavor while providing medicinal benefits."
+      "Andhra cuisine balances flavors with an emphasis on spices, tamarind, and local greens. This meal incorporates traditional ingredients while controlling spice levels for better digestion.",
+      "Features millet-based preparations central to traditional Andhra home cooking that provide sustained energy release while supporting blood sugar regulation.",
+      "This meal includes traditional Andhra-style preparation of leafy greens like gongura (sorrel) that maximize nutrition while providing authentic flavor.",
+      "Incorporates traditional protein sources like pesarattu (moong dal pancakes) and pappu (lentil preparations) that are staples in Andhra households.",
+      "Features tamarind-based preparations authentic to Andhra that provide vitamin C and support digestive health when consumed in appropriate portions.",
+      "The meal includes traditional millet varieties indigenous to Rayalaseema region that support sustained energy and provide essential micronutrients."
     ],
     'telangana': [
       "Telangana cuisine features unique preparations distinct from neighboring regions. This meal incorporates traditional jowar and bajra preparations.",
@@ -131,6 +122,14 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Incorporates sarva pindi and other unique Telangana preparations adapted for balanced nutrition.",
       "Features traditional Telangana rural cooking methods that maximize flavor while preserving nutrients and using minimal oil.",
       "The meal introduces traditional millet preparations from ancient Telangana culinary traditions that support sustained energy."
+    ],
+    'karnataka': [
+      "Karnataka cuisine features diverse regional variations. This meal incorporates elements of both North Karnataka's hearty dishes and South Karnataka's lighter fare.",
+      "Features traditional ragi-based preparations that were staples in Karnataka long before refined grains became common.",
+      "This meal includes traditional Karnataka-style sambar and huli preparations with authentic spice combinations.",
+      "Incorporates kosambari (moong dal salad) and other nutritious Karnataka specialties that provide balanced nutrition.",
+      "Features traditional Udupi-style preparations that emphasize quality ingredients and traditional cooking methods for optimal nutrition.",
+      "The meal introduces Kodava-style preparations using indigenous spices that enhance flavor while providing medicinal benefits."
     ]
   };
   
@@ -147,6 +146,9 @@ export const generateRegionalNote = (region?: string): string | undefined => {
   }
   if (normalizedRegion === 'tamilnadu') {
     return notes['tamil nadu'] ? notes['tamil nadu'][Math.floor(Math.random() * notes['tamil nadu'].length)] : undefined;
+  }
+    if (normalizedRegion === 'karnataka') {
+    return notes['karnataka'] ? notes['karnataka'][Math.floor(Math.random() * notes['karnataka'].length)] : undefined;
   }
   
   // Check for the exact region match first
