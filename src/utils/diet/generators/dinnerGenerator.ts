@@ -1,4 +1,3 @@
-
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
@@ -15,7 +14,7 @@ import {
   getProteinPortion
 } from '../helpers/portionHelpers';
 import { getAllowedNonVegTypes } from '../helpers/dietaryPreferenceHelper';
-import { generateNonVegDish } from './nonVegGenerator';
+import { generateNonVegDish } from './nonVeg';
 
 export const generateDinner = (
   dayIndex: number, 
