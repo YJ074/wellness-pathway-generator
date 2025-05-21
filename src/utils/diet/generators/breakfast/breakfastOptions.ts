@@ -88,7 +88,7 @@ export const getMorningBreakfastOptions = (
         'fish curry'
       ];
       break;
-    case 'pure-jain':
+    case 'jain':
       // Remove items that are not allowed in Jain diet
       breakfastOptions.grains = breakfastOptions.grains.filter(
         item => !item.includes('onion') && !item.includes('garlic')

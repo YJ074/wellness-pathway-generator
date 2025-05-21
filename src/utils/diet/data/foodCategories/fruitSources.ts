@@ -1,6 +1,6 @@
 
 import { DietaryPreference } from '../../types';
-import { filterAllergies } from '../allergyHelpers';
+import { filterAllergies } from '../../helpers/allergyHelpers';
 
 export const getFruitSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
   const fruits = dietaryPreference === 'jain'

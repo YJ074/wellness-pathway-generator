@@ -2,10 +2,10 @@
 // This is the main export file that combines all food source utilities
 
 // Re-export everything from new files
-export { filterAllergies } from './helpers/allergyHelpers';
-export { limitSoyaInDietDays } from './helpers/soyaLimiter';
-export { getDryFruits } from './data/dryFruits';
-export { getRegionalFoods } from './data/regionalFoods';
+export { filterAllergies } from '../helpers/allergyHelpers';
+export { limitSoyaInDietDays } from '../helpers/soyaLimiter';
+export { getDryFruits } from './dryFruits';
+export { getRegionalFoods } from './regionalFoods';
 
 // Re-export all food sources from the new modular structure
 export {

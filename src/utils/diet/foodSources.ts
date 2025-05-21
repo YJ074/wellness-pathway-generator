@@ -1,3 +1,4 @@
+
 // This is the main export file that combines all food source utilities
 
 // Re-export everything from new files
@@ -13,7 +14,7 @@ export {
   getVegetableSources,
   getFruitSources,
   getSnackSources
-} from './data/foodSources';
+} from './data/foodCategories';
 
 // NOTE: This refactoring maintains all the exact same exports as the original file,
 // but distributes the code into smaller, focused files for better maintainability.

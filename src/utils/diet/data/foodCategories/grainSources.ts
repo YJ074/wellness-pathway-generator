@@ -1,6 +1,6 @@
 
 import { DietaryPreference } from '../../types';
-import { filterAllergies } from '../allergyHelpers';
+import { filterAllergies } from '../../helpers/allergyHelpers';
 
 export const getGrainSources = (dietaryPreference?: DietaryPreference, allergies?: string) => {
   // Grains are mostly the same for all dietary preferences

@@ -1,6 +1,5 @@
-
 import { DietaryPreference } from '../../types';
-import { filterAllergies } from '../allergyHelpers';
+import { filterAllergies } from '../../helpers/allergyHelpers';
 
 export const getProteinSources = (dietaryPreference: DietaryPreference, allergies?: string) => {
   const proteins: Record<DietaryPreference, string[]> = {

@@ -1,6 +1,6 @@
 
 import { DietaryPreference } from '../../types';
-import { filterAllergies } from '../allergyHelpers';
+import { filterAllergies } from '../../helpers/allergyHelpers';
 
 export const getSnackSources = (dietaryPreference: DietaryPreference, isWeightLoss: boolean, allergies?: string) => {
   let baseSnacks: string[];
