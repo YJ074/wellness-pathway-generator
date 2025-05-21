@@ -3,14 +3,14 @@ import { enrichWithPrebiotics, enrichWithProbiotics } from '../../helpers/prebio
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 import { composeRegionalMeal } from '../../helpers/portionHelpers';
-import { RegionalFoods } from '../../data/regions/types';
+import { RegionalFoodData } from '../../data/regions/types';
 
 /**
  * Generate a lunch based on regional specialties
  */
 export const generateRegionalLunch = (
   dayIndex: number,
-  regionalFoods: RegionalFoods,
+  regionalFoods: RegionalFoodData,
   isWeightLoss: boolean,
   isProteinFocus: boolean,
   isMale: boolean
