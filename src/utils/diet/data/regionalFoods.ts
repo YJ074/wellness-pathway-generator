@@ -459,6 +459,82 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Sweet Potato Sticks',
       'Raw Papaya Chaat'
     ]
+  },
+  'assam': {
+    breakfast: [
+      'Bora Saul with Curd',
+      'Pitha (Steamed Rice Cakes)',
+      'Joha Rice Poha',
+      'Black Sticky Rice Porridge',
+      'Green Gram Dosa',
+      'Red Rice Upma',
+      'Bottle Gourd Chilla',
+      'Vegetable Sira (Flattened Rice)',
+      'Lai Xaak with Rice',
+      'Sprouted Moong Rice Balls'
+    ],
+    mains: [
+      'Ou Tenga Dal (Elephant Apple Lentils)',
+      'Khar with Raw Papaya',
+      'Vegetable Masor Tenga (Tangy Curry)',
+      'Steamed Fish in Banana Leaf',
+      'Pumpkin with Mustard Seeds',
+      'Green Veg Stew with Rice',
+      'Banana Flower Curry',
+      'Bitter Gourd Tomato Curry',
+      'Aloo Bilahi Pitika (Mashed Potato Tomato)',
+      'Leafy Saag with Garlic'
+    ],
+    snacks: [
+      'Steamed Pitha',
+      'Chira Doi Gur (Poha, Curd & Jaggery)',
+      'Roasted Rice Flour Ladoo',
+      'Foxnut & Peanut Chaat',
+      'Cucumber Chutney Cups',
+      'Dry Roasted Black Chana',
+      'Lettuce Wraps',
+      'Baked Sweet Potato Chips',
+      'Red Rice Puffed Snacks',
+      'Black Sesame Bars'
+    ]
+  },
+  'bihar': {
+    breakfast: [
+      'Sattu Paratha (Dry Roasted Gram Flour Filling)',
+      'Ragi Daliya (Porridge)',
+      'Litti without Ghee',
+      'Vegetable Chokha with Millet Roti',
+      'Ragi Cheela',
+      'Flattened Rice Upma',
+      'Besan Toast',
+      'Red Rice Idli',
+      'Sattu Smoothie',
+      'Boiled Chana with Lemon'
+    ],
+    mains: [
+      'Chana Dal with Lauki',
+      'Saag with Bajra Roti',
+      'Karela Aloo Curry',
+      'Low-Oil Kadhi',
+      'Baingan Bharta',
+      'Pumpkin Curry with Rice',
+      'Bhindi Masala (Low Oil)',
+      'Moong Dal Tadka',
+      'Mushroom Matar Curry',
+      'Vegetable Litti Chokha'
+    ],
+    snacks: [
+      'Roasted Makhana with Turmeric',
+      'Steamed Samosa (Air-fried)',
+      'Sattu Ladoo (No Sugar)',
+      'Green Chana Chaat',
+      'Masala Corn',
+      'Oats Cutlet',
+      'Bottle Gourd Tikkis',
+      'Beetroot Chips (Baked)',
+      'Carrot Raisin Balls',
+      'Chana Sundal'
+    ]
   }
 };
 

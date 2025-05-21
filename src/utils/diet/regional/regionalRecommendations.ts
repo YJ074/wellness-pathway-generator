@@ -146,7 +146,23 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "This meal incorporates Chhattisgarh's rich variety of leafy greens like Chaulai (amaranth) that provide exceptional micronutrient content.",
       "Features traditional Chhattisgarhi techniques for preparing kodo and kutki millets that enhance their protein bioavailability and flavor.",
       "The meal adapts Chhattisgarhi tribal cooking methods that focus on bringing out natural flavors without excessive spices or oil."
-    ]
+    ],
+    'assam': [
+      "Assamese cuisine emphasizes fermentation techniques and the use of local herbs that naturally enhance flavor without excessive oil or spices.",
+      "This meal incorporates traditional Assamese souring agents like Ou Tenga (elephant apple) that add distinctive tangy notes while aiding digestion.",
+      "Features the traditional Assamese Khar preparation method that uses alkaline ingredients to balance acidity while providing natural digestive benefits.",
+      "Assamese food utilizes unique indigenous greens like Lai Xaak that provide exceptional nutritional benefits and are prepared using minimal oil techniques.",
+      "This meal includes traditional black sticky rice preparations that have been part of Assamese tribal nutrition for generations, providing both slow-release energy and antioxidants.",
+      "Incorporates traditional Assamese fish preparation techniques that maximize nutritional benefits while using minimal oil, typically involving steaming in banana leaves."
+    ],
+    'bihar': [
+      "Bihari cuisine features sattu (roasted gram flour) as a protein-rich staple that provides sustained energy. This meal incorporates traditional preparation methods in controlled portions.",
+      "Features the balanced approach of traditional Bihari thali with litti-chokha prepared using healthier cooking methods than typically found in restaurants.",
+      "Bihari cuisine's emphasis on seasonal vegetables is reflected in this meal, with traditional preparation methods that preserve nutrients while minimizing oil usage.",
+      "This meal incorporates Bihar's traditional use of millet varieties that were staples before the widespread adoption of polished rice.",
+      "Bihari cooking techniques like slow roasting and steaming preserve nutrients while enhancing flavor, reflected in the preparation methods used for these dishes.",
+      "Features traditional Bihari spice combinations used in precise quantities for optimal digestibility and flavor enhancement without excessive heat."
+    ],
   };
   
   // Convert region to lowercase for case-insensitive matching
@@ -202,6 +218,7 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'bihar': 'east',
     'jharkhand': 'east',
     'andamanandnicobar': 'east',
+    'assam': 'east',
     
     // West
     'maharashtra': 'west',
