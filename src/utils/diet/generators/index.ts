@@ -6,7 +6,7 @@ export {
   generateSnacks,
   generateAfternoonSnack
 } from './snacks';
-export { generateLunch } from './lunchGenerator';
+export { generateLunch } from './lunch';
 export { generateDinner } from './dinnerGenerator';
 export { generateNonVegDish } from './nonVeg';
 
