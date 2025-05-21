@@ -7,7 +7,7 @@ export {
   generateAfternoonSnack
 } from './snacks';
 export { generateLunch } from './lunch';
-export { generateDinner } from './dinnerGenerator';
+export { generateDinner } from './dinner';
 export { generateNonVegDish } from './nonVeg';
 
 // Export a helper for regional food integration
