@@ -24,6 +24,7 @@ export const generateBreakfastWithGrains = (
   }
 
   // Select grains and complementary items using prime-based indices for variety
+  // Using prime numbers helps create non-repeating patterns over many days
   const grainIndex = (dayIndex * 7 + 5) % options.grains.length;
   const grain = options.grains[grainIndex];
   
@@ -47,7 +48,8 @@ export const generateBreakfastWithGrains = (
     : `${grain} (${portionSize})`;
     
   // Add fruit side for better nutrition
-  const fruits = ["sliced banana", "apple", "papaya", "berries", "pomegranate"];
+  // Expanded fruit selection for more variety
+  const fruits = ["sliced banana", "apple", "papaya", "berries", "pomegranate", "pear", "guava", "peach", "orange slices", "melon"];
   const fruitIndex = (dayIndex * 11 + 3) % fruits.length;
   const fruit = fruits[fruitIndex];
   
@@ -56,7 +58,8 @@ export const generateBreakfastWithGrains = (
     breakfast += ` with ${fruit}`;
   } else {
     // Add nutritious garnishes occasionally
-    const garnishes = ["nuts", "seeds", "honey", "cinnamon"];
+    // Enhanced garnish options for variety
+    const garnishes = ["nuts", "seeds", "honey", "cinnamon", "flax seeds", "pumpkin seeds", "chia seeds", "sesame seeds"];
     const garnishIndex = (dayIndex * 13 + 7) % garnishes.length;
     const garnish = garnishes[garnishIndex];
     
@@ -88,6 +91,7 @@ export const generateHealthyBreakfast = (
   }
   
   // Select a protein source
+  // Using a larger prime number to ensure less repetition across days
   const proteinIndex = (dayIndex * 11 + 7) % options.protein.length;
   const protein = options.protein[proteinIndex];
   
@@ -100,7 +104,12 @@ export const generateHealthyBreakfast = (
   let breakfast = `${protein} (${proteinPortionSize})`;
   
   // Add accompaniments
-  const sides = ["fruit salad", "vegetable slices", "sprouts", "cucumber", "tomato"];
+  // Enhanced side options with more variety
+  const sides = [
+    "fruit salad", "vegetable slices", "sprouts", "cucumber", "tomato", 
+    "carrot sticks", "bell peppers", "mixed greens", "avocado slices", 
+    "steamed vegetables", "sautéed spinach", "broccoli"
+  ];
   const sideIndex = (dayIndex * 13 + 5) % sides.length;
   const side = sides[sideIndex];
   
@@ -108,7 +117,12 @@ export const generateHealthyBreakfast = (
   if (isWeightLoss) {
     breakfast += ` with ${side}`;
   } else {
-    const grains = ["whole wheat toast", "multigrain bread", "ragi roti", "jowar roti"];
+    // Enhanced grain options with millet varieties
+    const grains = [
+      "whole wheat toast", "multigrain bread", "ragi roti", "jowar roti",
+      "bajra roti", "quinoa toast", "millet bread", "amaranth crackers",
+      "oat pancakes", "buckwheat toast", "brown rice cakes"
+    ];
     const grainIndex = (dayIndex * 7 + 3) % grains.length;
     const grain = grains[grainIndex];
     

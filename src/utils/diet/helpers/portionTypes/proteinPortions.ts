@@ -18,6 +18,26 @@ export const getLocalizedProteinName = (protein: string): string => {
     return 'Tempeh (Fermented Soybean Cake)';
   } else if (protein === 'Seitan' && !protein.includes('(')) {
     return 'Seitan (Wheat Protein)';
+  } else if (protein.includes('Millet') && !protein.includes('(')) {
+    // Add explanations for millet varieties
+    if (protein.includes('Ragi')) {
+      return protein.includes('(') ? protein : `${protein} (Finger Millet, rich in calcium)`;
+    } else if (protein.includes('Bajra')) {
+      return protein.includes('(') ? protein : `${protein} (Pearl Millet, high in iron)`;
+    } else if (protein.includes('Jowar')) {
+      return protein.includes('(') ? protein : `${protein} (Sorghum Millet, good for digestion)`;
+    } else if (protein.includes('Foxtail')) {
+      return protein.includes('(') ? protein : `${protein} (Kangni, low glycemic index)`;
+    } else if (protein.includes('Little')) {
+      return protein.includes('(') ? protein : `${protein} (Kutki, high in fiber)`;
+    } else if (protein.includes('Barnyard')) {
+      return protein.includes('(') ? protein : `${protein} (Sanwa, high in micronutrients)`;
+    } else if (protein.includes('Kodo')) {
+      return protein.includes('(') ? protein : `${protein} (Kodra, high in fiber and minerals)`;
+    } else if (protein.includes('Proso')) {
+      return protein.includes('(') ? protein : `${protein} (Cheena, good for weight management)`;
+    }
+    return protein.includes('(') ? protein : `${protein} (nutrient-dense ancient grain)`;
   }
   return protein;
 };
