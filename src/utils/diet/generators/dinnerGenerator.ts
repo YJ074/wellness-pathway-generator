@@ -26,7 +26,8 @@ export const generateDinner = (
   isProteinFocus: boolean,
   allergies?: string,
   region?: string,
-  dietaryPreference?: string // Added parameter
+  dietaryPreference?: string, // Added parameter
+  gender?: string // Added parameter for gender-specific portions
 ) => {
   // Check if non-vegetarian dishes are allowed
   const allowNonVeg = dietaryPreference && getAllowedNonVegTypes(dietaryPreference).length > 0;
@@ -44,7 +45,8 @@ export const generateDinner = (
       isProteinFocus,
       nonVegType,
       allergies,
-      region
+      region,
+      gender
     );
   }
 
@@ -58,11 +60,14 @@ export const generateDinner = (
     const regionalDinner = regionalFoods.mains[regionalIndex];
     
     // Format dinner based on dietary goals using the helper function
-    let dinner = composeRegionalMeal(regionalDinner, isWeightLoss, isProteinFocus);
+    // Pass gender information for portion sizing
+    let dinner = composeRegionalMeal(regionalDinner, isWeightLoss, isProteinFocus, gender === 'male');
     
-    // Ensure regional meals always mention rice/roti
+    // Ensure regional meals always mention rice/roti with gender-specific portions
     if (!dinner.toLowerCase().includes('roti') && !dinner.toLowerCase().includes('rice')) {
-      dinner += ', served with 2 rotis or ½ katori rice';
+      const isMale = gender === 'male';
+      const rotiCount = isMale ? (isWeightLoss ? 2 : 3) : (isWeightLoss ? 1 : 2);
+      dinner += `, served with ${rotiCount} rotis or ${isMale ? '½' : '¼'} katori rice`;
     }
     
     // Gently introduce pre/probiotics to regional specialties
@@ -126,6 +131,9 @@ export const generateDinner = (
   const protein1WithLocalName = getLocalizedProteinName(protein1);
   const protein2WithLocalName = getLocalizedProteinName(protein2);
   
+  // Gender-specific adjustments
+  const isMale = gender === 'male';
+  
   // Define portion sizes based on dietary goals using Indian measurements
   // More scientific approach that considers satiety and macro distribution
   const curryPortion = getPortionSize(
@@ -133,17 +141,18 @@ export const generateDinner = (
     isProteinFocus,
     'curry',
     {
-      standard: '¾ katori',
-      weightLoss: '¾ katori',
-      proteinFocus: '1 katori'
+      // Gender-specific portions
+      standard: isMale ? '1 katori' : '¾ katori',
+      weightLoss: isMale ? '¾ katori' : '½ katori',
+      proteinFocus: isMale ? '1½ katori' : '1 katori'
     }
   );
   
   // Maintain vegetable portion regardless of goal - vegetables are nutrient-dense and low-calorie
-  const veggiePortion = '1 katori'; // Same across all plans
+  const veggiePortion = isMale ? '1½ katori' : '1 katori'; // Gender-adjusted
   
-  // Get roti count (as a number, not a portion size)
-  const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus);
+  // Get roti count adjusted by gender
+  const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus, isMale);
   
   // Rice portion varies by goal - higher for muscle gain, lower for weight loss
   const ricePortion = getPortionSize(
@@ -151,9 +160,10 @@ export const generateDinner = (
     isProteinFocus,
     'rice',
     {
-      standard: '½ katori',
-      weightLoss: '¼ katori',
-      proteinFocus: '½ katori'
+      // Gender-specific portions
+      standard: isMale ? '¾ katori' : '½ katori',
+      weightLoss: isMale ? '⅓ katori' : '¼ katori',
+      proteinFocus: isMale ? '1 katori' : '½ katori'
     }
   );
   

@@ -1,46 +1,48 @@
 
 /**
- * Helper functions for grain portions and localization
- * Following ICMR/NIN guidelines for whole grains and fiber
+ * Helper functions for grain portion handling and customization
  */
 
 // Helper to format grain names with local equivalents
 export const getLocalizedGrainName = (grain: string): string => {
-  if (grain.includes('Rice Flakes') && !grain.includes('(')) {
-    return 'Poha (Rice Flakes)';
-  } else if (grain.includes('Broken Wheat') && !grain.includes('(')) {
-    return 'Daliya (Broken Wheat Porridge)';
-  } else if (grain.includes('Millet') && !grain.includes('(')) {
-    if (grain.includes('Foxtail')) {
-      return 'Kangni Roti (Foxtail Millet Roti)';
-    } else if (grain.includes('Pearl')) {
-      return 'Bajra Roti (Pearl Millet Roti)';
-    } else if (grain.includes('Finger')) {
-      return 'Ragi Roti (Finger Millet Roti)';
-    } else if (grain.includes('Little')) {
-      return 'Kutki Roti (Little Millet Roti)';
-    } else if (grain.includes('Barnyard')) {
-      return 'Samvat Khichdi (Barnyard Millet Khichdi)';
-    } else if (grain.includes('Kodo')) {
-      return 'Kodra Roti (Kodo Millet Roti)';
-    } else if (grain.includes('Proso')) {
-      return 'Barri Upma (Proso Millet Upma)';
-    }
+  if (grain === 'Rice' && !grain.includes('(')) {
+    return 'Rice (Chawal)';
+  } else if (grain === 'Wheat' && !grain.includes('(')) {
+    return 'Whole Wheat (Gehun)';
+  } else if (grain === 'Millet' && !grain.includes('(')) {
+    return 'Millet (Bajra/Jowar/Ragi)';
+  } else if (grain === 'Oats' && !grain.includes('(')) {
+    return 'Oats (Jai)';
+  } else if (grain === 'Barley' && !grain.includes('(')) {
+    return 'Barley (Jau)';
+  } else if (grain === 'Amaranth' && !grain.includes('(')) {
+    return 'Amaranth (Rajgira)';
+  } else if (grain === 'Quinoa' && !grain.includes('(')) {
+    return 'Quinoa (Kinwa)';
+  } else if (grain === 'Buckwheat' && !grain.includes('(')) {
+    return 'Buckwheat (Kuttu)';
   }
   return grain;
 };
 
-// Helper to get bread portion size (rotis/chapatis/phulkas use numbers, not containers)
-// Returns the count as a string, e.g. "1" or "2"
-// Following ICMR/NIN guidelines for portion control
+// Helper for bread portion size based on dietary goals
 export const getBreadPortionSize = (
-  isWeightLoss: boolean,
-  isProteinFocus: boolean
-): string => {
+  isWeightLoss: boolean, 
+  isProteinFocus: boolean,
+  isMale: boolean = false // Added parameter for gender-specific portions
+): number => {
+  // Base rotis for males and females
+  const maleBase = 3;
+  const femaleBase = 2;
+  
+  // Determine base count based on gender
+  const baseCount = isMale ? maleBase : femaleBase;
+  
   if (isWeightLoss) {
-    return "1";  // 1 roti for weight loss (palm-sized, ~6 inch diameter)
+    return baseCount - 1; // Reduce by one for weight loss
   } else if (isProteinFocus) {
-    return "2";  // 2 rotis for protein focus (palm-sized, ~6 inch diameter)
+    return baseCount; // Standard count for protein focus
+  } else {
+    return baseCount; // Standard count for maintenance
   }
-  return "2";    // 2 rotis standard (palm-sized, ~6 inch diameter)
 };

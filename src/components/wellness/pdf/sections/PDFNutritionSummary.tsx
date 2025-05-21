@@ -48,6 +48,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Helvetica-Bold',
     marginBottom: 3,
+  },
+  genderNote: {
+    fontSize: 10,
+    color: '#3b82f6',
+    fontFamily: 'Helvetica-Bold',
+    marginTop: 4,
   }
 });
 
@@ -85,8 +91,8 @@ const PDFNutritionSummary = ({
     proteinPerKg = Number((macros.protein / weightKg).toFixed(1));
     
     if (exerciseFrequency && fitnessGoal) {
-      // Show target range based on activity
-      const recommendedProteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal);
+      // Show target range based on activity and gender
+      const recommendedProteinPerKg = getProteinPerKgRequirement(exerciseFrequency, fitnessGoal, gender);
       proteinNote = `(${proteinPerKg}g per kg bodyweight - target: ${recommendedProteinPerKg.toFixed(1)}g/kg)`;
     } else {
       // Simplified display if activity details missing
@@ -94,7 +100,8 @@ const PDFNutritionSummary = ({
     }
   } else if (gender && weightKg) {
     // Fallback if we don't have complete information
-    proteinNote = `(0.8-2.0g per kg bodyweight recommended range)`;
+    const genderBasedRange = gender === 'male' ? "0.9-2.2g" : "0.8-2.0g";
+    proteinNote = `(${genderBasedRange} per kg bodyweight recommended range)`;
   }
   
   // Calculate macro percentages
@@ -119,6 +126,14 @@ const PDFNutritionSummary = ({
     proteinSources = proteinRecommendations[dietaryPreference] || '';
   }
   
+  // Get gender-specific nutrient notes according to Indian RDA
+  let genderSpecificNote = '';
+  if (gender === 'male') {
+    genderSpecificNote = 'Males: Focus on higher protein, calcium (1000mg), iron (17mg), zinc (12mg)';
+  } else if (gender === 'female') {
+    genderSpecificNote = 'Females: Focus on iron (21mg), calcium (1000mg), folate (200μg), vitamin B12 (1μg)';
+  }
+  
   return (
     <View style={styles.nutritionBox}>
       <Text style={styles.nutritionTitle}>Daily Nutrition Summary</Text>
@@ -141,6 +156,9 @@ const PDFNutritionSummary = ({
       </Text>
       
       {proteinSources && <Text style={styles.proteinNote}>{proteinSources}</Text>}
+      
+      {/* Add gender-specific nutritional information */}
+      {genderSpecificNote && <Text style={styles.genderNote}>{genderSpecificNote}</Text>}
     </View>
   );
 };

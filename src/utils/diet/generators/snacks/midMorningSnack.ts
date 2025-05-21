@@ -6,59 +6,75 @@ import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 // Update to use the new modular deduplication system
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 
+/**
+ * Generates mid-morning snack options for the diet plan
+ */
 export const generateMidMorningSnack = (
   dayIndex: number,
   snacks: string[],
   fruits: string[],
   isWeightLoss: boolean,
-  allergies?: string
+  allergies?: string,
+  gender?: string
 ) => {
+  // Check if this is a male who is not on weight loss plan
+  // If so, provide more substantial snacks
+  const needsLargerSnack = gender === 'male' && !isWeightLoss;
+  
   // Use prime numbers for varied indices to prevent repetition patterns
-  const snackIndex = (dayIndex * 13 + 11) % snacks.length;
-  const fruitIndex = (dayIndex * 17 + 5) % fruits.length;
+  const snackIndex1 = (dayIndex * 7 + 3) % snacks.length;
+  let snackIndex2 = (dayIndex * 13 + 5) % snacks.length;
+  const fruitIndex = (dayIndex * 11 + 7) % fruits.length;
   
-  // On even days, use fruit; on odd days, use snacks
-  const isEvenDay = dayIndex % 2 === 0;
-  
-  let snack = "";
-  
-  if (isEvenDay) {
-    // Fruit-based snack
-    const fruit = fruits[fruitIndex];
-    const portion = getStandardFruitPortion(fruit);
-    
-    snack = isWeightLoss
-      ? `${fruit} ${portion}`
-      : `${fruit} ${portion} with a small handful of nuts`;
-      
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(snack);
-    snack += ` - (${healthBenefit})`;
-    
-    return snack;
-  } else {
-    // Regular snack from snack options
-    let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
-    
-    if (allergies) {
-      snackOptions = filterAllergies(snackOptions, allergies);
-    }
-    
-    // Get the snack for today
-    snack = snackOptions[snackIndex];
-    
-    // Add prebiotic foods occasionally to improve gut health
-    if (dayIndex % 3 === 1) { // Every third day starting from day 1
-      snack = enrichWithPrebiotics(snack, dayIndex);
-    }
-    
-    // Apply deduplication to the snack
-    snack = removeDuplicateFoodItems(snack);
-    
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(snack);
-    snack += ` - (${healthBenefit})`;
-    
-    return snack;
+  // Ensure the two snack indices are different
+  if (snackIndex1 === snackIndex2) {
+    snackIndex2 = (snackIndex2 + 1) % snacks.length;
   }
+  
+  let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
+  
+  if (allergies) {
+    snackOptions = filterAllergies(snackOptions, allergies);
+  }
+  
+  // Get the snack items
+  const snack1 = snackOptions[snackIndex1] || "Mixed nuts (small handful)";
+  let snack2 = snackOptions[snackIndex2] || "Roasted chana";
+  
+  // Get a fruit option
+  const fruit = fruits[fruitIndex] || "Apple";
+  const fruitPortion = getStandardFruitPortion(fruit);
+  
+  // Combine into a cohesive snack recommendation
+  let combinedSnack = "";
+  
+  if (isWeightLoss) {
+    // For weight loss, recommend fewer options
+    combinedSnack = `Choose one: ${snack1} or ${fruit} ${fruitPortion}`;
+  } else if (needsLargerSnack) {
+    // For males not on weight loss, offer more substantial options
+    combinedSnack = `${snack1} AND ${fruit} ${fruitPortion}`;
+    
+    // Add extra protein for males on muscle gain
+    if (snack1.toLowerCase().includes('protein') || snack1.toLowerCase().includes('nuts')) {
+      combinedSnack += ` (larger portion)`;
+    }
+  } else {
+    // For maintenance/standard female portion
+    combinedSnack = `Choose one: ${snack1}, ${snack2}, or ${fruit} ${fruitPortion}`;
+  }
+  
+  // Add prebiotic benefits occasionally
+  if (dayIndex % 4 === 0) {
+    combinedSnack = enrichWithPrebiotics(combinedSnack, dayIndex);
+  }
+  
+  // Apply deduplication to the snack
+  combinedSnack = removeDuplicateFoodItems(combinedSnack);
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(combinedSnack);
+  combinedSnack += ` - (${healthBenefit})`;
+  
+  return combinedSnack;
 };

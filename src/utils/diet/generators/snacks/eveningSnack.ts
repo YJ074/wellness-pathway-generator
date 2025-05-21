@@ -2,35 +2,59 @@
 import { filterAllergies } from '../../helpers/allergyHelpers';
 import { getRegionalFoods } from '../../data/regionalFoods';
 import { getStandardFruitPortion } from '../../helpers/portionHelpers';
-import { enrichWithPrebiotics } from '../../helpers/prebioticProbioticHelper';
+import { enrichWithProbiotics } from '../../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 // Update to use the new modular deduplication system
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 
+/**
+ * Generates evening snack options for the diet plan
+ */
 export const generateEveningSnack = (
   dayIndex: number,
   snacks: string[],
   fruits: string[],
   isWeightLoss: boolean,
   allergies?: string,
-  region?: string
+  region?: string,
+  gender?: string
 ) => {
-  // Check for regional snacks first
+  // Check for regional specialties
   const regionalFoods = getRegionalFoods(region);
   
-  // Use regional evening snacks every 4th day if available
-  if (region && regionalFoods.snacks && regionalFoods.snacks.length > 0 && dayIndex % 4 === 0) {
-    // Use varied index to prevent repetition
-    const regionalIndex = (dayIndex * 7 + 3) % regionalFoods.snacks.length;
+  // Check if this is a male who is not on weight loss plan
+  // If so, provide more substantial snacks
+  const needsLargerSnack = gender === 'male' && !isWeightLoss;
+  
+  // Use regional snack options every 4th day if available
+  if (region && regionalFoods.snacks.length > 0 && dayIndex % 4 === 0) {
+    const regionalIndex = (dayIndex * 7 + 5) % regionalFoods.snacks.length;
     let regionalSnack = regionalFoods.snacks[regionalIndex];
     
-    // Adjust portion for weight loss
-    if (isWeightLoss) {
-      regionalSnack += " (small portion)";
+    // Gender-specific portion adjustments for regional snacks
+    if (needsLargerSnack) {
+      // Add larger portions for men if not already specified
+      if (!regionalSnack.includes('large') && !regionalSnack.includes('extra')) {
+        regionalSnack += ' (larger portion)';
+      }
+    } else if (isWeightLoss) {
+      // Smaller portion for weight loss
+      if (!regionalSnack.includes('small')) {
+        regionalSnack += ' (small portion)';
+      }
     }
     
-    // Apply deduplication to regional snack
-    regionalSnack = removeDuplicateFoodItems(regionalSnack);
+    // Apply allergies filtering
+    if (allergies) {
+      const options = [regionalSnack];
+      const filtered = filterAllergies(options, allergies);
+      if (filtered.length > 0) {
+        regionalSnack = filtered[0];
+      }
+    }
+    
+    // For regional specialties, gently introduce probiotics without forcing them
+    regionalSnack = enrichWithProbiotics(regionalSnack, dayIndex);
     
     // Add health benefit
     const healthBenefit = getHealthBenefit(regionalSnack);
@@ -40,55 +64,61 @@ export const generateEveningSnack = (
   }
   
   // Use prime numbers for varied indices to prevent repetition patterns
-  // Different offsets from mid-morning to ensure variety
-  const snackIndex = (dayIndex * 19 + 7) % snacks.length;
-  const fruitIndex = (dayIndex * 23 + 11) % fruits.length;
+  const snackIndex1 = (dayIndex * 11 + 7) % snacks.length;
+  let snackIndex2 = (dayIndex * 17 + 11) % snacks.length;
+  const fruitIndex = (dayIndex * 13 + 5) % fruits.length;
   
-  // For evening, prefer snacks on even days and fruits on odd days (opposite of mid-morning)
-  const isEvenDay = dayIndex % 2 === 0;
-  
-  let snack = "";
-  
-  if (!isEvenDay) { // Opposite of mid-morning pattern
-    // Fruit-based snack
-    const fruit = fruits[fruitIndex];
-    const portion = getStandardFruitPortion(fruit);
-    
-    snack = isWeightLoss
-      ? `${fruit} ${portion}`
-      : `${fruit} ${portion} with a small handful of mixed seeds`;
-      
-    // Apply deduplication
-    snack = removeDuplicateFoodItems(snack);
-    
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(snack);
-    snack += ` - (${healthBenefit})`;
-    
-    return snack;
-  } else {
-    // Regular snack from snack options
-    let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
-    
-    if (allergies) {
-      snackOptions = filterAllergies(snackOptions, allergies);
-    }
-    
-    // Get the snack for today
-    snack = snackOptions[snackIndex];
-    
-    // Add prebiotic foods occasionally for gut health
-    if (dayIndex % 5 === 2) { // Different pattern from mid-morning
-      snack = enrichWithPrebiotics(snack, dayIndex);
-    }
-    
-    // Apply deduplication
-    snack = removeDuplicateFoodItems(snack);
-    
-    // Add health benefit
-    const healthBenefit = getHealthBenefit(snack);
-    snack += ` - (${healthBenefit})`;
-    
-    return snack;
+  // Ensure the two snack indices are different
+  if (snackIndex1 === snackIndex2) {
+    snackIndex2 = (snackIndex2 + 1) % snacks.length;
   }
+  
+  let snackOptions = snacks.slice(); // Create a copy to avoid mutating the original
+  
+  if (allergies) {
+    snackOptions = filterAllergies(snackOptions, allergies);
+  }
+  
+  // Get the evening snack items - typically lighter than morning snacks
+  const snack1 = snackOptions[snackIndex1] || "Roasted makhana";
+  let snack2 = snackOptions[snackIndex2] || "Vegetable sandwich";
+  
+  // Get a fruit option
+  const fruit = fruits[fruitIndex] || "Orange";
+  const fruitPortion = getStandardFruitPortion(fruit);
+  
+  // Combine into a cohesive snack recommendation
+  let combinedSnack = "";
+  
+  if (isWeightLoss) {
+    // For weight loss, recommend lighter options
+    combinedSnack = `Choose one: ${snack1} (small portion) or ${fruit} ${fruitPortion}`;
+  } else if (needsLargerSnack) {
+    // For males not on weight loss, offer more substantial options
+    combinedSnack = `${snack1} AND ${fruit} ${fruitPortion}`;
+    
+    // Add more substantial descriptions for males
+    if (snack1.toLowerCase().includes('protein') || 
+        snack1.toLowerCase().includes('nuts') || 
+        snack1.toLowerCase().includes('sandwich')) {
+      combinedSnack += ` (larger portion)`;
+    }
+  } else {
+    // For maintenance/standard female portion
+    combinedSnack = `Choose one: ${snack1}, ${snack2}, or ${fruit} ${fruitPortion}`;
+  }
+  
+  // Add probiotic benefits occasionally
+  if (dayIndex % 3 === 0) {
+    combinedSnack = enrichWithProbiotics(combinedSnack, dayIndex);
+  }
+  
+  // Apply deduplication to the snack
+  combinedSnack = removeDuplicateFoodItems(combinedSnack);
+  
+  // Add health benefit
+  const healthBenefit = getHealthBenefit(combinedSnack);
+  combinedSnack += ` - (${healthBenefit})`;
+  
+  return combinedSnack;
 };

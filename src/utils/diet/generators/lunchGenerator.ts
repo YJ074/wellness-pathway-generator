@@ -26,7 +26,8 @@ export const generateLunch = (
   isProteinFocus: boolean,
   allergies?: string,
   region?: string,
-  dietaryPreference?: string // Added parameter
+  dietaryPreference?: string, // Added parameter
+  gender?: string // Added parameter for gender-specific portions
 ) => {
   // Check if non-vegetarian dishes are allowed
   const allowNonVeg = dietaryPreference && getAllowedNonVegTypes(dietaryPreference).length > 0;
@@ -43,7 +44,8 @@ export const generateLunch = (
       isProteinFocus,
       nonVegType,
       allergies,
-      region
+      region,
+      gender
     );
   }
 
@@ -57,11 +59,17 @@ export const generateLunch = (
     const regionalLunch = regionalFoods.mains[regionalIndex];
     
     // Format lunch based on dietary goals using helper function
-    let lunch = composeRegionalMeal(regionalLunch, isWeightLoss, isProteinFocus);
+    // Pass gender information for portion sizing
+    let lunch = composeRegionalMeal(regionalLunch, isWeightLoss, isProteinFocus, gender === 'male');
     
     // Ensure regional meals always mention rice/roti
     if (!lunch.toLowerCase().includes('roti') && !lunch.toLowerCase().includes('rice')) {
-      lunch += ', served with 2 rotis (palm-sized) or ½ katori rice';
+      // Gender-specific portion sizes
+      const rotiCount = gender === 'male' ? 
+        (isWeightLoss ? 3 : 4) : 
+        (isWeightLoss ? 2 : 3);
+        
+      lunch += `, served with ${rotiCount} rotis or ${gender === 'male' ? '¾' : '½'} katori rice`;
     }
     
     // For regional specialties, gently introduce pre/probiotics without forcing them
@@ -139,19 +147,32 @@ export const generateLunch = (
   // Ensure local names for grains too with specific preparation method
   const grainWithLocalName = getLocalizedGrainName(grain);
   
-  // Get roti count (as a number, not as "X rotis")
-  const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus);
+  // Get roti count (as a number, not as "X rotis") - adjusted by gender
+  const isMale = gender === 'male';
+  const rotiCount = getBreadPortionSize(isWeightLoss, isProteinFocus, isMale);
   
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   
-  // Make sure we always include Indian staples - rotis and rice options with Indian measurements
+  // Adjust portion sizes based on gender and goals
   if (isWeightLoss) {
-    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ½ katori brown rice`;
+    // Smaller portions for weight loss, but gender-adjusted
+    const curryPortion = isMale ? "¾ katori" : "⅔ katori";
+    const ricePortion = isMale ? "½ katori" : "⅓ katori";
+    
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (${curryPortion} - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ${ricePortion} brown rice`;
   } else if (isProteinFocus) {
-    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (1 katori - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ¾ katori rice`;
+    // Higher protein portions, gender-adjusted
+    const curryPortion = isMale ? "1½ katori" : "1 katori";
+    const ricePortion = isMale ? "1 katori" : "¾ katori";
+    
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (${curryPortion} - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ${ricePortion} rice`;
   } else {
-    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ¾ katori rice`;
+    // Standard portions, gender-adjusted
+    const curryPortion = isMale ? "1 katori" : "¾ katori";
+    const ricePortion = isMale ? "¾ katori" : "⅔ katori";
+    
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (${curryPortion} - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ${ricePortion} rice`;
   }
   
   // Check if dairy has been used already today before adding curd
@@ -160,7 +181,8 @@ export const generateLunch = (
   
   // Add curd (probiotic) to lunch only if we haven't used dairy yet
   if (!hasDairyInMeals) {
-    main += `, dahi (1 katori)`;
+    const curdPortion = isMale ? "1½ katori" : "1 katori";
+    main += `, dahi (${curdPortion})`;
   }
   
   // For days not already featuring prebiotics, add some to the meal

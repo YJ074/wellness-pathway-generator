@@ -1,3 +1,4 @@
+
 import { DietaryPreference, WellnessGoal } from '../types';
 import { 
   getProteinSources, 
@@ -45,17 +46,21 @@ export function generateDays(
   const wellnessGoals = formData.wellnessGoals as WellnessGoal[] || [];
   const weight = parseInt(formData.weight) || 70; // Convert string weight to number
 
+  // Gender-specific adjustments
+  const isMale = gender === 'male';
+  
   // Optimize protein sources - get double the amount needed for variety
   const rawProteins = getProteinSources(dietaryPreference, allergies);
   
   // Calculate optimal protein intake using our enhanced science-based algorithm
-  // Passing weight and exercise frequency for personalized protein calculations
+  // Passing weight, exercise frequency and gender for personalized protein calculations
   const proteinRequirement = getProteinPortion(
     dietaryPreference, 
     calorieReduction, 
     proteinFocus, 
     weight, 
-    exerciseFrequency
+    exerciseFrequency,
+    gender
   );
   
   // Distribute soya in limited amounts throughout the diet
@@ -92,7 +97,7 @@ export function generateDays(
     const timingTips = getMealTimingTips(formData.fitnessGoal || 'maintenance');
     
     // Apply varied patterns to ensure food diversity
-    let breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region);
+    let breakfast = generateBreakfast(dayIndex + breakfastPatterns[i-1], dietaryPreference, calorieReduction, allergies, region, gender);
     
     // Process breakfast through normalization to remove any internal duplicates
     breakfast = applyTriplePassDeduplication(breakfast);
@@ -101,7 +106,7 @@ export function generateDays(
     addFoodToDailyMemory(dayIndex, breakfast);
     
     // Generate and deduplicate mid-morning snack
-    const midMorningSnack = generateMidMorningSnack(dayIndex + ((i * 3) % 17), snacks, fruits, calorieReduction, allergies);
+    const midMorningSnack = generateMidMorningSnack(dayIndex + ((i * 3) % 17), snacks, fruits, calorieReduction, allergies, gender);
     const cleanMidMorningSnack = applyTriplePassDeduplication(midMorningSnack);
     addFoodToDailyMemory(dayIndex, cleanMidMorningSnack);
 
@@ -116,13 +121,14 @@ export function generateDays(
       proteinFocus, 
       allergies, 
       region,
-      dietaryPreference
+      dietaryPreference,
+      gender
     );
     lunch = applyTriplePassDeduplication(lunch);
     addFoodToDailyMemory(dayIndex, lunch);
     
     // Generate and deduplicate evening snack
-    const eveningSnack = generateEveningSnack(dayIndex + ((i * 5) % 19), snacks, fruits, calorieReduction, allergies, region);
+    const eveningSnack = generateEveningSnack(dayIndex + ((i * 5) % 19), snacks, fruits, calorieReduction, allergies, region, gender);
     const cleanEveningSnack = applyTriplePassDeduplication(eveningSnack);
     addFoodToDailyMemory(dayIndex, cleanEveningSnack);
     
@@ -136,12 +142,14 @@ export function generateDays(
       proteinFocus, 
       allergies, 
       region,
-      dietaryPreference
+      dietaryPreference,
+      gender
     );
     dinner = applyTriplePassDeduplication(dinner);
     
     // Calculate approximate calories for the day
-    const totalCalories = Math.round(dailyCalories / 10) * 10;
+    // Gender-specific adjustments to base calories
+    let totalCalories = Math.round(dailyCalories / 10) * 10;
     
     // Recommended water intake (in liters)
     // Adjusted based on gender and weight following scientific guidelines
@@ -188,7 +196,8 @@ export function generateDays(
       regionalNote,
       mealTimings,
       cheatMealInfo,
-      timingTips
+      timingTips,
+      gender // Add gender to the diet day for PDF generation
     });
   }
   

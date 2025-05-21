@@ -28,28 +28,59 @@ export const composeDinnerMeal = (
   protein: string,
   vegetables: string,
   isWeightLoss: boolean,
-  isProteinFocus: boolean
+  isProteinFocus: boolean,
+  isMale: boolean = false
 ): string => {
-  let meal = `${protein} and ${vegetables}`;
-  if (isWeightLoss) {
-    meal += ' (smaller portions)';
-  } else if (isProteinFocus) {
-    meal += ' (protein-rich portions)';
+  // Gender-specific portion descriptions
+  let portionDescription = "";
+  if (isMale) {
+    if (isWeightLoss) {
+      portionDescription = 'moderate portions';
+    } else if (isProteinFocus) {
+      portionDescription = 'large protein-rich portions';
+    } else {
+      portionDescription = 'standard male portions';
+    }
+  } else {
+    if (isWeightLoss) {
+      portionDescription = 'smaller portions';
+    } else if (isProteinFocus) {
+      portionDescription = 'protein-rich portions';
+    } else {
+      portionDescription = 'balanced portions';
+    }
   }
-  return meal;
+  
+  return `${protein} and ${vegetables} (${portionDescription})`;
 };
 
 // Helper function to create a meal item with portion control
 export const createMealItem = (
   item: string,
   isWeightLoss: boolean,
-  isProteinFocus: boolean
+  isProteinFocus: boolean,
+  isMale: boolean = false
 ): string => {
-  let mealItem = item;
-  if (isWeightLoss) {
-    mealItem += ' (smaller portion)';
-  } else if (isProteinFocus) {
-    mealItem += ' (protein-rich portion)';
+  let portionDescription = "";
+  
+  // Determine appropriate portion description based on goals and gender
+  if (isMale) {
+    if (isWeightLoss) {
+      portionDescription = 'moderate portion';
+    } else if (isProteinFocus) {
+      portionDescription = 'large protein-rich portion';
+    } else {
+      portionDescription = 'standard male portion';
+    }
+  } else {
+    if (isWeightLoss) {
+      portionDescription = 'smaller portion';
+    } else if (isProteinFocus) {
+      portionDescription = 'protein-rich portion';
+    } else {
+      portionDescription = 'balanced portion';
+    }
   }
-  return mealItem;
+  
+  return `${item} (${portionDescription})`;
 };
