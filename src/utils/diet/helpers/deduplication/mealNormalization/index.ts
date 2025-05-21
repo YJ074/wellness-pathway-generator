@@ -5,10 +5,19 @@ export { removeDuplicateFoodItems } from './duplicateRemover';
 // Export functions from the PDF normalizer
 export { normalizeMealForPDF } from './pdfNormalizer';
 
+// Export functions from the daily deduplicator
+export { 
+  resetDailyFoodMemory,
+  addFoodToDailyMemory,
+  hasFoodBeenUsedToday 
+} from './dailyDeduplicator';
+
 // Additional functions for meal normalization
 export const deduplicateMealDescription = (mealDescription: string): string => {
-  // Use the removeDuplicateFoodItems function for base implementation
-  return removeDuplicateFoodItems(mealDescription);
+  // Import the removeDuplicateFoodItems function for use in this function
+  const { removeDuplicateFoodItems: removeDupes } = require('./duplicateRemover');
+  // Use the imported function for base implementation
+  return removeDupes(mealDescription);
 };
 
 export const removeDuplicateOptions = (options: string[]): string[] => {
