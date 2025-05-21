@@ -17,7 +17,7 @@ export {
   getProteinPortion,
   getProteinPerKgRequirement,
   calculateDailyProteinRequirement
-} from './portionTypes/proteinPortions';
+} from './portionTypes/protein';
 
 export {
   getLocalizedGrainName,

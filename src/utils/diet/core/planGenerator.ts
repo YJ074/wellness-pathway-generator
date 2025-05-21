@@ -2,7 +2,7 @@
 import { DietPlan, FormData } from '@/components/wellness/types';
 import { calculateBMI, getBMICategory, calculateBMR, calculateDailyCalories } from '../metrics/bmiCalculator';
 import { generateDays } from './days';
-import { calculateDailyProteinRequirement } from '../helpers/portionTypes/proteinPortions';
+import { calculateDailyProteinRequirement } from '../helpers/portionTypes/protein/calculator';
 
 export { calculateBMI, getBMICategory, calculateBMR, calculateDailyCalories };
 

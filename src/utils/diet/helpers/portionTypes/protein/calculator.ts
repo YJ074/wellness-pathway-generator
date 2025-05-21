@@ -1,75 +1,7 @@
+
 /**
- * Helper functions for protein portion handling and customization
+ * Helper functions for protein requirement calculation
  */
-
-// Helper to format protein names with local equivalents
-export const getLocalizedProteinName = (protein: string): string => {
-  if (protein === 'Paneer' && !protein.includes('(')) {
-    return 'Paneer (Indian Cottage Cheese)';
-  } else if (protein === 'Tofu' && !protein.includes('(')) {
-    return 'Tofu (Soya Paneer)';
-  } else if (protein === 'Chana' && !protein.includes('(')) {
-    return 'Chana (Chickpeas)';
-  } else if (protein === 'Rajma' && !protein.includes('(')) {
-    return 'Rajma (Kidney Beans)';
-  } else if (protein === 'Soya Chunks' && !protein.includes('(')) {
-    return 'Soya Chunks (High-Protein Nuggets)';
-  } else if (protein === 'Tempeh' && !protein.includes('(')) {
-    return 'Tempeh (Fermented Soybean Cake)';
-  } else if (protein === 'Seitan' && !protein.includes('(')) {
-    return 'Seitan (Wheat Protein)';
-  } else if (protein.includes('Millet') && !protein.includes('(')) {
-    // Add explanations for millet varieties
-    if (protein.includes('Ragi')) {
-      return protein.includes('(') ? protein : `${protein} (Finger Millet, rich in calcium)`;
-    } else if (protein.includes('Bajra')) {
-      return protein.includes('(') ? protein : `${protein} (Pearl Millet, high in iron)`;
-    } else if (protein.includes('Jowar')) {
-      return protein.includes('(') ? protein : `${protein} (Sorghum Millet, good for digestion)`;
-    } else if (protein.includes('Foxtail')) {
-      return protein.includes('(') ? protein : `${protein} (Kangni, low glycemic index)`;
-    } else if (protein.includes('Little')) {
-      return protein.includes('(') ? protein : `${protein} (Kutki, high in fiber)`;
-    } else if (protein.includes('Barnyard')) {
-      return protein.includes('(') ? protein : `${protein} (Sanwa, high in micronutrients)`;
-    } else if (protein.includes('Kodo')) {
-      return protein.includes('(') ? protein : `${protein} (Kodra, high in fiber and minerals)`;
-    } else if (protein.includes('Proso')) {
-      return protein.includes('(') ? protein : `${protein} (Cheena, good for weight management)`;
-    }
-    return protein.includes('(') ? protein : `${protein} (nutrient-dense ancient grain)`;
-  }
-  return protein;
-};
-
-// Helper for vegan protein alternatives
-export const getVeganProteinAlternative = (nonVeganProtein: string): string => {
-  const alternatives: Record<string, string> = {
-    'Paneer': 'Tofu',
-    'Curd': 'Coconut Yogurt',
-    'Greek Yogurt': 'Soy Yogurt',
-    'Buttermilk': 'Vegan Buttermilk (coconut milk with lemon)',
-    'Milk': 'Soy Milk',
-    'Cheese': 'Vegan Cheese',
-    'Ghee': 'Olive Oil',
-    'Yogurt': 'Almond Yogurt',
-    'Egg': 'Tofu Scramble',
-    'Chicken': 'Soya Chunks',
-    'Meat': 'Seitan',
-    'Fish': 'Jackfruit',
-    'Mutton': 'Mushroom',
-    'Prawns': 'King Oyster Mushrooms',
-    'Khoya': 'Cashew Paste'
-  };
-  
-  for (const [nonVegan, vegan] of Object.entries(alternatives)) {
-    if (nonVeganProtein.toLowerCase().includes(nonVegan.toLowerCase())) {
-      return vegan;
-    }
-  }
-  
-  return nonVeganProtein;
-};
 
 /**
  * Get protein requirement per kg based on scientific guidelines and Indian RDA:
@@ -203,7 +135,7 @@ export const getProteinPortion = (
     'lacto-ovo-vegetarian': baseProteinPortion,
     'pure-vegetarian': `${baseProteinPortion} (vary protein sources throughout the day)`,
     'sattvic': `${baseProteinPortion} (balance of dairy, legumes, and nuts)`,
-    'pure-jain': `${baseProteinPortion} (emphasize allowed legumes, nuts and dairy)`,
+    'jain': `${baseProteinPortion} (emphasize allowed legumes, nuts and dairy)`,
     'non-vegetarian': baseProteinPortion
   };
   
