@@ -12,5 +12,5 @@ export { generateDinner } from './dinnerGenerator';
 // Export a helper for regional food integration
 export const supportedRegions = [
   'north', 'south', 'east', 'west', 'central', 'northeast', 'andhra', 'arunachal', 'chhattisgarh',
-  'assam', 'bihar'
+  'assam', 'bihar', 'goa', 'gujarat', 'haryana'
 ];

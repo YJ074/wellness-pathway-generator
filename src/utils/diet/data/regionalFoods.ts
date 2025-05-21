@@ -535,6 +535,119 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Carrot Raisin Balls',
       'Chana Sundal'
     ]
+  },
+  'goa': {
+    breakfast: [
+      'Ragi Bhakri with Coconut Chutney',
+      'Vegetable Sanna (Steamed Rice Cakes)',
+      'Moong Dal Dosa',
+      'Cucumber Pancakes',
+      'Red Rice Upma',
+      'Vegetable Udid Metha Porridge',
+      'Steamed Jackfruit Idli',
+      'Tapioca Poha',
+      'Ragi Porridge',
+      'Sweet Potato Tikki'
+    ],
+    mains: [
+      'Tambdi Bhaji (Amaranth Leaves Curry)',
+      'Tisreo Sukhem (Steamed Clams with Veg)',
+      'Vegetable Caldeen (Coconut Curry)',
+      'Khatkhatem (Mixed Veg Curry)',
+      'Chana Ros (Chickpea Curry)',
+      'Goan Dal Curry',
+      'Bottle Gourd Coconut Curry',
+      'Tofu Vindaloo (Low Oil)',
+      'Steamed Fish with Spices',
+      'Brinjal Curry with Red Rice'
+    ],
+    snacks: [
+      'Air-Fried Patoleo (Stuffed Leaves)',
+      'Oats & Coconut Ladoo',
+      'Banana Flour Cutlets',
+      'Boiled Peanuts with Spices',
+      'Dry Fruit & Cashew Bites',
+      'Veg Ragi Wraps',
+      'Jackfruit Seed Tikkis',
+      'Baked Banana Chips',
+      'Foxnut & Peanut Trail Mix',
+      'Steamed Veg Rolls'
+    ]
+  },
+  'gujarat': {
+    breakfast: [
+      'Handvo (Lentil Vegetable Cake)',
+      'Thepla (Methi Flatbread)',
+      'Dhokla (Steamed Chickpea Cake)',
+      'Khaman (Low-Oil)',
+      'Bajra Khichu',
+      'Muthiya (Steamed Veg Dumplings)',
+      'Vegetable Sev Khamni',
+      'Ragi Upma',
+      'Jowar Roti with Chutney',
+      'Tofu Bhurji with Thepla'
+    ],
+    mains: [
+      'Bajra Rotla with Garlic Chutney',
+      'Lauki Tamatar Sabzi',
+      'Karela Bateta Nu Shaak',
+      'Toor Dal with Green Garlic',
+      'Ringan No Olo (Brinjal Mash)',
+      'Mixed Dal Handvo',
+      'Vegetable Khichdi',
+      'Moong Dal with Turmeric',
+      'Stuffed Bhindi with Bajra Roti'
+    ],
+    snacks: [
+      'Roasted Makhana Masala',
+      'Khandvi (Rolled Besan Snack)',
+      'Baked Patra (Colocasia Rolls)',
+      'Chana Chaat',
+      'Sprouted Moong Salad',
+      'Oats Thepla Chips',
+      'Ragi Ladoo with Dates',
+      'Besan Tikkis (Air-Fried)',
+      'Tomato Cucumber Chaat',
+      'Steamed Dal Puffs'
+    ]
+  },
+  'haryana': {
+    breakfast: [
+      'Missi Roti with Mint Chutney',
+      'Bajra Khichdi',
+      'Vegetable Daliya',
+      'Besan Cheela',
+      'Stuffed Bajra Paratha (Oil-Free)',
+      'Ragi Roti with Curd',
+      'Tofu and Methi Roti',
+      'Flattened Rice with Veggies',
+      'Low-Oil Aloo Raita with Roti',
+      'Lauki Chilla'
+    ],
+    mains: [
+      'Chana Masala (Low Oil)',
+      'Baingan Bharta',
+      'Bitter Gourd Curry',
+      'Ghiya Kadhi (Bottle Gourd Yogurt Curry)',
+      'Sookhi Moong Dal',
+      'Cabbage Peas Subzi',
+      'Kachri Tomato Curry',
+      'Palak Paneer (Low Fat)',
+      'Tofu Bhurji with Bajra Roti',
+      'Pumpkin Curry with Bajra Roti'
+    ],
+    snacks: [
+      'Roasted Chana with Spices',
+      'Cucumber Sticks with Jeera Yogurt Dip',
+      'Dry Fruit Ladoo (No Sugar)',
+      'Boiled Moth Beans Chaat',
+      'Foxnut Masala Snack',
+      'Low-Oil Moong Dal Pakodi',
+      'Oats Tikkis with Green Chutney',
+      'Carrot Beet Sticks',
+      'Ragi Biscuits',
+      'Tofu Veg Rolls'
+    ]
   }
 };
 

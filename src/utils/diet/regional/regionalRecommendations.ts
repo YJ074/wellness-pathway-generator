@@ -163,6 +163,22 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Bihari cooking techniques like slow roasting and steaming preserve nutrients while enhancing flavor, reflected in the preparation methods used for these dishes.",
       "Features traditional Bihari spice combinations used in precise quantities for optimal digestibility and flavor enhancement without excessive heat."
     ],
+    'goa': [
+      "Goan cuisine features a unique blend of indigenous and Portuguese influences. This meal incorporates local fermentation techniques that enhance nutritional benefits.",
+      "Features traditional Goan coconut-based curries prepared with controlled oil and enhanced with local herbs that add distinctive flavor.",
+      "This meal includes the traditional Goan balance of tangy, spicy, and sweet flavors that has evolved over centuries to create complete nutrition.",
+      "Incorporates Goan seafood preparation methods that maximize protein while minimizing added fats through steaming and herb infusions.",
+      "Features traditional vegetable preparations from Goan Catholic and Hindu communities that preserve the authentic flavor while supporting modern nutritional needs.",
+      "The meal introduces traditional Goan use of coconut and rice, but in measured portions to balance authentic flavor with contemporary nutritional understanding."
+    ],
+    'haryana': [
+      "Haryanvi cuisine emphasizes hearty, rustic foods with an emphasis on millets and dairy. This meal adapts traditional preparations for balanced nutrition.",
+      "Features the traditional Haryanvi use of bajra (pearl millet) and other millets that provide sustained energy and essential micronutrients.",
+      "This meal includes authentic Haryanvi vegetable preparations that preserve the robust flavors while controlling oil content.",
+      "Incorporates traditional Haryanvi protein sources like besan (gram flour) and dairy, prepared using methods that enhance nutrition while controlling calories.",
+      "Features traditional Haryanvi spice combinations like kachri powder that add distinctive flavor while supporting digestive functions.",
+      "The meal adapts traditional Haryanvi cooking techniques that maximize flavor through slow cooking and proper seasoning rather than excessive fat."
+    ]
   };
   
   // Convert region to lowercase for case-insensitive matching
