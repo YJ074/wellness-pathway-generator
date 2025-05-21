@@ -47,6 +47,16 @@ const styles = StyleSheet.create({
     color: '#64748b',
     fontStyle: 'italic',
   },
+  cheatMealContainer: {
+    backgroundColor: '#fff7ed',
+    padding: 6,
+    borderRadius: 4,
+    marginBottom: 10,
+  },
+  cheatMealText: {
+    fontSize: 9,
+    color: '#9a3412',
+  }
 });
 
 type PDFDayBlockProps = {
@@ -66,6 +76,8 @@ type PDFDayBlockProps = {
     eveningSnack: string;
     dinner: string;
   };
+  cheatMealInfo?: string | null;
+  timingTips?: string;
 };
 
 const PDFDayBlock = (dietDay: PDFDayBlockProps) => {
@@ -78,11 +90,17 @@ const PDFDayBlock = (dietDay: PDFDayBlockProps) => {
   const processedSnacks = dietDay.snacks ? applyTriplePassDeduplication(dietDay.snacks) : undefined;
   
   // Extract meal timings
-  const { mealTimings } = dietDay;
+  const { mealTimings, cheatMealInfo } = dietDay;
   
   return (
     <View style={styles.dayBlock} wrap={false}>
       <Text style={styles.dayHeader}>Day {dietDay.day} Diet Plan</Text>
+      
+      {cheatMealInfo && (
+        <View style={styles.cheatMealContainer}>
+          <Text style={styles.cheatMealText}>{cheatMealInfo}</Text>
+        </View>
+      )}
       
       <View style={styles.mealContainer}>
         <View style={styles.mealLabelRow}>

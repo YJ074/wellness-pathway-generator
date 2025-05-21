@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WellnessGoal } from '@/utils/diet/types';
-import { Sparkles, Leaf, MapPin } from 'lucide-react';
+import { Sparkles, Leaf, MapPin, Clock, AlertCircle } from 'lucide-react';
 
 interface DietPlanDay {
   day: number;
@@ -20,6 +20,15 @@ interface DietPlanDay {
   fatLossNotes?: string;
   herbalRecommendations?: string[];
   regionalNote?: string;
+  mealTimings?: {
+    breakfast: string;
+    midMorningSnack: string;
+    lunch: string;
+    eveningSnack: string;
+    dinner: string;
+  };
+  cheatMealInfo?: string | null;
+  timingTips?: string;
 }
 
 interface DietPlanDisplayProps {
@@ -44,6 +53,29 @@ const DietPlanDisplay = ({ days }: DietPlanDisplayProps) => {
                     <MapPin className="h-3 w-3 mr-1 mt-0.5 flex-shrink-0 text-amber-600" />
                     <span className="italic">{day.regionalNote}</span>
                   </p>
+                </div>
+              )}
+              
+              {/* Treat Meal / Cheat Meal Info */}
+              {day.cheatMealInfo && (
+                <div className="mb-3 p-2 bg-amber-50 rounded-md border border-amber-100">
+                  <p className="text-xs text-amber-800 flex items-start">
+                    <AlertCircle className="h-3 w-3 mr-1 mt-0.5 flex-shrink-0 text-amber-500" />
+                    <span>{day.cheatMealInfo}</span>
+                  </p>
+                </div>
+              )}
+              
+              {/* Meal Timing Tips */}
+              {day.mealTimings && (
+                <div className="mb-3 text-xs text-gray-500">
+                  <div className="flex items-center gap-1 mb-1">
+                    <Clock className="h-3 w-3 text-blue-500" />
+                    <p className="font-medium text-blue-700">Recommended Timings</p>
+                  </div>
+                  <p>Breakfast: {day.mealTimings.breakfast}</p>
+                  <p>Lunch: {day.mealTimings.lunch}</p>
+                  <p>Dinner: {day.mealTimings.dinner}</p>
                 </div>
               )}
               

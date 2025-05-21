@@ -7,7 +7,7 @@ import {
   generateHerbalRecommendations
 } from '../../wellness/wellnessRecommendations';
 import { generateRegionalNote } from '../../regional/regionalRecommendations';
-import { getCheatMealGuidance, getMealTimingTips } from '../../helpers/mealTimingsHelper';
+import { getCheatMealGuidance, getMealTimings, getMealTimingTips } from '../../helpers/mealTimingsHelper';
 import { WellnessGoal } from '../../types';
 
 interface WellnessInfoParams {
@@ -41,6 +41,9 @@ export function generateDayWellnessInfo(params: WellnessInfoParams) {
   
   const { breakfast, lunch, dinner } = meals;
   const dayNumber = dayIndex + 1;
+  
+  // Get recommended meal timings for this day
+  const mealTimings = getMealTimings(dayIndex);
   
   // Check if this is a cheat meal day
   const cheatMealInfo = getCheatMealGuidance(dayNumber, fitnessGoal);
@@ -86,6 +89,7 @@ export function generateDayWellnessInfo(params: WellnessInfoParams) {
     pcosFriendlyNotes,
     herbalRecommendations,
     regionalNote,
+    mealTimings,
     cheatMealInfo,
     timingTips
   };

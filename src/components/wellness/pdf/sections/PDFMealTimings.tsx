@@ -5,49 +5,55 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
-    borderRadius: 3,
-    padding: 8,
-    backgroundColor: '#f8fafc'
   },
-  title: {
-    fontSize: 10,
+  headerContainer: {
+    backgroundColor: '#f1f5f9',
+    padding: 6,
+    borderRadius: 4,
+    marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  header: {
+    fontSize: 12,
     fontWeight: 'bold',
+    color: '#334155',
+  },
+  timingsContainer: {
     marginBottom: 6,
-    fontFamily: 'Helvetica-Bold',
   },
-  timingsGrid: {
-    display: 'flex',
+  timingRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  timingItem: {
-    width: '50%',
     marginBottom: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   mealLabel: {
-    fontSize: 8,
-    color: '#475569',
-    width: '45%', // Increased width for label
+    fontSize: 10,
+    width: '30%',
+    fontWeight: 'bold',
   },
-  timeText: {
-    fontSize: 8,
-    color: '#0f172a',
-    width: '55%', // Set fixed width for time value
+  mealTime: {
+    fontSize: 10,
+    width: '70%',
   },
-  note: {
-    fontSize: 8,
+  tipContainer: {
+    backgroundColor: '#dbeafe',
+    padding: 6,
+    borderRadius: 4,
+    marginVertical: 6,
+  },
+  tipText: {
+    fontSize: 9,
+    color: '#1e40af',
+  },
+  cheatMealContainer: {
+    backgroundColor: '#fff7ed',
+    padding: 6,
+    borderRadius: 4,
     marginTop: 6,
-    color: '#64748b',
-    fontStyle: 'italic',
   },
-  cheatMealNote: {
-    fontSize: 8,
-    marginTop: 6,
-    padding: 4,
-    backgroundColor: '#fff9db',
-    color: '#92400e',
+  cheatMealText: {
+    fontSize: 9,
+    color: '#9a3412',
   }
 });
 
@@ -68,41 +74,47 @@ const PDFMealTimings = ({ mealTimings, cheatMealInfo, timingTips }: PDFMealTimin
   
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Recommended Meal Timings</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Recommended Meal Timings</Text>
+      </View>
       
-      <View style={styles.timingsGrid}>
-        <View style={styles.timingItem}>
+      <View style={styles.timingsContainer}>
+        <View style={styles.timingRow}>
           <Text style={styles.mealLabel}>Breakfast:</Text>
-          <Text style={styles.timeText}>{mealTimings.breakfast}</Text>
+          <Text style={styles.mealTime}>{mealTimings.breakfast}</Text>
         </View>
         
-        <View style={styles.timingItem}>
-          <Text style={styles.mealLabel}>Mid-Morning:</Text>
-          <Text style={styles.timeText}>{mealTimings.midMorningSnack}</Text>
+        <View style={styles.timingRow}>
+          <Text style={styles.mealLabel}>Mid-Morning Snack:</Text>
+          <Text style={styles.mealTime}>{mealTimings.midMorningSnack}</Text>
         </View>
         
-        <View style={styles.timingItem}>
+        <View style={styles.timingRow}>
           <Text style={styles.mealLabel}>Lunch:</Text>
-          <Text style={styles.timeText}>{mealTimings.lunch}</Text>
+          <Text style={styles.mealTime}>{mealTimings.lunch}</Text>
         </View>
         
-        <View style={styles.timingItem}>
+        <View style={styles.timingRow}>
           <Text style={styles.mealLabel}>Evening Snack:</Text>
-          <Text style={styles.timeText}>{mealTimings.eveningSnack}</Text>
+          <Text style={styles.mealTime}>{mealTimings.eveningSnack}</Text>
         </View>
         
-        <View style={styles.timingItem}>
+        <View style={styles.timingRow}>
           <Text style={styles.mealLabel}>Dinner:</Text>
-          <Text style={styles.timeText}>{mealTimings.dinner}</Text>
+          <Text style={styles.mealTime}>{mealTimings.dinner}</Text>
         </View>
       </View>
       
       {timingTips && (
-        <Text style={styles.note}>Tip: {timingTips}</Text>
+        <View style={styles.tipContainer}>
+          <Text style={styles.tipText}>Tip: {timingTips}</Text>
+        </View>
       )}
       
       {cheatMealInfo && (
-        <Text style={styles.cheatMealNote}>{cheatMealInfo}</Text>
+        <View style={styles.cheatMealContainer}>
+          <Text style={styles.cheatMealText}>{cheatMealInfo}</Text>
+        </View>
       )}
     </View>
   );
