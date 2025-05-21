@@ -17,11 +17,11 @@ export const generateNonVegDish = (
   // Try to use regional non-veg dishes if a region is specified
   if (region) {
     const regionalDish = generateNonVegByRegion(
-      dayIndex, 
-      nonVegType, 
-      region, 
+      nonVegType,  // Pass nonVegType as first parameter (string)
+      dayIndex,    // Pass dayIndex as second parameter (number)
       isWeightLoss, 
-      isProteinFocus
+      isProteinFocus,
+      region
     );
     
     if (regionalDish) {
@@ -98,10 +98,7 @@ export const generateNonVegDish = (
   // Balance the meal - add components based on nutritional needs
   let meal = balanceNonVegMeal(
     mainProteinDish,
-    portion,
-    vegetableSide,
-    grain,
-    isWeightLoss,
+    isWeightLoss,  // Pass only the required 3 arguments here
     isProteinFocus
   );
   

@@ -4,7 +4,7 @@ import { getRegionalNonVegDishes } from './regionalDishData';
 
 /**
  * Generate a region-specific non-vegetarian dish
- * @param nonVegType - Optional specific non-veg type preference
+ * @param nonVegType - Type of non-vegetarian food (e.g., "chicken", "fish")
  * @param dayIndex - Current day index (0-based)
  * @param isWeightLoss - Whether the diet is for weight loss
  * @param isProteinFocus - Whether the diet is for protein focus
@@ -12,8 +12,8 @@ import { getRegionalNonVegDishes } from './regionalDishData';
  * @returns Regional dish description or empty string if not found
  */
 export const generateNonVegByRegion = (
-  nonVegType: string,
-  dayIndex: number,
+  nonVegType: string, // Changed parameter order: nonVegType first
+  dayIndex: number,   // dayIndex second
   isWeightLoss: boolean,
   isProteinFocus: boolean,
   region?: string
