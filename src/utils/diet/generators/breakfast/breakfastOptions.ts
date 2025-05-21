@@ -43,3 +43,29 @@ export const getEggBreakfastOptions = (): string[] => [
   'Anda Muffins (2 pieces) with sabzi',
   'Anda Upma (1 katori) with mixed sabzi'
 ];
+
+// Add the missing getMorningBreakfastOptions function
+export const getMorningBreakfastOptions = (
+  dietaryPreference: string,
+  allergies?: string
+): string[] => {
+  // Get base options based on dietary preference
+  let options = getVegetarianBreakfastOptions();
+  
+  // Add egg options for non-vegetarian diets
+  if (dietaryPreference === 'non-vegetarian' || 
+      dietaryPreference === 'pescatarian' || 
+      dietaryPreference === 'eggetarian') {
+    options = [...options, ...getEggBreakfastOptions()];
+  }
+  
+  // Filter allergies if specified
+  if (allergies) {
+    const allergyList = allergies.split(',').map(a => a.trim().toLowerCase());
+    options = options.filter(option => 
+      !allergyList.some(allergy => option.toLowerCase().includes(allergy))
+    );
+  }
+  
+  return options;
+};

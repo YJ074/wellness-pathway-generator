@@ -18,9 +18,9 @@ export const generateBreakfast = (
   const regionalFoods = getRegionalFoods(region);
   
   // Use regional breakfast options every 3rd day if available
-  if (region && regionalFoods.breakfasts.length > 0 && dayIndex % 3 === 0) {
-    const regionalIndex = (dayIndex * 3 + 2) % regionalFoods.breakfasts.length;
-    let regionalBreakfast = regionalFoods.breakfasts[regionalIndex];
+  if (region && regionalFoods.breakfast.length > 0 && dayIndex % 3 === 0) {
+    const regionalIndex = (dayIndex * 3 + 2) % regionalFoods.breakfast.length;
+    let regionalBreakfast = regionalFoods.breakfast[regionalIndex];
     
     // Gender-specific portion adjustments for regional breakfasts
     if (gender === 'male') {
