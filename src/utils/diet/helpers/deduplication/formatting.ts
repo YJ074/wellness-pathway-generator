@@ -4,6 +4,10 @@
  * Provides functions to clean and standardize text formatting
  */
 
+// Import the deduplication functions to build our triple-pass system
+import { detectDuplication } from './detection';
+import { normalizeMealForPDF } from './mealNormalization/pdfNormalizer';
+
 /**
  * Normalizes text whitespace and punctuation
  * @param text Text to normalize
@@ -130,4 +134,27 @@ export const cleanupDuplicationFormatting = (text: string): string => {
     .trim();
   
   return cleaned;
+};
+
+/**
+ * Apply a comprehensive triple-pass deduplication process to clean up meal descriptions
+ * @param mealDescription The meal description to process
+ * @returns Cleaned up meal description with duplications removed
+ */
+export const applyTriplePassDeduplication = (mealDescription: string): string => {
+  if (!mealDescription) return '';
+  
+  // First pass: Apply PDF normalization
+  const firstPass = normalizeMealForPDF(mealDescription);
+  
+  // Second pass: Detect and remove duplications
+  const { duplicates } = detectDuplication(firstPass);
+  const secondPass = duplicates.length > 0 ? 
+    formatMealWithDeduplication(firstPass, duplicates) : 
+    firstPass;
+  
+  // Third pass: Final formatting cleanup
+  const thirdPass = formatForPDF(secondPass);
+  
+  return thirdPass;
 };

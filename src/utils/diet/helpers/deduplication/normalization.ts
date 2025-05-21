@@ -6,4 +6,9 @@
 
 // Re-export functions from the more focused files
 export { addWithoutDuplication } from './addition';
-export { removeDuplicateFoodItems, normalizeMealForPDF } from './mealNormalization';
+export { 
+  removeDuplicateFoodItems, 
+  normalizeMealForPDF, 
+  deduplicateMealDescription,
+  removeDuplicateOptions
+} from './mealNormalization';

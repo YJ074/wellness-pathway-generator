@@ -1,31 +1,33 @@
 
 /**
- * Helper file that re-exports deduplication functions for backward compatibility
- * Serves as the main entry point for deduplication functionality
+ * @deprecated This file is now deprecated. Use the functions from './deduplication' directly.
+ * Keeping for backward compatibility.
  */
 
-// Re-export necessary functions from the modular system
-export { 
+// Re-export the deduplication functions from the deduplication module
+export {
+  // Meal normalization functions
   removeDuplicateFoodItems,
+  deduplicateMealDescription,
   normalizeMealForPDF,
-  applyTriplePassDeduplication
-} from './deduplication';
-
-export { 
-  addWithoutDuplication 
-} from './deduplication';
-
-// Re-export additional functionality that might be needed
-export { 
-  hasFoodItem, 
+  
+  // Addition helpers
+  addWithoutDuplication,
+  
+  // Detection functions
+  hasFoodItem,
   extractBaseFoodName,
-  detectDuplicateFoods
-} from './deduplication';
-
-export { 
+  detectDuplicateFoods,
+  
+  // Formatting functions
   formatForPDF,
-  cleanupDuplicationFormatting 
+  cleanupDuplicationFormatting,
+  
+  // Daily food memory functions
+  resetDailyFoodMemory,
+  addFoodToDailyMemory,
+  hasFoodBeenUsedToday,
+  
+  // Synonym helpers
+  hasSynonymInSeenFoods
 } from './deduplication';
-
-// Export any additional utilities needed
-export { hasSynonymInSeenFoods } from './deduplication';

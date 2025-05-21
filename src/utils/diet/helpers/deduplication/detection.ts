@@ -114,3 +114,19 @@ export const detectDuplicateFoods = (mealDescription: string): string[] => {
   
   return Array.from(duplicates);
 };
+
+/**
+ * Main deduplication detection function
+ * @param mealDescription The meal description to analyze
+ * @returns Information about detected duplications
+ */
+export const detectDuplication = (mealDescription: string): { 
+  hasDuplicates: boolean;
+  duplicates: string[];
+} => {
+  const duplicates = detectDuplicateFoods(mealDescription);
+  return {
+    hasDuplicates: duplicates.length > 0,
+    duplicates
+  };
+};
