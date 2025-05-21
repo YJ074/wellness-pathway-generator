@@ -171,6 +171,38 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Includes seasonal vegetables and fruits that are locally sourced to maximize freshness and nutritional value.",
       "Emphasizes the use of homemade spices and masalas to control sodium levels and avoid artificial additives."
     ],
+    'kerala': [
+      "Kerala cuisine skillfully balances coconut, spices, and fresh ingredients. This meal adapts traditional recipes for enhanced nutrition.",
+      "Features dishes that highlight the natural flavors of ingredients with minimal oil and balanced spice profiles.",
+      "Incorporates steaming and stir-frying techniques that enhance nutritional value while reducing fat content.",
+      "Uses locally sourced vegetables and fruits rich in vitamins and minerals essential for overall wellness.",
+      "Includes traditional Kerala spices like curry leaves, black pepper, and turmeric known for their medicinal properties.",
+      "Balances complex carbohydrates from red rice and root vegetables with protein from lentils and beans."
+    ],
+    'manipur': [
+      "Manipuri cuisine showcases fermented ingredients and local herbs. This meal adapts traditional recipes for optimal nutrition.",
+      "Features dishes that emphasize local produce and minimal oil usage combined with fermentation techniques for gut health.",
+      "Incorporates steaming and boiling methods that preserve nutrients while creating natural flavor profiles.",
+      "Uses indigenous herbs and vegetables known for their high nutritional value and adaptogenic properties.",
+      "Includes balanced combinations of rice varieties with protein sources tailored to maximize nutrient absorption.",
+      "Maintains the authentic Manipuri emphasis on whole foods while reducing salt and oil content."
+    ],
+    'meghalaya': [
+      "Meghalaya cuisine features distinct tribal cooking traditions with unique ingredients. This meal adapts these traditions for balanced nutrition.",
+      "Features dishes that showcase fermentation and smoking techniques recalibrated for healthier outcomes.",
+      "Incorporates steaming and slow cooking methods that enhance flavor while preserving nutritional integrity.",
+      "Uses diverse indigenous vegetables and fruits that provide rare micronutrients and antioxidants.",
+      "Includes traditional Khasi, Garo, and Jaintia preparation methods adapted for optimal digestive health.",
+      "Balances the region's protein-rich dishes with fiber-rich accompaniments for a complete nutritional profile."
+    ],
+    'mizoram': [
+      "Mizo cuisine emphasizes simplicity and natural flavors. This meal adapts traditional recipes for enhanced nutritional balance.",
+      "Features dishes with minimal processing that highlight the natural qualities of local vegetables and herbs.",
+      "Incorporates steaming and boiling techniques that retain maximum nutrients with minimal added fats.",
+      "Uses bamboo shoots, local greens, and foraged ingredients known for their medicinal properties.",
+      "Includes traditional fermented components that support gut health while enhancing flavor complexity.",
+      "Balances the region's starchy staples with protein-rich plant foods for sustained energy release."
+    ]
   };
   
   // Convert region to lowercase for case-insensitive matching
@@ -246,10 +278,10 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'arunachal': 'north east',
     'arunachalpradesh': 'north east',
     'assam': 'north east',
-    'manipur': 'north east',
-    'meghalaya': 'north east',
+    'manipur': 'northeast',
+    'meghalaya': 'northeast',
     'tripura': 'north east',
-    'mizoram': 'north east',
+    'mizoram': 'northeast',
     'nagaland': 'north east',
     'sikkim': 'north east'
   };

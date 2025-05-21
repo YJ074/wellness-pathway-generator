@@ -838,6 +838,158 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Low-Oil Shengdana Ladoo',
       'Cucumber Chutney Rolls'
     ]
+  },
+  'kerala': {
+    breakfast: [
+      'Idiyappam with Vegetable Stew',
+      'Puttu with Kadala Curry',
+      'Vegetable Upma',
+      'Oats Idli',
+      'Aval Nanachathu (Soaked Poha with Coconut)',
+      'Ragi Dosa',
+      'Banana Wheat Pancakes',
+      'Sweet Potato Masala Dosa',
+      'Broken Wheat Upma',
+      'Steamed Tapioca with Chutney'
+    ],
+    mains: [
+      'Olan (Ash Gourd Curry)',
+      'Avial (Mixed Vegetable Coconut Curry)',
+      'Thoran (Vegetable Stir Fry)',
+      'Pachadi (Yogurt Curry)',
+      'Erissery (Pumpkin & Lentil Curry)',
+      'Vegetable Sambar',
+      'Moru Curry (Spiced Buttermilk Curry)',
+      'Raw Banana Kofta (Steamed)',
+      'Beans & Carrot Mezhukkupuratti',
+      'Red Matta Rice with Dal'
+    ],
+    snacks: [
+      'Banana Chips (Baked)',
+      'Roasted Jackfruit Seeds',
+      'Oats Kozhukattai (Steamed Balls)',
+      'Chickpea Sundal',
+      'Ragi Banana Balls',
+      'Aval Ladoo',
+      'Spiced Boiled Peanuts',
+      'Vegetable Cutlets (Air-Fried)',
+      'Steamed Plantain Slices',
+      'Sweet Coconut Balls'
+    ]
+  },
+  'manipur': {
+    breakfast: [
+      'Chakhao Amubi (Black Rice Porridge)',
+      'Nga Ataoba Kanghou (Vegetable Stir Fry)',
+      'Kabok with Banana',
+      'Rice Pancakes with Honey',
+      'Vegetable Upma',
+      'Steamed Tapioca with Herbs',
+      'Pumpkin Puree with Red Rice',
+      'Leafy Vegetable Omelette',
+      'Green Gram Stir Fry',
+      'Cucumber Poha'
+    ],
+    mains: [
+      'Chamthong (Vegetable Stew)',
+      'Eromba (Boiled Veg Mash with Fermented Fish)',
+      'Singju (Healthy Veg Salad)',
+      'Yongchak Iromba (Tree Bean Mash)',
+      'Ooti (Green Peas and Rice)',
+      'Laphu Thongba (Banana Stem Curry)',
+      'Pumpkin and Bamboo Shoot Curry',
+      'Pancha Foron Veg Curry',
+      'Saag with Black Rice',
+      'Dry Peas Vegetable Curry'
+    ],
+    snacks: [
+      'Black Rice Energy Balls',
+      'Fermented Bamboo Shoots with Chilli',
+      'Boiled Chickpeas Chaat',
+      'Sweet Potato Cutlets',
+      'Cucumber and Radish Salad',
+      'Foxnut with Herbs',
+      'Air-Fried Plantain Chips',
+      'Vegetable Momos (Steamed)',
+      'Tofu Lettuce Wraps',
+      'Ragi Puffed Bars'
+    ]
+  },
+  'meghalaya': {
+    breakfast: [
+      'Jadoh with Veggies',
+      'Pukhlein (Steamed Rice Pancakes)',
+      'Sweet Corn Porridge',
+      'Vegetable Red Rice Upma',
+      'Banana Leaf Steamed Dosa',
+      'Millet Idli',
+      'Oats with Wild Berries',
+      'Tapioca with Jaggery',
+      'Spinach and Rice Cakes',
+      'Carrot Rice Porridge'
+    ],
+    mains: [
+      'Dohneiiong (Black Sesame Curry with Veg)',
+      'Jhur Sideh (Dry Sauteed Veg)',
+      'Nakham Bitchi (Spicy Veg Broth)',
+      'Bamboo Shoot and Beans Curry',
+      'Pumpkin with Mustard Seeds',
+      'Green Leafy Vegetable Soup',
+      'Rice and Root Veg Mix',
+      'Boiled Veg with Local Herbs',
+      'Tomato Dal with Red Rice',
+      'Boiled Colocasia Root Curry'
+    ],
+    snacks: [
+      'Steamed Rice Balls',
+      'Ragi Laddoo',
+      'Dry Roasted Soybean',
+      'Pumpkin Seed Trail Mix',
+      'Air-Fried Tapioca Chips',
+      'Sweet Corn Chaat',
+      'Carrot Beet Tikkis',
+      'Tofu Cubes with Herbs',
+      'Sweet Potato Slices',
+      'Spiced Black Rice Crackers'
+    ]
+  },
+  'mizoram': {
+    breakfast: [
+      'Rice Pancakes with Steamed Veg',
+      'Bai (Steamed Green Veg Mix)',
+      'Sticky Rice with Fruits',
+      'Red Rice Porridge',
+      'Vegetable Omelette',
+      'Tofu Stir Fry with Leafy Greens',
+      'Boiled Yam with Honey',
+      'Steamed Tapioca with Spinach',
+      'Lentil Pancakes',
+      'Sweet Corn and Millet Soup'
+    ],
+    mains: [
+      'Bai (Stewed Mixed Veg)',
+      'Chhum Han (Steamed Veg)',
+      'Vegetable Bamboo Shoot Curry',
+      'Koat Pitha (Healthy Baked Version)',
+      'Green Beans with Mustard',
+      'Pumpkin and Rice Curry',
+      'Smoked Tofu and Vegetables',
+      'Cucumber and Tomato Sabzi',
+      'Colocasia with Red Chili Paste',
+      'Spinach and Yam Curry'
+    ],
+    snacks: [
+      'Rice Flour Cutlets',
+      'Tofu Veg Rolls',
+      'Baked Banana Chips',
+      'Soybean Salad with Herbs',
+      'Boiled Root Veg Mix',
+      'Steamed Rice and Vegetable Balls',
+      'Cucumber Peanut Chaat',
+      'Low-Oil Tapioca Fritters',
+      'Dry Fruit and Seed Mix',
+      'Ragi Coconut Laddoos'
+    ]
   }
 };
 

@@ -1,4 +1,5 @@
 
+
 /**
  * Main export file for portion helpers
  * Re-exports all portion helper functions from their specialized modules
@@ -32,5 +33,9 @@ export {
   getPortionSize,
   composeRegionalMeal,
   composeDinnerMeal,
-  createMealItem
+  createMealItem,
+  getMadhyaPradeshDishPortion,
+  getMaharashtraDishPortion,
+  getKeralaDishPortion
 } from './portionTypes/mealComposition';
+

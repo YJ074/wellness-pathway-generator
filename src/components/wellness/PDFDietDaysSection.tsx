@@ -6,6 +6,8 @@ import PDFDietSection from './pdf/PDFDietSection';
 import PDFWorkoutSection from './pdf/PDFWorkoutSection';
 import { estimateMacros } from './utils/pdfCalorieUtils';
 import PDFNutritionSummary from './pdf/sections/PDFNutritionSummary';
+import PDFRegionalNote from './pdf/sections/PDFRegionalNote';
+import { generateRegionalNote } from '@/utils/diet/regional/regionalRecommendations';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,6 +46,9 @@ const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSect
   // Calculate weight in kg for nutrition display
   const weightKg = parseInt(formData.weight) || 70;
   
+  // Get the regional note if a region is selected
+  const regionalNote = formData.region ? generateRegionalNote(formData.region) : undefined;
+  
   return (
     <View style={styles.container}>
       {dietPlan.days.map((day, index) => {
@@ -61,6 +66,11 @@ const PDFDietDaysSection = ({ dietPlan, formData, workoutPlan }: PDFDietDaysSect
         return (
           <View key={`day-${day.day}`} style={styles.daySection} wrap={true} break={index > 0 && index % 3 === 0}>
             <Text style={styles.dayTitle}>Day {day.day}</Text>
+            
+            {/* Regional Note Section - Only on Day 1 */}
+            {day.day === 1 && regionalNote && (
+              <PDFRegionalNote regionalNote={regionalNote} />
+            )}
             
             {/* Nutrition Summary Section */}
             <View style={styles.nutritionContainer}>
