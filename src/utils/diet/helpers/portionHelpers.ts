@@ -47,3 +47,10 @@ export {
   balanceNonVegMeal,
   getHealthyNonVegCookingMethod
 } from './portionTypes/nonVegPortions';
+
+// Export Indian measurement helpers
+export {
+  getIndianMeasure,
+  getIndianSizeDescription,
+  addIndianMeasureDescriptions
+} from './portionTypes/indianMeasures';

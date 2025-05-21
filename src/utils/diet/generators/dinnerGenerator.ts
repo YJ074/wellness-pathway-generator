@@ -1,3 +1,4 @@
+
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
@@ -11,7 +12,8 @@ import {
   composeDinnerMeal,
   getPortionSize,
   getVeganProteinAlternative,
-  getProteinPortion
+  getProteinPortion,
+  getIndianMeasure
 } from '../helpers/portionHelpers';
 import { getAllowedNonVegTypes } from '../helpers/dietaryPreferenceHelper';
 import { generateNonVegDish } from './nonVeg';
@@ -124,7 +126,7 @@ export const generateDinner = (
   const protein1WithLocalName = getLocalizedProteinName(protein1);
   const protein2WithLocalName = getLocalizedProteinName(protein2);
   
-  // Define portion sizes based on dietary goals
+  // Define portion sizes based on dietary goals using Indian measurements
   // More scientific approach that considers satiety and macro distribution
   const curryPortion = getPortionSize(
     isWeightLoss,
@@ -156,7 +158,7 @@ export const generateDinner = (
   );
   
   // Always explicitly include both roti and rice options in dinner for Indian diet context
-  let main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), ${rotiCount} rotis OR ${ricePortion} brown rice`;
+  let main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (${curryPortion}), ${veggie1} and ${veggie2} sabzi (${veggiePortion}), ${rotiCount} rotis (palm-sized) OR ${ricePortion} brown rice`;
   
   // Only include buttermilk if we haven't used dairy products in other meals
   // Check for dairy terms in existing meals

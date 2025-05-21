@@ -1,3 +1,4 @@
+
 import { filterAllergies } from '../helpers/allergyHelpers';
 import { getRegionalFoods } from '../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../helpers/prebioticProbioticHelper';
@@ -10,7 +11,8 @@ import {
   composeRegionalMeal,
   getBreadPortionSize,
   getVeganProteinAlternative,
-  getProteinPortion
+  getProteinPortion,
+  getIndianMeasure
 } from '../helpers/portionHelpers';
 import { getAllowedNonVegTypes } from '../helpers/dietaryPreferenceHelper';
 import { generateNonVegDish } from './nonVeg';
@@ -59,7 +61,7 @@ export const generateLunch = (
     
     // Ensure regional meals always mention rice/roti
     if (!lunch.toLowerCase().includes('roti') && !lunch.toLowerCase().includes('rice')) {
-      lunch += ', served with 2 rotis or ½ katori rice';
+      lunch += ', served with 2 rotis (palm-sized) or ½ katori rice';
     }
     
     // For regional specialties, gently introduce pre/probiotics without forcing them
@@ -143,13 +145,13 @@ export const generateLunch = (
   // Explicitly include carbs in the form of roti/rice/bread in each meal description
   let main = "";
   
-  // Make sure we always include Indian staples - rotis and rice options
+  // Make sure we always include Indian staples - rotis and rice options with Indian measurements
   if (isWeightLoss) {
-    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ½ katori brown rice`;
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - balanced protein sources), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ½ katori brown rice`;
   } else if (isProteinFocus) {
-    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (1 katori - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ¾ katori rice`;
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (1 katori - high protein mix), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ¾ katori rice`;
   } else {
-    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis OR ¾ katori rice`;
+    main = `${protein1WithLocalName} and ${protein2WithLocalName} curry (¾ katori - protein-rich blend), ${veggie1} and ${veggie2} sabzi (1 katori), ${rotiCount} rotis (palm-sized) OR ¾ katori rice`;
   }
   
   // Check if dairy has been used already today before adding curd

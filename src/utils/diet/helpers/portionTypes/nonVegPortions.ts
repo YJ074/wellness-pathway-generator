@@ -9,17 +9,17 @@ export const getNonVegDishPortion = (
   isWeightLoss: boolean,
   isProteinFocus: boolean
 ): string => {
-  // Define portion sizes for different types of non-vegetarian foods
+  // Define portion sizes for different types of non-vegetarian foods using Indian measures
   const portionSizes: Record<string, Record<string, string>> = {
     'chicken': {
-      standard: '100g (palm-sized piece)',
-      weightLoss: '80g with extra vegetables',
-      proteinFocus: '120g lean cut'
+      standard: '2 pieces (palm-sized pieces, ~100g)',
+      weightLoss: '1-2 pieces with extra vegetables',
+      proteinFocus: '3 pieces lean cut'
     },
     'fish': {
-      standard: '100g fillet',
-      weightLoss: '90g with herbs',
-      proteinFocus: '120g protein-rich preparation'
+      standard: '1 medium piece (palm-sized, ~100g)',
+      weightLoss: '1 small piece with herbs',
+      proteinFocus: '1 large piece protein-rich preparation'
     },
     'egg': {
       standard: '2 whole eggs',
@@ -27,24 +27,24 @@ export const getNonVegDishPortion = (
       proteinFocus: '1 whole egg + 3 egg whites'
     },
     'mutton': {
-      standard: '80g lean cut',
-      weightLoss: '60g with more vegetables',
-      proteinFocus: '100g lean portion'
+      standard: '3-4 small pieces (80g lean cut)',
+      weightLoss: '2-3 pieces with more vegetables',
+      proteinFocus: '4-5 pieces lean portion'
     },
     'prawn': {
-      standard: '80-100g',
-      weightLoss: '70g with greens',
-      proteinFocus: '120g protein-rich preparation'
+      standard: '8-10 medium prawns',
+      weightLoss: '6-8 prawns with greens',
+      proteinFocus: '12-15 prawns protein-rich preparation'
     }
   };
 
   // Get the appropriate portion based on dietary goal
   if (isWeightLoss) {
-    return portionSizes[nonVegType]?.weightLoss || '80g with extra vegetables';
+    return portionSizes[nonVegType]?.weightLoss || '1-2 pieces with extra vegetables';
   } else if (isProteinFocus) {
-    return portionSizes[nonVegType]?.proteinFocus || '120g lean cut';
+    return portionSizes[nonVegType]?.proteinFocus || '3-4 pieces lean cut';
   } else {
-    return portionSizes[nonVegType]?.standard || '100g standard portion';
+    return portionSizes[nonVegType]?.standard || '2-3 pieces standard portion';
   }
 };
 
@@ -56,27 +56,27 @@ export const balanceNonVegMeal = (
 ): string => {
   let balancedMeal = nonVegDescription;
   
-  // Add appropriate plant-based components based on dietary goals
+  // Add appropriate plant-based components based on dietary goals using Indian measures
   if (isWeightLoss) {
     if (!balancedMeal.toLowerCase().includes('vegetable')) {
-      balancedMeal += ' with 2 cups of steamed vegetables';
+      balancedMeal += ' with 2 katori of steamed vegetables';
     }
     if (!balancedMeal.toLowerCase().includes('grain')) {
-      balancedMeal += ' and ½ serving of whole grains';
+      balancedMeal += ' and 1 roti (palm-sized)';
     }
   } else if (isProteinFocus) {
     if (!balancedMeal.toLowerCase().includes('vegetable')) {
-      balancedMeal += ' with 1.5 cups of fibrous vegetables';
+      balancedMeal += ' with 1.5 katori of fibrous vegetables';
     }
     if (!balancedMeal.toLowerCase().includes('grain')) {
-      balancedMeal += ' and moderate whole grains';
+      balancedMeal += ' and 2 rotis (palm-sized)';
     }
   } else {
     if (!balancedMeal.toLowerCase().includes('vegetable')) {
-      balancedMeal += ' with mixed vegetables';
+      balancedMeal += ' with 1 katori mixed vegetables';
     }
     if (!balancedMeal.toLowerCase().includes('grain')) {
-      balancedMeal += ' and whole grain side';
+      balancedMeal += ' and 2 rotis (palm-sized)';
     }
   }
   

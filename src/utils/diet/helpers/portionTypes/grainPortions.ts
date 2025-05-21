@@ -30,14 +30,15 @@ export const getLocalizedGrainName = (grain: string): string => {
 };
 
 // Helper to get bread portion size (rotis/chapatis/phulkas use numbers, not containers)
+// Returns the count as a string, e.g. "1" or "2"
 export const getBreadPortionSize = (
   isWeightLoss: boolean,
   isProteinFocus: boolean
 ): string => {
   if (isWeightLoss) {
-    return "1";  // 1 roti for weight loss
+    return "1";  // 1 roti for weight loss (palm-sized, ~6 inch diameter)
   } else if (isProteinFocus) {
-    return "2";  // 2 rotis for protein focus
+    return "2";  // 2 rotis for protein focus (palm-sized, ~6 inch diameter)
   }
-  return "2";    // 2 rotis standard
+  return "2";    // 2 rotis standard (palm-sized, ~6 inch diameter)
 };
