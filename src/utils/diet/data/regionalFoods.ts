@@ -762,6 +762,82 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Sweet Corn Chaat',
       'Vegetable Idli Slices'
     ]
+  },
+  'madhyapradesh': {
+    breakfast: [
+      'Vegetable Poha',
+      'Moong Dal Cheela',
+      'Dalia with Vegetables',
+      'Stuffed Multigrain Paratha',
+      'Ragi Idli',
+      'Vegetable Upma',
+      'Sattu Smoothie',
+      'Tofu Bhurji with Roti',
+      'Oats Dosa',
+      'Sweet Potato Hash'
+    ],
+    mains: [
+      'Bhindi Masala (Low Oil)',
+      'Baingan Bharta',
+      'Mixed Vegetable Curry',
+      'Palak Dal',
+      'Lauki Tomato Curry',
+      'Toor Dal Tadka',
+      'Pumpkin Subzi',
+      'Low-Oil Aloo Matar',
+      'Chana Masala',
+      'Ragi Roti with Moong Dal'
+    ],
+    snacks: [
+      'Roasted Chana Trail Mix',
+      'Baked Wheat Chakli',
+      'Masala Makhana',
+      'Carrot Cucumber Sticks',
+      'Steamed Moong Vada',
+      'Foxnut Energy Balls',
+      'Low-Oil Corn Chaat',
+      'Beetroot Tikkis',
+      'Ragi Cookies',
+      'Mixed Sprout Salad'
+    ]
+  },
+  'maharashtra': {
+    breakfast: [
+      'Kanda Poha',
+      'Thalipeeth (Multigrain Flatbread)',
+      'Upvas Sabudana Khichdi (Low Oil)',
+      'Ragi Dosa',
+      'Vegetable Idli',
+      'Sprouted Moong Usal',
+      'Oats Upma',
+      'Jowar Bhakri with Chutney',
+      'Sweet Potato Paratha',
+      'Besan Toast'
+    ],
+    mains: [
+      'Bharli Vangi (Stuffed Brinjal)',
+      'Amti (Spiced Dal)',
+      'Zunka Bhakri',
+      'Lauki Bhaji',
+      'Matki Usal (Sprouted Beans)',
+      'Tondli Bhaat (Ivy Gourd Rice)',
+      'Pumpkin Rassa',
+      'Palak Moong Dal',
+      'Tinda Masala',
+      'Masoor Dal Curry'
+    ],
+    snacks: [
+      'Kothimbir Vadi (Steamed)',
+      'Sprouted Matki Chaat',
+      'Baked Sabudana Vada',
+      'Ragi Chakli',
+      'Masala Corn',
+      'Roasted Peanut Mix',
+      'Carrot Beet Cutlets',
+      'Oats Bhakarwadi',
+      'Low-Oil Shengdana Ladoo',
+      'Cucumber Chutney Rolls'
+    ]
   }
 };
 
