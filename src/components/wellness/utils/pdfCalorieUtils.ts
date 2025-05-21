@@ -13,7 +13,7 @@ export const getEstimatedCalories = (mealType: string, baseCalories: number, goa
 };
 
 // Import the protein calculation function
-import { calculateDailyProteinRequirement, getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/proteinPortions';
+import { calculateDailyProteinRequirement, getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/protein';
 
 /**
  * Estimate macronutrient distribution based on:

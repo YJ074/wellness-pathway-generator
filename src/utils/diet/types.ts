@@ -1,10 +1,11 @@
+
 export type DietaryPreference =
   | 'lacto-vegetarian'
   | 'lacto-ovo-vegetarian'
   | 'pure-vegetarian'
   | 'sattvic'
   | 'non-vegetarian'
-  | 'pure-jain'
+  | 'jain'
   | 'vegan';
 
 export type WellnessGoal = 

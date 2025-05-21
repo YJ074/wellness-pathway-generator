@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
-import { getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/proteinPortions';
+import { getProteinPerKgRequirement } from '@/utils/diet/helpers/portionTypes/protein';
 
 const styles = StyleSheet.create({
   nutritionBox: {
@@ -118,7 +119,7 @@ const PDFNutritionSummary = ({
       'lacto-ovo-vegetarian': 'Key protein sources: eggs, dairy, legumes, beans, lentils, nuts, seeds',
       'pure-vegetarian': 'Key protein sources: dairy, paneer, soy products, legumes, beans, lentils',
       'sattvic': 'Key protein sources: dairy, legumes (especially mung), nuts, seeds, whole grains',
-      'pure-jain': 'Key protein sources: dairy, approved legumes, nuts, seeds (avoid fermented foods)',
+      'jain': 'Key protein sources: dairy, approved legumes, nuts, seeds (avoid fermented foods)',
       'non-vegetarian': 'Key protein sources: eggs, lean poultry, fish, dairy, legumes, nuts'
     };
     
