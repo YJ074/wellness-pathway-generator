@@ -38,14 +38,14 @@ export const generateLunch = (
     // Use different non-veg types on different days
     const nonVegType = allowedTypes[(dayIndex * 7 + 3) % allowedTypes.length];
     
+    // Fix: Update the function call to match the expected parameters
     return generateNonVegDish(
       dayIndex,
       isWeightLoss,
       isProteinFocus,
       nonVegType,
       allergies,
-      region,
-      gender
+      region || undefined
     );
   }
 
