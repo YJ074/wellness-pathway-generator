@@ -419,3 +419,139 @@ export const getHaryanaDishPortion = (
   // Default portion
   return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
 };
+
+// Helper for Himachal Pradesh-specific portion recommendations
+export const getHimachalDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Himachal Pradesh breakfast portions
+  if (dishName.includes('Pancake') || dishName.includes('Cheela')) {
+    return isWeightLoss ? "1 medium" : (isProteinFocus ? "2 medium" : "1-2 medium");
+  }
+  
+  if (dishName.includes('Siddu') || dishName.includes('Dumplings')) {
+    return isWeightLoss ? "1-2 small" : (isProteinFocus ? "2-3 medium" : "2 medium");
+  }
+  
+  if (dishName.includes('Porridge') || dishName.includes('Dalia') || dishName.includes('Kheer')) {
+    return isWeightLoss ? "¾ cup" : (isProteinFocus ? "1 cup" : "1 cup");
+  }
+  
+  if (dishName.includes('Idli')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2-3 medium");
+  }
+  
+  // Handle Himachal Pradesh main dish portions
+  if (dishName.includes('Dal') || dishName.includes('Palda')) {
+    return isWeightLoss ? "¾ katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Curry') || dishName.includes('Madra')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Rice') || dishName.includes('Bhath')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "¾ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Saag') || dishName.includes('Spinach')) {
+    return isWeightLoss ? "1 katori" : "1 katori"; // Leafy greens portions remain consistent
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
+
+// Helper for Jharkhand-specific portion recommendations
+export const getJharkhandDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Jharkhand breakfast portions
+  if (dishName.includes('Dhuskas') || dishName.includes('Cheela')) {
+    return isWeightLoss ? "1 medium" : (isProteinFocus ? "2 medium" : "1-2 medium");
+  }
+  
+  if (dishName.includes('Porridge') || dishName.includes('Sattu')) {
+    return isWeightLoss ? "¾ cup" : (isProteinFocus ? "1 cup" : "1 cup");
+  }
+  
+  if (dishName.includes('Roti') || dishName.includes('Toast')) {
+    return isWeightLoss ? "1 medium" : (isProteinFocus ? "2 medium" : "1-2 medium");
+  }
+  
+  if (dishName.includes('Idli') || dishName.includes('Litti')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2-3 medium");
+  }
+  
+  if (dishName.includes('Upma') || dishName.includes('Flattened Rice')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "¾ cup" : "⅔ cup");
+  }
+  
+  // Handle Jharkhand main dish portions
+  if (dishName.includes('Dal') || dishName.includes('Kurthi')) {
+    return isWeightLoss ? "¾ katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Curry') || dishName.includes('Sabzi')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Saag') || dishName.includes('Baingan Bharta')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Bari') || dishName.includes('Koftas')) {
+    return isWeightLoss ? "3-4 small pieces" : "4-5 medium pieces";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};
+
+// Helper for Karnataka-specific portion recommendations
+export const getKarnatakaDishPortion = (
+  dishName: string,
+  isWeightLoss: boolean,
+  isProteinFocus: boolean
+): string => {
+  // Handle Karnataka breakfast portions
+  if (dishName.includes('Dosa') || dishName.includes('Akki Roti')) {
+    return isWeightLoss ? "1 medium" : (isProteinFocus ? "2 medium" : "1-2 medium");
+  }
+  
+  if (dishName.includes('Ragi Mudde')) {
+    return isWeightLoss ? "1 small" : (isProteinFocus ? "1 medium" : "1 medium");
+  }
+  
+  if (dishName.includes('Upma') || dishName.includes('Poha')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "¾ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Idli') || dishName.includes('Pongal')) {
+    return isWeightLoss ? "2 small" : (isProteinFocus ? "3 medium" : "2-3 medium");
+  }
+  
+  // Handle Karnataka main dish portions
+  if (dishName.includes('Bisi Bele Bath')) {
+    return isWeightLoss ? "½ cup" : (isProteinFocus ? "¾ cup" : "⅔ cup");
+  }
+  
+  if (dishName.includes('Sambar') || dishName.includes('Saaru')) {
+    return isWeightLoss ? "¾ katori" : (isProteinFocus ? "1 katori" : "1 katori");
+  }
+  
+  if (dishName.includes('Kurma') || dishName.includes('Palya') || dishName.includes('Huli')) {
+    return isWeightLoss ? "¾ katori" : "1 katori";
+  }
+  
+  if (dishName.includes('Kosambari')) {
+    return isWeightLoss ? "½ cup" : "⅔ cup";
+  }
+  
+  // Default portion
+  return isWeightLoss ? "moderate portion" : (isProteinFocus ? "protein-rich portion" : "standard portion");
+};

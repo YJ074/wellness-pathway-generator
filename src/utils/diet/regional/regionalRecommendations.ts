@@ -51,62 +51,6 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Northeastern cuisines use traditional food preservation methods that enhance both flavor and nutritional benefits of the ingredients.",
       "The meal balances the traditional Northeastern emphasis on fermented foods with fresh seasonal produce for optimal nutrition."
     ],
-    'kerala': [
-      "Kerala's 'Sadhya' tradition emphasizes balance through multiple small portions served on banana leaf. This meal adapts those principles for daily nutrition.",
-      "This meal incorporates coconut oil in moderate amounts, a Kerala staple that provides medium-chain fatty acids beneficial for metabolism.",
-      "Features traditional Kerala spice combinations with black pepper, cardamom, and cloves that aid digestion while adding authentic flavor.",
-      "Includes kanji (rice gruel) preparation methods from Kerala that optimize the bioavailability of nutrients while supporting gentle digestion.",
-      "Kerala cuisine includes numerous medicinal ingredients like curry leaves and turmeric used traditionally in Ayurveda for their health benefits.",
-      "The meal introduces Malabar coast seafood preparations rich in omega-3 fatty acids essential for brain and heart health."
-    ],
-    'punjab': [
-      "Punjabi cuisine traditionally celebrates fresh-from-the-farm ingredients. This meal uses whole grains like barley and millets authentic to Punjab.",
-      "Features makki di roti (cornmeal flatbread) and sarson da saag (mustard greens) prepared with traditional techniques but controlled portions.",
-      "This meal includes Punjabi-style legume preparations that maximize protein content while controlling butter and cream typically used in restaurants.",
-      "Incorporates traditional Punjabi home-cooking methods that use minimal oil while preserving the robust flavors through slow cooking.",
-      "The hearty Punjabi food tradition evolved to support agricultural laborers. This meal adapts those nutrient-dense traditions for modern activity levels.",
-      "Features buttermilk (chaas) preparation methods from rural Punjab that enhance probiotic benefits while supporting digestion."
-    ],
-    'maharashtra': [
-      "Maharashtra's diverse cuisine varies from coastal to interior regions. This meal draws from traditional Maharashtrian home cooking with balanced spices.",
-      "Features kokum, a souring agent used in Konkan coastal cuisine that aids digestion and adds flavor without calories.",
-      "This meal includes traditional Maharashtrian protein preparations like usal (sprouted legumes) that enhance bioavailability of nutrients.",
-      "Incorporates moderate use of peanuts and sesame seeds central to Maharashtrian cuisine, providing healthy fats in traditional proportions.",
-      "Features traditional Kolhapuri spice combinations prepared with authentic grinding methods that release maximum flavor with minimal quantities.",
-      "The meal adapts traditional Vidarbha region grain preparations that support sustained energy release throughout the day."
-    ],
-    'gujarat': [
-      "Gujarati cuisine balances sweet, salty and spicy flavors in each meal. This plan adapts traditional Kathiyawadi and Surti cooking for balanced nutrition.",
-      "Features steamed dhokla and khandvi preparations authentic to Gujarat that provide protein with minimal oil compared to fried snacks.",
-      "This meal includes traditional Gujarati kadhi made with yogurt and chickpea flour, providing protein while supporting gut health.",
-      "Incorporates undhiyu-inspired seasonal vegetable combinations prepared with authentic Gujarati spices but controlled oil.",
-      "Features traditional Gujarati fasting foods that naturally emphasize nutrient-dense ingredients like nuts, fruits and specific grains.",
-      "The meal introduces traditional Kutchi region millet preparations that provide sustained energy while supporting digestive health."
-    ],
-    'west bengal': [
-      "Bengali cuisine traditionally follows a specific meal structure starting with bitter and ending with sweet. This meal adapts this wisdom for modern nutrition.",
-      "Features Bengali-style fish preparation using mustard that provides healthy fats while maintaining authentic regional flavor.",
-      "This meal includes traditional Bengali vegetable preparations like chorchori that maximize the use of seasonal produce including stems and peels.",
-      "Incorporates rice in portion-controlled serving as per traditional Bengali custom, accompanied by protein and vegetables for balance.",
-      "Features traditional Bengali five-spice (panch phoron) used in precise quantities to enhance flavor while supporting digestive processes.",
-      "The meal includes traditional North Bengal preparations adapted to maximize nutritional benefits while maintaining cultural authenticity."
-    ],
-    'tamil nadu': [
-      "Tamil cuisine emphasizes balance through six tastes in each meal. This plan incorporates this ancient wisdom while controlling portions.",
-      "Features traditional Tamil Nadu-style rasam preparation known for its digestive properties and medicinal value from pepper and cumin.",
-      "This meal includes traditional South Indian vegetable preparations like poriyal and kootu that preserve nutrients while adding variety.",
-      "Incorporates traditional millets like ragi, which were staples in ancient Tamil diets long before rice became predominant.",
-      "Features Chettinad-style preparation methods that extract maximum flavor from spices while using minimal oil in cooking.",
-      "The meal balances the principles of Siddha medicine traditional to Tamil Nadu, emphasizing seasonal ingredients with medicinal properties."
-    ],
-    'north east': [
-      "Northeastern tribal cuisines emphasize foraged greens and herbs. This meal incorporates traditional knowledge of these micronutrient-rich ingredients.",
-      "Features traditional Northeastern fermentation techniques for bamboo shoots and soybeans that enhance nutritional value while adding umami flavor.",
-      "This meal includes minimal-oil preparation methods traditional to Naga, Manipuri and Assamese cooking that naturally keep calories controlled.",
-      "Incorporates indigenous herbs like Sichuan pepper (thoiding) and wild perilla seeds used for centuries in Northeastern tribal nutrition.",
-      "Features traditional Assamese riverine fish preparations rich in essential fatty acids important for brain and heart health.",
-      "The meal introduces traditional fermented bamboo shoot preparations that provide unique prebiotics important for gut health."
-    ],
     'andhra': [
       "Andhra cuisine balances flavors with an emphasis on spices, tamarind, and local greens. This meal incorporates traditional ingredients while controlling spice levels for better digestion.",
       "Features millet-based preparations central to traditional Andhra home cooking that provide sustained energy release while supporting blood sugar regulation.",
@@ -171,6 +115,14 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Features traditional vegetable preparations from Goan Catholic and Hindu communities that preserve the authentic flavor while supporting modern nutritional needs.",
       "The meal introduces traditional Goan use of coconut and rice, but in measured portions to balance authentic flavor with contemporary nutritional understanding."
     ],
+    'gujarat': [
+      "Gujarati cuisine balances sweet, salty and spicy flavors in each meal. This plan adapts traditional Kathiyawadi and Surti cooking for balanced nutrition.",
+      "Features steamed dhokla and khandvi preparations authentic to Gujarat that provide protein with minimal oil compared to fried snacks.",
+      "This meal includes traditional Gujarati kadhi made with yogurt and chickpea flour, providing protein while supporting gut health.",
+      "Incorporates undhiyu-inspired seasonal vegetable combinations prepared with authentic Gujarati spices but controlled oil.",
+      "Features traditional Gujarati fasting foods that naturally emphasize nutrient-dense ingredients like nuts, fruits and specific grains.",
+      "The meal introduces traditional Kutchi region millet preparations that provide sustained energy while supporting digestive health."
+    ],
     'haryana': [
       "Haryanvi cuisine emphasizes hearty, rustic foods with an emphasis on millets and dairy. This meal adapts traditional preparations for balanced nutrition.",
       "Features the traditional Haryanvi use of bajra (pearl millet) and other millets that provide sustained energy and essential micronutrients.",
@@ -178,6 +130,54 @@ export const generateRegionalNote = (region?: string): string | undefined => {
       "Incorporates traditional Haryanvi protein sources like besan (gram flour) and dairy, prepared using methods that enhance nutrition while controlling calories.",
       "Features traditional Haryanvi spice combinations like kachri powder that add distinctive flavor while supporting digestive functions.",
       "The meal adapts traditional Haryanvi cooking techniques that maximize flavor through slow cooking and proper seasoning rather than excessive fat."
+    ],
+    'west bengal': [
+      "Bengali cuisine traditionally follows a specific meal structure starting with bitter and ending with sweet. This meal adapts this wisdom for modern nutrition.",
+      "Features Bengali-style fish preparation using mustard that provides healthy fats while maintaining authentic regional flavor.",
+      "This meal includes traditional Bengali vegetable preparations like chorchori that maximize the use of seasonal produce including stems and peels.",
+      "Incorporates rice in portion-controlled serving as per traditional Bengali custom, accompanied by protein and vegetables for balance.",
+      "Features traditional Bengali five-spice (panch phoron) used in precise quantities to enhance flavor while supporting digestive processes.",
+      "The meal includes traditional North Bengal preparations adapted to maximize nutritional benefits while maintaining cultural authenticity."
+    ],
+    'tamil nadu': [
+      "Tamil cuisine emphasizes balance through six tastes in each meal. This plan incorporates this ancient wisdom while controlling portions.",
+      "Features traditional Tamil Nadu-style rasam preparation known for its digestive properties and medicinal value from pepper and cumin.",
+      "This meal includes traditional South Indian vegetable preparations like poriyal and kootu that preserve nutrients while adding variety.",
+      "Incorporates traditional millets like ragi, which were staples in ancient Tamil diets long before rice became predominant.",
+      "Features Chettinad-style preparation methods that extract maximum flavor from spices while using minimal oil in cooking.",
+      "The meal balances the principles of Siddha medicine traditional to Tamil Nadu, emphasizing seasonal ingredients with medicinal properties."
+    ],
+    'north east': [
+      "Northeastern tribal cuisines emphasize foraged greens and herbs. This meal incorporates traditional knowledge of these micronutrient-rich ingredients.",
+      "Features traditional Northeastern fermentation techniques for bamboo shoots and soybeans that enhance nutritional value while adding umami flavor.",
+      "This meal includes minimal-oil preparation methods traditional to Naga, Manipuri and Assamese cooking that naturally keep calories controlled.",
+      "Incorporates indigenous herbs like Sichuan pepper (thoiding) and wild perilla seeds used for centuries in Northeastern tribal nutrition.",
+      "Features traditional Assamese riverine fish preparations rich in essential fatty acids important for brain and heart health.",
+      "The meal introduces traditional fermented bamboo shoot preparations that provide unique prebiotics important for gut health."
+    ],
+    'himachal': [
+      "Himachali cuisine emphasizes hearty, warming foods perfect for high-altitude living. This meal adapts traditional mountain dishes for balanced nutrition.",
+      "Features traditional Himachali use of local grains like buckwheat and red rice that provide sustained energy and essential micronutrients.",
+      "This meal includes authentic Himachali vegetable preparations that preserve the robust flavors while controlling oil content.",
+      "Incorporates traditional Himachali protein sources like chana and rajma, prepared using methods that enhance nutrition while controlling calories.",
+      "Features traditional Himachali seasonal vegetables cooked with minimal spices to preserve their natural flavors and nutritional benefits.",
+      "The meal adapts traditional Pahari cooking techniques that maximize flavor through slow cooking and proper seasoning rather than excessive fat."
+    ],
+    'jharkhand': [
+      "Jharkhand's tribal cuisine emphasizes locally foraged ingredients and rustic cooking methods. This meal incorporates these traditional approaches in a nutritionally balanced way.",
+      "Features traditional Jharkhandi use of sattu (roasted gram flour) that provides sustained energy and excellent protein content.",
+      "This meal includes authentic Jharkhandi preparations of seasonal forest vegetables that preserve their nutritional integrity.",
+      "Incorporates traditional Jharkhandi fermentation techniques that enhance the bioavailability of nutrients while adding distinctive flavors.",
+      "Features traditional Jharkhandi preservation methods adapted to create nutrient-dense meals with minimal processing.",
+      "The meal balances the earthy flavors characteristic of Jharkhandi tribal cuisine while optimizing nutritional content."
+    ],
+    'jammu': [
+      "Jammu's cuisine features rich flavors balanced with cooling yogurt-based sides. This meal adapts traditional Dogra cooking for optimal nutrition.",
+      "Features traditional Jammu use of locally grown millets and beans that have been staples in the region for generations.",
+      "This meal includes authentic Dogra preparations with controlled use of the region's distinctive spice blends.",
+      "Incorporates traditional Jammu protein sources prepared using methods that enhance nutrition while controlling calories.",
+      "Features seasonal vegetables prepared with Dogri cooking techniques that preserve nutrients while enhancing flavor.",
+      "The meal adapts traditional Jammu cooking methods that focus on slow cooking to develop flavor without excessive oil."
     ]
   };
   
@@ -195,8 +195,8 @@ export const generateRegionalNote = (region?: string): string | undefined => {
   if (normalizedRegion === 'tamilnadu') {
     return notes['tamil nadu'] ? notes['tamil nadu'][Math.floor(Math.random() * notes['tamil nadu'].length)] : undefined;
   }
-  if (normalizedRegion === 'karnataka') {
-    return notes['karnataka'] ? notes['karnataka'][Math.floor(Math.random() * notes['karnataka'].length)] : undefined;
+  if (normalizedRegion === 'himachalpradesh') {
+    return notes['himachal'] ? notes['himachal'][Math.floor(Math.random() * notes['himachal'].length)] : undefined;
   }
   
   // Check for the exact region match first
@@ -213,6 +213,7 @@ export const generateRegionalNote = (region?: string): string | undefined => {
     'uttarpradesh': 'north',
     'uttarakhand': 'north',
     'himachalpradesh': 'north',
+    'himachal': 'north',
     'delhi': 'north',
     'jammuandkashmir': 'north',
     'ladakh': 'north',

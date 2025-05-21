@@ -22,6 +22,7 @@ const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
     { id: 'goa', name: 'Goa' },
     { id: 'gujarat', name: 'Gujarat' },
     { id: 'haryana', name: 'Haryana' },
+    { id: 'himachal', name: 'Himachal Pradesh' },
     { id: 'himachalpradesh', name: 'Himachal Pradesh' },
     { id: 'jharkhand', name: 'Jharkhand' },
     { id: 'jammuandkashmir', name: 'Jammu & Kashmir' },

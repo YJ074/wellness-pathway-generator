@@ -648,6 +648,120 @@ export const regionalFoodsData: Record<string, RegionalFoodData> = {
       'Ragi Biscuits',
       'Tofu Veg Rolls'
     ]
+  },
+  'himachal': {
+    breakfast: [
+      'Chana Madra with Multigrain Roti',
+      'Buckwheat Pancakes',
+      'Aloo Palda (Low Oil)',
+      'Siddu (Steamed Wheat Dumplings)',
+      'Ragi Porridge',
+      'Oats and Apple Kheer',
+      'Besan Cheela',
+      'Vegetable Dalia',
+      'Chana Dal Pancake',
+      'Red Rice Idli'
+    ],
+    mains: [
+      'Tudkiya Bhath (Spiced Lentil Rice)',
+      'Chana Dal Palda',
+      'Bhey (Lotus Stem Curry)',
+      'Mushroom Siddu Curry',
+      'Spinach and Rajma Curry',
+      'Lauki Tomato Curry',
+      'Chana Madra (Low Oil)',
+      'Boiled Veg with Mountain Herbs',
+      'Low-Oil Gahat Dal',
+      'Pumpkin Chana Subzi'
+    ],
+    snacks: [
+      'Roasted Black Chana',
+      'Oats and Makhana Cutlets',
+      'Steamed Siddu Slices',
+      'Baked Sweet Potato Discs',
+      'Foxnut Chaat',
+      'Carrot Raita Cups',
+      'Sprouted Moong Chaat',
+      'Ragi Ladoo',
+      'Masala Khichdi Bites',
+      'Boiled Peanut Salad'
+    ]
+  },
+  'jharkhand': {
+    breakfast: [
+      'Dhuskas (Baked)',
+      'Ragi and Sattu Porridge',
+      'Vegetable Chilka Roti',
+      'Flattened Rice Upma',
+      'Litti with Chokha (No Ghee)',
+      'Besan Cheela with Lauki',
+      'Sattu Smoothie',
+      'Moong Dal Toast',
+      'Ragi Idli',
+      'Sprouted Moong Stir-Fry'
+    ],
+    mains: [
+      'Chana Dal with Lauki',
+      'Bari Curry (Sun-dried Lentil Dumplings)',
+      'Low-Oil Chicken Saag',
+      'Jhingni Sabzi (Ridge Gourd)',
+      'Saag with Millets',
+      'Vegetable Kurthi Dal',
+      'Tamarind Pumpkin Curry',
+      'Palak Chana Dal',
+      'Baingan Bharta',
+      'Mixed Veg Koftas (Steamed)'
+    ],
+    snacks: [
+      'Baked Thekua',
+      'Sattu Ladoo (No Sugar)',
+      'Ragi Tikkis',
+      'Foxnut & Peanut Mix',
+      'Chana Chaat',
+      'Steamed Moong Dal Balls',
+      'Dry Fruit Energy Bars',
+      'Pumpkin Seed Trail Mix',
+      'Baked Plantain Chips',
+      'Cucumber Carrot Sticks with Dip'
+    ]
+  },
+  'karnataka': {
+    breakfast: [
+      'Ragi Mudde with Low-Oil Sambar',
+      'Vegetable Upma',
+      'Set Dosa with Coconut Chutney',
+      'Akki Roti (Rice Roti)',
+      'Methi Dosa',
+      'Vegetable Rava Idli',
+      'Broken Wheat Pongal',
+      'Avarekalu Akki Upma',
+      'Red Rice Poha',
+      'Sprouted Moong Dosa'
+    ],
+    mains: [
+      'Bisi Bele Bath (Low Oil)',
+      'Avarekalu Saaru (Field Beans Curry)',
+      'Menthya Soppu Saaru (Fenugreek Dal)',
+      'Vegetable Kurma with Ragi Roti',
+      'Chow Chow Palya (Chayote Curry)',
+      'Udupi Sambar',
+      'Kosambari with Moong Dal',
+      'Cabbage Palya',
+      'Southekayi Huli (Cucumber Curry)',
+      'Mixed Lentil Stew'
+    ],
+    snacks: [
+      'Ragi Chakli (Baked)',
+      'Avarekalu Usli (Field Bean Stir Fry)',
+      'Dry Fruit Laddu',
+      'Oats Masala Vada (Air-Fried)',
+      'Green Gram Sundal',
+      'Beetroot Cutlets',
+      'Masala Foxnuts',
+      'Carrot Kosambari',
+      'Sweet Corn Chaat',
+      'Vegetable Idli Slices'
+    ]
   }
 };
 
