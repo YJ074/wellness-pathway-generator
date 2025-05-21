@@ -1,5 +1,7 @@
+
 /**
  * Common helper functions for regional meal portions
+ * Following ICMR/NIN guidelines for balanced meals
  */
 
 // Helper function to compose regional meal with appropriate portion control
@@ -27,6 +29,11 @@ export const composeRegionalMeal = (
         !regionalDish.toLowerCase().includes("sabzi")) {
       regionalDish += " with 1 katori extra vegetables";
     }
+    
+    // Add calorie estimate aligned with ICMR/NIN guidelines
+    if (!regionalDish.includes("kcal")) {
+      regionalDish += " (~350-450 kcal, high fiber)";
+    }
   }
   else if (isProteinFocus) {
     // For protein focus, we keep moderate portions but emphasize protein
@@ -48,11 +55,21 @@ export const composeRegionalMeal = (
       // Add protein if the dish doesn't already have it
       regionalDish += " with 1 katori dal for extra protein";
     }
+    
+    // Add calorie estimate aligned with ICMR/NIN guidelines
+    if (!regionalDish.includes("kcal")) {
+      regionalDish += " (~500-600 kcal, higher protein)";
+    }
   }
   else {
     // For balanced diet, use standard portion and complete nutrition
     if (!regionalDish.includes("(") && !regionalDish.includes("portion")) {
       regionalDish += " (standard katori serving, ~150-200ml)";
+    }
+    
+    // Add balanced macros note aligned with ICMR/NIN guidelines
+    if (!regionalDish.includes("kcal")) {
+      regionalDish += " (~450-550 kcal, balanced meal with ~50-60% carbs, 15-20% protein, 20-30% healthy fats)";
     }
   }
   

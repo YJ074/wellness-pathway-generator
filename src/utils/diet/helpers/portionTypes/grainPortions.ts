@@ -1,6 +1,7 @@
 
 /**
  * Helper functions for grain portions and localization
+ * Following ICMR/NIN guidelines for whole grains and fiber
  */
 
 // Helper to format grain names with local equivalents
@@ -31,6 +32,7 @@ export const getLocalizedGrainName = (grain: string): string => {
 
 // Helper to get bread portion size (rotis/chapatis/phulkas use numbers, not containers)
 // Returns the count as a string, e.g. "1" or "2"
+// Following ICMR/NIN guidelines for portion control
 export const getBreadPortionSize = (
   isWeightLoss: boolean,
   isProteinFocus: boolean

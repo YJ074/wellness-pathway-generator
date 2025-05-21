@@ -1,120 +1,106 @@
 
 /**
- * Helper functions for non-vegetarian portion handling and customization
+ * Helper functions for non-vegetarian portion control based on ICMR/NIN guidelines
  */
 
-// Helper to get non-vegetarian dish portion size based on dietary goals
+// Get appropriate portion size for non-vegetarian dishes using Indian household measures
 export const getNonVegDishPortion = (
   nonVegType: string,
   isWeightLoss: boolean,
   isProteinFocus: boolean
 ): string => {
-  // Define portion sizes for different types of non-vegetarian foods using Indian measures
-  const portionSizes: Record<string, Record<string, string>> = {
-    'chicken': {
-      standard: '2 pieces (palm-sized pieces, ~100g)',
-      weightLoss: '1-2 pieces with extra vegetables',
-      proteinFocus: '3 pieces lean cut'
-    },
-    'fish': {
-      standard: '1 medium piece (palm-sized, ~100g)',
-      weightLoss: '1 small piece with herbs',
-      proteinFocus: '1 large piece protein-rich preparation'
-    },
-    'egg': {
-      standard: '2 whole eggs',
-      weightLoss: '1 whole egg + 2 egg whites',
-      proteinFocus: '1 whole egg + 3 egg whites'
-    },
-    'mutton': {
-      standard: '3-4 small pieces (80g lean cut)',
-      weightLoss: '2-3 pieces with more vegetables',
-      proteinFocus: '4-5 pieces lean portion'
-    },
-    'prawn': {
-      standard: '8-10 medium prawns',
-      weightLoss: '6-8 prawns with greens',
-      proteinFocus: '12-15 prawns protein-rich preparation'
-    }
+  // Base portions by non-veg type using Indian household measures
+  const basePortions: Record<string, string> = {
+    'chicken': '80-100g (palm-sized piece)',
+    'fish': '80-100g (medium-sized piece)',
+    'egg': '1-2 eggs',
+    'mutton': '80-100g (palm-sized portion)',
+    'prawn': '80-100g (¾ katori)'
   };
-
-  // Get the appropriate portion based on dietary goal
+  
+  // Adjust portions based on dietary goals
   if (isWeightLoss) {
-    return portionSizes[nonVegType]?.weightLoss || '1-2 pieces with extra vegetables';
+    return nonVegType === 'egg' ? '1 egg' : '80g (small palm-sized piece)';
   } else if (isProteinFocus) {
-    return portionSizes[nonVegType]?.proteinFocus || '3-4 pieces lean cut';
-  } else {
-    return portionSizes[nonVegType]?.standard || '2-3 pieces standard portion';
+    return nonVegType === 'egg' ? '2-3 eggs' : '120g (large palm-sized piece)';
   }
+  
+  // Return standard portion
+  return basePortions[nonVegType] || '90g (palm-sized piece)';
 };
 
-// Helper for balancing non-vegetarian meals with plant foods
+// Create a balanced meal with appropriate sides
 export const balanceNonVegMeal = (
-  nonVegDescription: string,
+  mainDish: string,
   isWeightLoss: boolean,
   isProteinFocus: boolean
 ): string => {
-  let balancedMeal = nonVegDescription;
+  // Following ICMR/NIN guidelines with proper macro distribution
+  // ~50-60% carbs, 15-20% protein, 20-30% healthy fats
   
-  // Add appropriate plant-based components based on dietary goals using Indian measures
+  let balancedMeal = mainDish;
+  
+  // Add appropriate carbohydrate portion - emphasizing whole grains (50-60% of total calories)
   if (isWeightLoss) {
-    if (!balancedMeal.toLowerCase().includes('vegetable')) {
-      balancedMeal += ' with 2 katori of steamed vegetables';
-    }
-    if (!balancedMeal.toLowerCase().includes('grain')) {
-      balancedMeal += ' and 1 roti (palm-sized)';
-    }
+    // For weight loss: Smaller portion of complex carbs, more fiber
+    balancedMeal += ' with ½ katori brown rice OR 1 multigrain roti (palm-sized)';
   } else if (isProteinFocus) {
-    if (!balancedMeal.toLowerCase().includes('vegetable')) {
-      balancedMeal += ' with 1.5 katori of fibrous vegetables';
-    }
-    if (!balancedMeal.toLowerCase().includes('grain')) {
-      balancedMeal += ' and 2 rotis (palm-sized)';
-    }
+    // For protein focus: Moderate complex carbs with extra protein
+    balancedMeal += ' with ½ katori brown rice OR 1 multigrain roti (palm-sized)';
   } else {
-    if (!balancedMeal.toLowerCase().includes('vegetable')) {
-      balancedMeal += ' with 1 katori mixed vegetables';
-    }
-    if (!balancedMeal.toLowerCase().includes('grain')) {
-      balancedMeal += ' and 2 rotis (palm-sized)';
-    }
+    // For maintenance: Balanced complex carbs
+    balancedMeal += ' with ¾ katori brown rice OR 2 multigrain rotis (palm-sized)';
   }
+  
+  // Add vegetables (fiber, micronutrients) - essential for all diets
+  balancedMeal += ' and 1 katori seasonal vegetable sabzi';
+  
+  // Add healthy fat component (20-30% of total calories)
+  if (!isWeightLoss) {
+    balancedMeal += ' with 1 chamach ghee/olive oil';
+  }
+  
+  // Add a note about the macro distribution
+  let calorieEstimate = isWeightLoss ? '400-500 kcal' : 
+                       isProteinFocus ? '550-650 kcal' : '500-600 kcal';
+  
+  balancedMeal += ` (~${calorieEstimate}, balanced meal with ~50-60% complex carbs, 20-25% protein, and 20-25% healthy fats)`;
   
   return balancedMeal;
 };
 
-// Helper for suggesting cooking methods based on health goals
+// Get healthy Indian cooking methods for non-vegetarian dishes
 export const getHealthyNonVegCookingMethod = (
   nonVegType: string,
   isWeightLoss: boolean
 ): string => {
-  const cookingMethods: Record<string, Record<string, string[]>> = {
-    'chicken': {
-      weightLoss: ['grilling', 'steaming', 'boiling', 'baking'],
-      standard: ['baking', 'shallow frying', 'grilling', 'stir-frying']
-    },
-    'fish': {
-      weightLoss: ['steaming', 'poaching', 'grilling', 'baking in foil'],
-      standard: ['baking', 'grilling', 'steaming', 'light pan-frying']
-    },
-    'egg': {
-      weightLoss: ['boiling', 'poaching', 'scrambling with minimal oil'],
-      standard: ['boiling', 'poaching', 'scrambling', 'baking']
-    },
-    'mutton': {
-      weightLoss: ['slow cooking', 'pressure cooking', 'grilling', 'roasting'],
-      standard: ['roasting', 'grilling', 'slow cooking', 'broiling']
-    },
-    'prawn': {
-      weightLoss: ['steaming', 'grilling', 'boiling', 'baking'],
-      standard: ['stir-frying', 'grilling', 'steaming', 'baking']
-    }
+  // Traditional Indian cooking methods prioritizing health
+  const healthyCookingMethods: Record<string, string[]> = {
+    'chicken': ['Tandoori', 'Grilled', 'Baked', 'Roasted', 'Steamed'],
+    'fish': ['Steamed', 'Pan-seared', 'Baked', 'Grilled', 'Poached'],
+    'egg': ['Boiled', 'Poached', 'Steamed', 'Bhurji (low oil)'],
+    'mutton': ['Slow-cooked', 'Baked', 'Grilled', 'Roasted'],
+    'prawn': ['Steamed', 'Pan-seared', 'Grilled', 'Poached']
   };
   
-  const methodList = isWeightLoss 
-    ? cookingMethods[nonVegType]?.weightLoss || cookingMethods['chicken'].weightLoss 
-    : cookingMethods[nonVegType]?.standard || cookingMethods['chicken'].standard;
+  // Get available methods for this non-veg type
+  const methods = healthyCookingMethods[nonVegType] || ['Steamed', 'Grilled', 'Roasted'];
   
-  // Return random cooking method from appropriate list
-  return methodList[Math.floor(Math.random() * methodList.length)];
+  // For weight loss, prioritize lowest-fat cooking methods
+  if (isWeightLoss) {
+    const lowFatMethods = ['Steamed', 'Boiled', 'Poached', 'Grilled (no oil)'];
+    
+    // Find a low-fat method that's available for this non-veg type
+    for (const method of lowFatMethods) {
+      if (methods.includes(method)) {
+        return method;
+      }
+    }
+    
+    // Fallback to first method
+    return methods[0];
+  }
+  
+  // Use varied cooking methods based on day
+  return methods[Math.floor(Math.random() * methods.length)];
 };
