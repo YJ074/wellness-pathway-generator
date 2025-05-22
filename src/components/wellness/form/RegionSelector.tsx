@@ -2,7 +2,7 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface RegionSelectorProps {
   selectedRegion: string;
@@ -10,46 +10,70 @@ interface RegionSelectorProps {
 }
 
 const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
-  // Complete list of all Indian states and union territories
-  const states = [
-    { id: 'andhra', name: 'Andhra Pradesh' },
-    { id: 'arunachal', name: 'Arunachal Pradesh' },
-    { id: 'arunachalpradesh', name: 'Arunachal Pradesh' },
-    { id: 'assam', name: 'Assam' },
-    { id: 'bihar', name: 'Bihar' },
-    { id: 'chhattisgarh', name: 'Chhattisgarh' },
-    { id: 'delhi', name: 'Delhi' },
-    { id: 'goa', name: 'Goa' },
-    { id: 'gujarat', name: 'Gujarat' },
-    { id: 'haryana', name: 'Haryana' },
-    { id: 'himachal', name: 'Himachal Pradesh' },
-    { id: 'himachalpradesh', name: 'Himachal Pradesh' },
-    { id: 'jharkhand', name: 'Jharkhand' },
-    { id: 'jammuandkashmir', name: 'Jammu & Kashmir' },
-    { id: 'karnataka', name: 'Karnataka' },
-    { id: 'kerala', name: 'Kerala' },
-    { id: 'ladakh', name: 'Ladakh' },
-    { id: 'madhyapradesh', name: 'Madhya Pradesh' },
-    { id: 'maharashtra', name: 'Maharashtra' },
-    { id: 'manipur', name: 'Manipur' },
-    { id: 'meghalaya', name: 'Meghalaya' },
-    { id: 'mizoram', name: 'Mizoram' },
-    { id: 'nagaland', name: 'Nagaland' },
-    { id: 'odisha', name: 'Odisha' },
-    { id: 'punjab', name: 'Punjab' },
-    { id: 'rajasthan', name: 'Rajasthan' },
-    { id: 'sikkim', name: 'Sikkim' },
-    { id: 'tamilnadu', name: 'Tamil Nadu' },
-    { id: 'telangana', name: 'Telangana' },
-    { id: 'tripura', name: 'Tripura' },
-    { id: 'uttarakhand', name: 'Uttarakhand' },
-    { id: 'uttarpradesh', name: 'Uttar Pradesh' },
-    { id: 'westbengal', name: 'West Bengal' },
-    { id: 'andamanandnicobar', name: 'Andaman & Nicobar Islands' },
-    { id: 'chandigarh', name: 'Chandigarh' },
-    { id: 'dadraandnagarhaveli', name: 'Dadra & Nagar Haveli and Daman & Diu' },
-    { id: 'lakshadweep', name: 'Lakshadweep' },
-    { id: 'puducherry', name: 'Puducherry' }
+  // Regional groups for better organization
+  const regionGroups = [
+    {
+      label: "North India",
+      regions: [
+        { id: 'punjab', name: 'Punjab' },
+        { id: 'haryana', name: 'Haryana' },
+        { id: 'himachal', name: 'Himachal Pradesh' },
+        { id: 'uttarakhand', name: 'Uttarakhand' },
+        { id: 'uttarpradesh', name: 'Uttar Pradesh' },
+        { id: 'delhi', name: 'Delhi' },
+        { id: 'jammuandkashmir', name: 'Jammu & Kashmir' },
+        { id: 'ladakh', name: 'Ladakh' },
+      ]
+    },
+    {
+      label: "South India",
+      regions: [
+        { id: 'kerala', name: 'Kerala' },
+        { id: 'tamilnadu', name: 'Tamil Nadu' },
+        { id: 'karnataka', name: 'Karnataka' },
+        { id: 'andhra', name: 'Andhra Pradesh' },
+        { id: 'telangana', name: 'Telangana' },
+        { id: 'puducherry', name: 'Puducherry' },
+      ]
+    },
+    {
+      label: "East India",
+      regions: [
+        { id: 'westbengal', name: 'West Bengal' },
+        { id: 'odisha', name: 'Odisha' },
+        { id: 'bihar', name: 'Bihar' },
+        { id: 'jharkhand', name: 'Jharkhand' },
+      ]
+    },
+    {
+      label: "West India",
+      regions: [
+        { id: 'gujarat', name: 'Gujarat' },
+        { id: 'maharashtra', name: 'Maharashtra' },
+        { id: 'goa', name: 'Goa' },
+        { id: 'rajasthan', name: 'Rajasthan' },
+      ]
+    },
+    {
+      label: "Central India",
+      regions: [
+        { id: 'madhyapradesh', name: 'Madhya Pradesh' },
+        { id: 'chhattisgarh', name: 'Chhattisgarh' },
+      ]
+    },
+    {
+      label: "Northeast India",
+      regions: [
+        { id: 'assam', name: 'Assam' },
+        { id: 'arunachal', name: 'Arunachal Pradesh' },
+        { id: 'manipur', name: 'Manipur' },
+        { id: 'meghalaya', name: 'Meghalaya' },
+        { id: 'mizoram', name: 'Mizoram' },
+        { id: 'nagaland', name: 'Nagaland' },
+        { id: 'sikkim', name: 'Sikkim' },
+        { id: 'tripura', name: 'Tripura' },
+      ]
+    }
   ];
 
   return (
@@ -73,8 +97,14 @@ const RegionSelector = ({ selectedRegion, onChange }: RegionSelectorProps) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="no-preference">No Preference</SelectItem>
-                {states.map((state) => (
-                  <SelectItem key={state.id} value={state.id}>{state.name}</SelectItem>
+                
+                {regionGroups.map((group) => (
+                  <SelectGroup key={group.label}>
+                    <SelectLabel>{group.label}</SelectLabel>
+                    {group.regions.map((region) => (
+                      <SelectItem key={region.id} value={region.id}>{region.name}</SelectItem>
+                    ))}
+                  </SelectGroup>
                 ))}
               </SelectContent>
             </Select>
