@@ -172,7 +172,7 @@ const adjustPortionsForGoals = (
 const getRegionKey = (region?: string): keyof typeof authenticLunchOptions => {
   if (!region) return 'north';
   
-  const regionMap: Record<string, keyof typeof authenticLunchOptions> = {
+  const regionMap: Record<string, 'north' | 'south' | 'west' | 'east' | 'central' | 'northeast'> = {
     'punjab': 'north',
     'haryana': 'north',
     'uttarpradesh': 'north',

@@ -1,3 +1,4 @@
+
 import { getRegionalFoods } from '../../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
@@ -168,7 +169,7 @@ const adjustDinnerPortions = (
 const getRegionKey = (region?: string): keyof typeof authenticDinnerOptions => {
   if (!region) return 'north';
   
-  const regionMap: Record<string, keyof typeof authenticDinnerOptions> = {
+  const regionMap: Record<string, 'north' | 'south' | 'west' | 'east' | 'central' | 'northeast'> = {
     'punjab': 'north',
     'haryana': 'north',
     'uttarpradesh': 'north',

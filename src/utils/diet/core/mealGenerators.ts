@@ -9,8 +9,9 @@ import {
   generateMidMorningSnack as genMidMorningSnack,
   generateEveningSnack as genEveningSnack
 } from '../generators';
+import { DietaryPreference } from '../types';
 
-export function generateBreakfast(dayIndex: number, dietaryPreference: string, isWeightLoss: boolean, allergies?: string, region?: string, gender?: string) {
+export function generateBreakfast(dayIndex: number, dietaryPreference: DietaryPreference, isWeightLoss: boolean, allergies?: string, region?: string, gender?: string) {
   return genBreakfast(dayIndex, dietaryPreference, isWeightLoss, allergies, region, gender);
 }
 
