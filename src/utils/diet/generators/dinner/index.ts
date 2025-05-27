@@ -1,12 +1,7 @@
 
-/**
- * Main export file for dinner generation functionality
- */
-
-// Re-export the main generator function
+// Re-export all dinner generators including the new authentic Indian dinner
 export { generateDinner } from './dinnerGenerator';
-
-// Export specialized generators
 export { generateRegionalDinner } from './regionalDinner';
 export { generateNonVegDinner } from './nonVegDinner';
-
+export { composeDinnerMeal } from './dinnerComposer';
+export { generateAuthenticIndianDinner } from './authenticIndianDinner';
