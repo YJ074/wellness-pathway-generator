@@ -1,9 +1,11 @@
-
 import { getRegionalFoods } from '../../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 import { filterAllergies } from '../../helpers/allergyHelpers';
+
+// Define the type for the authentic lunch options
+type AuthenticLunchRegions = 'north' | 'south' | 'west' | 'east' | 'central' | 'northeast';
 
 /**
  * Generate authentic Indian lunch options with cultural authenticity
@@ -17,7 +19,7 @@ export const generateAuthenticIndianLunch = (
   allergies?: string
 ): string => {
   // Traditional Indian lunch combinations by region
-  const authenticLunchOptions = {
+  const authenticLunchOptions: Record<AuthenticLunchRegions, string[]> = {
     north: [
       'Rajma Chawal with Pickle and Papad',
       'Dal Makhani with Jeera Rice and Raita',
@@ -169,10 +171,10 @@ const adjustPortionsForGoals = (
 /**
  * Get region key for authentic options
  */
-const getRegionKey = (region?: string): keyof typeof authenticLunchOptions => {
+const getRegionKey = (region?: string): AuthenticLunchRegions => {
   if (!region) return 'north';
   
-  const regionMap: Record<string, 'north' | 'south' | 'west' | 'east' | 'central' | 'northeast'> = {
+  const regionMap: Record<string, AuthenticLunchRegions> = {
     'punjab': 'north',
     'haryana': 'north',
     'uttarpradesh': 'north',

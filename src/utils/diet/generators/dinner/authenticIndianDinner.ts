@@ -1,9 +1,11 @@
-
 import { getRegionalFoods } from '../../data/regionalFoods';
 import { enrichWithPrebiotics, enrichWithProbiotics } from '../../helpers/prebioticProbioticHelper';
 import { getHealthBenefit } from '../../helpers/healthBenefitsHelper';
 import { removeDuplicateFoodItems } from '../../helpers/deduplication';
 import { filterAllergies } from '../../helpers/allergyHelpers';
+
+// Define the type for the authentic dinner options
+type AuthenticDinnerRegions = 'north' | 'south' | 'west' | 'east' | 'central' | 'northeast';
 
 /**
  * Generate authentic Indian dinner options with cultural authenticity
@@ -17,7 +19,7 @@ export const generateAuthenticIndianDinner = (
   allergies?: string
 ): string => {
   // Traditional Indian dinner combinations by region
-  const authenticDinnerOptions = {
+  const authenticDinnerOptions: Record<AuthenticDinnerRegions, string[]> = {
     north: [
       'Palak Paneer with Jeera Rice and Raita',
       'Dal Tadka with Roti and Mixed Vegetable Sabzi',
@@ -166,10 +168,10 @@ const adjustDinnerPortions = (
 /**
  * Get region key for authentic dinner options
  */
-const getRegionKey = (region?: string): keyof typeof authenticDinnerOptions => {
+const getRegionKey = (region?: string): AuthenticDinnerRegions => {
   if (!region) return 'north';
   
-  const regionMap: Record<string, 'north' | 'south' | 'west' | 'east' | 'central' | 'northeast'> = {
+  const regionMap: Record<string, AuthenticDinnerRegions> = {
     'punjab': 'north',
     'haryana': 'north',
     'uttarpradesh': 'north',
