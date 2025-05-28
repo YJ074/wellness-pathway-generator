@@ -8,7 +8,6 @@ import {
 } from '../../generators';
 import { addFoodToDailyMemory, applyTriplePassDeduplication } from '../../helpers/deduplication';
 import { getMealTimings } from '../../helpers/mealTimingsHelper';
-import { DietaryPreference } from '../../types';
 
 interface MealPlannerParams {
   dayNumber: number;
@@ -24,7 +23,7 @@ interface MealPlannerParams {
     dinnerPatterns: number[];
     legumePatterns: number[];
   };
-  dietaryPreference: DietaryPreference;
+  dietaryPreference: string;
   calorieReduction: boolean;
   proteinFocus: boolean;
   allergies?: string;

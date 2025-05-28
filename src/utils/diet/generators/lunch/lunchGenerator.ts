@@ -16,11 +16,10 @@ import {
 import { generateRegionalLunch } from './regionalLunch';
 import { generateNonVegLunch } from './nonVegLunch';
 import { composeLunchMeal } from './lunchComposer';
-import { generateAuthenticIndianLunch } from './authenticIndianLunch';
 import { getAllowedNonVegTypes } from '../../helpers/dietaryPreferenceHelper';
 
 /**
- * Generate a lunch meal with priority on authentic Indian cultural foods
+ * Generate a lunch meal based on user preferences and dietary restrictions
  */
 export const generateLunch = (
   dayIndex: number, 
@@ -50,19 +49,7 @@ export const generateLunch = (
     );
   }
 
-  // Priority 1: Use authentic Indian lunch options (every 2nd day)
-  if (dayIndex % 2 === 0) {
-    return generateAuthenticIndianLunch(
-      dayIndex,
-      isWeightLoss,
-      isProteinFocus,
-      gender === 'male',
-      region,
-      allergies
-    );
-  }
-
-  // Priority 2: Check for regional specialties
+  // Check for regional specialties
   const regionalFoods = getRegionalFoods(region);
   
   // Use regional lunch options every 5th day if available
@@ -76,7 +63,7 @@ export const generateLunch = (
     );
   }
   
-  // Fallback: Standard lunch composition for remaining days
+  // Standard lunch composition for non-regional, non-non-veg days
   return composeLunchMeal(
     dayIndex,
     proteins,

@@ -12,7 +12,6 @@ import { getAllowedNonVegTypes } from '../../helpers/dietaryPreferenceHelper';
 import { generateNonVegDinner } from './nonVegDinner';
 import { generateRegionalDinner } from './regionalDinner';
 import { composeDinnerMeal } from './dinnerComposer';
-import { generateAuthenticIndianDinner } from './authenticIndianDinner';
 
 export const generateDinner = (
   dayIndex: number, 
@@ -45,19 +44,7 @@ export const generateDinner = (
     );
   }
 
-  // Priority 1: Use authentic Indian dinner options (every other day)
-  if (dayIndex % 2 === 1) {
-    return generateAuthenticIndianDinner(
-      dayIndex,
-      isWeightLoss,
-      isProteinFocus,
-      gender === 'male',
-      region,
-      allergies
-    );
-  }
-
-  // Priority 2: Check for regional dinner options
+  // Check for regional dinner options
   if (region && dayIndex % 6 === 0) {
     const regionalDinner = generateRegionalDinner(
       dayIndex,
@@ -72,17 +59,78 @@ export const generateDinner = (
     }
   }
   
-  // Fallback: Standard dinner composition
-  return composeDinnerMeal(
+  // Use prime number-based offsets to ensure variety across days
+  // These create non-repeating patterns over 75 days
+  const protein1Index = (dayIndex * 19 + 5) % proteins.length;
+  let protein2Index = (dayIndex * 23 + 9) % proteins.length; // Different offset ensures variety
+  
+  const veggie1Index = (dayIndex * 11 + 7) % vegetables.length;
+  const veggie2Index = (dayIndex * 13 + 11) % vegetables.length;
+  
+  // Select ingredients for today's dinner with protein diversity
+  // Using two complementary protein sources increases amino acid profile completeness
+  let protein1 = proteins[protein1Index];
+  let protein2 = proteins[protein2Index]; // Different protein than lunch
+  
+  // Ensure we're not repeating dairy products across meals
+  if (hasFoodBeenUsedToday(dayIndex, protein1)) {
+    // Look for an alternative protein
+    for (let i = 1; i < proteins.length; i++) {
+      const newIndex = (protein1Index + i) % proteins.length;
+      if (!hasFoodBeenUsedToday(dayIndex, proteins[newIndex])) {
+        protein1 = proteins[newIndex];
+        break;
+      }
+    }
+  }
+  
+  // Also check second protein for repetition - especially avoid two dairy or two legumes
+  if (hasFoodBeenUsedToday(dayIndex, protein2) || protein2.toLowerCase().includes(protein1.toLowerCase())) {
+    // Try to find a different protein type
+    for (let i = 1; i < proteins.length; i++) {
+      const newIndex = (protein2Index + i) % proteins.length;
+      const candidate = proteins[newIndex];
+      
+      // Check if it's different from protein1 and not used yet today
+      if (candidate !== protein1 && !hasFoodBeenUsedToday(dayIndex, candidate)) {
+        protein2 = candidate;
+        break;
+      }
+    }
+  }
+  
+  const veggie1 = vegetables[veggie1Index];
+  const veggie2 = vegetables[veggie2Index];
+  
+  // Add local names to proteins for better understanding and cultural relevance
+  const protein1WithLocalName = getLocalizedProteinName(protein1);
+  const protein2WithLocalName = getLocalizedProteinName(protein2);
+  
+  // Generate the complete dinner meal
+  let dinner = composeDinnerMeal(
     dayIndex,
     {
-      protein1: getLocalizedProteinName(proteins[(dayIndex * 19 + 5) % proteins.length]),
-      protein2: getLocalizedProteinName(proteins[(dayIndex * 23 + 9) % proteins.length]),
-      veggie1: vegetables[(dayIndex * 11 + 7) % vegetables.length],
-      veggie2: vegetables[(dayIndex * 13 + 11) % vegetables.length]
+      protein1: protein1WithLocalName,
+      protein2: protein2WithLocalName,
+      veggie1,
+      veggie2
     },
     isWeightLoss,
     isProteinFocus,
     gender === 'male'
   );
+  
+  // Apply deduplication to dinner
+  dinner = removeDuplicateFoodItems(dinner);
+  
+  // Filter for allergies if specified
+  if (allergies) {
+    dinner = filterAllergies([dinner], allergies)[0] || "";
+  }
+  
+  // Add health benefit to help user understand nutritional value
+  const healthBenefit = getHealthBenefit(dinner);
+  dinner += ` - (${healthBenefit})`;
+  
+  return dinner;
 };
