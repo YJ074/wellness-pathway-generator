@@ -1,4 +1,3 @@
-
 import { cleanupDuplicationFormatting } from '../formatting';
 import { removeDuplicateFoodItems } from './duplicateRemover';
 
@@ -13,6 +12,23 @@ export function normalizeMealForPDF(mealDescription: string): string {
   if (!mealDescription) return '';
   
   let normalizedText = mealDescription;
+  
+  // Fix the "T katori" formatting issue early in the process
+  normalizedText = normalizedText
+    .replace(/\bT katori\b/gi, '1 katori')
+    .replace(/\bT\s+katori\b/gi, '1 katori')
+    // Also fix other potential single-character corruptions of numbers
+    .replace(/\b[A-Z]\s+katori\b/gi, (match) => {
+      // If it's a single letter followed by katori, replace with "1 katori"
+      return '1 katori';
+    })
+    // Fix similar issues with other measurements
+    .replace(/\bT glass\b/gi, '1 glass')
+    .replace(/\bT bowl\b/gi, '1 bowl')
+    .replace(/\bT roti\b/gi, '1 roti')
+    .replace(/\bT rotis\b/gi, '1 rotis')
+    .replace(/\bT chamach\b/gi, '1 chamach')
+    .replace(/\bT mutthi\b/gi, '1 mutthi');
   
   // Extract the health benefit if present, to process separately
   const benefitMatch = normalizedText.match(/ - \(([^)]+)\)$/);
