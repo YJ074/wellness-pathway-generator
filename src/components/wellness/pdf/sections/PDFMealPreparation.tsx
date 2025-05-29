@@ -5,61 +5,64 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-    padding: 8,
+    padding: 10, // Increased from 8
     backgroundColor: '#fef7ed',
     borderRadius: 3,
     border: '1pt solid #fed7aa',
   },
   header: {
-    fontSize: 9,
+    fontSize: 10, // Increased from 9
     fontFamily: 'Helvetica-Bold',
     color: '#c2410c',
-    marginBottom: 6,
+    marginBottom: 8, // Increased from 6
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
-    marginRight: 4,
-    fontSize: 9,
+    marginRight: 6, // Increased from 4
+    fontSize: 10, // Increased from 9
   },
   tipsList: {
-    marginBottom: 6,
+    marginBottom: 8, // Increased from 6
   },
   tip: {
-    fontSize: 8,
+    fontSize: 9, // Increased from 8
     color: '#c2410c',
-    marginBottom: 3,
+    marginBottom: 4, // Increased from 3
     flexDirection: 'row',
     alignItems: 'flex-start',
-    lineHeight: 1.4,
+    lineHeight: 1.6, // Increased from 1.4
   },
   tipBullet: {
-    marginRight: 4,
-    fontSize: 8,
+    marginRight: 6, // Increased from 4
+    fontSize: 9, // Increased from 8
     fontFamily: 'Helvetica-Bold',
+    minWidth: 8, // Added minimum width to prevent overlap
   },
   tipText: {
     flex: 1,
-    lineHeight: 1.4,
+    lineHeight: 1.6, // Increased from 1.4
     fontFamily: 'Helvetica',
+    letterSpacing: 0.2, // Added letter spacing
+    wordSpacing: 0.3, // Added word spacing
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 4,
-    paddingTop: 4,
+    marginTop: 6, // Increased from 4
+    paddingTop: 6, // Increased from 4
     borderTop: '0.5pt solid #fed7aa',
   },
   footerItem: {
-    fontSize: 7,
+    fontSize: 8, // Increased from 7
     color: '#c2410c',
     flexDirection: 'row',
     alignItems: 'center',
     fontFamily: 'Helvetica',
   },
   footerIcon: {
-    marginRight: 3,
-    fontSize: 7,
+    marginRight: 4, // Increased from 3
+    fontSize: 8, // Increased from 7
   }
 });
 
