@@ -44,9 +44,9 @@ export function normalizeMealForPDF(mealDescription: string): string {
     .replace(/\bMoong Dal\b(?!\s*\()/gi, 'Moong Dal (1 katori)')
     .replace(/\bToor Dal\b(?!\s*\()/gi, 'Toor Dal (1 katori)')
     .replace(/\bMasoor Dal\b(?!\s*\()/gi, 'Masoor Dal (1 katori)')
-    // Add portions to common vegetables/curries when missing
-    .replace(/\bcurry\b(?!\s*\()/gi, 'curry (1 katori)')
-    .replace(/\bsabzi\b(?!\s*\()/gi, 'sabzi (1 katori)')
+    // Only add portions to standalone curry or sabzi words, not when part of a description
+    .replace(/\b(?<![\w\s]and\s)curry\b(?!\s*\()/gi, 'mixed curry (1 katori)')
+    .replace(/\b(?<![\w\s]and\s)sabzi\b(?!\s*\()/gi, 'mixed sabzi (1 katori)')
     // Fix rice portions
     .replace(/\bBrown Rice\b(?!\s*\()/gi, 'Brown Rice (1 katori)')
     .replace(/\bWhite Rice\b(?!\s*\()/gi, 'White Rice (1 katori)')
