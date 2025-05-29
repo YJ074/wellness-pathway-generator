@@ -1,4 +1,3 @@
-
 import { cleanupDuplicationFormatting } from '../formatting';
 import { removeDuplicateFoodItems } from './duplicateRemover';
 
@@ -14,10 +13,12 @@ export function normalizeMealForPDF(mealDescription: string): string {
   
   let normalizedText = mealDescription;
   
-  // Fix the "T katori" formatting issue early in the process
+  // Fix the "T katori" and "S katori" formatting issues early in the process
   normalizedText = normalizedText
     .replace(/\bT katori\b/gi, '1 katori')
     .replace(/\bT\s+katori\b/gi, '1 katori')
+    .replace(/\bS katori\b/gi, '1 katori')
+    .replace(/\bS\s+katori\b/gi, '1 katori')
     // Also fix other potential single-character corruptions of numbers
     .replace(/\b[A-Z]\s+katori\b/gi, (match) => {
       // If it's a single letter followed by katori, replace with "1 katori"
@@ -25,11 +26,17 @@ export function normalizeMealForPDF(mealDescription: string): string {
     })
     // Fix similar issues with other measurements
     .replace(/\bT glass\b/gi, '1 glass')
+    .replace(/\bS glass\b/gi, '1 glass')
     .replace(/\bT bowl\b/gi, '1 bowl')
+    .replace(/\bS bowl\b/gi, '1 bowl')
     .replace(/\bT roti\b/gi, '1 roti')
+    .replace(/\bS roti\b/gi, '1 roti')
     .replace(/\bT rotis\b/gi, '1 rotis')
+    .replace(/\bS rotis\b/gi, '1 rotis')
     .replace(/\bT chamach\b/gi, '1 chamach')
-    .replace(/\bT mutthi\b/gi, '1 mutthi');
+    .replace(/\bS chamach\b/gi, '1 chamach')
+    .replace(/\bT mutthi\b/gi, '1 mutthi')
+    .replace(/\bS mutthi\b/gi, '1 mutthi');
   
   // Add missing portions for common food items to make descriptions clearer
   normalizedText = normalizedText
