@@ -43,24 +43,47 @@ export const formatMealDescription = (text: string): ReactNode[] => {
     
     // Fix missing portions for common food items that should have portions
     deduplicatedText = deduplicatedText
-      // Add portions to roti/chapati when missing
+      // Add portions to roti/chapati/bread when missing - expanded to cover more variations
       .replace(/\bChanna Flour Roti\b(?!\s*\()/gi, 'Channa Flour Roti (2 pieces)')
       .replace(/\bBesan Roti\b(?!\s*\()/gi, 'Besan Roti (2 pieces)')
       .replace(/\bChickpea Flour Roti\b(?!\s*\()/gi, 'Chickpea Flour Roti (2 pieces)')
       .replace(/\bWhole Wheat Roti\b(?!\s*\()/gi, 'Whole Wheat Roti (2 pieces)')
       .replace(/\bMultigrain Roti\b(?!\s*\()/gi, 'Multigrain Roti (2 pieces)')
+      .replace(/\bMillet Roti\b(?!\s*\()/gi, 'Millet Roti (2 pieces)')
+      .replace(/\bBajra Roti\b(?!\s*\()/gi, 'Bajra Roti (2 pieces)')
+      .replace(/\bJowar Roti\b(?!\s*\()/gi, 'Jowar Roti (2 pieces)')
+      .replace(/\bRagi Roti\b(?!\s*\()/gi, 'Ragi Roti (2 pieces)')
+      .replace(/\bOats Roti\b(?!\s*\()/gi, 'Oats Roti (2 pieces)')
+      .replace(/\bBarley Roti\b(?!\s*\()/gi, 'Barley Roti (2 pieces)')
+      .replace(/\bQuinoa Roti\b(?!\s*\()/gi, 'Quinoa Roti (2 pieces)')
+      .replace(/\bBuckwheat Roti\b(?!\s*\()/gi, 'Buckwheat Roti (2 pieces)')
+      .replace(/\bMixed Flour Roti\b(?!\s*\()/gi, 'Mixed Flour Roti (2 pieces)')
+      .replace(/\bChapati\b(?!\s*\()/gi, 'Chapati (2 pieces)')
+      .replace(/\bPhulka\b(?!\s*\()/gi, 'Phulka (2 pieces)')
+      .replace(/\bParatha\b(?!\s*\()/gi, 'Paratha (1 piece)')
+      .replace(/\bStuffed Paratha\b(?!\s*\()/gi, 'Stuffed Paratha (1 piece)')
+      .replace(/\bNaan\b(?!\s*\()/gi, 'Naan (1 piece)')
+      .replace(/\bKulcha\b(?!\s*\()/gi, 'Kulcha (1 piece)')
+      .replace(/\bPuri\b(?!\s*\()/gi, 'Puri (2 pieces)')
+      .replace(/\bBhatura\b(?!\s*\()/gi, 'Bhatura (1 piece)')
       // Add portions to dal when missing
       .replace(/\bUrad Dal\b(?!\s*\()/gi, 'Urad Dal (1 katori)')
       .replace(/\bMoong Dal\b(?!\s*\()/gi, 'Moong Dal (1 katori)')
       .replace(/\bToor Dal\b(?!\s*\()/gi, 'Toor Dal (1 katori)')
       .replace(/\bMasoor Dal\b(?!\s*\()/gi, 'Masoor Dal (1 katori)')
+      .replace(/\bChana Dal\b(?!\s*\()/gi, 'Chana Dal (1 katori)')
+      .replace(/\bArhar Dal\b(?!\s*\()/gi, 'Arhar Dal (1 katori)')
+      .replace(/\bMixed Dal\b(?!\s*\()/gi, 'Mixed Dal (1 katori)')
       // Only add portions to standalone "curry" or "sabzi" words, not when they're part of a larger description
       .replace(/\b(?<![\w\s]and\s)curry\b(?!\s*\()/gi, 'mixed curry (1 katori)')
       .replace(/\b(?<![\w\s]and\s)sabzi\b(?!\s*\()/gi, 'mixed sabzi (1 katori)')
       // Fix rice portions
       .replace(/\bBrown Rice\b(?!\s*\()/gi, 'Brown Rice (1 katori)')
       .replace(/\bWhite Rice\b(?!\s*\()/gi, 'White Rice (1 katori)')
-      .replace(/\bBasmati Rice\b(?!\s*\()/gi, 'Basmati Rice (1 katori)');
+      .replace(/\bBasmati Rice\b(?!\s*\()/gi, 'Basmati Rice (1 katori)')
+      .replace(/\bJeera Rice\b(?!\s*\()/gi, 'Jeera Rice (1 katori)')
+      .replace(/\bPulao\b(?!\s*\()/gi, 'Pulao (1 katori)')
+      .replace(/\bBiryani\b(?!\s*\()/gi, 'Biryani (1 katori)');
     
     // Process the text in sequence to avoid overlapping highlights
     // Each step takes the output of the previous step
