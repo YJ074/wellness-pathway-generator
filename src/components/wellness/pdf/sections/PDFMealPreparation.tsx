@@ -4,65 +4,71 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 8,
-    padding: 10, // Increased from 8
+    marginTop: 12, // Increased from 8
+    marginBottom: 12, // Added bottom margin
+    padding: 12, // Increased from 10
     backgroundColor: '#fef7ed',
-    borderRadius: 3,
+    borderRadius: 4, // Increased from 3
     border: '1pt solid #fed7aa',
   },
   header: {
-    fontSize: 10, // Increased from 9
+    fontSize: 11, // Increased from 10
     fontFamily: 'Helvetica-Bold',
     color: '#c2410c',
-    marginBottom: 8, // Increased from 6
+    marginBottom: 10, // Increased from 8
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
-    marginRight: 6, // Increased from 4
-    fontSize: 10, // Increased from 9
+    marginRight: 8, // Increased from 6
+    fontSize: 11, // Increased from 10
   },
   tipsList: {
-    marginBottom: 8, // Increased from 6
+    marginBottom: 10, // Increased from 8
   },
   tip: {
-    fontSize: 9, // Increased from 8
+    fontSize: 10, // Increased from 9
     color: '#c2410c',
-    marginBottom: 4, // Increased from 3
+    marginBottom: 6, // Increased from 4
     flexDirection: 'row',
     alignItems: 'flex-start',
-    lineHeight: 1.6, // Increased from 1.4
+    lineHeight: 1.8, // Increased from 1.6
+    minHeight: 20, // Added minimum height to prevent overlap
   },
   tipBullet: {
-    marginRight: 6, // Increased from 4
-    fontSize: 9, // Increased from 8
+    marginRight: 8, // Increased from 6
+    fontSize: 10, // Increased from 9
     fontFamily: 'Helvetica-Bold',
-    minWidth: 8, // Added minimum width to prevent overlap
+    minWidth: 12, // Increased from 8
+    paddingTop: 1, // Added slight top padding
   },
   tipText: {
     flex: 1,
-    lineHeight: 1.6, // Increased from 1.4
+    lineHeight: 1.8, // Increased from 1.6
     fontFamily: 'Helvetica',
-    letterSpacing: 0.2, // Added letter spacing
-    wordSpacing: 0.3, // Added word spacing
+    letterSpacing: 0.3, // Increased from 0.2
+    wordSpacing: 0.4, // Increased from 0.3
+    paddingRight: 4, // Added right padding
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 6, // Increased from 4
-    paddingTop: 6, // Increased from 4
+    marginTop: 8, // Increased from 6
+    paddingTop: 8, // Increased from 6
     borderTop: '0.5pt solid #fed7aa',
+    alignItems: 'center', // Added for better alignment
   },
   footerItem: {
-    fontSize: 8, // Increased from 7
+    fontSize: 9, // Increased from 8
     color: '#c2410c',
     flexDirection: 'row',
     alignItems: 'center',
     fontFamily: 'Helvetica',
+    lineHeight: 1.6, // Added line height
   },
   footerIcon: {
-    marginRight: 4, // Increased from 3
-    fontSize: 8, // Increased from 7
+    marginRight: 5, // Increased from 4
+    fontSize: 9, // Increased from 8
   }
 });
 
