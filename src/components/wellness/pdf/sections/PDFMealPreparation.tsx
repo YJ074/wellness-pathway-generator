@@ -4,58 +4,62 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 6,
-    padding: 6,
+    marginTop: 8,
+    padding: 8,
     backgroundColor: '#fef7ed',
     borderRadius: 3,
     border: '1pt solid #fed7aa',
   },
   header: {
-    fontSize: 8,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
     color: '#c2410c',
-    marginBottom: 4,
+    marginBottom: 6,
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
     marginRight: 4,
-    fontSize: 8,
+    fontSize: 9,
   },
   tipsList: {
-    marginBottom: 4,
+    marginBottom: 6,
   },
   tip: {
-    fontSize: 7,
+    fontSize: 8,
     color: '#c2410c',
-    marginBottom: 2,
+    marginBottom: 3,
     flexDirection: 'row',
     alignItems: 'flex-start',
+    lineHeight: 1.4,
   },
   tipBullet: {
-    marginRight: 3,
-    fontSize: 6,
+    marginRight: 4,
+    fontSize: 8,
+    fontFamily: 'Helvetica-Bold',
   },
   tipText: {
     flex: 1,
-    lineHeight: 1.3,
+    lineHeight: 1.4,
+    fontFamily: 'Helvetica',
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 3,
-    paddingTop: 3,
+    marginTop: 4,
+    paddingTop: 4,
     borderTop: '0.5pt solid #fed7aa',
   },
   footerItem: {
-    fontSize: 6,
+    fontSize: 7,
     color: '#c2410c',
     flexDirection: 'row',
     alignItems: 'center',
+    fontFamily: 'Helvetica',
   },
   footerIcon: {
-    marginRight: 2,
-    fontSize: 6,
+    marginRight: 3,
+    fontSize: 7,
   }
 });
 
