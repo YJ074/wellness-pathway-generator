@@ -4,71 +4,75 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 12, // Increased from 8
-    marginBottom: 12, // Added bottom margin
-    padding: 12, // Increased from 10
+    marginTop: 16, // Increased significantly
+    marginBottom: 16, // Increased significantly
+    padding: 16, // Increased significantly
     backgroundColor: '#fef7ed',
-    borderRadius: 4, // Increased from 3
+    borderRadius: 6, // Increased
     border: '1pt solid #fed7aa',
   },
   header: {
-    fontSize: 11, // Increased from 10
+    fontSize: 12, // Increased
     fontFamily: 'Helvetica-Bold',
     color: '#c2410c',
-    marginBottom: 10, // Increased from 8
+    marginBottom: 14, // Increased significantly
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
-    marginRight: 8, // Increased from 6
-    fontSize: 11, // Increased from 10
+    marginRight: 10, // Increased significantly
+    fontSize: 12, // Increased
   },
   tipsList: {
-    marginBottom: 10, // Increased from 8
+    marginBottom: 14, // Increased significantly
   },
   tip: {
-    fontSize: 10, // Increased from 9
+    fontSize: 10,
     color: '#c2410c',
-    marginBottom: 6, // Increased from 4
+    marginBottom: 10, // Increased significantly from 6 to 10
     flexDirection: 'row',
     alignItems: 'flex-start',
-    lineHeight: 1.8, // Increased from 1.6
-    minHeight: 20, // Added minimum height to prevent overlap
+    minHeight: 28, // Increased significantly to prevent overlap
   },
   tipBullet: {
-    marginRight: 8, // Increased from 6
-    fontSize: 10, // Increased from 9
+    marginRight: 12, // Increased significantly
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
-    minWidth: 12, // Increased from 8
-    paddingTop: 1, // Added slight top padding
+    minWidth: 16, // Increased significantly
+    paddingTop: 2, // Increased
+    flexShrink: 0, // Prevent shrinking
   },
   tipText: {
     flex: 1,
-    lineHeight: 1.8, // Increased from 1.6
+    lineHeight: 2.2, // Increased significantly from 1.8 to 2.2
     fontFamily: 'Helvetica',
-    letterSpacing: 0.3, // Increased from 0.2
-    wordSpacing: 0.4, // Increased from 0.3
-    paddingRight: 4, // Added right padding
+    letterSpacing: 0.4, // Increased
+    wordSpacing: 0.6, // Increased
+    paddingRight: 8, // Increased
+    paddingTop: 1, // Added top padding
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 8, // Increased from 6
-    paddingTop: 8, // Increased from 6
+    marginTop: 12, // Increased
+    paddingTop: 12, // Increased
     borderTop: '0.5pt solid #fed7aa',
-    alignItems: 'center', // Added for better alignment
+    alignItems: 'center',
+    minHeight: 24, // Added minimum height
   },
   footerItem: {
-    fontSize: 9, // Increased from 8
+    fontSize: 9,
     color: '#c2410c',
     flexDirection: 'row',
     alignItems: 'center',
     fontFamily: 'Helvetica',
-    lineHeight: 1.6, // Added line height
+    lineHeight: 2, // Increased significantly
+    paddingVertical: 2, // Added vertical padding
   },
   footerIcon: {
-    marginRight: 5, // Increased from 4
-    fontSize: 9, // Increased from 8
+    marginRight: 6, // Increased
+    fontSize: 9,
+    flexShrink: 0, // Prevent shrinking
   }
 });
 
