@@ -1,11 +1,12 @@
+
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
-    marginBottom: 16,
-    padding: 16,
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 18,
     backgroundColor: '#fef7ed',
     borderRadius: 6,
     border: '1pt solid #fed7aa',
@@ -14,51 +15,52 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
     color: '#c2410c',
-    marginBottom: 14,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
-    marginRight: 10,
+    marginRight: 12,
     fontSize: 12,
     fontFamily: 'Helvetica',
   },
   tipsList: {
-    marginBottom: 14,
+    marginBottom: 18,
   },
   tip: {
     fontSize: 10,
     color: '#c2410c',
-    marginBottom: 10,
+    marginBottom: 14,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    minHeight: 28,
+    minHeight: 32,
   },
   tipBullet: {
-    marginRight: 12,
+    marginRight: 14,
     fontSize: 10,
     fontFamily: 'Helvetica-Bold',
-    minWidth: 16,
-    paddingTop: 2,
+    minWidth: 18,
+    paddingTop: 3,
     flexShrink: 0,
   },
   tipText: {
     flex: 1,
-    lineHeight: 2.2,
+    lineHeight: 1.6,
     fontFamily: 'Helvetica',
-    letterSpacing: 0.4,
-    wordSpacing: 0.6,
-    paddingRight: 8,
-    paddingTop: 1,
+    letterSpacing: 0.2,
+    wordSpacing: 0.3,
+    paddingRight: 10,
+    paddingTop: 2,
+    maxWidth: '100%',
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 12,
-    paddingTop: 12,
+    marginTop: 16,
+    paddingTop: 14,
     borderTop: '0.5pt solid #fed7aa',
     alignItems: 'center',
-    minHeight: 24,
+    minHeight: 28,
   },
   footerItem: {
     fontSize: 9,
@@ -66,11 +68,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     fontFamily: 'Helvetica',
-    lineHeight: 2,
-    paddingVertical: 2,
+    lineHeight: 1.4,
+    paddingVertical: 3,
   },
   footerIcon: {
-    marginRight: 6,
+    marginRight: 8,
     fontSize: 9,
     fontFamily: 'Helvetica',
     flexShrink: 0,
@@ -150,7 +152,7 @@ const PDFMealPreparation = ({ mealDescription, mealType }: PDFMealPreparationPro
       
       <View style={styles.tipsList}>
         {preparationTips.map((tip, index) => (
-          <View key={index} style={styles.tip}>
+          <View key={index} style={styles.tip} wrap={false}>
             <Text style={styles.tipBullet}>•</Text>
             <Text style={styles.tipText}>{tip}</Text>
           </View>
