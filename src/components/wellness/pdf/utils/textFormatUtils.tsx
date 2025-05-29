@@ -33,6 +33,27 @@ export const formatMealDescription = (text: string): ReactNode[] => {
       .replace(/\bT chamach\b/gi, '1 chamach')
       .replace(/\bT mutthi\b/gi, '1 mutthi');
     
+    // Fix missing portions for common food items that should have portions
+    deduplicatedText = deduplicatedText
+      // Add portions to roti/chapati when missing
+      .replace(/\bChanna Flour Roti\b(?!\s*\()/gi, 'Channa Flour Roti (2 pieces)')
+      .replace(/\bBesan Roti\b(?!\s*\()/gi, 'Besan Roti (2 pieces)')
+      .replace(/\bChickpea Flour Roti\b(?!\s*\()/gi, 'Chickpea Flour Roti (2 pieces)')
+      .replace(/\bWhole Wheat Roti\b(?!\s*\()/gi, 'Whole Wheat Roti (2 pieces)')
+      .replace(/\bMultigrain Roti\b(?!\s*\()/gi, 'Multigrain Roti (2 pieces)')
+      // Add portions to dal when missing
+      .replace(/\bUrad Dal\b(?!\s*\()/gi, 'Urad Dal (1 katori)')
+      .replace(/\bMoong Dal\b(?!\s*\()/gi, 'Moong Dal (1 katori)')
+      .replace(/\bToor Dal\b(?!\s*\()/gi, 'Toor Dal (1 katori)')
+      .replace(/\bMasoor Dal\b(?!\s*\()/gi, 'Masoor Dal (1 katori)')
+      // Add portions to common vegetables/curries when missing
+      .replace(/\bcurry\b(?!\s*\()/gi, 'curry (1 katori)')
+      .replace(/\bsabzi\b(?!\s*\()/gi, 'sabzi (1 katori)')
+      // Fix rice portions
+      .replace(/\bBrown Rice\b(?!\s*\()/gi, 'Brown Rice (1 katori)')
+      .replace(/\bWhite Rice\b(?!\s*\()/gi, 'White Rice (1 katori)')
+      .replace(/\bBasmati Rice\b(?!\s*\()/gi, 'Basmati Rice (1 katori)');
+    
     // Process the text in sequence to avoid overlapping highlights
     // Each step takes the output of the previous step
     

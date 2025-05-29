@@ -1,3 +1,4 @@
+
 import { cleanupDuplicationFormatting } from '../formatting';
 import { removeDuplicateFoodItems } from './duplicateRemover';
 
@@ -29,6 +30,27 @@ export function normalizeMealForPDF(mealDescription: string): string {
     .replace(/\bT rotis\b/gi, '1 rotis')
     .replace(/\bT chamach\b/gi, '1 chamach')
     .replace(/\bT mutthi\b/gi, '1 mutthi');
+  
+  // Add missing portions for common food items to make descriptions clearer
+  normalizedText = normalizedText
+    // Add portions to roti/chapati when missing
+    .replace(/\bChanna Flour Roti\b(?!\s*\()/gi, 'Channa Flour Roti (2 pieces)')
+    .replace(/\bBesan Roti\b(?!\s*\()/gi, 'Besan Roti (2 pieces)')
+    .replace(/\bChickpea Flour Roti\b(?!\s*\()/gi, 'Chickpea Flour Roti (2 pieces)')
+    .replace(/\bWhole Wheat Roti\b(?!\s*\()/gi, 'Whole Wheat Roti (2 pieces)')
+    .replace(/\bMultigrain Roti\b(?!\s*\()/gi, 'Multigrain Roti (2 pieces)')
+    // Add portions to dal when missing
+    .replace(/\bUrad Dal\b(?!\s*\()/gi, 'Urad Dal (1 katori)')
+    .replace(/\bMoong Dal\b(?!\s*\()/gi, 'Moong Dal (1 katori)')
+    .replace(/\bToor Dal\b(?!\s*\()/gi, 'Toor Dal (1 katori)')
+    .replace(/\bMasoor Dal\b(?!\s*\()/gi, 'Masoor Dal (1 katori)')
+    // Add portions to common vegetables/curries when missing
+    .replace(/\bcurry\b(?!\s*\()/gi, 'curry (1 katori)')
+    .replace(/\bsabzi\b(?!\s*\()/gi, 'sabzi (1 katori)')
+    // Fix rice portions
+    .replace(/\bBrown Rice\b(?!\s*\()/gi, 'Brown Rice (1 katori)')
+    .replace(/\bWhite Rice\b(?!\s*\()/gi, 'White Rice (1 katori)')
+    .replace(/\bBasmati Rice\b(?!\s*\()/gi, 'Basmati Rice (1 katori)');
   
   // Extract the health benefit if present, to process separately
   const benefitMatch = normalizedText.match(/ - \(([^)]+)\)$/);
