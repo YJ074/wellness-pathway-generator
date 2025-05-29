@@ -1,64 +1,64 @@
-
 import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16, // Increased significantly
-    marginBottom: 16, // Increased significantly
-    padding: 16, // Increased significantly
+    marginTop: 16,
+    marginBottom: 16,
+    padding: 16,
     backgroundColor: '#fef7ed',
-    borderRadius: 6, // Increased
+    borderRadius: 6,
     border: '1pt solid #fed7aa',
   },
   header: {
-    fontSize: 12, // Increased
+    fontSize: 12,
     fontFamily: 'Helvetica-Bold',
     color: '#c2410c',
-    marginBottom: 14, // Increased significantly
+    marginBottom: 14,
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
-    marginRight: 10, // Increased significantly
-    fontSize: 12, // Increased
+    marginRight: 10,
+    fontSize: 12,
+    fontFamily: 'Helvetica',
   },
   tipsList: {
-    marginBottom: 14, // Increased significantly
+    marginBottom: 14,
   },
   tip: {
     fontSize: 10,
     color: '#c2410c',
-    marginBottom: 10, // Increased significantly from 6 to 10
+    marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    minHeight: 28, // Increased significantly to prevent overlap
+    minHeight: 28,
   },
   tipBullet: {
-    marginRight: 12, // Increased significantly
+    marginRight: 12,
     fontSize: 10,
     fontFamily: 'Helvetica-Bold',
-    minWidth: 16, // Increased significantly
-    paddingTop: 2, // Increased
-    flexShrink: 0, // Prevent shrinking
+    minWidth: 16,
+    paddingTop: 2,
+    flexShrink: 0,
   },
   tipText: {
     flex: 1,
-    lineHeight: 2.2, // Increased significantly from 1.8 to 2.2
+    lineHeight: 2.2,
     fontFamily: 'Helvetica',
-    letterSpacing: 0.4, // Increased
-    wordSpacing: 0.6, // Increased
-    paddingRight: 8, // Increased
-    paddingTop: 1, // Added top padding
+    letterSpacing: 0.4,
+    wordSpacing: 0.6,
+    paddingRight: 8,
+    paddingTop: 1,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 12, // Increased
-    paddingTop: 12, // Increased
+    marginTop: 12,
+    paddingTop: 12,
     borderTop: '0.5pt solid #fed7aa',
     alignItems: 'center',
-    minHeight: 24, // Added minimum height
+    minHeight: 24,
   },
   footerItem: {
     fontSize: 9,
@@ -66,13 +66,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     fontFamily: 'Helvetica',
-    lineHeight: 2, // Increased significantly
-    paddingVertical: 2, // Added vertical padding
+    lineHeight: 2,
+    paddingVertical: 2,
   },
   footerIcon: {
-    marginRight: 6, // Increased
+    marginRight: 6,
     fontSize: 9,
-    flexShrink: 0, // Prevent shrinking
+    fontFamily: 'Helvetica',
+    flexShrink: 0,
   }
 });
 
