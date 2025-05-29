@@ -3,7 +3,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 import { getEstimatedCalories } from '../../utils/mealCalories';
 import { applyTriplePassDeduplication } from '@/utils/diet/helpers/deduplication';
-import PDFMealPreparation from './PDFMealPreparation';
 
 // Improved styles with better alignment and spacing
 const styles = StyleSheet.create({
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
   mealText: {
     fontSize: 9,
     lineHeight: 1.5,
-    marginBottom: 4,
   }
 });
 
@@ -79,12 +77,6 @@ const PDFMealItem = ({
         </View>
       </View>
       <Text style={styles.mealText}>{processedDescription}</Text>
-      
-      {/* Add meal preparation section */}
-      <PDFMealPreparation 
-        mealDescription={processedDescription} 
-        mealType={mealType} 
-      />
     </View>
   );
 };

@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/card";
 import { Clock, Utensils, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import MealPreparationSection from './MealPreparationSection';
 
 interface DietSectionProps {
   diet: {
@@ -107,8 +106,7 @@ const DietSection = ({ diet }: DietSectionProps) => {
               </span>
             )}
           </h4>
-          <p className="mb-2">{breakfast}</p>
-          <MealPreparationSection mealType="breakfast" description={breakfast} />
+          <p>{breakfast}</p>
         </CardContent>
       </Card>
 
@@ -124,8 +122,7 @@ const DietSection = ({ diet }: DietSectionProps) => {
                 </span>
               )}
             </h4>
-            <p className="mb-2">{midMorningSnack}</p>
-            <MealPreparationSection mealType="snack" description={midMorningSnack} />
+            <p>{midMorningSnack}</p>
           </CardContent>
         </Card>
       )}
@@ -141,8 +138,7 @@ const DietSection = ({ diet }: DietSectionProps) => {
               </span>
             )}
           </h4>
-          <p className="mb-2">{lunch}</p>
-          <MealPreparationSection mealType="lunch" description={lunch} />
+          <p>{lunch}</p>
         </CardContent>
       </Card>
 
@@ -158,8 +154,7 @@ const DietSection = ({ diet }: DietSectionProps) => {
                 </span>
               )}
             </h4>
-            <p className="mb-2">{eveningSnack}</p>
-            <MealPreparationSection mealType="snack" description={eveningSnack} />
+            <p>{eveningSnack}</p>
           </CardContent>
         </Card>
       )}
@@ -175,8 +170,7 @@ const DietSection = ({ diet }: DietSectionProps) => {
               </span>
             )}
           </h4>
-          <p className="mb-2">{dinner}</p>
-          <MealPreparationSection mealType="dinner" description={dinner} />
+          <p>{dinner}</p>
         </CardContent>
       </Card>
 
@@ -184,8 +178,7 @@ const DietSection = ({ diet }: DietSectionProps) => {
         <Card className="mb-4">
           <CardContent className="p-4">
             <h4 className="font-medium mb-2">Snacks</h4>
-            <p className="mb-2">{snacks}</p>
-            <MealPreparationSection mealType="snack" description={snacks} />
+            <p>{snacks}</p>
           </CardContent>
         </Card>
       )}

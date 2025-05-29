@@ -5,15 +5,17 @@ import { DietPlan, FormData, WorkoutPlan } from './types';
 import WellnessPDFContainer from './WellnessPDFContainer';
 import { applyTriplePassDeduplication } from '@/utils/diet/helpers/deduplication';
 
-// Register standard PDF fonts properly
+// Register only standard PDF fonts that are guaranteed to work
+// Only using Helvetica and Helvetica-Bold which are built into PDF format
 Font.register({
   family: 'Helvetica',
-  src: 'Helvetica'
-});
-
-Font.register({
-  family: 'Helvetica-Bold',
-  src: 'Helvetica-Bold'
+  fonts: [
+    { src: 'Helvetica' },
+    { 
+      src: 'Helvetica-Bold',
+      fontWeight: 'bold'
+    }
+  ]
 });
 
 // Create styles
