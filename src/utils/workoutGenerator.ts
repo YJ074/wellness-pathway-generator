@@ -7,12 +7,17 @@ import {
   getRandomItems, 
   getWorkoutExercises,
   progressWorkout,
-  adjustDifficultyForWeek
+  adjustDifficultyForWeek,
+  getGenderSpecificFocusArea
 } from './workoutUtils';
 import { WorkoutPlan } from '../components/wellness/types';
 
-export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: string): WorkoutPlan => {
-  console.log(`Generating workout plan: Exercise frequency=${exerciseFrequency}, Fitness goal=${fitnessGoal}`);
+export const generateWorkoutPlan = (
+  exerciseFrequency: string, 
+  fitnessGoal: string, 
+  gender?: string
+): WorkoutPlan => {
+  console.log(`Generating workout plan: Exercise frequency=${exerciseFrequency}, Fitness goal=${fitnessGoal}, Gender=${gender}`);
   let workoutDays: WorkoutDay[] = [];
   const level = getInitialLevel(exerciseFrequency);
   console.log(`Initial fitness level determined: ${level}`);
@@ -34,8 +39,8 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
       continue;
     }
 
-    // Also determine rest days based on exercise frequency
-    if (shouldBeRestDay(day, exerciseFrequency)) {
+    // Also determine rest days based on exercise frequency and gender
+    if (shouldBeRestDay(day, exerciseFrequency, gender)) {
       workoutDays.push({
         day,
         isRestDay: true,
@@ -60,12 +65,12 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
       currentExercises = progressWorkout(currentExercises, BODYWEIGHT_EXERCISES[nextLevel]);
     }
     
-    // Get base exercises
-    let exercises = getWorkoutExercises(currentExercises, fitnessGoal);
+    // Get base exercises with gender consideration
+    let exercises = getWorkoutExercises(currentExercises, fitnessGoal, gender);
     
-    // Determine focus area based on rotation to ensure all fitness components are included
+    // Determine focus area based on rotation and gender
     const dayInWeek = day % 7; 
-    const focusArea = determineFocusArea(dayInWeek, fitnessGoal);
+    const focusArea = getGenderSpecificFocusArea(dayInWeek, fitnessGoal, gender);
     
     // Determine progression information
     let progression = `Week ${weekNumber}`;
@@ -81,9 +86,9 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
         description: ex.description + " (Lighter intensity for recovery)"
       }));
     } else {
-      // Apply progressive overload based on week number
-      exercises = adjustDifficultyForWeek(exercises, weekNumber);
-      progression += ` - ${getProgressionPhase(day)}`;
+      // Apply progressive overload based on week number and gender
+      exercises = adjustDifficultyForWeek(exercises, weekNumber, gender);
+      progression += ` - ${getProgressionPhase(day, gender)}`;
     }
 
     // Create the workout day
@@ -98,32 +103,22 @@ export const generateWorkoutPlan = (exerciseFrequency: string, fitnessGoal: stri
     });
   }
 
-  console.log(`Generated ${workoutDays.length} workout days`);
+  console.log(`Generated ${workoutDays.length} workout days with gender-specific considerations`);
   
   // Return a proper WorkoutPlan object
   return { days: workoutDays };
 };
 
-// Rotate through all fitness components throughout the week
-function determineFocusArea(dayInWeek: number, fitnessGoal: string): string {
-  // A complete rotation that covers core, mobility, strength, and yoga balance
-  switch (dayInWeek) {
-    case 1: return "Core & Stability";
-    case 2: return "Mobility & Flexibility";
-    case 3: return "Strength & Power";
-    case 4: return "Yoga & Balance";
-    case 5: return "Functional Movement";
-    case 6: return fitnessGoal === 'weight-loss' ? "HIIT & Cardio" : "Endurance";
-    default: return "Recovery & Regeneration";
-  }
-}
-
-// Helper function to determine progression phase based on day number
-function getProgressionPhase(day: number): string {
+// Helper function to determine progression phase based on day number and gender
+function getProgressionPhase(day: number, gender?: string): string {
   // First determine where in the progression cycle this day falls
   const progressionCycle = Math.floor((day - 1) / 10) % 3;
   
-  if (progressionCycle === 0) return "Foundation Phase";
-  if (progressionCycle === 1) return "Building Phase";
-  return "Intensity Phase";
+  if (progressionCycle === 0) {
+    return gender === 'female' ? "Foundation & Form Phase" : "Foundation Phase";
+  }
+  if (progressionCycle === 1) {
+    return gender === 'female' ? "Building & Endurance Phase" : "Building Phase";
+  }
+  return gender === 'female' ? "Strength & Power Phase" : "Intensity Phase";
 }

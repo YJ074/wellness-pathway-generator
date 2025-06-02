@@ -87,10 +87,11 @@ const WellnessForm = () => {
         // Generate the diet plan passing the entire formData
         const generatedDietPlan = generateDietPlan(formData);
         
-        // Always generate workout plan regardless of checkbox state
+        // Generate workout plan with gender consideration
         const generatedWorkoutPlan = generateWorkoutPlan(
           formData.exerciseFrequency || 'sedentary', 
-          formData.fitnessGoal || 'maintenance'
+          formData.fitnessGoal || 'maintenance',
+          formData.gender // Pass gender to workout generator
         );
 
         setDietPlan(generatedDietPlan);
@@ -124,7 +125,7 @@ const WellnessForm = () => {
 
         toast({
           title: "Wellness Plan Generated",
-          description: `Your 75-day personalized diet and workout plan has been created.`,
+          description: `Your 75-day personalized diet and workout plan has been created with gender-specific considerations.`,
         });
       } catch (error) {
         console.error("Error generating wellness plan:", error);

@@ -12,7 +12,8 @@ import {
   getWeekInfoFromDay,
   isRecoveryDay,
   getEstimatedCaloriesBurned,
-  getDifficultyLevel
+  getDifficultyLevel,
+  getDailyFocusArea
 } from './utils/workoutPdfUtils';
 
 interface PDFWorkoutSectionProps {
@@ -31,19 +32,20 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   // Get exercise frequency with fallback
   const exerciseFrequency = formData.exerciseFrequency || 'sedentary';
   const fitnessGoal = formData.fitnessGoal || 'maintenance';
+  const gender = formData.gender; // Get gender from form data
   
   // Get week information based on day number
   const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
   
-  // Calculate estimated workout calories burned with progression
-  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(isRestDay, exerciseFrequency, weekNumber);
+  // Calculate estimated workout calories burned with progression and gender
+  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(isRestDay, exerciseFrequency, weekNumber, gender);
   
   // Determine fitness level based on week progression using the utility function
   const difficultyLevel = getDifficultyLevel(exerciseFrequency, weekNumber);
   
-  // Determine focus area through rotation or use the one from workout day
+  // Determine focus area with gender consideration
   const focusArea = workoutDay?.focusArea || 
-    getDailyFocusArea(validDayNumber, fitnessGoal);
+    getDailyFocusArea(validDayNumber, fitnessGoal, gender);
   
   // Check if it's a recovery day
   const isRecoveryDayFlag = isRecoveryDay(validDayNumber);
@@ -79,24 +81,5 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
     </View>
   );
 };
-
-// Helper function to determine daily focus area (moved from workoutPdfUtils to avoid circular imports)
-function getDailyFocusArea(dayNumber: number, fitnessGoal: string): string {
-  // Ensure dayNumber is valid
-  if (!dayNumber || dayNumber < 1) return "General Fitness";
-  
-  const dayInWeek = dayNumber % 7;
-  
-  switch (dayInWeek) {
-    case 1: return "Core & Stability";
-    case 2: return "Mobility & Flexibility";
-    case 3: return "Strength & Power";
-    case 4: return "Yoga & Balance";
-    case 5: return "Functional Movement";
-    case 6: return fitnessGoal === 'weight-loss' ? "HIIT & Cardio" : "Endurance";
-    case 0: return "Recovery & Regeneration"; // Day 7, 14, etc.
-    default: return "General Fitness";
-  }
-}
 
 export default PDFWorkoutSection;
