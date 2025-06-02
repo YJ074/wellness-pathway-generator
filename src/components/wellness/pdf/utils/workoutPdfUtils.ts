@@ -49,13 +49,27 @@ export const getDailyFocusArea = (dayNumber: number, fitnessGoal: string, gender
   }
 };
 
-export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency: string, weekNumber: number = 1, gender?: string): number => {
+export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency: string, weekNumber: number = 1, gender?: string, age?: string | number): number => {
   if (isRestDay) return 100;
   
   // Base calories based on exercise frequency
   let baseCalories = 200;
   if (exerciseFrequency === '5+') baseCalories = 350;
   else if (exerciseFrequency === '3-4') baseCalories = 280;
+  
+  // Age-based calorie adjustments
+  const ageNumber = age ? parseInt(age.toString()) : 30;
+  let ageMultiplier = 1;
+  
+  if (ageNumber >= 60) {
+    ageMultiplier = 0.75; // 25% reduction for 60+
+  } else if (ageNumber >= 50) {
+    ageMultiplier = 0.85; // 15% reduction for 50-59
+  } else if (ageNumber >= 40) {
+    ageMultiplier = 0.95; // 5% reduction for 40-49
+  } else if (ageNumber < 25) {
+    ageMultiplier = 1.1; // 10% increase for under 25
+  }
   
   // Gender-specific calorie adjustments
   let genderMultiplier = 1;
@@ -66,8 +80,12 @@ export const getEstimatedCaloriesBurned = (isRestDay: boolean, exerciseFrequency
   }
   
   // Apply progression factor based on week number (5% increase every 2 weeks, up to 80% more)
-  const progressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * 0.05), 1.8);
-  return Math.round(baseCalories * genderMultiplier * progressionFactor);
+  // Adjust progression based on age
+  const maxProgressionFactor = ageNumber >= 50 ? 1.5 : ageNumber >= 40 ? 1.65 : 1.8;
+  const progressionRate = ageNumber >= 50 ? 0.03 : ageNumber >= 40 ? 0.04 : 0.05;
+  const progressionFactor = Math.min(1 + (Math.floor(weekNumber / 2) * progressionRate), maxProgressionFactor);
+  
+  return Math.round(baseCalories * ageMultiplier * genderMultiplier * progressionFactor);
 };
 
 export const getWeekInfoFromDay = (dayNumber: number) => {

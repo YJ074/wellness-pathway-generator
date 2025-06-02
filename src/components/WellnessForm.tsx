@@ -87,11 +87,12 @@ const WellnessForm = () => {
         // Generate the diet plan passing the entire formData
         const generatedDietPlan = generateDietPlan(formData);
         
-        // Generate workout plan with gender consideration
+        // Generate workout plan with gender and age consideration
         const generatedWorkoutPlan = generateWorkoutPlan(
           formData.exerciseFrequency || 'sedentary', 
           formData.fitnessGoal || 'maintenance',
-          formData.gender // Pass gender to workout generator
+          formData.gender, // Pass gender to workout generator
+          formData.age // Pass age to workout generator
         );
 
         setDietPlan(generatedDietPlan);
@@ -101,7 +102,7 @@ const WellnessForm = () => {
         trackEvent(
           'generation', 
           'success', 
-          `${formData.dietaryPreference}_with_workout`
+          `${formData.dietaryPreference}_with_workout_age_${formData.age}`
         );
 
         // Send the wellness plan to Make.com webhook
@@ -125,7 +126,7 @@ const WellnessForm = () => {
 
         toast({
           title: "Wellness Plan Generated",
-          description: `Your 75-day personalized diet and workout plan has been created with gender-specific considerations.`,
+          description: `Your 75-day personalized diet and workout plan has been created with gender and age-specific considerations.`,
         });
       } catch (error) {
         console.error("Error generating wellness plan:", error);

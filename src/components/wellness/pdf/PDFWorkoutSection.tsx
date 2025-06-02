@@ -33,12 +33,13 @@ const PDFWorkoutSection = ({ workoutDay, formData, dayNumber }: PDFWorkoutSectio
   const exerciseFrequency = formData.exerciseFrequency || 'sedentary';
   const fitnessGoal = formData.fitnessGoal || 'maintenance';
   const gender = formData.gender; // Get gender from form data
+  const age = formData.age; // Get age from form data
   
   // Get week information based on day number
   const { weekNumber, isDeloadWeek } = getWeekInfoFromDay(validDayNumber);
   
-  // Calculate estimated workout calories burned with progression and gender
-  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(isRestDay, exerciseFrequency, weekNumber, gender);
+  // Calculate estimated workout calories burned with progression, gender, and age
+  const estimatedCaloriesBurned = getEstimatedCaloriesBurned(isRestDay, exerciseFrequency, weekNumber, gender, age);
   
   // Determine fitness level based on week progression using the utility function
   const difficultyLevel = getDifficultyLevel(exerciseFrequency, weekNumber);
